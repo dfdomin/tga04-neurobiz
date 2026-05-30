@@ -661,28 +661,63 @@ meses = <span class="fn">int</span>(<span class="fn">input</span>(<span class="s
     Python 3.10+ tiene <code>match/case</code> pero <code>if/elif/else</code> funciona en cualquier versión y es lo más usado en análisis de datos.</p>
   </div>
 
-  <h3>🎯 Actividad Colab (+25 XP)</h3>
-  <ol>
-    <li>Copia el primer código en un notebook de Google Colab.</li>
-    <li>Ejecuta con 3 combinaciones distintas de asistidas/programadas y anota los resultados.</li>
-    <li>Agrega un caso más al <code>if/elif/else</code>: tasa &lt; 30% → <code>"Crítico: suspender servicio"</code>.</li>
-    <li>Cuando tengas los 3 resultados, haz clic en el botón de abajo.</li>
-  </ol>
-  <button onclick="awardColab4()" style="background:#43a047;color:#fff;border:none;border-radius:10px;padding:.7rem 1.4rem;font-size:1rem;font-weight:800;cursor:pointer;margin-top:.5rem">
-    ✅ Completé la actividad Colab (+25 XP)
-  </button>
-  <div id="colab4-msg" style="margin-top:.5rem;font-size:.88rem;color:#2e7d32;font-weight:700"></div>
-  <script>
-    function awardColab4() {
-      if (localStorage.getItem('tga04_s4_colab')) {
-        document.getElementById('colab4-msg').textContent = '✅ Ya registrado anteriormente.';
-        return;
-      }
-      localStorage.setItem('tga04_s4_colab', '1');
-      if (typeof PT !== 'undefined' && typeof PT.addXP === 'function') PT.addXP(25, 'Colab Semana 4 ✅');
-      document.getElementById('colab4-msg').textContent = '+25 XP registrados. ¡Buen trabajo!';
-    }
-  </script>
+  <h3>🧪 Verifica tu Colab — 5 preguntas · 5 XP cada una</h3>
+  <p style="color:var(--muted);font-size:.88rem">Ejecuta el código en Google Colab con los valores indicados y responde. Solo puedes saber la respuesta correcta después de correr el código. El sistema califica automáticamente.</p>
+
+  <div class="quiz-q">
+    <p><strong>C1.</strong> Ejecuta el primer código con <code>asistidas=79</code>, <code>programadas=100</code>. ¿Qué categoría imprime?</p>
+    <ol type="a">
+      <li>Verde</li>
+      <li>Amarillo</li>
+      <li>Rojo</li>
+      <li>Error: sesiones programadas debe ser mayor a 0</li>
+    </ol>
+    <p class="quiz-answer" style="display:none">✅ b — tasa = 79.0%. Cumple ≥60 pero no ≥80 → Amarillo: Cumplimiento aceptable.</p>
+  </div>
+
+  <div class="quiz-q">
+    <p><strong>C2.</strong> Ejecuta con <code>asistidas=80</code>, <code>programadas=100</code>. ¿Qué categoría imprime?</p>
+    <ol type="a">
+      <li>Verde</li>
+      <li>Amarillo</li>
+      <li>Rojo</li>
+      <li>No se puede saber sin ejecutar</li>
+    </ol>
+    <p class="quiz-answer" style="display:none">✅ a — tasa = 80.0%. La condición ≥80 es inclusiva. Exactamente 80 cae en Verde.</p>
+  </div>
+
+  <div class="quiz-q">
+    <p><strong>C3.</strong> Ejecuta con <code>asistidas=45</code>, <code>programadas=100</code>. ¿Qué imprime el código?</p>
+    <ol type="a">
+      <li>Tasa: 45.0% → Verde: Excelente cumplimiento</li>
+      <li>Tasa: 45.0% → Amarillo: Cumplimiento aceptable</li>
+      <li>Tasa: 45.0% → Rojo: Requiere intervención</li>
+      <li>Error: sesiones programadas debe ser mayor a 0</li>
+    </ol>
+    <p class="quiz-answer" style="display:none">✅ c — tasa = 45.0%. No cumple ≥80 ni ≥60 → cae al else → Rojo: Requiere intervención.</p>
+  </div>
+
+  <div class="quiz-q">
+    <p><strong>C4.</strong> En el segundo código (contratos), ejecuta con <code>meses=6</code>. ¿Qué tipo de contrato imprime?</p>
+    <ol type="a">
+      <li>Corto plazo</li>
+      <li>Mediano plazo</li>
+      <li>Largo plazo</li>
+      <li>Contrato marco</li>
+    </ol>
+    <p class="quiz-answer" style="display:none">✅ b — 6 meses no cumple ≤3 pero sí cumple ≤12 → Mediano plazo.</p>
+  </div>
+
+  <div class="quiz-q">
+    <p><strong>C5.</strong> Agrega <code>elif tasa &lt; 30: categoria = "Rojo"; mensaje = "Crítico: suspender servicio"</code> antes del <code>else</code>. Con <code>asistidas=25</code>, <code>programadas=100</code>, ¿qué imprime?</p>
+    <ol type="a">
+      <li>Tasa: 25.0% → Rojo: Requiere intervención</li>
+      <li>Tasa: 25.0% → Rojo: Crítico: suspender servicio</li>
+      <li>Tasa: 25.0% → Amarillo: Crítico: suspender servicio</li>
+      <li>Error de sintaxis: elif inesperado</li>
+    </ol>
+    <p class="quiz-answer" style="display:none">✅ b — tasa = 25.0%. El nuevo elif (25 &lt; 30) se activa → categoria="Rojo", mensaje="Crítico: suspender servicio".</p>
+  </div>
 </section>
 
 <!-- ══ BIBLIOGRAFÍA ══ -->

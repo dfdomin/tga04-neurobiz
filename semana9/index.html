@@ -115,18 +115,7 @@ print(f"  Rojo   (&lt;60%): {total_rojo}")
 if n &gt; 0:
     print(f"  Promedio tasa: {acumulado_tasa/n:.1f}%")</pre></div>
 <h3>🎯 Actividad Colab (+25 XP)</h3>
-<ol><li>Copia el código completo en Google Colab y ejecútalo con al menos 5 sesiones inventadas.</li><li>Verifica que el resumen ejecutivo cuadra con tus entradas.</li><li>Agrega una línea que imprima cuál fue el estado más frecuente (verde, amarillo o rojo).</li></ol>
-<button onclick="awardColab9()" style="background:#43a047;color:#fff;border:none;border-radius:10px;padding:.65rem 1.3rem;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:.5rem">✅ Completé la actividad Colab (+25 XP)</button>
-<div id="colab9-msg" style="margin-top:.4rem;font-size:.85rem;color:#2e7d32;font-weight:700"></div>
-<script>
-function awardColab9(){
-if(localStorage.getItem('tga04_s9_colab')){document.getElementById('colab9-msg').textContent='✅ Ya registrado.';return}
-localStorage.setItem('tga04_s9_colab','1');
-const PT=window.PT;
-if(PT&&PT.addXP)PT.addXP(25,'Colab Semana 9 ✅');else{try{const s=JSON.parse(localStorage.getItem('tga04_s9')||'{}');s.xp=Math.min((s.xp||0)+25,95);localStorage.setItem('tga04_s9',JSON.stringify(s))}catch(e){}}
-document.getElementById('colab9-msg').textContent='+25 XP registrados. ¡Excelente integración!'
-}
-</script>
+<h3>🧪 Verifica tu Colab — 5 preguntas · 5 XP cada una</h3><p style="color:var(--mut);font-size:.87rem">Ejecuta el código con los valores indicados. Solo puedes responder correctamente si corriste el código en Colab.</p><div class="quiz-q"><p><strong>C1.</strong> Ejecuta con n=3 y tasas: 85, 65, 45. ¿Cuántos verdes muestra el resumen ejecutivo?</p><ol type="a"><li>1</li><li>2</li><li>3</li><li>0</li></ol><div class="quiz-answer">✅ a — Solo 85% ≥ 80 → Verde. 65% es Amarillo y 45% es Rojo.</div></div><div class="quiz-q"><p><strong>C2.</strong> Con los mismos datos (n=3, tasas 85/65/45), ¿cuántos rojos muestra el resumen?</p><ol type="a"><li>0</li><li>1</li><li>2</li><li>3</li></ol><div class="quiz-answer">✅ b — Solo 45% es &lt; 60 → Rojo. Los otros dos no son rojos.</div></div><div class="quiz-q"><p><strong>C3.</strong> Ejecuta con n=2 y tasas: 80, 60. ¿Cuál es el promedio que imprime?</p><ol type="a"><li>80.0%</li><li>60.0%</li><li>70.0%</li><li>140.0%</li></ol><div class="quiz-answer">✅ c — (80 + 60) / 2 = 70.0%.</div></div><div class="quiz-q"><p><strong>C4.</strong> Ingresa tasa = 60. ¿En qué categoría cae?</p><ol type="a"><li>Verde (≥80%)</li><li>Amarillo (≥60%)</li><li>Rojo (&lt;60%)</li><li>No se clasifica</li></ol><div class="quiz-answer">✅ b — 60 no cumple ≥80, pero sí cumple ≥60 → Amarillo ⚠️. La frontera es inclusiva.</div></div><div class="quiz-q"><p><strong>C5.</strong> Ejecuta con n=1 y tasa = 79. ¿Qué categoría aparece?</p><ol type="a"><li>Verde (79 está cerca de 80)</li><li>Amarillo</li><li>Rojo</li><li>El código da error con n=1</li></ol><div class="quiz-answer">✅ b — 79 &lt; 80 (no Verde). 79 ≥ 60 → Amarillo ⚠️.</div></div>
 </section>
 <section class="card" id="bib"><h2>📖 Bibliografía</h2>
 <ul class="bib">

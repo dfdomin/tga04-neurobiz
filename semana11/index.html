@@ -441,27 +441,63 @@ sesiones_demo = [
     <p><strong>¿Por qué funciones?</strong> Cada función resuelve UN problema. Si mañana cambia la regla de clasificación (ej: 70% en vez de 80%), solo modificas <code>clasificar_sesion()</code> — el resto del código no cambia. Esto es <strong>modularidad</strong>.</p>
   </div>
 
-  <h3>🎯 Actividad Colab (+25 XP)</h3>
-  <ol>
-    <li>Copia el código completo y ejecútalo en Google Colab.</li>
-    <li>Agrega una cuarta sesión con tus propios valores a <code>sesiones_demo</code>.</li>
-    <li>Crea una nueva función <code>mejor_sesion(sesiones)</code> que retorne el ID de la sesión con mayor tasa.</li>
-  </ol>
-  <button onclick="awardColab11()" style="background:#43a047;color:#fff;border:none;border-radius:10px;padding:.7rem 1.4rem;font-size:1rem;font-weight:800;cursor:pointer;margin-top:.5rem">
-    ✅ Completé la actividad Colab (+25 XP)
-  </button>
-  <div id="colab11-msg" style="margin-top:.5rem;font-size:.88rem;color:#2e7d32;font-weight:700"></div>
-  <script>
-    function awardColab11() {
-      if (localStorage.getItem('tga04_s11_colab')) {
-        document.getElementById('colab11-msg').textContent = '✅ Ya registrado anteriormente.';
-        return;
-      }
-      localStorage.setItem('tga04_s11_colab', '1');
-      if (typeof PT !== 'undefined' && typeof PT.addXP === 'function') PT.addXP(25, 'Colab Semana 11 ✅');
-      document.getElementById('colab11-msg').textContent = '+25 XP registrados. ¡Excelente modularización!';
-    }
-  </script>
+  <h3>🧪 Verifica tu Colab — 5 preguntas · 5 XP cada una</h3>
+  <p style="color:var(--muted);font-size:.88rem">Llama las funciones en Google Colab con los valores indicados y responde. Solo puedes saber la respuesta correcta después de ejecutar el código. El sistema califica automáticamente.</p>
+
+  <div class="quiz-q">
+    <p><strong>C1.</strong> Llama <code>calcular_tasa(84, 100)</code>. ¿Qué valor retorna?</p>
+    <ol type="a">
+      <li>84</li>
+      <li>84.0</li>
+      <li>0.84</li>
+      <li>8.4</li>
+    </ol>
+    <p class="quiz-answer" style="display:none">✅ b — 84/100*100 = 84.0 (float). Python retorna float en la división.</p>
+  </div>
+
+  <div class="quiz-q">
+    <p><strong>C2.</strong> Llama <code>clasificar_sesion(80)</code>. ¿Qué string retorna exactamente?</p>
+    <ol type="a">
+      <li>Verde</li>
+      <li>Verde ✅</li>
+      <li>Amarillo ⚠️</li>
+      <li>Rojo 🔴</li>
+    </ol>
+    <p class="quiz-answer" style="display:none">✅ b — tasa=80 cumple ≥80 (condición inclusiva) → retorna "Verde ✅" con el emoji incluido.</p>
+  </div>
+
+  <div class="quiz-q">
+    <p><strong>C3.</strong> Llama <code>clasificar_sesion(59)</code>. ¿Qué retorna?</p>
+    <ol type="a">
+      <li>Verde ✅</li>
+      <li>Amarillo ⚠️</li>
+      <li>Rojo 🔴</li>
+      <li>None</li>
+    </ol>
+    <p class="quiz-answer" style="display:none">✅ c — 59 no cumple ≥80 ni ≥60 → cae al else → retorna "Rojo 🔴".</p>
+  </div>
+
+  <div class="quiz-q">
+    <p><strong>C4.</strong> Llama <code>calcular_tasa(0, 0)</code>. ¿Qué retorna?</p>
+    <ol type="a">
+      <li>0.0</li>
+      <li>Error: ZeroDivisionError</li>
+      <li>None</li>
+      <li>0</li>
+    </ol>
+    <p class="quiz-answer" style="display:none">✅ a — programadas=0 no cumple (&gt; 0) → cae al segundo return 0.0. La función protege contra división por cero.</p>
+  </div>
+
+  <div class="quiz-q">
+    <p><strong>C5.</strong> Ejecuta <code>reporte_ejecutivo(sesiones_demo)</code>. ¿Cuántas funciones <code>def</code> define el módulo en total?</p>
+    <ol type="a">
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+    </ol>
+    <p class="quiz-answer" style="display:none">✅ c — El módulo define 3 funciones: calcular_tasa, clasificar_sesion y reporte_ejecutivo.</p>
+  </div>
 </section>
 
 <section id="bib" class="card">
