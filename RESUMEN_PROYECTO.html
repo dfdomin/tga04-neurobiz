@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resumen del Proyecto — TGA05 NeuroBiz</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1a237e; --accent: #3949ab; --green: #2e7d32;
+      --gold: #f9a825; --red: #c62828; --border: #c5cae9;
+      --light: #f5f7ff; --radius: 14px;
+    }
+    body { font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--light); color: #212121; line-height: 1.75; }
+
+    /* HERO */
+    header {
+      background: linear-gradient(135deg, #1a237e 0%, #283593 60%, #3949ab 100%);
+      color: #fff; padding: 3rem 2rem 3.5rem; text-align: center; position: relative; overflow: hidden;
+    }
+    header::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    header::after { content:''; position:absolute; bottom:-2px; left:0; right:0;
+      height:40px; background:var(--light); clip-path: ellipse(55% 100% at 50% 100%); }
+    header h1 { font-size: 2.2rem; font-weight: 900; position: relative; }
+    header .sub { opacity: .85; margin-top: .4rem; font-size: 1.05rem; position: relative; }
+    header .badges { display: flex; gap: .7rem; justify-content: center;
+      margin-top: 1.2rem; flex-wrap: wrap; position: relative; }
+    .badge { padding: .3rem .9rem; border-radius: 20px; font-size: .78rem;
+      font-weight: 700; border: 2px solid rgba(255,255,255,.4); color: #fff; }
+    .badge.gold  { background: rgba(249,168,37,.25); border-color: #f9a825; }
+    .badge.green { background: rgba(67,160,71,.25); border-color: #66bb6a; }
+    .badge.blue  { background: rgba(255,255,255,.15); }
+
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1.2rem 5rem; }
+
+    /* SECTION HEADER */
+    .section-title {
+      display: flex; align-items: center; gap: .8rem;
+      font-size: 1.3rem; font-weight: 800; color: var(--primary);
+      margin: 2.5rem 0 1rem; padding-bottom: .5rem;
+      border-bottom: 3px solid var(--gold);
+    }
+    .section-title .ico { font-size: 1.5rem; }
+
+    /* CARD */
+    .card { background: #fff; border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 1.6rem 1.8rem;
+      margin-bottom: 1.2rem; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .card h3 { font-size: 1rem; color: var(--accent); margin-bottom: .6rem; }
+
+    /* STAT GRID */
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat { background: #fff; border-radius: var(--radius); border: 1px solid var(--border);
+      padding: 1.2rem 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .stat .num { font-size: 2.4rem; font-weight: 900; color: var(--primary); line-height: 1; }
+    .stat .lbl { font-size: .78rem; color: #607d8b; margin-top: .4rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+
+    /* WEEKS TABLE */
+    .weeks-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: .5rem; }
+    .week-cell { background: var(--primary); color: #fff; border-radius: 10px;
+      padding: .6rem .3rem; text-align: center; font-size: .78rem; font-weight: 700; }
+    .week-cell .num { font-size: 1.2rem; display: block; }
+    .week-cell .tema { font-size: .65rem; opacity: .8; margin-top: .2rem; display: block; line-height: 1.2; }
+
+    /* FEATURE LIST */
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .feature-list li { display: flex; gap: .8rem; align-items: flex-start;
+      padding: .7rem 1rem; background: #f8f9fe; border-radius: 10px;
+      border-left: 4px solid var(--accent); font-size: .92rem; }
+    .feature-list li .ico { font-size: 1.1rem; flex-shrink: 0; margin-top: .05rem; }
+
+    /* FILE TREE */
+    .tree { font-family: 'Courier New', monospace; font-size: .82rem;
+      background: #1e1e2e; color: #cdd6f4; border-radius: 12px;
+      padding: 1.3rem 1.5rem; line-height: 2; overflow-x: auto; }
+    .tree .folder { color: #89b4fa; font-weight: 700; }
+    .tree .html   { color: #a6e3a1; }
+    .tree .other  { color: #f38ba8; }
+    .tree .size   { color: #6c7086; font-size: .75rem; }
+    .tree .check  { color: #a6e3a1; }
+
+    /* STEPS */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step  { display: flex; gap: 1.2rem; padding: 1rem 0;
+      border-bottom: 1px solid var(--border); }
+    .step:last-child { border-bottom: none; }
+    .step-num { width: 36px; height: 36px; border-radius: 50%;
+      background: var(--primary); color: #fff; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: .95rem; }
+    .step-body strong { display: block; margin-bottom: .25rem; font-size: .95rem; }
+    .step-body p, .step-body li { font-size: .88rem; color: #444; }
+    .step-body code { background: #e8eaf6; color: var(--primary);
+      padding: .1rem .4rem; border-radius: 5px; font-size: .82rem; }
+
+    /* BOXES */
+    .box { border-radius: 10px; padding: .9rem 1.2rem; margin: .8rem 0;
+      display: flex; gap: .8rem; align-items: flex-start; font-size: .9rem; }
+    .box.ok   { background: #e8f5e9; border-left: 4px solid #43a047; }
+    .box.warn { background: #fff8e1; border-left: 4px solid #ffa000; }
+    .box.tip  { background: #e3f2fd; border-left: 4px solid #1976d2; }
+    .box .ico { font-size: 1.2rem; flex-shrink: 0; }
+    .box p { margin: 0; }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    th { background: var(--primary); color: #fff; padding: .65rem 1rem; text-align: left; }
+    td { padding: .55rem 1rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f8f9fe; }
+
+    /* DEMO WIDGET */
+    .widget-demo {
+      background: linear-gradient(135deg, #1a237e, #283593);
+      color: #fff; border-radius: 16px; padding: 1.2rem 1.5rem;
+      max-width: 300px; font-size: .85rem; box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+    .widget-demo .bar-bg { background: rgba(255,255,255,.2); border-radius: 20px; height: 10px; overflow: hidden; margin: .5rem 0; }
+    .widget-demo .bar-fill { height: 100%; width: 55%; background: linear-gradient(90deg,#f9a825,#fff176); border-radius: 20px; }
+    .widget-demo .btns { display: flex; gap: .5rem; margin-top: .8rem; }
+    .widget-demo .btn { flex: 1; border-radius: 8px; padding: .4rem; text-align: center; font-size: .72rem; font-weight: 700; cursor: pointer; }
+    .widget-demo .btn.save { background: #43a047; }
+    .widget-demo .btn.code { background: #f9a825; color: #1a237e; }
+    .widget-demo .btn.load { background: rgba(255,255,255,.15); }
+
+    footer { text-align: center; padding: 2.5rem; font-size: .8rem; color: #78909c;
+      border-top: 1px solid var(--border); margin-top: 2rem; }
+
+    @media(max-width: 700px){
+      .stat-grid { grid-template-columns: repeat(2,1fr); }
+      .weeks-grid { grid-template-columns: repeat(4,1fr); }
+      header h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📦 TGA05 · NeuroBiz S.A.S.</h1>
+  <p class="sub">Estructura de Datos para los Negocios · UIB · 2026</p>
+  <div class="badges">
+    <span class="badge gold">✅ 28 archivos HTML entregados</span>
+    <span class="badge green">🎮 Gamificación integrada</span>
+    <span class="badge blue">☁️ Persistencia de progreso</span>
+    <span class="badge blue">📚 14 semanas completas</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ESTADÍSTICAS -->
+  <div class="section-title"><span class="ico">📊</span> Resumen ejecutivo</div>
+  <div class="stat-grid">
+    <div class="stat"><div class="num">14</div><div class="lbl">Semanas de contenido</div></div>
+    <div class="stat"><div class="num">28</div><div class="lbl">Archivos HTML</div></div>
+    <div class="stat"><div class="num">3</div><div class="lbl">Resultados de Aprendizaje</div></div>
+    <div class="stat"><div class="num">117h</div><div class="lbl">Carga total del módulo</div></div>
+  </div>
+
+  <!-- QUÉ CONTIENE CADA SEMANA -->
+  <div class="section-title"><span class="ico">📋</span> ¿Qué contiene cada semana?</div>
+  <div class="card" style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+    <div>
+      <h3>📄 index.html — Material del estudiante</h3>
+      <ul class="feature-list">
+        <li><span class="ico">🧠</span> Teoría contextualizada en NeuroBiz S.A.S.</li>
+        <li><span class="ico">🐍</span> Código Python en Google Colab (BI, no fin en sí mismo)</li>
+        <li><span class="ico">🏢</span> Actividad presencial: 2h HAD + 2h HP</li>
+        <li><span class="ico">🏠</span> HTI Escenario A (motivado, 60–90 min)</li>
+        <li><span class="ico">🤝</span> HTI Escenario B (baja resistencia, 20–30 min, <strong>no bloquea</strong>)</li>
+        <li><span class="ico">🎯</span> Quiz gamificado con retroalimentación y XP</li>
+        <li><span class="ico">📚</span> Bibliografía en formato APA</li>
+        <li><span class="ico">📊</span> Widget de progreso (XP + sincronización)</li>
+      </ul>
+    </div>
+    <div>
+      <h3>👩‍🏫 notas_profesor.html — Guía del docente</h3>
+      <ul class="feature-list">
+        <li><span class="ico">⏱️</span> Secuencia minuto a minuto (240 min)</li>
+        <li><span class="ico">✅</span> Checklist de preparación previa</li>
+        <li><span class="ico">🎮</span> Tabla de puntos ClassDojo por actividad</li>
+        <li><span class="ico">💡</span> Respuestas del quiz con justificación</li>
+        <li><span class="ico">🔄</span> Orientación HTI Escenario A y B</li>
+        <li><span class="ico">🧩</span> Nota de neurodiversidad (frase sugerida)</li>
+        <li><span class="ico">⚠️</span> Contingencias si falla el internet/equipos</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SEMANAS -->
+  <div class="section-title"><span class="ico">📅</span> Las 14 semanas</div>
+  <div class="card">
+    <div class="weeks-grid">
+      <div class="week-cell" style="background:#283593"><span class="num">S1</span><span class="tema">Tipos de datos & Arreglos</span></div>
+      <div class="week-cell" style="background:#303f9f"><span class="num">S2</span><span class="tema">Pilas (Stack)</span></div>
+      <div class="week-cell" style="background:#3949ab"><span class="num">S3</span><span class="tema">Aplicaciones de Pilas</span></div>
+      <div class="week-cell" style="background:#3f51b5"><span class="num">S4</span><span class="tema">Colas (Queue)</span></div>
+      <div class="week-cell" style="background:#5c6bc0"><span class="num">S5</span><span class="tema">Colas circulares + Repaso RA1</span></div>
+      <div class="week-cell" style="background:#1b5e20"><span class="num">S6</span><span class="tema">Recursividad I</span></div>
+      <div class="week-cell" style="background:#2e7d32"><span class="num">S7</span><span class="tema">Recursividad II</span></div>
+      <div class="week-cell" style="background:#388e3c"><span class="num">S8</span><span class="tema">Listas enlazadas simples</span></div>
+      <div class="week-cell" style="background:#43a047"><span class="num">S9</span><span class="tema">Listas enlazadas - Operaciones</span></div>
+      <div class="week-cell" style="background:#4caf50"><span class="num">S10</span><span class="tema">Listas circulares</span></div>
+      <div class="week-cell" style="background:#e65100"><span class="num">S11</span><span class="tema">Listas dobles</span></div>
+      <div class="week-cell" style="background:#ef6c00"><span class="num">S12</span><span class="tema">Árboles binarios</span></div>
+      <div class="week-cell" style="background:#f57c00"><span class="num">S13</span><span class="tema">BST - Búsqueda</span></div>
+      <div class="week-cell" style="background:#c62828"><span class="num">S14</span><span class="tema">Proyecto Integrador</span></div>
+    </div>
+    <div class="box ok" style="margin-top:1rem">
+      <span class="ico">✅</span>
+      <p><strong>RA1</strong> (S1–S5): Pilas, Colas &nbsp;|&nbsp; <strong>RA2</strong> (S6–S10): Recursividad, Listas &nbsp;|&nbsp; <strong>RA3</strong> (S11–S14): Árboles y Proyecto integrador</p>
+    </div>
+  </div>
+
+  <!-- ESTRUCTURA DE ARCHIVOS -->
+  <div class="section-title"><span class="ico">🗂️</span> Estructura de archivos entregados</div>
+  <div class="card">
+    <div class="tree">
+<span class="folder">EstructuraDatos/</span>
+├── <span class="folder">semana1/</span>
+│   ├── <span class="html">index.html</span>          <span class="size">52 KB — Material estudiante + tracker</span>
+│   └── <span class="html">notas_profesor.html</span>  <span class="size">30 KB — Guía docente</span>
+├── <span class="folder">semana2/</span>  ...  <span class="folder">semana14/</span>
+│   ├── <span class="html">index.html</span>          <span class="size">42–71 KB por semana</span>
+│   └── <span class="html">notas_profesor.html</span>  <span class="size">25–33 KB por semana</span>
+│
+└── <span class="folder">setup/</span>
+    ├── <span class="html">CONFIGURAR_PROGRESO.html</span>   <span class="size">16 KB — Guía visual para el docente</span>
+    ├── <span class="other">apps_script_neurobiz.gs</span>    <span class="size">7.4 KB — Backend Google Sheets</span>
+    └── <span class="other">inject_progress_tracker.py</span> <span class="size">18 KB — Script de inyección (ya ejecutado)</span>
+    </div>
+    <div style="display:flex; gap:.7rem; margin-top:1rem; flex-wrap:wrap;">
+      <span style="background:#e8f5e9; color:#2e7d32; border:1px solid #81c784; padding:.3rem .9rem; border-radius:20px; font-size:.8rem; font-weight:700;">✅ 14/14 index.html con tracker inyectado</span>
+      <span style="background:#e8f5e9; color:#2e7d32; border:1px solid #81c784; padding:.3rem .9rem; border-radius:20px; font-size:.8rem; font-weight:700;">✅ Archivo duplicado eliminado</span>
+      <span style="background:#e3f2fd; color:#0d47a1; border:1px solid #90caf9; padding:.3rem .9rem; border-radius:20px; font-size:.8rem; font-weight:700;">☁️ Listo para sincronizar con Google Sheets</span>
+    </div>
+  </div>
+
+  <!-- SISTEMA DE PROGRESO -->
+  <div class="section-title"><span class="ico">🎮</span> Sistema de progreso y gamificación</div>
+  <div class="card" style="display:grid; grid-template-columns:1fr auto; gap:2rem; align-items:start;">
+    <div>
+      <h3>¿Cómo ganan XP los estudiantes?</h3>
+      <table style="margin:.8rem 0">
+        <thead><tr><th>Acción</th><th>XP</th></tr></thead>
+        <tbody>
+          <tr><td>Abrir el material de una semana (1.ª vez)</td><td>+15 XP</td></tr>
+          <tr><td>Configurar su nombre en el widget</td><td>+5 XP</td></tr>
+          <tr><td>Responder correctamente una pregunta del quiz</td><td>+10 XP</td></tr>
+          <tr><td>XP base por semana visitada</td><td>+5 × nº semana</td></tr>
+        </tbody>
+      </table>
+      <div class="box tip">
+        <span class="ico">💡</span>
+        <p>El progreso se guarda automáticamente en el navegador (<code>localStorage</code>). 
+        No se pierde al cerrar Moodle. Solo se pierde si el estudiante borra caché o usa modo incógnito.</p>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:.8rem; color:#78909c; margin-bottom:.6rem; font-weight:700;">WIDGET EN CADA SEMANA</p>
+      <div class="widget-demo">
+        <div style="display:flex; justify-content:space-between; margin-bottom:.8rem;">
+          <strong>📊 Mi Progreso TGA05</strong>
+          <span style="opacity:.6">▲</span>
+        </div>
+        <div style="background:rgba(255,255,255,.15); border-radius:8px; padding:.35rem .8rem; font-size:.8rem; color:rgba(255,255,255,.5); margin-bottom:.7rem;">Tu nombre completo…</div>
+        <div style="display:flex; justify-content:space-between; font-size:.78rem; opacity:.8;">
+          <span>Semana 3 de 14</span><span>55 XP ⭐</span>
+        </div>
+        <div class="bar-bg"><div class="bar-fill"></div></div>
+        <div class="btns">
+          <div class="btn save">☁️ Guardar</div>
+          <div class="btn code">📋 Código</div>
+          <div class="btn load">📥 Cargar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CÓMO EMPEZAR -->
+  <div class="section-title"><span class="ico">🚀</span> ¿Cómo empezar?</div>
+  <div class="card">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Hoy mismo — sin configurar nada</strong>
+          <p>Abre <code>semana1/index.html</code> en el navegador. 
+          El widget azul 📊 ya funciona. El progreso se guarda automáticamente en el dispositivo del estudiante.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Indicar a los estudiantes que exporten su progreso</strong>
+          <p>Al final de cada sesión: clic en <strong>📋 Código</strong> → 
+          guardar el archivo <code>.txt</code> en su OneDrive o Google Drive personal.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Opcional — Configurar Google Sheets (~10 min)</strong>
+          <p>Abre <code>setup/CONFIGURAR_PROGRESO.html</code> y sigue los 6 pasos. 
+          Activa la sincronización cloud y el dashboard del docente con XP total por estudiante.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Subir los archivos a Moodle</strong>
+          <p>Puedes comprimir cada carpeta <code>semanaX/</code> como ZIP y subirla como 
+          recurso tipo "Archivo" o "Paquete IMS" en Moodle. 
+          Los materiales son 100% autocontenidos (sin dependencias externas).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTAS IMPORTANTES -->
+  <div class="section-title"><span class="ico">📌</span> Notas importantes</div>
+  <div class="card">
+    <div class="box ok">
+      <span class="ico">✅</span>
+      <p><strong>HTI Escenario B</strong>: En todas las semanas está explícitamente indicado que 
+      el Escenario B <em>"NO bloquea la siguiente clase"</em>. Si el estudiante no entrega la tarea de 
+      casa, la clase avanza sin interrupciones.</p>
+    </div>
+    <div class="box ok">
+      <span class="ico">✅</span>
+      <p><strong>Python como herramienta BI</strong>: En ninguna semana se enseña Python como fin en sí mismo. 
+      Siempre es una herramienta analítica aplicada a los KPIs de NeuroBiz S.A.S. 
+      (tasa_retencion, sesiones_asistidas, nivel_hiperfoco, etc.).</p>
+    </div>
+    <div class="box ok">
+      <span class="ico">✅</span>
+      <p><strong>Nota de neurodiversidad</strong>: Cada semana incluye una sugerencia de frase para el 
+      docente, sin lenguaje patologizante, con ≤1 minuto de uso en clase.</p>
+    </div>
+    <div class="box warn">
+      <span class="ico">⚠️</span>
+      <p><strong>Modo incógnito o borrar caché</strong>: El localStorage se pierde. 
+      Recuerda a los estudiantes exportar su código al final de cada sesión con 📋 Código.</p>
+    </div>
+    <div class="box tip">
+      <span class="ico">ℹ️</span>
+      <p><strong>Moodle</strong>: Los archivos HTML funcionan directamente. Si Moodle bloquea scripts externos, 
+      no hay problema: el sistema usa únicamente JavaScript nativo sin dependencias de CDN.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  TGA05 · Estructura de Datos para los Negocios · UIB · NeuroBiz S.A.S. · 2026<br>
+  <span style="opacity:.5">Generado con GitHub Copilot CLI — Material construido sobre Framework GAME + Taxonomía de Bloom</span>
+</footer>
+
+</body>
+</html>

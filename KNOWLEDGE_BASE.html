@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowledge Base — TGA04 · Fundamentos de Computación · IUB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:#1E2843; --navy2:#2d3a5e; --yellow:#FFDF2D;
+      --bg:#FAFAFA; --border:#DEDFE4; --gray:#E9EAED;
+      --green:#1b5e20; --red:#b71c1c; --text:#212121; --muted:#546e7a;
+      --radius:12px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Open Sans',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;}
+
+    /* HEADER */
+    header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:2rem 2rem 1.5rem;}
+    .hdr-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;}
+    header h1{font-size:1.6rem;font-weight:800;}
+    header p{opacity:.8;font-size:.85rem;margin-top:.3rem;}
+    .hdr-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem;}
+    .badge{display:inline-block;padding:.2rem .7rem;border-radius:20px;font-size:.72rem;font-weight:700;}
+    .badge-yellow{background:var(--yellow);color:var(--navy);}
+    .badge-outline{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);}
+
+    /* SIDEBAR + MAIN */
+    .layout{max-width:1100px;margin:0 auto;display:flex;gap:0;}
+    aside{width:220px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;background:#fff;border-right:1px solid var(--border);padding:1.2rem .8rem;}
+    aside h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:1rem 0 .4rem;padding-left:.5rem;}
+    aside a{display:block;padding:.4rem .6rem;border-radius:6px;color:#444;font-size:.82rem;text-decoration:none;transition:all .15s;}
+    aside a:hover,aside a.active{background:var(--gray);color:var(--navy);font-weight:600;}
+    aside a.active{border-left:3px solid var(--yellow);}
+    main{flex:1;min-width:0;padding:2rem 1.5rem;}
+
+    /* SECTIONS */
+    section{margin-bottom:3rem;scroll-margin-top:1rem;}
+    .sec-title{display:flex;align-items:center;gap:.7rem;margin-bottom:1.2rem;padding-bottom:.7rem;border-bottom:3px solid var(--yellow);}
+    .sec-title h2{font-size:1.2rem;color:var(--navy);font-weight:800;}
+    .sec-num{background:var(--navy);color:var(--yellow);width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0;}
+
+    /* CARDS */
+    .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:.8rem;}
+    .card h3{color:var(--navy);font-size:.95rem;font-weight:700;margin-bottom:.5rem;}
+    .card p,.card li{color:#444;font-size:.88rem;}
+    .card ul,.card ol{padding-left:1.3rem;}
+    .card li{margin-bottom:.25rem;}
+    .card-navy{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;}
+    .card-navy h3{color:var(--yellow);}
+    .card-navy p,.card-navy li,.card-navy code{color:rgba(255,255,255,.9);}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;}
+    @media(max-width:700px){.grid-2,.grid-3{grid-template-columns:1fr;}.layout{flex-direction:column;}aside{width:100%;height:auto;position:static;}}
+
+    /* ALERTS */
+    .alert{border-radius:8px;padding:.8rem 1rem;margin:.6rem 0;font-size:.86rem;display:flex;gap:.5rem;}
+    .alert-info{background:#e3f2fd;border-left:4px solid #1565c0;}
+    .alert-success{background:#e8f5e9;border-left:4px solid var(--green);}
+    .alert-warn{background:#fff8e1;border-left:4px solid #f9a825;}
+
+    /* CODE */
+    pre{background:var(--navy);color:#cdd6f4;border-radius:10px;padding:1rem 1.2rem;overflow-x:auto;font-size:.82rem;line-height:1.6;margin:.6rem 0;position:relative;}
+    code{font-family:'Fira Code',monospace;font-size:.85em;}
+    .cmd{color:var(--yellow);}
+    .cmt{color:#6c7086;font-style:italic;}
+    .hi{color:#a6e3a1;}
+    .copy-btn{position:absolute;top:.4rem;right:.6rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:5px;padding:.2rem .6rem;font-size:.7rem;cursor:pointer;font-family:inherit;}
+    .copy-btn.ok{background:#2e7d32;}
+    .inline-code{background:var(--gray);padding:.1rem .4rem;border-radius:4px;font-family:'Fira Code',monospace;font-size:.83em;color:var(--navy);}
+
+    /* TABLE */
+    table.info{width:100%;border-collapse:collapse;font-size:.85rem;margin:.6rem 0;}
+    table.info th{background:var(--navy);color:#fff;padding:.55rem .8rem;text-align:left;}
+    table.info td{padding:.5rem .8rem;border-bottom:1px solid var(--border);vertical-align:top;}
+    table.info tr:nth-child(even) td{background:var(--gray);}
+
+    /* FILE TREE */
+    .filetree{background:var(--navy);color:#cdd6f4;border-radius:10px;padding:1rem 1.2rem;font-family:'Fira Code',monospace;font-size:.82rem;line-height:1.8;}
+    .ft-dir{color:var(--yellow);font-weight:600;}
+    .ft-file{color:#a6e3a1;}
+    .ft-note{color:#6c7086;font-style:italic;}
+    .ft-warn{color:#f38ba8;}
+
+    /* COMPACT BOX */
+    .compact-box{background:var(--navy);border:2px solid var(--yellow);border-radius:var(--radius);padding:1.5rem;}
+    .compact-box h3{color:var(--yellow);font-size:1rem;margin-bottom:.8rem;}
+    .compact-box textarea{width:100%;height:320px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:#cdd6f4;font-family:'Fira Code',monospace;font-size:.78rem;line-height:1.6;padding:.8rem;resize:vertical;outline:none;}
+    .compact-box textarea:focus{border-color:var(--yellow);}
+    .btn{padding:.5rem 1.1rem;border-radius:8px;border:none;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+    .btn:hover{opacity:.85;}
+    .btn-yellow{background:var(--yellow);color:var(--navy);}
+    .btn-outline{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);}
+
+    /* XP CHIP */
+    .xp-chip{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,223,45,.15);border:1px solid rgba(255,223,45,.4);border-radius:20px;padding:.2rem .7rem;font-size:.78rem;font-weight:700;color:var(--yellow);}
+
+    /* TAGS */
+    .tag{display:inline-block;padding:.1rem .5rem;border-radius:10px;font-size:.72rem;font-weight:700;margin:.1rem;}
+    .tag-navy{background:#e8eaf6;color:var(--navy);}
+    .tag-green{background:#c8e6c9;color:#1b5e20;}
+    .tag-yellow{background:#fff9c4;color:#6d4c00;}
+    .tag-red{background:#ffcdd2;color:#b71c1c;}
+
+    /* PROGRESS */
+    .phase-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.5rem;font-size:.85rem;}
+    .phase-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+    .dot-done{background:var(--green);}
+    .dot-later{background:#e0e0e0;}
+
+    footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;padding:1.5rem;font-size:.82rem;margin-top:2rem;}
+    footer strong{color:var(--yellow);}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-inner">
+    <div>
+      <h1>📚 Knowledge Base — TGA04 Fundamentos de Computación</h1>
+      <p>Gamificación · Supabase · GitHub Pages · Aula Virtual IUB</p>
+      <div class="hdr-badges">
+        <span class="badge badge-yellow">IUB · DG-TSI-09-V4</span>
+        <span class="badge badge-outline">Framework GAME</span>
+        <span class="badge badge-outline">20 secciones · 36+ archivos</span>
+        <span class="badge badge-outline">Supabase + GitHub Pages</span>
+        <span class="badge badge-outline">Mayo 2026</span>
+      </div>
+    </div>
+    <div style="text-align:right;color:rgba(255,255,255,.6);font-size:.8rem">
+      Última actualización<br><strong style="color:#fff">30 mayo 2026 — v20</strong>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+<aside>
+  <h3>Contexto</h3>
+  <a href="#s1" onclick="setActive(this)">1 · Proyecto</a>
+  <a href="#s2" onclick="setActive(this)">2 · Rol Gamificador</a>
+  <a href="#s3" onclick="setActive(this)">3 · NeuroBiz S.A.S.</a>
+  <h3>Diseño</h3>
+  <a href="#s4" onclick="setActive(this)">4 · Gamificación</a>
+  <a href="#s5" onclick="setActive(this)">5 · Contenido & HTI</a>
+  <a href="#s6" onclick="setActive(this)">6 · Identidad IUB</a>
+  <a href="#s16" onclick="setActive(this)">16 · Actividades autocalif.</a>
+  <h3>Técnico</h3>
+  <a href="#s7" onclick="setActive(this)">7 · Arquitectura</a>
+  <a href="#s8" onclick="setActive(this)">8 · Estructura de archivos</a>
+  <a href="#s9" onclick="setActive(this)">9 · Supabase</a>
+  <a href="#s10" onclick="setActive(this)">10 · Scripts</a>
+  <h3>Proceso</h3>
+  <a href="#s11" onclick="setActive(this)">11 · Notas & fórmula</a>
+  <a href="#s12" onclick="setActive(this)">12 · Git → GitHub Pages</a>
+  <a href="#s13" onclick="setActive(this)">13 · Moodle</a>
+  <a href="#s14" onclick="setActive(this)">14 · Replicar módulo</a>
+  <a href="#s17" onclick="setActive(this)">17 · Rutina docente</a>
+  <a href="#s18" onclick="setActive(this)">18 · Importar desde PDF</a>
+  <a href="#s19" onclick="setActive(this)">19 · Backup & Restore</a>
+  <a href="#s20" onclick="setActive(this)">20 · Asistencia</a>
+  <h3>IA</h3>
+  <a href="#s15" onclick="setActive(this)">15 · Prompt nueva sesión</a>
+</aside>
+
+<main>
+
+<!-- ═══════════════════════════════════════ S1 PROYECTO ══ -->
+<section id="s1">
+  <div class="sec-title"><div class="sec-num">1</div><h2>Resumen del proyecto</h2></div>
+  <div class="card card-navy">
+    <h3>¿Qué se construyó?</h3>
+    <p>Material de estudio interactivo completo para el módulo <strong>TGA04 "Fundamentos de Computación para los Negocios"</strong> de la Institución Universitaria de Barranquilla (IUB), con gamificación integrada, persistencia en la nube y publicación en GitHub Pages.</p>
+  </div>
+  <div class="grid-3">
+    <div class="card"><h3>📦 Archivos</h3>
+      <ul>
+        <li>13 × <span class="inline-code">index.html</span> (estudiante)</li>
+        <li>13 × <span class="inline-code">notas_profesor.html</span></li>
+        <li>3 dashboards (estudiante, docente, notas)</li>
+        <li>1 landing raíz (<span class="inline-code">index.html</span>)</li>
+        <li>8 scripts/guías en <span class="inline-code">setup/</span></li>
+      </ul>
+    </div>
+    <div class="card"><h3>🎓 Módulo</h3>
+      <ul>
+        <li>Código: <strong>TGA04</strong></li>
+        <li>13 semanas (cuatrimestre)</li>
+        <li>4 h presenciales/semana (2 HAD + 2 HP)</li>
+        <li>5 h HTI/semana</li>
+        <li>5 RAs con criterios de evaluación</li>
+      </ul>
+    </div>
+    <div class="card"><h3>🛠 Stack</h3>
+      <ul>
+        <li>HTML + CSS + JS (sin frameworks)</li>
+        <li>Supabase (PostgreSQL REST)</li>
+        <li>GitHub Pages (hosting estático)</li>
+        <li>Google Colab (Python/BI)</li>
+        <li>SheetJS (export XLSX)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="alert alert-success">
+    <span>✅</span>
+    <div>Estado: <strong>Implementado y listo para publicar.</strong> Solo falta llenar <span class="inline-code">js/supabase-config.js</span> y hacer push a GitHub.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ S2 ROL GAMIFICADOR ══ -->
+<section id="s2">
+  <div class="sec-title"><div class="sec-num">2</div><h2>Rol Gamificador (Persona IA)</h2></div>
+  <div class="card card-navy">
+    <h3>Instrucción base para el asistente IA</h3>
+    <p>Actúa como experto en diseño curricular universitario, especialista en gamificación pedagógica y metodologías activas (<strong>Framework GAME: Guiar, Articular, Motivar, Evaluar</strong>). Rediseño de microcurrículos bajo Formación Basada en Competencias. Algoritmos y programación básica como eje central. Usa <strong>Taxonomía de Bloom</strong> explícita. Narrativa corporativa inmersiva. Cuatrimestres 13 semanas. Solicitar microcurrículo antes de diseñar.</p>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>🎯 Reglas de trabajo</h3>
+      <ul>
+        <li>Priorizar RA más crítico para gamificar (claridad + verbo Bloom + evaluabilidad)</li>
+        <li>Toda actividad enmarcada en narrativa corporativa real</li>
+        <li>Generar bibliografía en cada material</li>
+        <li>Actividad en clase + HTI por semana</li>
+        <li>2 escenarios si hay saturación estudiantil</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📐 Framework GAME</h3>
+      <ul>
+        <li><strong>G</strong>uiar — objetivos claros por semana</li>
+        <li><strong>A</strong>rticular — conectar contenido con caso real</li>
+        <li><strong>M</strong>otivar — XP, badges, progreso visible</li>
+        <li><strong>E</strong>valuar — quizzes + actividades + parcial</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ S3 NEUROBIZ ══ -->
+<section id="s3">
+  <div class="sec-title"><div class="sec-num">3</div><h2>Caso de Estudio — NeuroBiz S.A.S.</h2></div>
+  <div class="card card-navy">
+    <h3>Identidad corporativa</h3>
+    <p>Empresa de base tecnológica especializada en potenciar capacidades de personas <strong>neurodivergentes</strong> (TDAH, Autismo, Altas Capacidades) mediante terapias asistidas por IA y neuro-feedback. Misión: transformar neurodivergencias en ventajas competitivas. Visión 2030: red global líder en neuro-optimización, Carbono Neutro.</p>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>📊 KPIs usados en ejercicios</h3>
+      <table class="info">
+        <tr><th>Variable</th><th>Descripción</th></tr>
+        <tr><td><span class="inline-code">sesiones_asistidas</span></td><td>Pacientes atendidos</td></tr>
+        <tr><td><span class="inline-code">sesiones_fallidas</span></td><td>Citas perdidas sin aviso</td></tr>
+        <tr><td><span class="inline-code">tasa_retencion</span></td><td>% ciclo terapia completo</td></tr>
+        <tr><td><span class="inline-code">indice_progreso</span></td><td>Avance en neuro-feedback</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>🌱 ODS integrados</h3>
+      <ul>
+        <li><strong>ODS 7 & 13:</strong> Sedes tropicales con paneles solares; sedes frías con geotérmica</li>
+        <li>Doble propósito pedagógico: técnico (BI/datos) + sensibilización en neurodiversidad</li>
+        <li>Variables como <em>Niveles de Hiperfoco (TDAH)</em> abren conversación en clase</li>
+      </ul>
+    </div>
+  </div>
+  <div class="alert alert-info">
+    <span>💡</span>
+    <div>Para replicar con otro módulo: reemplaza NeuroBiz por la empresa del nuevo caso. Archivo fuente: <span class="inline-code">Caso_Estudio_NeuroBiz_Consolidado.md</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════ S4 GAMIFICACIÓN ══ -->
+<section id="s4">
+  <div class="sec-title"><div class="sec-num">4</div><h2>Sistema de Gamificación</h2></div>
+  <div class="card card-navy">
+    <h3>Herramientas externas integradas</h3>
+    <p><strong>ClassDojo</strong> — gestión de puntos/comportamiento en clase (docente controla en tiempo real)<br>
+    <strong>Quizizz</strong> — quizzes gamificados con ranking, tiempo y retroalimentación inmediata<br>
+    <strong>Google Colab</strong> — ambiente Python en la nube (sin instalación)</p>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>⭐ Sistema XP (puntos de experiencia)</h3>
+      <ul>
+        <li>+5 XP al registrar nombre (primera visita)</li>
+        <li>XP por leer material semanal</li>
+        <li>XP por responder quizzes (proporcional al score)</li>
+        <li>XP por completar actividades (<span class="inline-code">activity_done = true</span>)</li>
+        <li>Barra de XP visible siempre en widget (color amarillo IUB)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🏅 Badges / niveles</h3>
+      <ul>
+        <li>Nivel basado en XP acumulado (Novato → Analista → Experto)</li>
+        <li>Mostrado en header de cada semana</li>
+        <li>Dashboard personal muestra histórico de badges</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🧠 Taxonomía de Bloom en quizzes</h3>
+      <ul>
+        <li>Cada semana etiqueta sus preguntas con nivel Bloom</li>
+        <li>Recordar · Comprender · Aplicar · Analizar · Evaluar · Crear</li>
+        <li>Color diferenciado por nivel en la UI</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>💾 Widget de progreso (en cada semana)</h3>
+      <ul>
+        <li>Botón ☁️ <strong>Guardar</strong> (prominente) → Supabase</li>
+        <li>Botón ⚙️ → panel oculto con Código / Cargar (respaldo)</li>
+        <li>Modal bienvenida en primera visita (pide nombre + grupo)</li>
+        <li>Todos los datos en <span class="inline-code">localStorage</span> como respaldo local</li>
+      </ul>
+    </div>
+  </div>
+  <div class="alert alert-warn">
+    <span>⚠️</span>
+    <div><strong>Conservar siempre:</strong> El componente de gamificación no debe modificarse al cambiar colores. El amarillo <span class="inline-code">#FFDF2D</span> IUB coincide exactamente con el rol del <span class="inline-code">--gold</span> de XP.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ S5 CONTENIDO ══ -->
+<section id="s5">
+  <div class="sec-title"><div class="sec-num">5</div><h2>Estructura del contenido semanal</h2></div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>📘 index.html (estudiante) — contiene:</h3>
+      <ul>
+        <li>Header con XP bar y badge de nivel</li>
+        <li>Navegación entre semanas</li>
+        <li>Contenido teórico con fuentes bibliográficas</li>
+        <li>Actividad en clase (in-situ, con Bloom explícito)</li>
+        <li>Actividad HTI (horas trabajo independiente)</li>
+        <li>Quiz gamificado (Quizizz embed o preguntas nativas)</li>
+        <li>Sección bibliografía</li>
+        <li>Widget Supabase + modal bienvenida</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📝 notas_profesor.html — contiene:</h3>
+      <ul>
+        <li>Resumen de la semana y objetivos</li>
+        <li>Guía de clase paso a paso</li>
+        <li>Tips para el componente de gamificación</li>
+        <li>2 escenarios HTI: sin resistencia / con resistencia estudiantil</li>
+        <li>Alertas y notas de preparación</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📅 Distribución de semanas por RA (TGA04)</h3>
+    <table class="info">
+      <tr><th>Pestaña Moodle</th><th>RA</th><th>Semanas</th><th>Tema principal</th></tr>
+      <tr><td>Presentación</td><td>—</td><td>—</td><td>Docente + info curso + dashboard</td></tr>
+      <tr><td>RA 1</td><td>Identificar variables y operaciones</td><td>1–2</td><td>Algoritmos, tipos de variables (num/alfa/lóg), operadores, diagramas de flujo, pseudocódigo</td></tr>
+      <tr><td>RA 2</td><td>Formular soluciones algorítmicas</td><td>3–8</td><td>Primitivas selectivas (SI-FSI, SI-SINO-FSI, DD-FDD) y repetitivas (MQ-FMQ, HH-FHH, PARA-FPARA)</td></tr>
+      <tr><td>RA 3</td><td>Pruebas de escritorio</td><td>9</td><td>Verificación paso a paso de algoritmos con variables</td></tr>
+      <tr><td>RA 4</td><td>Programar en lenguaje de alto nivel</td><td>10–12</td><td>IDE, codificación de variables y primitivas, laboratorio NeuroBiz</td></tr>
+      <tr><td>RA 5</td><td>Verificar y depurar programas</td><td>13</td><td>Debugging, identificación y corrección de fallas en IDE</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>🏠 Horas trabajo independiente (HTI) — estrategia dual</h3>
+    <div class="grid-2">
+      <div>
+        <p><strong>Escenario A</strong> <span class="tag tag-green">Sin resistencia</span></p>
+        <p style="font-size:.85rem;margin-top:.3rem">HTI completa: actividad de profundización en IDE / lectura / ejercicio NeuroBiz (algoritmo + codificación). Contribuye directamente a nota formativa (activity_done = true).</p>
+      </div>
+      <div>
+        <p><strong>Escenario B</strong> <span class="tag tag-yellow">Con resistencia</span></p>
+        <p style="font-size:.85rem;margin-top:.3rem">HTI simplificada: el material semanal puede leerse/explorarse en casa sin presión de entrega. El quiz en clase garantiza el aprendizaje sin depender de la HTI.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════ S6 IDENTIDAD IUB ══ -->
+<section id="s6">
+  <div class="sec-title"><div class="sec-num">6</div><h2>Identidad Visual IUB (DG-TSI-09-V4)</h2></div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>🎨 Paleta oficial</h3>
+      <table class="info">
+        <tr><th>Variable CSS</th><th>Hex</th><th>Uso</th></tr>
+        <tr><td><span class="inline-code">--primary</span></td><td>#1E2843</td><td>Fondo header, nav, botones primarios</td></tr>
+        <tr><td><span class="inline-code">--accent</span></td><td>#2d3a5e</td><td>Gradiente, acento (derivado IUB)</td></tr>
+        <tr><td><span class="inline-code">--gold</span></td><td>#FFDF2D</td><td>XP bar, amarillo IUB, badges</td></tr>
+        <tr><td><span class="inline-code">--light-bg</span></td><td>#FAFAFA</td><td>Fondo de página</td></tr>
+        <tr><td><span class="inline-code">--border</span></td><td>#DEDFE4</td><td>Bordes de card</td></tr>
+        <tr><td><span class="inline-code">--gray</span></td><td>#E9EAED</td><td>Fondos alternos</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>🔤 Tipografía & estructura</h3>
+      <ul>
+        <li><strong>Fuente:</strong> Open Sans (Google Fonts) con fallback Arial</li>
+        <li>Pesos: 400, 600, 700, 800</li>
+        <li><strong>Estructura:</strong> Header + Contenido + Footer (estándar IUB)</li>
+        <li>Logo IUB: parte superior izquierda</li>
+        <li>Sin scroll horizontal a 1024×768</li>
+        <li>Imágenes: alt text obligatorio, 72dpi, JPG/PNG</li>
+      </ul>
+      <div class="alert alert-warn" style="margin-top:.6rem">
+        <span>⚠️</span><div>Script <span class="inline-code">setup/apply_iub_colors.py</span> ya aplicado a 31/31 archivos.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════ S7 ARQUITECTURA ══ -->
+<section id="s7">
+  <div class="sec-title"><div class="sec-num">7</div><h2>Arquitectura técnica</h2></div>
+  <div class="card card-navy">
+    <h3>Patrón JAMstack — sin servidor</h3>
+    <p>HTML estático en GitHub Pages + Supabase REST API. No requiere servidor propio. El alumno abre el link, el JS del HTML llama directamente a Supabase con la clave anon. RLS de Supabase protege los datos.</p>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>☁️ Supabase (base de datos)</h3>
+      <ul>
+        <li>Tabla: <span class="inline-code">student_progress</span></li>
+        <li>UNIQUE(student_id, semana) → sin duplicados</li>
+        <li>RLS: anon puede INSERT, UPDATE, SELECT</li>
+        <li>View <span class="inline-code">resumen_docente</span> agrega XP, semanas, quizzes</li>
+        <li>Clave anon pública en GitHub es segura con RLS</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>💾 localStorage (respaldo local)</h3>
+      <ul>
+        <li><span class="inline-code">tga04_global</span> — nombre, id, grupo</li>
+        <li><span class="inline-code">tga04_sN</span> — estado semana N</li>
+        <li><span class="inline-code">tga04_supabase_url/key</span> — config</li>
+        <li><span class="inline-code">tga04_visited_sN</span> — historial visitas</li>
+        <li><span class="inline-code">tga04_parciales_corteN</span> — notas parcial docente</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔄 Flujo de sincronización</h3>
+    <pre id="c-flow"><button class="copy-btn" onclick="cp('c-flow',this)">Copiar</button><code>Estudiante abre semana
+  └→ Modal bienvenida si nombre vacío (+ 5 XP)
+      └→ Completa material / quiz / actividad
+          └→ Click ☁️ Guardar
+              └→ syncCloud() → UPSERT a Supabase
+                  └→ Fallback: Google Sheets si Supabase falla
+                      └→ Siempre guarda en localStorage</code></pre>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ S8 ARCHIVOS ══ -->
+<section id="s8">
+  <div class="sec-title"><div class="sec-num">8</div><h2>Estructura de archivos</h2></div>
+  <div class="filetree">
+<span class="ft-dir">FundamentosComputacion/</span>
+├── <span class="ft-file">index.html</span>               <span class="ft-note">← Landing GitHub Pages</span>
+├── <span class="ft-warn">PROPUESTA_VICERRECTOR.html</span>  <span class="ft-note">← Para otra sesión</span>
+├── <span class="ft-dir">js/</span>
+│   └── <span class="ft-file">supabase-config.js</span>    <span class="ft-note">← ⚠️ Llenar URL+KEY antes de push</span>
+├── <span class="ft-dir">semana1/</span> ... <span class="ft-dir">semana13/</span>
+│   ├── <span class="ft-file">index.html</span>            <span class="ft-note">← Material estudiante (colores IUB ✅)</span>
+│   └── <span class="ft-file">notas_profesor.html</span>   <span class="ft-note">← Guía docente (colores IUB ✅)</span>
+├── <span class="ft-dir">dashboard/</span>
+│   ├── <span class="ft-file">index.html</span>            <span class="ft-note">← Dashboard estudiante</span>
+│   ├── <span class="ft-file">profesor.html</span>         <span class="ft-note">← Dashboard docente (PIN: tga04)</span>
+│   └── <span class="ft-file">notas.html</span>            <span class="ft-note">← Consolidador de notas + export XLSX</span>
+└── <span class="ft-dir">setup/</span>
+    ├── <span class="ft-file">supabase_schema.sql</span>   <span class="ft-note">← Ejecutar en Supabase SQL Editor</span>
+    ├── <span class="ft-file">CONFIGURAR_SUPABASE.html</span> <span class="ft-note">← Guía visual setup</span>
+    ├── <span class="ft-file">GUIA_GIT_MOODLE.html</span>  <span class="ft-note">← Instrucciones Git + Moodle</span>
+    ├── <span class="ft-file">apply_iub_colors.py</span>   <span class="ft-note">← Aplicar paleta IUB (ya ejecutado)</span>
+    ├── <span class="ft-file">exportar_notas.py</span>     <span class="ft-note">← Generar XLSX desde terminal</span>
+    ├── <span class="ft-file">update_widget_modal.py</span> <span class="ft-note">← Inyectar widget+modal (ya ejecutado)</span>
+    └── <span class="ft-file">update_supabase_sync.py</span> <span class="ft-note">← Inyectar syncCloud() (ya ejecutado)</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ S9 SUPABASE ══ -->
+<section id="s9">
+  <div class="sec-title"><div class="sec-num">9</div><h2>Supabase — Configuración</h2></div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>1. Crear proyecto Supabase</h3>
+      <ol>
+        <li>supabase.com → New project</li>
+        <li>Copiar: <strong>Project URL</strong> y <strong>anon public key</strong></li>
+        <li>Pegar en <span class="inline-code">js/supabase-config.js</span></li>
+        <li>Ejecutar <span class="inline-code">setup/supabase_schema.sql</span> en SQL Editor</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>2. supabase-config.js</h3>
+      <pre id="c-sb"><button class="copy-btn" onclick="cp('c-sb',this)">Copiar</button><code><span class="cmt">// js/supabase-config.js</span>
+(function(){
+  var SUPABASE_URL = <span class="hi">"https://XXX.supabase.co"</span>;
+  var SUPABASE_KEY = <span class="hi">"eyJ..."</span>;
+  if(!localStorage.getItem('tga05_supabase_url')){
+    localStorage.setItem('tga05_supabase_url',SUPABASE_URL);
+    localStorage.setItem('tga05_supabase_key',SUPABASE_KEY);
+  }
+})();</code></pre>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Columnas de student_progress</h3>
+    <table class="info">
+      <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+      <tr><td>student_id</td><td>TEXT</td><td>ID único del estudiante (generado en primera visita)</td></tr>
+      <tr><td>student_name</td><td>TEXT</td><td>Nombre ingresado en modal bienvenida</td></tr>
+      <tr><td>grupo</td><td>TEXT</td><td>Grupo/paralelo</td></tr>
+      <tr><td>semana</td><td>INT</td><td>1–14 (UNIQUE con student_id)</td></tr>
+      <tr><td>xp</td><td>INT</td><td>Puntos de experiencia de esa semana</td></tr>
+      <tr><td>quiz_score</td><td>INT</td><td>Puntuación del quiz (0–10)</td></tr>
+      <tr><td>quiz_answers</td><td>JSONB</td><td>Respuestas detalladas</td></tr>
+      <tr><td>activity_done</td><td>BOOL</td><td>¿Completó la actividad HTI?</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ S10 SCRIPTS ══ -->
+<section id="s10">
+  <div class="sec-title"><div class="sec-num">10</div><h2>Scripts de setup</h2></div>
+  <table class="info">
+    <tr><th>Script</th><th>Estado</th><th>Uso</th></tr>
+    <tr><td><span class="inline-code">apply_iub_colors.py</span></td><td><span class="tag tag-green">✅ Ejecutado</span></td><td>Aplica paleta IUB a 31 archivos. Idempotente.</td></tr>
+    <tr><td><span class="inline-code">update_widget_modal.py</span></td><td><span class="tag tag-green">✅ Ejecutado</span></td><td>Inyecta widget simplificado + modal bienvenida en 14 semanas.</td></tr>
+    <tr><td><span class="inline-code">update_supabase_sync.py</span></td><td><span class="tag tag-green">✅ Ejecutado</span></td><td>Inyecta syncCloud() con soporte Supabase en 14 semanas.</td></tr>
+    <tr><td><span class="inline-code">supabase_schema.sql</span></td><td><span class="tag tag-yellow">⏳ Pendiente</span></td><td>Ejecutar en Supabase SQL Editor. Solo 1 vez.</td></tr>
+    <tr><td><span class="inline-code">exportar_notas.py</span></td><td><span class="tag tag-navy">🔧 Listo</span></td><td>Genera XLSX desde terminal. <span class="inline-code">python3 exportar_notas.py --corte 1</span></td></tr>
+  </table>
+  <div class="alert alert-info">
+    <span>💡</span>
+    <div>Para nuevo módulo: los scripts <span class="inline-code">apply_iub_colors.py</span> y <span class="inline-code">update_widget_modal.py</span> son reutilizables directamente. Solo ajustar BASE_DIR.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ S11 NOTAS ══ -->
+<section id="s11">
+  <div class="sec-title"><div class="sec-num">11</div><h2>Fórmula de calificación</h2></div>
+  <div class="card card-navy">
+    <h3>Nota formativa (calculada automáticamente)</h3>
+    <pre style="margin:.6rem 0;font-size:.82rem"><code>nota_formativa =
+  (quiz_avg / 10 × 5.0) × 0.50  <span class="cmt"># Quiz promedio → 50%</span>
+  + (actividades / sem_esperadas × 5.0) × 0.30  <span class="cmt"># Actividades → 30%</span>
+  + (semanas_visitadas / sem_esperadas × 5.0) × 0.20  <span class="cmt"># Visitas → 20%</span>
+
+nota_corte = nota_formativa × 0.70 + nota_parcial × 0.30
+<span class="cmt"># Pesos configurables en dashboard/notas.html</span></code></pre>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>📊 dashboard/notas.html</h3>
+      <ul>
+        <li>PIN docente → carga automática desde Supabase</li>
+        <li>Selecciona corte 1/2/3</li>
+        <li>Ve formativa calculada por estudiante</li>
+        <li>Escribe nota parcial (campo ⭐ amarillo)</li>
+        <li>Click → XLSX descargado con fórmulas Excel</li>
+        <li>Parciales guardados en localStorage (no se pierden)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📅 Cortes (semanas)</h3>
+      <table class="info">
+        <tr><th>Corte</th><th>Semanas</th></tr>
+        <tr><td>Corte 1</td><td>1 – 5</td></tr>
+        <tr><td>Corte 2</td><td>6 – 10</td></tr>
+        <tr><td>Corte 3</td><td>11 – 14</td></tr>
+      </table>
+      <p style="font-size:.82rem;margin-top:.5rem;color:var(--muted)">Ajustable en el dashboard de notas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ S12 GIT ══ -->
+<section id="s12">
+  <div class="sec-title"><div class="sec-num">12</div><h2>Git → GitHub Pages</h2></div>
+  <div class="card">
+    <h3>Primera publicación (ejecutar una sola vez)</h3>
+    <pre id="c-git1"><button class="copy-btn" onclick="cp('c-git1',this)">Copiar</button><code><span class="cmd">cd</span> "...OneDrive.../copilot2/EstructuraDatos"
+<span class="cmd">git init</span>
+<span class="cmd">git add .</span>
+<span class="cmd">git commit -m</span> <span class="hi">"TGA05 NeuroBiz - Material completo IUB"</span>
+<span class="cmd">git remote add origin</span> https://github.com/<span class="hi">TU_USUARIO</span>/tga05-neurobiz.git
+<span class="cmd">git push -u origin main</span></code></pre>
+    <p style="font-size:.83rem;color:var(--muted);margin-top:.5rem">Luego en GitHub: <strong>Settings → Pages → Branch: main → / (root) → Save</strong></p>
+  </div>
+  <div class="card">
+    <h3>Actualizar después de cambios</h3>
+    <pre id="c-git2"><button class="copy-btn" onclick="cp('c-git2',this)">Copiar</button><code><span class="cmd">git add .</span>
+<span class="cmd">git commit -m</span> <span class="hi">"Descripción del cambio"</span>
+<span class="cmd">git push</span></code></pre>
+  </div>
+  <div class="alert alert-warn">
+    <span>⚠️</span>
+    <div><strong>Antes del primer push:</strong> llenar <span class="inline-code">js/supabase-config.js</span> con SUPABASE_URL y anon KEY (Project Settings → API en supabase.com).</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ S13 MOODLE ══ -->
+<section id="s13">
+  <div class="sec-title"><div class="sec-num">13</div><h2>Publicar en Moodle</h2></div>
+  <div class="card card-navy">
+    <h3>Aula virtual IUB: aulavirtual.unibarranquilla.edu.co</h3>
+    <p>API REST Moodle activa. Estructura del curso: <strong>modo pestaña</strong>, 1 pestaña Presentación + 5 pestañas por RA.</p>
+  </div>
+  <div class="card">
+    <h3>✅ Método recomendado: recurso tipo URL</h3>
+    <ol>
+      <li>Activar edición del curso → pestaña del RA correspondiente</li>
+      <li>"Añadir actividad o recurso" → <strong>URL</strong></li>
+      <li>Nombre: <code>📘 Semana N – [Título]</code></li>
+      <li>URL: <code>https://TU_USUARIO.github.io/tga05-neurobiz/semanaN/</code></li>
+      <li>Apariencia → <strong>Abrir en nueva ventana</strong></li>
+      <li>Repetir × 14 semanas + dashboard estudiante en Presentación</li>
+    </ol>
+  </div>
+  <div class="grid-2">
+    <div class="card" style="border-left:4px solid #b71c1c">
+      <h3>❌ NO usar File</h3>
+      <p style="font-size:.85rem">Moodle sirve el HTML sin JS externos → Supabase, Chart.js y Google Fonts se rompen. Gamificación muere.</p>
+    </div>
+    <div class="card" style="border-left:4px solid #e65100">
+      <h3>⏳ SCORM (futuro)</h3>
+      <p style="font-size:.85rem">Viable con IA, pero la arquitectura actual (Supabase) es más rica que SCORM. Solo necesario si reglamento exige nota en gradebook Moodle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ S14 REPLICAR ══ -->
+<section id="s14">
+  <div class="sec-title"><div class="sec-num">14</div><h2>Replicar para otro módulo</h2></div>
+  <div class="card card-navy">
+    <h3>🔁 Proceso completo para nuevo módulo</h3>
+    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>1.</strong> Copiar carpeta EstructuraDatos → renombrar (ej: CostosPresupuesto)</div>
+    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>2.</strong> Tener listos: microcurrículo del módulo + caso de estudio empresarial</div>
+    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>3.</strong> Nueva sesión IA → pegar Prompt Nueva Sesión (sección 15)</div>
+    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>4.</strong> IA genera 14× index.html + notas_profesor.html con nuevo contenido</div>
+    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>5.</strong> Ejecutar apply_iub_colors.py → colores IUB en todos los archivos</div>
+    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>6.</strong> Ejecutar update_widget_modal.py → widget Supabase + modal en todos</div>
+    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>7.</strong> Crear nuevo proyecto en Supabase → llenar supabase-config.js</div>
+    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>8.</strong> git init → git push → GitHub Pages activo</div>
+    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>9.</strong> Agregar URLs en Moodle por pestaña/RA</div>
+  </div>
+  <div class="alert alert-success">
+    <span>⏱</span>
+    <div>Tiempo estimado para módulo nuevo: <strong>2–4 horas</strong> (generación de contenido) + <strong>30 min</strong> setup técnico.</div>
+  </div>
+  <div class="card">
+    <h3>🔧 Archivos a reutilizar sin cambios</h3>
+    <ul>
+      <li><span class="inline-code">setup/apply_iub_colors.py</span> — solo cambiar BASE_DIR</li>
+      <li><span class="inline-code">setup/update_widget_modal.py</span> — reutilizable directo</li>
+      <li><span class="inline-code">setup/supabase_schema.sql</span> — idéntico para todos los módulos</li>
+      <li><span class="inline-code">dashboard/</span> — todos los dashboards (ajustar título y semanas)</li>
+      <li><span class="inline-code">js/supabase-config.js</span> — llenar con nuevo proyecto Supabase</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════ S15 PROMPT ══ -->
+<section id="s15">
+  <div class="sec-title"><div class="sec-num">15</div><h2>Prompt para nueva sesión de IA</h2></div>
+  <div class="alert alert-info">
+    <span>📋</span>
+    <div>Copia este bloque completo y pégalo al <strong>inicio</strong> de la próxima sesión con el asistente IA. Incluye todo el contexto necesario sin re-explicar nada.</div>
+  </div>
+  <div class="compact-box">
+    <h3>📋 Contexto compacto — pegar al inicio de nueva sesión</h3>
+    <textarea id="compact-prompt" readonly>
+## CONTEXTO: Material educativo IUB — continuación de sesión anterior
+
+### ROL
+Actúa como experto en diseño curricular universitario y gamificación pedagógica (Framework GAME: Guiar, Articular, Motivar, Evaluar). Formación Basada en Competencias. Python como herramienta BI, no como fin. Taxonomía de Bloom explícita. Narrativa corporativa inmersiva. Cuatrimestros 13 semanas + 1 cierre.
+
+### INSTITUCIÓN
+Institución Universitaria de Barranquilla (IUB). Paleta oficial DG-TSI-09-V4: primario #1E2843 (navy), amarillo #FFDF2D, fondo #FAFAFA, borde #DEDFE4. Fuente: Open Sans. Aula virtual: aulavirtual.unibarranquilla.edu.co (Moodle, modo pestaña, 1 pestaña Presentación + pestañas por RA).
+
+### ARQUITECTURA (ya construida para TGA05, replicar para nuevo módulo)
+- Stack: HTML estático + Supabase REST + GitHub Pages (JAMstack, sin servidor)
+- 14 semanas × 2 archivos: index.html (estudiante) + notas_profesor.html (docente)
+- Dashboards: dashboard/index.html (estudiante), dashboard/profesor.html (PIN: tga05), dashboard/notas.html (consolidar notas + exportar XLSX)
+- Central config: js/supabase-config.js (llenar URL+KEY antes de push)
+- localStorage keys: tga05_global (nombre/id/grupo), tga05_sN (por semana), tga05_visited_sN
+- Widget: botón ☁️ Guardar (prominente) + ⚙️ oculta Código/Cargar. Modal bienvenida en primera visita (+5 XP).
+- Supabase tabla student_progress: UNIQUE(student_id, semana), campos: student_id, student_name, grupo, semana, xp, quiz_score, quiz_answers (JSONB), activity_done
+
+### GAMIFICACIÓN (NO TOCAR al cambiar colores)
+- XP acumulado + barra visible siempre. Color --gold: #FFDF2D (coincide con amarillo IUB).
+- Badges por nivel de XP. Bloom etiquetado en quizzes.
+- ClassDojo (puntos en clase) + Quizizz (quizzes gamificados).
+- HTI dual: Escenario A (sin resistencia, actividad completa) / Escenario B (simplificado, no afecta clase).
+
+### ACTIVIDADES AUTOCALIFICABLES (nuevo estándar — aplicar siempre)
+Toda actividad debe dar feedback inmediato y registrarse en Supabase (quiz_answers JSONB).
+
+TIPOS según dimensión competencial:
+- Conceptual: opción múltiple con justificación, V/F con argumento, arrastrar-clasificar
+- Procedimental: ordenar secuencia, completar código/blanks, mini-editor + ejecución, Colab con assert
+- Actitudinal: escenario+decisión, reflexión guiada (XP por completar, no por respuesta)
+
+FEEDBACK:
+- Correcto: ✅ explicación + XP inmediato + conexión al RA
+- Incorrecto: ❌ sin penalizar XP + pista específica + referencia a sección para repasar
+
+MÓDULOS CON CÓDIGO:
+- Mini-editor HTML para calentamiento rápido (5-10 min)
+- Google Colab (Opción B) para práctica profunda: notebook teoría→ejercicio→celda assert
+- Guardar en quiz_answers: {"code_attempts": N, "code_passed": true/false}
+
+CRÍTICA DE CONTENIDO — transparencia curricular:
+- 🟢 VIGENTE: presentar normalmente
+- 🟡 EVOLUCIONADO: enseñar concepto + nota "Hoy se usa X en su lugar"
+- 🔴 HISTÓRICO: explicar brevemente + qué lo reemplaza + cuándo aún aplica
+- Formato nota crítica: "Este tema forma parte del currículo oficial. En práctica moderna ha sido reemplazado por [X]. Sigue siendo útil para [Y]. Enfócate en el concepto, no en memorizarlo para producción."
+
+CHECKLIST IA por semana:
+1. Identificar RA + criterio → dimensión (conceptual/procedimental/actitudinal)
+2. Etiquetar temas: 🟢/🟡/🔴
+3. Seleccionar tipo de actividad apropiado
+4. Escribir feedback correcto E incorrecto específicos
+5. Si hay código: definir función + casos de prueba
+6. Verificar que activity_done y quiz_answers se registran
+
+### FÓRMULA DE CALIFICACIÓN
+nota_formativa = (quiz_avg/10×5)×0.50 + (actividades/sem_esp×5)×0.30 + (visitas/sem_esp×5)×0.20
+nota_corte = nota_formativa×0.70 + nota_parcial×0.30 (pesos configurables)
+Cortes: C1=sem1-5, C2=sem6-10, C3=sem11-14
+
+### CASO DE ESTUDIO ANTERIOR (TGA05)
+NeuroBiz S.A.S.: empresa de terapias IA para neurodivergentes (TDAH, Autismo, Altas Capacidades). KPIs: sesiones_asistidas, sesiones_fallidas, tasa_retencion, indice_progreso. ODS 7 y 13 (paneles solares, geotérmica). Doble propósito: técnico (BI) + sensibilización neurodiversidad.
+
+### SCRIPTS DISPONIBLES (en setup/)
+- apply_iub_colors.py: aplica paleta IUB a todos los HTML (idempotente, reutilizable)
+- update_widget_modal.py: inyecta widget Supabase + modal bienvenida
+- supabase_schema.sql: schema DB (reutilizable, ejecutar en nuevo proyecto Supabase)
+- exportar_notas.py: genera XLSX desde Supabase vía terminal
+
+### PUBLICACIÓN EN MOODLE
+Usar recurso tipo URL (NO File) apuntando a GitHub Pages. Abrir en nueva ventana. NO usar SCORM por ahora.
+
+### TAREA ACTUAL
+[DESCRIBE AQUÍ EL NUEVO MÓDULO: código, nombre, RAs, semanas, caso de estudio, microcurrículo]
+    </textarea>
+    <div style="display:flex;gap:.6rem;margin-top:.8rem;flex-wrap:wrap">
+      <button class="btn btn-yellow" onclick="copyCompact()">📋 Copiar prompt completo</button>
+      <button class="btn btn-outline" onclick="document.getElementById('compact-prompt').select()">Seleccionar todo</button>
+    </div>
+    <p id="compact-ok" style="color:#a6e3a1;font-size:.8rem;margin-top:.4rem;min-height:1.2rem"></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════ S16 ACTIVIDADES ══ -->
+<section id="s16">
+  <div class="sec-title"><div class="sec-num">16</div><h2>Diseño de Actividades Autocalificables</h2></div>
+
+  <div class="card card-navy">
+    <h3>🎯 Principio rector</h3>
+    <p>Toda actividad debe generar <strong>feedback inmediato y específico</strong> al estudiante, registrar el resultado en Supabase y contribuir a la nota formativa. El estudiante debe saber en el momento qué hizo bien, qué falló y <em>por qué</em>. La autocalificación no sustituye el criterio docente — lo libera para intervenciones de mayor valor.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>✅ Feedback correcto</h3>
+      <ul>
+        <li>✅ Ícono verde + explicación de <em>por qué</em> es correcto</li>
+        <li>+XP otorgado inmediatamente (barra animada)</li>
+        <li>Conexión explícita con el RA o criterio de evaluación</li>
+        <li>Invitación a profundizar (opcional)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>❌ Feedback incorrecto</h3>
+      <ul>
+        <li>❌ Sin penalización de XP — solo oportunidad perdida</li>
+        <li>Pista dirigida al concepto específico que falló</li>
+        <li>Referencia a sección del material para repasar</li>
+        <li>Posibilidad de reintentar (configurable por tipo)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗂 Tipos de actividad por competencia</h3>
+    <table class="info">
+      <tr><th>Tipo</th><th>Dimensión</th><th>Cuándo usarlo</th><th>Módulos</th></tr>
+      <tr>
+        <td><strong>Opción múltiple con justificación</strong></td>
+        <td><span class="tag tag-navy">Conceptual</span></td>
+        <td>Definiciones, principios, comparaciones</td>
+        <td>Todos</td>
+      </tr>
+      <tr>
+        <td><strong>Arrastrar y soltar (clasificación)</strong></td>
+        <td><span class="tag tag-navy">Conceptual</span> <span class="tag tag-green">Procedimental</span></td>
+        <td>Ordenar pasos, clasificar elementos, relacionar columnas</td>
+        <td>Todos</td>
+      </tr>
+      <tr>
+        <td><strong>Completar código / blanks</strong></td>
+        <td><span class="tag tag-green">Procedimental</span></td>
+        <td>Funciones con huecos, corregir errores de sintaxis</td>
+        <td>Código (TGA05+)</td>
+      </tr>
+      <tr>
+        <td><strong>Mini-editor de código + ejecución</strong></td>
+        <td><span class="tag tag-green">Procedimental</span></td>
+        <td>Practicar funciones, estructuras de datos, algoritmos</td>
+        <td>Código (TGA05+)</td>
+      </tr>
+      <tr>
+        <td><strong>Escenario + decisión</strong></td>
+        <td><span class="tag tag-yellow">Actitudinal</span> <span class="tag tag-navy">Conceptual</span></td>
+        <td>Dilemas éticos, decisiones administrativas, análisis de caso</td>
+        <td>Administración, gestión</td>
+      </tr>
+      <tr>
+        <td><strong>Verdadero / Falso con argumento</strong></td>
+        <td><span class="tag tag-navy">Conceptual</span></td>
+        <td>Desmitificar ideas erróneas frecuentes</td>
+        <td>Todos</td>
+      </tr>
+      <tr>
+        <td><strong>Ordenar secuencia (timeline/proceso)</strong></td>
+        <td><span class="tag tag-green">Procedimental</span></td>
+        <td>Fases de un proceso, pasos de un algoritmo</td>
+        <td>Todos</td>
+      </tr>
+      <tr>
+        <td><strong>Reflexión guiada (texto libre + keywords)</strong></td>
+        <td><span class="tag tag-yellow">Actitudinal</span></td>
+        <td>No autocalificable en nota, pero genera reflexión y XP por completar</td>
+        <td>Todos</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>💻 Módulos con código — estrategia específica</h3>
+    <div class="grid-2">
+      <div>
+        <p style="font-size:.88rem;font-weight:700;color:var(--navy);margin-bottom:.4rem">Opción A — Mini-editor embebido (JS)</p>
+        <ul style="font-size:.85rem">
+          <li>Editor <span class="inline-code">textarea</span> o CodeMirror lite en el HTML</li>
+          <li>JS evalúa la salida contra resultado esperado</li>
+          <li>Feedback: "Tu función devuelve X, se esperaba Y"</li>
+          <li>Registra intento en <span class="inline-code">quiz_answers</span> JSONB</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:.88rem;font-weight:700;color:var(--navy);margin-bottom:.4rem">Opción B — Google Colab (Python)</p>
+        <ul style="font-size:.85rem">
+          <li>Notebook estructurado: teoría → ejercicio → celda de prueba</li>
+          <li>Celda de validación con <span class="inline-code">assert</span> + mensaje amigable</li>
+          <li>Estudiante completa función, ejecuta y ve ✅ o ❌</li>
+          <li>Guarda evidencia en Drive; docente puede revisar</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert alert-info" style="margin-top:.8rem">
+      <span>💡</span>
+      <div>Para TGA05 y módulos similares: usar <strong>Opción B (Colab)</strong> como actividad principal de código + mini-editor en HTML para ejercicios de calentamiento rápido (5–10 min).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 Crítica de contenido — transparencia curricular</h3>
+    <p style="font-size:.87rem;margin-bottom:.8rem">Cuando el microcurrículo incluye temas con alto volumen, redundancia o desfase tecnológico, el material debe ser <strong>honesto</strong> con el estudiante. Esto no resta profundidad — aumenta la confianza y la motivación.</p>
+    <table class="info">
+      <tr><th>Etiqueta</th><th>Significado</th><th>Acción en el material</th></tr>
+      <tr>
+        <td><span style="background:#c8e6c9;color:#1b5e20;padding:.2rem .6rem;border-radius:8px;font-size:.78rem;font-weight:700">🟢 VIGENTE</span></td>
+        <td>Tema actual, ampliamente usado</td>
+        <td>Presentar normalmente, sin nota adicional</td>
+      </tr>
+      <tr>
+        <td><span style="background:#fff9c4;color:#6d4c00;padding:.2rem .6rem;border-radius:8px;font-size:.78rem;font-weight:700">🟡 EVOLUCIONADO</span></td>
+        <td>El concepto aplica, pero la herramienta/sintaxis cambió</td>
+        <td>Enseñar el concepto + nota "Hoy se usa X en su lugar"</td>
+      </tr>
+      <tr>
+        <td><span style="background:#ffcdd2;color:#b71c1c;padding:.2rem .6rem;border-radius:8px;font-size:.78rem;font-weight:700">🔴 HISTÓRICO</span></td>
+        <td>Obsoleto en producción moderna</td>
+        <td>Explicar brevemente + decir qué lo reemplaza + cuándo aún aplica</td>
+      </tr>
+    </table>
+    <div class="card" style="margin-top:.8rem;border-left:4px solid var(--yellow)">
+      <h3>📝 Plantilla de nota crítica (insertar en el material)</h3>
+      <pre style="margin:.4rem 0;font-size:.8rem"><code>⚠️ Nota de contexto:
+Este tema (ej: "Bubble Sort") forma parte del currículo oficial.
+Lo estudiamos para entender [principio fundamental: comparación, complejidad].
+En la práctica profesional actual ha sido reemplazado por [QuickSort / algoritmos
+de librería estándar], que son más eficientes. Sin embargo, Bubble Sort sigue
+siendo útil para: [docencia, datasets muy pequeños, demostraciones paso a paso].
+Enfócate en comprender el concepto, no en memorizarlo para producción.</code></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 Registro en Supabase por tipo de actividad</h3>
+    <table class="info">
+      <tr><th>Campo</th><th>Qué guarda</th></tr>
+      <tr><td><span class="inline-code">quiz_score</span></td><td>Puntaje del quiz principal de la semana (0–10)</td></tr>
+      <tr><td><span class="inline-code">quiz_answers</span> (JSONB)</td><td>Respuestas detalladas: <code>{"q1":"b","q2":"drag_correct","code1":"passed"}</code></td></tr>
+      <tr><td><span class="inline-code">activity_done</span></td><td>true si completó la actividad principal (HTI o en clase)</td></tr>
+      <tr><td><span class="inline-code">xp</span></td><td>XP acumulado esa semana (quiz + actividad + visita)</td></tr>
+    </table>
+    <div class="alert alert-info" style="margin-top:.6rem">
+      <span>💡</span>
+      <div>Para actividades de código: guardar en <span class="inline-code">quiz_answers</span> un campo <span class="inline-code">"code_attempts": N</span> y <span class="inline-code">"code_passed": true/false</span>. Permite al docente ver cuántos intentos necesitó cada estudiante.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 Flujo de diseño por semana (checklist IA)</h3>
+    <ol style="font-size:.87rem;padding-left:1.3rem">
+      <li>Identificar el RA y criterio de evaluación de la semana</li>
+      <li>Mapear dimensión: ¿Conceptual / Procedimental / Actitudinal?</li>
+      <li>Etiquetar cada tema: 🟢 Vigente / 🟡 Evolucionado / 🔴 Histórico</li>
+      <li>Seleccionar tipo de actividad según la tabla de tipos</li>
+      <li>Escribir feedback correcto + feedback incorrecto específico</li>
+      <li>Si hay código: definir función esperada + casos de prueba</li>
+      <li>Confirmar que <span class="inline-code">activity_done</span> y <span class="inline-code">quiz_answers</span> se registran correctamente</li>
+      <li>Aplicar escenario HTI A (normal) y B (resistencia estudiantil)</li>
+    </ol>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════ S17 RUTINA ══ -->
+<section id="s17">
+  <div class="sec-title"><div class="sec-num">17</div><h2>Rutina docente de revisión (perfil neurodivergente)</h2></div>
+
+  <div class="card card-navy">
+    <h3>🧠 Diseñado para ASD nivel 1 + TDAH + AACC</h3>
+    <p>El objetivo es que revisar el trabajo de los estudiantes sea <strong>predecible, breve y recompensante</strong>. Sin listas infinitas, sin ambigüedad, con inicio y fin claros. La herramienta está en <span style="color:var(--yellow)">dashboard/revision.html</span>.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>⏱ Estructura de sesión (15 min exactos)</h3>
+      <ol>
+        <li><strong>Abrir</strong> <span class="inline-code">dashboard/revision.html</span></li>
+        <li><strong>Clic ▶ Iniciar</strong> — el timer arranca</li>
+        <li>Revisar estudiantes <strong>en riesgo primero</strong> (tab rojo)</li>
+        <li>Un estudiante a la vez — expandir → revisar → marcar ✅</li>
+        <li>Al terminar → celebración automática + <strong>XP ganado</strong></li>
+        <li>Cerrar la pestaña — done.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>📅 Cuándo hacerlo (ritmo semanal)</h3>
+      <ul>
+        <li><strong>Martes post-clase</strong> (15 min) — revisar HTI-A de la semana anterior mientras el contexto está fresco</li>
+        <li><strong>Viernes</strong> (15 min) — revisar estudiantes en riesgo antes del fin de semana</li>
+        <li>Total: <strong>30 min/semana máximo</strong></li>
+        <li>Si hay poco tiempo: solo el tab ⚠️ En riesgo. El sistema guarda quién ya fue revisado.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎮 Gamificación del docente — sistema XP</h3>
+    <div class="grid-2">
+      <div>
+        <p style="font-size:.87rem"><strong>Por cada revisión:</strong> <span class="xp-chip">+10 XP</span></p>
+        <p style="font-size:.87rem;margin-top:.3rem"><strong>Por sesión completa:</strong> <span class="xp-chip">+20 XP bonus</span></p>
+        <p style="font-size:.87rem;margin-top:.3rem">XP acumulado guardado en localStorage → historial de sesiones.</p>
+      </div>
+      <div>
+        <p style="font-size:.87rem"><strong>Al terminar todos los pendientes:</strong> pantalla de celebración animada</p>
+        <p style="font-size:.87rem;margin-top:.3rem">El estado se resetea cada día — cada mañana es un nuevo comienzo sin el peso acumulado.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔑 Principios de diseño para este perfil</h3>
+    <table class="info">
+      <tr><th>Necesidad</th><th>Solución en la herramienta</th></tr>
+      <tr><td><strong>ASD:</strong> predictibilidad, estructura clara</td><td>Mismo flujo siempre: abrir → timer → revisar por prioridad → cerrar</td></tr>
+      <tr><td><strong>TDAH:</strong> foco, sesiones cortas, recompensa</td><td>Timer de 15 min visible, XP inmediato por cada acción, celebración al final</td></tr>
+      <tr><td><strong>AACC:</strong> eficiencia, no repetir lo innecesario</td><td>Orden automático por riesgo, notas rápidas por estudiante, sin formularios largos</td></tr>
+      <tr><td>Evitar acumulación de deuda cognitiva</td><td>Reset diario automático — lo no revisado hoy espera mañana sin culpa</td></tr>
+      <tr><td>Contexto siempre visible</td><td>Semanas visitadas, quizzes, XP y fecha de última actividad en una sola pantalla</td></tr>
+    </table>
+  </div>
+
+  <div class="alert alert-success">
+    <span>💡</span>
+    <div><strong>Para replicar en otro módulo:</strong> <span class="inline-code">dashboard/revision.html</span> es reutilizable sin cambios. Solo necesita <span class="inline-code">supabase-config.js</span> configurado.</div>
+  </div>
+</section>
+
+<!-- ════════════════════ S18 IMPORTAR PDF ══ -->
+<section id="s18">
+  <div class="sec-title"><div class="sec-num">18</div><h2>Importar lista de estudiantes desde PDF Academusoft</h2></div>
+
+  <div class="card card-navy">
+    <h3>🎯 Por qué existe esta función</h3>
+    <p>El módulo se reutiliza cada cuatrimestre y con grupos distintos. En lugar de editar el código fuente para cambiar la lista de estudiantes, el sistema detecta automáticamente la lista a partir del reporte PDF estándar que genera Academusoft (IUB). Una vez importado, el listado queda guardado en <span style="color:var(--yellow)">localStorage</span> y persiste entre sesiones.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>📋 Dónde está la función</h3>
+      <ul>
+        <li>Archivo: <span class="inline-code">dashboard/participacion.html</span></li>
+        <li>Acceso: Tab <strong>⚙️ Configuración</strong> → tarjeta <em>"📋 Importar lista de estudiantes"</em></li>
+        <li>PIN de docente requerido para acceder</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🗄️ Storage keys</h3>
+      <table class="info">
+        <tr><th>Key localStorage</th><th>Contenido</th></tr>
+        <tr><td><code>tga05_students_v1</code></td><td>Array JSON con los estudiantes importados</td></tr>
+        <tr><td><code>tga05_group_info_v1</code></td><td>Metadata del grupo: grupo, horario, salón, asignatura</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚙️ Dos formas de importar</h3>
+    <table class="info">
+      <tr><th>Opción</th><th>Pasos</th><th>Cuándo usar</th></tr>
+      <tr>
+        <td><strong>A — PDF directo</strong></td>
+        <td>Configuración → subir PDF → esperar extracción automática con PDF.js</td>
+        <td>Cuando tienes el archivo PDF del reporte descargado</td>
+      </tr>
+      <tr>
+        <td><strong>B — Pegar texto</strong></td>
+        <td>Abrir PDF en cualquier visor → Ctrl+A → Ctrl+C → pegar en el campo → Analizar</td>
+        <td>Cuando el PDF está en el navegador o PDF.js falla por protección del archivo</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>📄 Formato del reporte Academusoft esperado</h3>
+    <p style="font-size:.86rem;margin-bottom:.6rem">El parser detecta automáticamente líneas con este patrón:</p>
+    <pre><code><span class="cmt"># Número + nombre en mayúsculas + cédula (7-12 dígitos)</span>
+1    ARIZA DE LA CRUZ YORYELIS PATRICIA      1043158867
+2    BERRIO JULIO BLEIDYS                    1001234567
+...
+<span class="cmt"># También detecta metadatos del encabezado:</span>
+GRUPO: 7_GA_G1
+HORARIO: Viernes 07:00 - 10:59
+SALÓN: CENH P1-7
+ASIGNATURA: ESTRUCTURA DE DATOS PARA LOS NEGOCIOS</code></pre>
+    <div class="alert alert-warn">
+      <span>⚠️</span>
+      <div>Si el PDF extrae texto con columnas desordenadas (nombre y cédula en líneas separadas), el parser intentará un modo de recuperación más amplio. En caso de fallo, el estudiante aparecerá con CC = <code>SIN_DOC_N</code> — esto es editable manualmente en el código.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔁 Flujo completo para nuevo cuatrimestre / nuevo grupo</h3>
+    <ol style="font-size:.87rem;line-height:2">
+      <li>Descargar el reporte de estudiantes desde Academusoft (PDF)</li>
+      <li>Abrir <span class="inline-code">dashboard/participacion.html</span> → ingresar PIN</li>
+      <li>Ir a tab ⚙️ <strong>Configuración</strong> → tarjeta <em>Importar lista</em></li>
+      <li>Subir el PDF (Opción A) o pegar texto (Opción B)</li>
+      <li>Revisar la vista previa — verificar nombres y cédulas</li>
+      <li>Clic <strong>✅ Cargar N estudiantes</strong></li>
+      <li>El encabezado se actualiza automáticamente con el nombre del grupo</li>
+      <li>Clic <strong>☁️ Sincronizar lista a Supabase</strong> → esto habilita el lookup por cédula en los materiales de clase</li>
+      <li>Listo — la lista persiste en este dispositivo para todas las clases del cuatrimestre</li>
+    </ol>
+    <div class="alert alert-info">
+      <span>💡</span>
+      <div><strong>Los datos de participación NO se borran</strong> al cambiar de lista. Si empiezas un nuevo cuatrimestre, borra primero los eventos desde <em>Zona de peligro</em> → "Borrar todos los datos de participación".</div>
+    </div>
+  </div>
+
+  <div class="card card-navy">
+    <h3>🪪 Identificación por cédula (CC) en materiales de clase</h3>
+    <p style="font-size:.87rem;margin-bottom:.8rem">A partir de esta versión, los estudiantes se identifican con su <strong>número de cédula</strong> en lugar de texto libre. Esto elimina duplicados y permite un repositorio único para múltiples grupos.</p>
+    <table class="info">
+      <tr><th>Dato guardado en tga05_global</th><th>Cómo se obtiene</th></tr>
+      <tr><td><code>cc</code></td><td>Ingresado por el estudiante en el modal de bienvenida</td></tr>
+      <tr><td><code>nombre</code></td><td>Auto-rellenado desde la lista del docente (Supabase o localStorage)</td></tr>
+      <tr><td><code>grupo</code></td><td>Auto-rellenado desde el reporte importado</td></tr>
+      <tr><td><code>horario</code></td><td>Auto-rellenado desde el reporte importado</td></tr>
+      <tr><td><code>id_estudiante</code></td><td>Igual a <code>cc</code> — elimina IDs aleatorios con duplicados</td></tr>
+    </table>
+    <h4 style="margin-top:1rem;margin-bottom:.4rem">Flujo del modal (2 pasos):</h4>
+    <ol style="font-size:.85rem;line-height:1.8">
+      <li><strong>Paso 1:</strong> Estudiante ingresa su cédula → clic "Buscar →"</li>
+      <li><strong>Paso 2a (CC encontrada):</strong> Sistema muestra nombre y grupo → estudiante confirma → perfil guardado</li>
+      <li><strong>Paso 2b (CC no encontrada):</strong> Formulario manual con nombre+grupo → perfil guardado con CC = número ingresado</li>
+    </ol>
+    <p style="font-size:.83rem;margin-top:.6rem;opacity:.85">La búsqueda primero revisa <code>tga05_students_v1</code> (localStorage del docente), luego llama a Supabase <code>/rest/v1/students?cc=eq.{CC}</code>. Si no hay conexión o la lista no existe, cae a entrada manual.</p>
+  </div>
+
+  <div class="card">
+    <h3>🗂️ Multi-grupo — Un repositorio para N grupos</h3>
+    <p style="font-size:.87rem;margin-bottom:.6rem">El sistema ahora soporta cargar estudiantes de varios grupos en el mismo dispositivo sin conflictos:</p>
+    <ul style="font-size:.87rem;line-height:1.9">
+      <li>Cada estudiante tiene <code>grupo</code> y <code>horario</code> asignados en la importación</li>
+      <li>Al importar un nuevo grupo, el sistema <strong>reemplaza solo los estudiantes de ese grupo</strong> y conserva los demás</li>
+      <li>En la tabla de participación → filtro por grupo con botones dinámicos</li>
+      <li>En Clase en Vivo → banner azul con el grupo y horario activo visible en la parte superior</li>
+      <li>Búsqueda por cédula disponible en la lista de Clase en Vivo</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🛠️ Para replicar en otro módulo</h3>
+    <p style="font-size:.87rem">El importador es completamente portable. Para usarlo en otro módulo:</p>
+    <ol style="font-size:.87rem;line-height:2">
+      <li>Copiar <span class="inline-code">dashboard/participacion.html</span> al nuevo módulo</li>
+      <li>Cambiar el prefijo del storage key (<span class="inline-code">tga05_</span>) por el código del nuevo módulo (ej: <span class="inline-code">tga03_</span>) para evitar conflictos entre módulos en el mismo navegador</li>
+      <li>Cambiar el nombre del módulo en el modal de bienvenida (semana*/index.html) — buscar "TGA05"</li>
+      <li>Ejecutar <span class="inline-code">setup/update_cc_modal.py</span> para aplicar el modal CC a todos los archivos de semana</li>
+      <li>Ejecutar el SQL de <span class="inline-code">setup/supabase_schema.sql</span> en Supabase (tablas <code>students</code> y columnas grupo/horario)</li>
+    </ol>
+    <div class="alert alert-success">
+      <span>✅</span>
+      <div>El sistema fue diseñado exactamente para este uso recurrente: <strong>un módulo diferente cada cuatrimestre, grupos distintos, sin tocar código</strong>. El importador + lookup por cédula es la pieza clave.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ S19 BACKUP & RESTORE ══ -->
+<section id="s19">
+  <div class="sec-title"><div class="sec-num">19</div><h2>Backup &amp; Restore de Supabase</h2></div>
+
+  <div class="card card-navy">
+    <h3>🔒 ¿Por qué un sistema de backup?</h3>
+    <p style="font-size:.87rem">Cada vez que se modifica el esquema de la BD (nuevas columnas, tablas, políticas), el script SQL puede necesitar recrear objetos con DROP TABLE. Sin backup, se pierden todos los datos. Este sistema garantiza <strong>cero pérdida de datos</strong> durante cualquier cambio de esquema.</p>
+  </div>
+
+  <div class="card">
+    <h3>📁 Archivos del sistema</h3>
+    <table class="info">
+      <tr><th>Archivo</th><th>Qué hace</th><th>Cuándo usar</th></tr>
+      <tr><td><code>setup/backup.py</code></td><td>Descarga todas las tablas Supabase a JSON con timestamp. Pagina automáticamente si hay más de 1000 filas.</td><td>ANTES de cualquier cambio de esquema</td></tr>
+      <tr><td><code>setup/restore.py</code></td><td>Restaura desde un backup JSON. Aplica migración automática: agrega defaults para columnas nuevas, descarta columnas obsoletas.</td><td>DESPUÉS de recrear las tablas con DROP TABLE</td></tr>
+      <tr><td><code>setup/supabase_schema.sql</code></td><td>Dos modos: Actualización normal (IF NOT EXISTS) o Reset Total (descomentar DROP TABLE al inicio).</td><td>Actualización: siempre. Reset: solo si backup hecho.</td></tr>
+      <tr><td><code>setup/backups/</code></td><td>Subcarpetas por timestamp. <strong>Ignorada por Git</strong> — los datos de estudiantes son privados.</td><td>—</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🔁 Flujo de Reset Total</h3>
+    <ol style="font-size:.87rem;line-height:2.1">
+      <li><code>python3 setup/backup.py</code> → guarda en <code>setup/backups/YYYY-MM-DD_HHMMSS/</code></li>
+      <li>Editar <code>supabase_schema.sql</code> → descomenta las 3 líneas DROP del bloque "RESET TOTAL"</li>
+      <li>Pegar y ejecutar el SQL en Supabase SQL Editor</li>
+      <li>Volver a comentar las líneas DROP</li>
+      <li><code>python3 setup/restore.py</code> → restaura con migración automática</li>
+    </ol>
+    <div class="alert alert-warn"><span>⚠️</span><div>Nunca descomentes las líneas DROP sin haber corrido <code>backup.py</code> primero. El backup tarda &lt;10 segundos.</div></div>
+  </div>
+
+  <div class="card">
+    <h3>⚙️ Cómo actualizar cuando cambies el esquema</h3>
+    <pre><code><span class="cmt"># En restore.py → agregar la nueva columna:</span>
+SCHEMA["student_progress"]["keep"].append("nivel_riesgo")
+SCHEMA["student_progress"]["defaults"]["nivel_riesgo"] = "normal"
+<span class="cmt"># → Backups viejos (sin esa columna) la recibirán con valor "normal" automáticamente</span></code></pre>
+    <table class="info" style="margin-top:.8rem">
+      <tr><th>Situación en el backup</th><th>Resultado en restore</th></tr>
+      <tr><td>Campo en backup y en SCHEMA</td><td>✅ Se restaura con valor original</td></tr>
+      <tr><td>Campo en SCHEMA pero no en backup (columna nueva)</td><td>⚙️ Se agrega con el default</td></tr>
+      <tr><td>Campo en backup pero no en SCHEMA (columna eliminada)</td><td>🗑️ Se descarta silenciosamente</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🔢 Versión de esquema actual — v2</h3>
+    <table class="info">
+      <tr><th>Tabla</th><th>Columnas v1</th><th>Columnas v2 (nuevas)</th></tr>
+      <tr><td><code>student_progress</code></td><td>id, student_name, student_id, semana, xp, quiz_answers, quiz_score, hti_done, activity_done</td><td><strong>grupo, horario</strong></td></tr>
+      <tr><td><code>students</code></td><td>—</td><td><strong>cc, name, grupo, horario</strong> (tabla nueva)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ S20 ASISTENCIA ══ -->
+<section id="s20">
+  <div class="sec-title"><div class="sec-num">20</div><h2>Asistencia — Evidencia y Registro</h2></div>
+
+  <div class="card card-navy">
+    <h3>❓ ¿El sistema actual permite evidenciar asistencia?</h3>
+    <p style="font-size:.87rem;margin-bottom:.8rem"><strong>Parcialmente.</strong> Hay evidencia indirecta disponible ahora mismo. Para un registro oficial (Academusoft-ready) se propone agregar la función "Pasar Lista" descrita más abajo.</p>
+    <table class="info">
+      <tr><th>Fuente actual</th><th>Qué prueba</th><th>Limitación</th></tr>
+      <tr>
+        <td>📊 Eventos de participación con timestamp<br><small>(participacion.html → exportar TSV)</small></td>
+        <td>El estudiante estuvo presente y participó en esa fecha y hora exacta</td>
+        <td>Solo cubre estudiantes con ≥1 punto. Asistentes silenciosos no quedan registrados.</td>
+      </tr>
+      <tr>
+        <td>☁️ <code>student_progress.created_at</code></td>
+        <td>El estudiante abrió el material en esa fecha</td>
+        <td>Es acceso online, no necesariamente presencia física en clase.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>✅ Usar datos existentes como evidencia hoy</h3>
+    <ol style="font-size:.87rem;line-height:2">
+      <li>Abre <code>dashboard/participacion.html</code></li>
+      <li>Tab ⚙️ Configuración → <strong>Exportar Historial (.tsv)</strong></li>
+      <li>El archivo contiene: estudiante, puntos, tipo de evento, <strong>fecha y hora exacta</strong></li>
+      <li>Filtra por fecha de clase → todos los estudiantes con ≥1 evento ese día estuvieron presentes</li>
+    </ol>
+    <div class="alert alert-info">
+      <span>💡</span>
+      <div><strong>Estrategia de "asistencia por participación":</strong> al iniciar cada clase, da <strong>+1 pt "Asistencia"</strong> a cada estudiante presente. Esto registra su nombre, timestamp y fecha automáticamente en el historial TSV.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚀 Feature propuesto: Tab "📋 Asistencia" en participacion.html</h3>
+    <table class="info">
+      <tr><th>Feature</th><th>Descripción</th></tr>
+      <tr><td>🟢 Presente / 🕐 Tardanza / 🔴 Ausente</td><td>Un botón por estudiante. Tardanza resta puntos automáticamente (configurable).</td></tr>
+      <tr><td>📅 Registro por fecha</td><td>Cada sesión guardada con la fecha del día. Historial completo del cuatrimestre.</td></tr>
+      <tr><td>📊 Resumen de asistencia</td><td>% por estudiante. Alerta visual si supera el 25% de fallas reglamentario IUB.</td></tr>
+      <tr><td>📥 Exportar CSV</td><td>Formato Academusoft: columna por fecha, fila por estudiante, valor P/T/F.</td></tr>
+      <tr><td>☁️ Sync Supabase</td><td>Tabla <code>attendance</code>: (cc, fecha, estado, grupo). Backup automático.</td></tr>
+    </table>
+    <div class="alert alert-success">
+      <span>✅</span>
+      <div>Para implementar, dile a la IA: <em>"Agrega un tab de Asistencia a participacion.html con registro por fecha, botones Presente/Tarde/Ausente y exportación CSV para Academusoft. Referencia KNOWLEDGE_BASE Sección 20."</em></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📐 Esquema SQL propuesto para tabla attendance</h3>
+    <pre><code>CREATE TABLE IF NOT EXISTS attendance (
+  id         UUID    DEFAULT gen_random_uuid() PRIMARY KEY,
+  cc         TEXT    NOT NULL,            <span class="cmt">-- FK → students.cc</span>
+  fecha      DATE    NOT NULL,            <span class="cmt">-- Fecha de la clase</span>
+  estado     TEXT    NOT NULL             <span class="cmt">-- 'P' (presente) | 'T' (tarde) | 'F' (falla)</span>
+             CHECK (estado IN ('P','T','F')),
+  grupo      TEXT    NOT NULL DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (cc, fecha)                      <span class="cmt">-- Una fila por estudiante por día</span>
+);</code></pre>
+    <p style="font-size:.83rem;margin-top:.6rem;opacity:.8">Al implementar: agregar esta tabla al <code>supabase_schema.sql</code> y actualizar <code>backup.py</code> / <code>restore.py</code> para incluirla.</p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <strong>TGA05 — Estructura de Datos para los Negocios · IUB · 2026</strong><br>
+  Framework GAME · NeuroBiz S.A.S. · Supabase + GitHub Pages · Open Sans · #1E2843
+</footer>
+
+<script>
+  // Sidebar activo
+  function setActive(el){
+    document.querySelectorAll('aside a').forEach(a=>a.classList.remove('active'));
+    el.classList.add('active');
+  }
+  // Auto-destacar sección visible
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const id = e.target.id;
+        document.querySelectorAll('aside a').forEach(a=>{
+          a.classList.toggle('active', a.getAttribute('href')==='#'+id);
+        });
+      }
+    });
+  },{threshold:0.3});
+  document.querySelectorAll('section[id]').forEach(s=>observer.observe(s));
+
+  // Copiar bloque de código
+  function cp(id,btn){
+    const text = document.getElementById(id).querySelector('code').innerText;
+    navigator.clipboard.writeText(text).then(()=>{
+      btn.textContent='✓'; btn.classList.add('ok');
+      setTimeout(()=>{btn.textContent='Copiar';btn.classList.remove('ok');},2000);
+    });
+  }
+
+  // Copiar prompt compacto
+  function copyCompact(){
+    const text = document.getElementById('compact-prompt').value;
+    navigator.clipboard.writeText(text).then(()=>{
+      document.getElementById('compact-ok').textContent='✅ Prompt copiado — pégalo al inicio de la próxima sesión';
+      setTimeout(()=>document.getElementById('compact-ok').textContent='',4000);
+    });
+  }
+</script>
+</body>
+</html>
