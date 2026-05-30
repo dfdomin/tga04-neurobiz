@@ -159,7 +159,7 @@
   <h1>Pruebas de Escritorio y Trazabilidad de Algoritmos</h1>
   <p>RA3 · CE5 · Analizar → Evaluar · Evidencia antes de entregar el sistema a NeuroBiz</p>
   <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar"></div></div>
-  <p class="xp-label">XP de sesión: <span id="xpCount">0</span> / 65 pts</p>
+  <p class="xp-label">XP de sesión: <span id="xpCount">0</span> / 90 pts</p>
   <p class="rank-label">Rango del curso: <span id="rankLabel">Aprendiz</span></p>
 </header>
 <nav>
@@ -170,6 +170,7 @@
   <a href="#hti">🏠 HTI</a>
   <a href="#quiz">🎮 Quiz</a>
   <a href="#bib">📖 Fuentes</a>
+  <a href="#colab">☁️ Colab</a>
 </nav>
 <main>
   <div id="pt-widget">
@@ -200,12 +201,12 @@
       <span class="bloom">🧠 Bloom: Analizar → Evaluar</span>
       <span class="meta-chip">🎯 RA3 · CE5 — Realiza pruebas de escritorio para verificar resultados y detectar errores lógicos</span>
       <span class="meta-chip">💾 <code>tga04_s11</code></span>
-      <span class="meta-chip">🏆 XP máxima: 65</span>
+      <span class="meta-chip">🏆 XP máxima: 90</span>
     </div>
     <div class="kpi-grid"><div class="kpi-card"><div class="kpi-icon">🧪</div><div class="kpi-name">Casos a trazar</div><div class="kpi-val">3</div></div>
 <div class="kpi-card"><div class="kpi-icon">📋</div><div class="kpi-name">Variables clave</div><div class="kpi-val">7</div></div>
 <div class="kpi-card"><div class="kpi-icon">🔍</div><div class="kpi-name">Foco</div><div class="kpi-val">Errores lógicos</div></div>
-<div class="kpi-card"><div class="kpi-icon">🏆</div><div class="kpi-name">XP semana</div><div class="kpi-val">65</div></div></div>
+<div class="kpi-card"><div class="kpi-icon">🏆</div><div class="kpi-name">XP semana</div><div class="kpi-val">90</div></div></div>
   </section>
   
 <section id="teoria" class="card">
@@ -383,6 +384,86 @@
 </section>
 
   
+<section id="colab" class="card">
+  <h2>☁️ Python en Google Colab — Semana 11</h2>
+  <p>Las funciones en Python se definen con <code>def</code>. Son la traducción directa de los subalgoritmos y módulos del pseudocódigo. Abre
+  <a href="https://colab.research.google.com/" target="_blank" rel="noopener"><strong>Google Colab</strong></a>.</p>
+
+  <div class="info-box tip">
+    <span class="icon">🐍</span>
+    <p><strong>Subalgoritmo → función Python:</strong><br>
+    El pseudocódigo <code>SUBALGORITMO calcularTasa(asistidas, programadas)</code> se convierte en:<br>
+    <code>def calcular_tasa(asistidas, programadas):</code><br>
+    El <code>RETORNAR</code> del pseudocódigo es <code>return</code> en Python.</p>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-title">🐍 Python — Funciones NeuroBiz (equivale a subalgoritmos)</div>
+    <pre><span class="cm"># NeuroBiz — Módulo de análisis de sesiones con funciones</span>
+
+<span class="kw">def</span> <span class="fn">calcular_tasa</span>(asistidas, programadas):
+    <span class="str">"""Calcula y retorna la tasa de asistencia."""</span>
+    <span class="kw">if</span> programadas &gt; <span class="num">0</span>:
+        <span class="kw">return</span> asistidas / programadas * <span class="num">100</span>
+    <span class="kw">return</span> <span class="num">0.0</span>
+
+<span class="kw">def</span> <span class="fn">clasificar_sesion</span>(tasa):
+    <span class="str">"""Retorna el color de estado según la tasa."""</span>
+    <span class="kw">if</span> tasa &gt;= <span class="num">80</span>:
+        <span class="kw">return</span> <span class="str">"Verde ✅"</span>
+    <span class="kw">elif</span> tasa &gt;= <span class="num">60</span>:
+        <span class="kw">return</span> <span class="str">"Amarillo ⚠️"</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="str">"Rojo 🔴"</span>
+
+<span class="kw">def</span> <span class="fn">reporte_ejecutivo</span>(sesiones):
+    <span class="str">"""Imprime el resumen ejecutivo de NeuroBiz."""</span>
+    <span class="fn">print</span>(<span class="str">"\n=== REPORTE EJECUTIVO NEUROBIZ ==="</span>)
+    totales = {<span class="str">"Verde ✅"</span>: <span class="num">0</span>, <span class="str">"Amarillo ⚠️"</span>: <span class="num">0</span>, <span class="str">"Rojo 🔴"</span>: <span class="num">0</span>}
+    <span class="kw">for</span> s <span class="kw">in</span> sesiones:
+        tasa = <span class="fn">calcular_tasa</span>(s[<span class="str">'asistidas'</span>], s[<span class="str">'programadas'</span>])
+        estado = <span class="fn">clasificar_sesion</span>(tasa)
+        totales[estado] += <span class="num">1</span>
+        <span class="fn">print</span>(<span class="fn">f</span><span class="str">"  {s['id']:&lt;4} Tasa: {tasa:.1f}% → {estado}"</span>)
+    <span class="fn">print</span>(<span class="str">f"\nResumen: {totales}"</span>)
+
+<span class="cm"># Programa principal</span>
+sesiones_demo = [
+    {<span class="str">'id'</span>: <span class="str">'S01'</span>, <span class="str">'asistidas'</span>: <span class="num">42</span>, <span class="str">'programadas'</span>: <span class="num">50</span>},
+    {<span class="str">'id'</span>: <span class="str">'S02'</span>, <span class="str">'asistidas'</span>: <span class="num">31</span>, <span class="str">'programadas'</span>: <span class="num">50</span>},
+    {<span class="str">'id'</span>: <span class="str">'S03'</span>, <span class="str">'asistidas'</span>: <span class="num">48</span>, <span class="str">'programadas'</span>: <span class="num">50</span>},
+]
+<span class="fn">reporte_ejecutivo</span>(sesiones_demo)</pre>
+  </div>
+
+  <div class="info-box brain">
+    <span class="icon">🧠</span>
+    <p><strong>¿Por qué funciones?</strong> Cada función resuelve UN problema. Si mañana cambia la regla de clasificación (ej: 70% en vez de 80%), solo modificas <code>clasificar_sesion()</code> — el resto del código no cambia. Esto es <strong>modularidad</strong>.</p>
+  </div>
+
+  <h3>🎯 Actividad Colab (+25 XP)</h3>
+  <ol>
+    <li>Copia el código completo y ejecútalo en Google Colab.</li>
+    <li>Agrega una cuarta sesión con tus propios valores a <code>sesiones_demo</code>.</li>
+    <li>Crea una nueva función <code>mejor_sesion(sesiones)</code> que retorne el ID de la sesión con mayor tasa.</li>
+  </ol>
+  <button onclick="awardColab11()" style="background:#43a047;color:#fff;border:none;border-radius:10px;padding:.7rem 1.4rem;font-size:1rem;font-weight:800;cursor:pointer;margin-top:.5rem">
+    ✅ Completé la actividad Colab (+25 XP)
+  </button>
+  <div id="colab11-msg" style="margin-top:.5rem;font-size:.88rem;color:#2e7d32;font-weight:700"></div>
+  <script>
+    function awardColab11() {
+      if (localStorage.getItem('tga04_s11_colab')) {
+        document.getElementById('colab11-msg').textContent = '✅ Ya registrado anteriormente.';
+        return;
+      }
+      localStorage.setItem('tga04_s11_colab', '1');
+      if (typeof PT !== 'undefined' && typeof PT.addXP === 'function') PT.addXP(25, 'Colab Semana 11 ✅');
+      document.getElementById('colab11-msg').textContent = '+25 XP registrados. ¡Excelente modularización!';
+    }
+  </script>
+</section>
+
 <section id="bib" class="card">
   <h2>📖 Fuentes y Referencias</h2>
   <ul class="bib"><li><strong>Cairó Battistutti, O. & Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em>. Alfaomega. Capítulos sobre trazabilidad y estructuras de control.</li><li><strong>Joyanes Aguilar, L.</strong> (2008). <em>Fundamentos de programación</em>. McGraw-Hill. Secciones de verificación y validación algorítmica.</li><li><strong>Pressman, R.</strong> (2010). <em>Software Engineering: A Practitioner's Approach</em>. McGraw-Hill. Base conceptual de validación lógica antes de entrega.</li><li><strong>ISTQB Glossary.</strong> Terminología de casos de prueba, valores límite y defectos lógicos.</li><li><strong>Wing, J. M.</strong> (2006). “Computational Thinking”. <em>Communications of the ACM</em>, 49(3), 33–35.</li></ul>
@@ -393,7 +474,7 @@
 <script id="pt-js">
 const PT = (function() {
   const SEMANA = 11;
-  const XP_MAX = 65;
+  const XP_MAX = 90;
   const LS_KEY = "tga04_s11";
   const VISITED_KEY = "tga04_visited_s11";
   const LS_GLOBAL = "tga04_global";

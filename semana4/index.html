@@ -175,7 +175,7 @@
       <h1>🧭 Condicional Doble, Múltiple y Anidada</h1>
       <p>SI-SINO-FSI · DD-FDD · Clasificación de riesgo · NeuroBiz S.A.S.</p>
       <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar"></div></div>
-      <p class="xp-label">XP de sesión: <span id="xpCount">0</span> / 65 pts</p>
+      <p class="xp-label">XP de sesión: <span id="xpCount">0</span> / 90 pts</p>
     </header>
 
     <!-- NAV -->
@@ -186,6 +186,7 @@
   <a href="#actividad">⚙️ Actividad</a>
   <a href="#hti">🏠 HTI</a>
   <a href="#quiz">🎮 Quiz</a>
+  <a href="#colab">☁️ Colab</a>
   <a href="#bib">📖 Fuentes</a>
 </nav>
 
@@ -257,7 +258,7 @@
   <table>
     <tbody>
       <tr><td><strong>LS_KEY</strong></td><td><code>tga04_s4</code></td></tr>
-      <tr><td><strong>XP máximo</strong></td><td>65 XP</td></tr>
+      <tr><td><strong>XP máximo</strong></td><td>90 XP</td></tr>
       <tr><td><strong>Pregunta central</strong></td><td>¿Qué estructura conviene: doble decisión, múltiple decisión o una condición anidada?</td></tr>
       <tr><td><strong>Analogía guía</strong></td><td>Semáforo completo: rojo / amarillo / verde</td></tr>
     </tbody>
@@ -601,6 +602,89 @@
   </div>
 </section>
 
+<section id="colab" class="card">
+  <h2>☁️ Python en Google Colab — Semana 4</h2>
+  <p>Ahora traducimos el pseudocódigo SI-SINO-FSI y DD-FDD a Python real. Abre
+  <a href="https://colab.research.google.com/" target="_blank" rel="noopener"><strong>colab.research.google.com</strong></a>
+  y crea un nuevo notebook.</p>
+
+  <div class="info-box tip">
+    <span class="icon">🐍</span>
+    <p><strong>De Cairó a Python:</strong> donde el algoritmo dice <code>SI condición ENTONCES ... SINO ... FSI</code>,
+    Python escribe <code>if condición: ... else:</code>. La <strong>indentación</strong> (4 espacios) reemplaza FSI/SINO/FDD.</p>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-title">🐍 Python — Clasificar eficiencia de sesión NeuroBiz</div>
+    <pre><span class="cm"># NeuroBiz — Clasificar eficiencia de sesión terapéutica</span>
+asistidas = <span class="fn">float</span>(<span class="fn">input</span>(<span class="str">"Sesiones asistidas: "</span>))
+programadas = <span class="fn">float</span>(<span class="fn">input</span>(<span class="str">"Sesiones programadas: "</span>))
+
+<span class="kw">if</span> programadas &gt; <span class="num">0</span>:
+    tasa = asistidas / programadas * <span class="num">100</span>
+
+    <span class="kw">if</span> tasa &gt;= <span class="num">80</span>:
+        categoria = <span class="str">"Verde"</span>
+        mensaje = <span class="str">"Excelente cumplimiento"</span>
+    <span class="kw">elif</span> tasa &gt;= <span class="num">60</span>:
+        categoria = <span class="str">"Amarillo"</span>
+        mensaje = <span class="str">"Cumplimiento aceptable"</span>
+    <span class="kw">else</span>:
+        categoria = <span class="str">"Rojo"</span>
+        mensaje = <span class="str">"Requiere intervención"</span>
+
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"Tasa: {tasa:.1f}% → {categoria}: {mensaje}"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Error: sesiones programadas debe ser mayor a 0"</span>)</pre>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-title">🐍 Python — Categorización múltiple con if/elif/else (equivale a DD-FDD)</div>
+    <pre><span class="cm"># Categorizar tipo de contrato según duración (meses)</span>
+meses = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Duración del contrato (meses): "</span>))
+
+<span class="kw">if</span> meses &lt;= <span class="num">3</span>:
+    tipo = <span class="str">"Corto plazo"</span>
+<span class="kw">elif</span> meses &lt;= <span class="num">12</span>:
+    tipo = <span class="str">"Mediano plazo"</span>
+<span class="kw">elif</span> meses &lt;= <span class="num">36</span>:
+    tipo = <span class="str">"Largo plazo"</span>
+<span class="kw">else</span>:
+    tipo = <span class="str">"Contrato marco"</span>
+
+<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Tipo de contrato: {tipo}"</span>)</pre>
+  </div>
+
+  <div class="info-box warn">
+    <span class="icon">⚠️</span>
+    <p><strong>Diferencia clave:</strong> En Python el <code>elif</code> (else if) reemplaza a DD-CASO.
+    Python 3.10+ tiene <code>match/case</code> pero <code>if/elif/else</code> funciona en cualquier versión y es lo más usado en análisis de datos.</p>
+  </div>
+
+  <h3>🎯 Actividad Colab (+25 XP)</h3>
+  <ol>
+    <li>Copia el primer código en un notebook de Google Colab.</li>
+    <li>Ejecuta con 3 combinaciones distintas de asistidas/programadas y anota los resultados.</li>
+    <li>Agrega un caso más al <code>if/elif/else</code>: tasa &lt; 30% → <code>"Crítico: suspender servicio"</code>.</li>
+    <li>Cuando tengas los 3 resultados, haz clic en el botón de abajo.</li>
+  </ol>
+  <button onclick="awardColab4()" style="background:#43a047;color:#fff;border:none;border-radius:10px;padding:.7rem 1.4rem;font-size:1rem;font-weight:800;cursor:pointer;margin-top:.5rem">
+    ✅ Completé la actividad Colab (+25 XP)
+  </button>
+  <div id="colab4-msg" style="margin-top:.5rem;font-size:.88rem;color:#2e7d32;font-weight:700"></div>
+  <script>
+    function awardColab4() {
+      if (localStorage.getItem('tga04_s4_colab')) {
+        document.getElementById('colab4-msg').textContent = '✅ Ya registrado anteriormente.';
+        return;
+      }
+      localStorage.setItem('tga04_s4_colab', '1');
+      if (typeof PT !== 'undefined' && typeof PT.addXP === 'function') PT.addXP(25, 'Colab Semana 4 ✅');
+      document.getElementById('colab4-msg').textContent = '+25 XP registrados. ¡Buen trabajo!';
+    }
+  </script>
+</section>
+
 <!-- ══ BIBLIOGRAFÍA ══ -->
 <section id="bib" class="card">
   <h2>📖 Fuentes y Referencias</h2>
@@ -624,7 +708,7 @@
 <script id="pt-js">
 const PT = (function() {
   const SEMANA    = 4;
-  const XP_MAX    = 65;
+  const XP_MAX    = 90;
   const LS_KEY    = "tga04_s4";
   const LS_GLOBAL = "tga04_global";
 
