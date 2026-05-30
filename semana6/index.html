@@ -31,7 +31,13 @@ footer{text-align:center;padding:1.4rem;color:var(--mut);font-size:.82rem}
 <section class="card" id="teoria"><h2>📚 Marco teórico</h2><h3>¿Por qué repetimos? <span class="badge vig">🟢 VIGENTE</span></h3><p>La repetición resuelve procesamiento masivo: tickets, sesiones, inventarios, colas y monitoreo. Si el negocio tiene cientos de registros, escribir instrucciones una por una no escala.</p>
 <div class="info tip"><span>🎮</span><div>Analogía vida real: un jugador sigue <strong>MIENTRAS</strong> tenga vidas.</div></div>
 <div class="info cite"><span>🏢</span><div>Analogía empresarial: un agente de call center atiende <strong>MIENTRAS</strong> existan tickets en cola.</div></div>
-<h3>Condición de entrada <span class="badge vig">🟢 VIGENTE</span></h3><p>En MQ-FMQ la condición se prueba antes del cuerpo. Si es falsa desde el inicio, el ciclo puede ejecutarse cero veces.</p>
+<h3>Condición de entrada <span class="badge vig">🟢 VIGENTE</span></h3>
+<div class="info tip"><span>📖</span><div><strong>¿Qué significan las siglas MQ-FMQ?</strong><br>
+<code>MQ</code> = <strong>"Mientras Que"</strong> (inicia el ciclo — la condición va aquí) &nbsp;·&nbsp;
+<code>FMQ</code> = <strong>"Fin Mientras Que"</strong> (cierra el ciclo)<br>
+La condición se evalúa <em>antes</em> de entrar: si es falsa desde el inicio, el cuerpo no se ejecuta ni una vez.<br>
+<strong>🐍 En Python:</strong> <code>while condición:</code> — sin FMQ; Python delimita el bloque con <strong>indentación</strong>.</div></div>
+<p>En MQ-FMQ la condición se prueba antes del cuerpo. Si es falsa desde el inicio, el ciclo puede ejecutarse cero veces.</p>
 <h3>Centinela, contador y acumulador</h3><table><thead><tr><th>Elemento</th><th>Función</th><th>Ejemplo</th></tr></thead><tbody><tr><td>Centinela</td><td>Marca fin de datos</td><td><code>-1</code></td></tr><tr><td>Contador</td><td>Cuenta iteraciones</td><td><code>registros ← registros + 1</code></td></tr><tr><td>Acumulador</td><td>Suma resultados</td><td><code>total ← total + sesiones</code></td></tr></tbody></table>
 <div class="info warn"><span>⚠️</span><div>Si la condición nunca se vuelve falsa, aparece un ciclo infinito. Siempre identifica qué variable cambia y cómo se alcanza la parada.</div></div></section>
 <section class="card" id="pseudocodigo"><h2>📝 Pseudocódigo y equivalencias</h2><div class="code"><div class="code-title">📝 MQ-FMQ básico</div><pre>ALGORITMO ContarSesionesNeuroBiz
