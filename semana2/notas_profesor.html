@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notas del Profesor — Semana 2 | TGA04</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1E2843; --accent: #2d3a5e; --gold: #FFDF2D;
+      --green: #1b5e20; --green-bg: #e8f5e9;
+      --orange: #e65100; --orange-bg: #fff3e0;
+      --purple: #4a148c; --purple-bg: #f3e5f5;
+      --red-bg: #fce4ec; --red: #880e4f;
+      --border: #DEDFE4; --muted: #546e7a;
+      --card-bg: #fff; --light: #FAFAFA;
+      --radius: 12px;
+    }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--light); color: #212121; line-height: 1.75; font-size: 16px; }
+
+    header { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: #fff; padding: 2rem 2rem 1.8rem; position: relative; overflow: hidden; }
+    header::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 35px; background: var(--light); clip-path: ellipse(55% 100% at 50% 100%); }
+    .badge-prof { display: inline-block; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); border-radius: 20px; padding: .25rem .9rem; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .7rem; }
+    header h1 { font-size: 1.7rem; font-weight: 800; }
+    header p { opacity: .85; margin-top: .3rem; font-size: .95rem; }
+
+    nav { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: .5rem 1.5rem; display: flex; gap: .4rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 99; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+    nav a { color: var(--accent); text-decoration: none; font-size: .82rem; font-weight: 600; padding: .25rem .65rem; border-radius: 7px; transition: background .2s; }
+    nav a:hover { background: var(--border); }
+
+    main { max-width: 900px; margin: 2rem auto; padding: 0 1.2rem 4rem; }
+
+    .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.6rem 1.8rem; margin-bottom: 1.8rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .card h2 { font-size: 1.2rem; color: var(--primary); border-left: 5px solid var(--gold); padding-left: .7rem; margin-bottom: 1.1rem; }
+    .card h3 { font-size: 1rem; color: var(--accent); margin: 1.1rem 0 .5rem; }
+    .card p  { margin-bottom: .75rem; }
+    .card ul, .card ol { padding-left: 1.3rem; margin-bottom: .75rem; }
+    .card li { margin-bottom: .45rem; }
+
+    .callout { border-radius: 10px; padding: .9rem 1.2rem; margin: .9rem 0; display: flex; gap: .7rem; align-items: flex-start; }
+    .callout.estrategia { background: var(--green-bg); border-left: 4px solid #2e7d32; }
+    .callout.alerta     { background: var(--orange-bg); border-left: 4px solid #ef6c00; }
+    .callout.teoria     { background: var(--purple-bg); border-left: 4px solid #7b1fa2; }
+    .callout.cite       { background: #e3f2fd; border-left: 4px solid #1565c0; }
+    .callout.hist       { background: var(--red-bg); border-left: 4px solid #c62828; }
+    .callout .ico       { font-size: 1.3rem; flex-shrink: 0; line-height: 1; }
+    .callout p          { margin: 0; font-size: .92rem; }
+
+    .time-block { border: 2px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1rem 0; }
+    .time-header { background: var(--primary); color: #fff; padding: .6rem 1.2rem; font-weight: 700; font-size: .92rem; display: flex; justify-content: space-between; align-items: center; }
+    .time-header .mins { background: var(--gold); color: var(--primary); border-radius: 20px; padding: .1rem .6rem; font-size: .78rem; }
+    .time-body { padding: 1rem 1.4rem; }
+    .time-body ol, .time-body ul { padding-left: 1.3rem; }
+    .time-body li { margin-bottom: .45rem; font-size: .93rem; }
+
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: .8rem 0; }
+    th { background: var(--primary); color: #fff; padding: .6rem .9rem; text-align: left; }
+    td { padding: .55rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--light); }
+
+    .badge { display: inline-block; border-radius: 6px; padding: .12rem .5rem; font-size: .72rem; font-weight: 800; }
+    .b-bloom  { background: #fff9c4; color: #5d4037; border: 1px solid #FFDF2D; }
+    .b-vig    { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+    .b-evo    { background: #fff8e1; color: #e65100; border: 1px solid #ffe082; }
+    .b-hist   { background: #fce4ec; color: #880e4f; border: 1px solid #f48fb1; }
+
+    .quiz-key { background: #f1f8e9; border: 1px solid #aed581; border-radius: 8px; padding: .8rem 1.1rem; margin: .5rem 0; font-size: .88rem; }
+    .quiz-key strong { color: #33691e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: .8rem; color: var(--muted); border-top: 1px solid var(--border); }
+
+    @media (max-width: 640px) { header h1 { font-size: 1.3rem; } .card { padding: 1.1rem; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge-prof">🔒 USO EXCLUSIVO DOCENTE · TGA04 · Semana 2</div>
+  <h1>📋 Notas del Profesor — Semana 2</h1>
+  <p>Variables, Tipos de Datos y Operadores · Prof. Diego Domínguez Tapia · IUB 2026</p>
+</header>
+
+<nav>
+  <a href="#resumen">🗺️ Resumen</a>
+  <a href="#cronograma">⏱️ Cronograma</a>
+  <a href="#didactica">🎓 Didáctica</a>
+  <a href="#analogias">💡 Analogías</a>
+  <a href="#neurobiz">🏢 NeuroBiz</a>
+  <a href="#quiz-key">🎮 Quiz clave</a>
+  <a href="#hti-guia">🏠 HTI</a>
+  <a href="#fuentes">📚 Fuentes prof.</a>
+</nav>
+
+<main>
+<section id="resumen" class="card">
+  <h2>🗺️ Resumen Rápido — Semana 2</h2>
+  <table>
+    <tbody>
+      <tr><td><strong>RA / CE</strong></td><td>RA1 · CE1 (identifica tipos de variables) + CE2 (realiza operaciones)</td></tr>
+      <tr><td><strong>Bloom</strong></td><td><span class="badge b-bloom">Recordar → Comprender</span></td></tr>
+      <tr><td><strong>Duración</strong></td><td>4 horas presenciales + 5 horas HTI</td></tr>
+      <tr><td><strong>XP disponible</strong></td><td>10 + 25 + 20 = <strong>55 XP</strong></td></tr>
+      <tr><td><strong>Entregable</strong></td><td>Tabla de variables NeuroBiz + pseudocódigo formalizado</td></tr>
+      <tr><td><strong>Material estudiante</strong></td><td><code>semana2/index.html</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="cronograma" class="card">
+  <h2>⏱️ Cronograma Detallado (4 horas)</h2>
+
+  <div class="time-block">
+    <div class="time-header">Momento 1 — Registro y encuadre <span class="mins">15 min</span></div>
+    <div class="time-body">
+      <ul>
+        <li>Abrir <code>semana2/index.html</code> y completar el modal CC.</li>
+        <li>Recordar a los estudiantes que el progreso queda en <code>tga04_s2</code>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="time-block">
+    <div class="time-header">Momento 2 — Tipos de datos en tablero <span class="mins">20 min</span></div>
+    <div class="time-body">
+      <ul>
+        <li>Construir una tabla con ENTERO, REAL, CADENA y LÓGICO.</li>
+        <li>Pedir ejemplos reales del caso NeuroBiz y decidir el tipo correcto.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="time-block">
+    <div class="time-header">Momento 3 — Ejercicio de variables <span class="mins">30 min</span></div>
+    <div class="time-body">
+      <ul>
+        <li>Cada pareja propone variables para una clínica ficticia.</li>
+        <li>Corregir nombres inválidos: espacios, tildes, comienzos numéricos.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="time-block">
+    <div class="time-header">Momento 4 — Operadores y expresiones <span class="mins">45 min</span></div>
+    <div class="time-body">
+      <ul>
+        <li>Resolver operaciones aritméticas, relacionales y lógicas con datos de KPI.</li>
+        <li>Formalizar la fórmula de <code>tasa_retencion</code>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="time-block">
+    <div class="time-header">Momento 5 — Quiz y cierre <span class="mins">30 min</span></div>
+    <div class="time-body">
+      <ul>
+        <li>Responder el quiz interactivo en el material.</li>
+        <li>Cerrar con la pregunta: ¿qué error de negocio aparece si se mezclan tipos?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="didactica" class="card">
+  <h2>🎓 Estrategias Didácticas Recomendadas</h2>
+
+  <div class="callout estrategia">
+    <span class="ico">📊</span>
+    <p><strong>Excel bridge clave:</strong> mostrar <code>=SI(A1&gt;90%,"Excelente","Revisar")</code> y mapear cada parte.<br>
+    <strong>A1</strong> = variable · <strong>&gt;90%</strong> = condición · <strong>"Excelente"</strong> = valor de salida.<br>
+    Esto ayuda a que el estudiante entienda que ya trabaja con variables y operadores, solo que ahora los formaliza.</p>
+  </div>
+
+  <div class="callout alerta">
+    <span class="ico">⚠️</span>
+    <p><strong>Error común:</strong> mezclar tipos sin conversión. Muchos estudiantes intentan unir número + texto sin distinguir que el sistema necesita reglas claras para concatenar o calcular.</p>
+  </div>
+
+  <div class="callout teoria">
+    <span class="ico">🧠</span>
+    <p><strong>Secuencia sugerida:</strong> primero tabla de tipos, luego reglas de nombres y solo después operadores. Si el estudiante no sabe qué guarda una variable, tampoco entenderá bien qué puede hacer con ella.</p>
+  </div>
+
+  <div class="callout cite">
+    <span class="ico">🏛️</span>
+    <p><strong>Cita para motivar:</strong> Gartner popularizó la idea de que la mala calidad de datos cuesta en promedio US$12.9M por año. Úsela para explicar por qué tipar bien no es un detalle técnico, sino un tema de negocio.</p>
+  </div>
+</section>
+
+<section id="analogias" class="card">
+  <h2>💡 Banco de Analogías</h2>
+  <table>
+    <thead><tr><th>Concepto</th><th>Analogía útil</th><th>Comentario docente</th></tr></thead>
+    <tbody>
+      <tr><td>Variable</td><td>Cajón etiquetado en un escritorio</td><td>El nombre identifica y el tipo restringe lo que cabe.</td></tr>
+      <tr><td>Tipo de dato</td><td>Tipo de objeto permitido en el cajón</td><td>Solo números, solo texto, o solo sí/no.</td></tr>
+      <tr><td>Mezcla incorrecta</td><td>Error <code>#VALOR!</code> en Excel</td><td>Puente inmediato con experiencia previa del estudiante.</td></tr>
+      <tr><td>Operador relacional</td><td>Pregunta de negocio</td><td>¿Superó la meta?, ¿es igual?, ¿es distinto?</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="neurobiz" class="card">
+  <h2>🏢 Contexto NeuroBiz — Semana 2</h2>
+  <div class="callout estrategia">
+    <span class="ico">🎯</span>
+    <p><strong>Conexión con Semana 1:</strong> esta semana se formalizan las variables que antes solo estaban nombradas. El salto pedagógico es pasar de “hablar del KPI” a “modelar el KPI”.</p>
+  </div>
+  <p>Insista en que <code>tasa_retencion</code> no es una intuición: es una variable <strong>REAL</strong> calculada con otras variables <strong>ENTERAS</strong>. Ese cambio mental prepara al grupo para la lógica condicional de la siguiente semana.</p>
+</section>
+
+<section id="quiz-key" class="card">
+  <h2>🎮 Clave y Análisis — Quiz Semana 2</h2>
+  <div class="quiz-key"><strong>P1 (b):</strong> 78.5 tiene decimales, por eso es REAL.</div>
+  <div class="quiz-key"><strong>P2 (c):</strong> “cognitiva” y “ocupacional” son texto, por eso la variable es CADENA.</div>
+  <div class="quiz-key"><strong>P3 (a):</strong> DIV devuelve la parte entera de la división.</div>
+  <div class="quiz-key"><strong>P4 (b):</strong> “mayor que” se evalúa con <code>&gt;</code>.</div>
+  <div class="quiz-key"><strong>P5 (d):</strong> <code>es_activo</code> solo puede ser VERDADERO o FALSO.</div>
+</section>
+
+<section id="hti-guia" class="card">
+  <h2>🏠 Guía del HTI — Seguimiento Docente</h2>
+  <div class="callout estrategia">
+    <span class="ico">📋</span>
+    <p><strong>Chequeo rápido al inicio de Semana 3:</strong> pida a dos estudiantes que lean en voz alta un ejemplo de ENTERO y un ejemplo de REAL tomados del caso NeuroBiz. Quienes justifiquen bien el tipo pueden recibir XP bonus.</p>
+  </div>
+</section>
+
+<section id="fuentes" class="card">
+  <h2>📚 Fuentes para Profundización del Docente</h2>
+  <div class="callout cite">
+    <span class="ico">📘</span>
+    <p><strong>Cairó Battistutti & Guardati</strong> — capítulos de variables, tipos de datos y operadores. Libro base del módulo.</p>
+  </div>
+  <div class="callout cite">
+    <span class="ico">📊</span>
+    <p><strong>Soporte Microsoft Excel:</strong> documentación sobre errores de fórmula y tipos incompatibles, útil para el “Excel bridge”.</p>
+  </div>
+  <div class="callout cite">
+    <span class="ico">🏢</span>
+    <p><strong>Gartner:</strong> usar la cifra de costo de mala calidad de datos como anclaje de negocio.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  TGA04 · Notas del Profesor · Semana 2 · 🔒 Uso exclusivo docente ·
+  IUB 2026 · Prof. Diego Domínguez Tapia
+</footer>
+
+</body>
+</html>

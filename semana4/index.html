@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semana 4 — Condicional Doble y Anidada | TGA04</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary:   #1E2843;
+      --accent:    #2d3a5e;
+      --gold:      #FFDF2D;
+      --green:     #2e7d32;
+      --red:       #c62828;
+      --light-bg:  #FAFAFA;
+      --card-bg:   #ffffff;
+      --text:      #212121;
+      --muted:     #546e7a;
+      --border:    #DEDFE4;
+      --radius:    12px;
+    }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--light-bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    header { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: #fff; padding: 2.5rem 2rem 2rem; text-align: center; position: relative; overflow: hidden; }
+    header::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 40px; background: var(--light-bg); clip-path: ellipse(55% 100% at 50% 100%); }
+    .badge-module { display: inline-block; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: .3rem 1rem; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .8rem; }
+    header h1 { font-size: 2rem; font-weight: 800; line-height: 1.2; }
+    header p  { font-size: 1rem; opacity: .85; margin-top: .5rem; }
+    .xp-bar-wrap { margin: 1.2rem auto 0; max-width: 400px; background: rgba(255,255,255,.2); border-radius: 20px; height: 14px; overflow: hidden; }
+    .xp-bar { height: 100%; width: 0%; background: var(--gold); border-radius: 20px; transition: width 1.5s ease; }
+    .xp-label { font-size: .78rem; opacity: .8; margin-top: .4rem; }
+
+    nav { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: .6rem 1.5rem; display: flex; gap: .5rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 99; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    nav a { color: var(--accent); text-decoration: none; font-size: .85rem; font-weight: 600; padding: .3rem .7rem; border-radius: 8px; transition: background .2s; }
+    nav a:hover { background: var(--border); }
+
+    main { max-width: 960px; margin: 2rem auto; padding: 0 1.2rem 4rem; }
+
+    .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.8rem 2rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .card h2 { font-size: 1.3rem; color: var(--primary); border-left: 5px solid var(--gold); padding-left: .8rem; margin-bottom: 1.2rem; }
+    .card h3 { font-size: 1.05rem; color: var(--accent); margin: 1.2rem 0 .6rem; }
+    .card p  { margin-bottom: .8rem; }
+    .card ul, .card ol { padding-left: 1.4rem; margin-bottom: .8rem; }
+    .card li { margin-bottom: .4rem; }
+
+    .bloom { display: inline-flex; align-items: center; gap: .4rem; background: #fff9c4; border: 1px solid #FFDF2D; border-radius: 20px; padding: .25rem .85rem; font-size: .8rem; font-weight: 700; color: #5d4037; margin-bottom: 1rem; }
+
+    .memo { background: #fffde7; border-left: 5px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; font-style: italic; }
+    .memo strong { font-style: normal; display: block; margin-bottom: .4rem; color: var(--primary); }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 1rem; margin: 1rem 0; }
+    .kpi-card { background: var(--light-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .kpi-card .kpi-icon { font-size: 1.8rem; }
+    .kpi-card .kpi-name { font-size: .78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin: .4rem 0; }
+    .kpi-card .kpi-val  { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+
+    .code-wrap { background: #1E2843; border-radius: 10px; overflow: hidden; margin: 1rem 0; }
+    .code-title { background: #2d3a5e; color: #cdd6f4; font-size: .78rem; padding: .4rem 1rem; font-family: monospace; display: flex; justify-content: space-between; align-items: center; }
+    pre { padding: 1.2rem 1.5rem; overflow-x: auto; font-size: .88rem; line-height: 1.6; color: #cdd6f4; font-family: 'Courier New', monospace; }
+    .kw  { color: #cba6f7; }
+    .fn  { color: #89b4fa; }
+    .str { color: #a6e3a1; }
+    .cm  { color: #6c7086; font-style: italic; }
+    .num { color: #fab387; }
+
+    .info-box { border-radius: 10px; padding: 1rem 1.3rem; margin: 1rem 0; display: flex; gap: .8rem; align-items: flex-start; }
+    .info-box.tip   { background: #e8f5e9; border-left: 4px solid #43a047; }
+    .info-box.warn  { background: #fff8e1; border-left: 4px solid #e6c800; }
+    .info-box.brain { background: #f3e5f5; border-left: 4px solid #8e24aa; }
+    .info-box.cite  { background: #e3f2fd; border-left: 4px solid #1976d2; }
+    .info-box.hist  { background: #fce4ec; border-left: 4px solid #e91e63; }
+    .info-box .icon { font-size: 1.4rem; line-height: 1; flex-shrink: 0; }
+    .info-box p     { margin: 0; font-size: .93rem; }
+
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 1rem 0; }
+    th { background: var(--primary); color: #fff; padding: .7rem 1rem; text-align: left; }
+    td { padding: .6rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--light-bg); }
+
+    .relevance-badge { display: inline-block; border-radius: 6px; padding: .15rem .55rem; font-size: .75rem; font-weight: 800; margin-left: .4rem; }
+    .vig  { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+    .evo  { background: #fff8e1; color: #e65100; border: 1px solid #ffe082; }
+    .hist-badge { background: #fce4ec; color: #880e4f; border: 1px solid #f48fb1; }
+
+    .activity { border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 1.2rem 0; }
+    .activity-header { padding: .8rem 1.3rem; display: flex; align-items: center; gap: .7rem; font-weight: 700; font-size: 1rem; }
+    .activity-header.presencial { background: #E9EAED; color: var(--primary); }
+    .activity-header.hti-a      { background: #e8f5e9; color: var(--green); }
+    .activity-header.hti-b      { background: #fff8e1; color: #e65100; }
+    .activity-body { padding: 1.2rem 1.5rem; }
+    .activity-body ol, .activity-body ul { padding-left: 1.4rem; }
+    .activity-body li { margin-bottom: .5rem; }
+
+    .dojo-panel { background: linear-gradient(135deg, #1E2843 0%, #2d3a5e 100%); color: #fff; border-radius: var(--radius); padding: 1.5rem 2rem; margin: 1.5rem 0; }
+    .dojo-panel h3 { color: var(--gold); margin-bottom: 1rem; font-size: 1.05rem; }
+    .dojo-items { display: flex; flex-wrap: wrap; gap: .8rem; }
+    .dojo-item { background: rgba(255,255,255,.12); border-radius: 8px; padding: .5rem 1rem; font-size: .85rem; display: flex; align-items: center; gap: .5rem; }
+    .pts { color: var(--gold); font-weight: 800; font-size: 1.1rem; }
+
+    .quiz-box { background: #e3f2fd; border: 2px solid #1565c0; border-radius: var(--radius); padding: 1.4rem 1.8rem; margin: 1.5rem 0; }
+    .quiz-box h3 { color: #0d47a1; margin-bottom: 1rem; }
+    .quiz-q { margin-bottom: 1.4rem; }
+    .quiz-q p { font-weight: 600; margin-bottom: .5rem; }
+    .quiz-q ol { padding-left: 1.4rem; }
+    .quiz-q li { margin-bottom: .35rem; font-size: .93rem; cursor: pointer; padding: 3px 8px; border-radius: 6px; transition: background .15s; }
+    .quiz-q li:hover { background: rgba(25,118,210,.12); }
+    .quiz-answer { display: none; background: #e8f5e9; border-radius: 6px; padding: .4rem .8rem; font-size: .85rem; margin-top: .4rem; color: var(--green); font-weight: 600; }
+
+    .bib { font-size: .88rem; line-height: 1.8; }
+    .bib li { margin-bottom: .6rem; padding-left: .5rem; }
+
+    footer { text-align: center; padding: 2rem; font-size: .82rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.4rem; }
+      .card { padding: 1.2rem; }
+      main { padding: 0 .8rem 3rem; }
+    }
+  </style>
+
+  <style id="pt-css">
+  #pt-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg,#1E2843,#2d3a5e); color: #fff; border-radius: 16px; padding: 14px 18px; min-width: 240px; max-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,.35); font-family: 'Open Sans', Arial, sans-serif; font-size: .85rem; transition: transform .3s; }
+  #pt-widget.collapsed { transform: translateY(calc(100% - 42px)); }
+  #pt-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  #pt-header strong { font-size: .92rem; }
+  #pt-toggle { background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; line-height: 1; }
+  #pt-body { margin-top: 10px; }
+  #pt-xp-bar-wrap { background: rgba(255,255,255,.2); border-radius: 20px; height: 10px; overflow: hidden; }
+  #pt-xp-bar { height: 100%; background: linear-gradient(90deg,#FFDF2D,#fff176); border-radius: 20px; transition: width .8s ease; }
+  #pt-xp-label { display: flex; justify-content: space-between; font-size: .75rem; opacity: .8; margin-top: 4px; }
+  #pt-btns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .pt-btn { flex: 1; padding: 5px 8px; border: none; border-radius: 8px; font-size: .75rem; font-weight: 700; cursor: pointer; transition: opacity .2s; }
+  .pt-btn:hover { opacity: .85; }
+  #pt-btn-save { background: #43a047; color: #fff; }
+  #pt-advanced { display: none; margin-top: 5px; }
+  #pt-msg { font-size: .72rem; margin-top: 6px; min-height: 16px; opacity: .85; text-align: center; }
+  </style>
+
+  <style id="modal-css">
+  #pt-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 10000; display: flex; align-items: center; justify-content: center; animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+  #pt-modal-box { background: linear-gradient(160deg,#1E2843,#1E2843 70%,#2d3a5e); color: #fff; border-radius: 20px; padding: 2rem 2rem 1.5rem; width: min(94vw,420px); box-shadow: 0 20px 60px rgba(0,0,0,.5); animation: slideUp .35s cubic-bezier(.2,.8,.3,1); }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+  #pt-modal-box h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: .3rem; }
+  #pt-modal-box .sub { opacity: .75; font-size: .85rem; margin-bottom: 1.3rem; }
+  #pt-modal-box .field { margin-bottom: .9rem; }
+  #pt-modal-box label { display: block; font-size: .78rem; font-weight: 700; opacity: .85; margin-bottom: .3rem; text-transform: uppercase; letter-spacing: .05em; }
+  #pt-modal-box input { width: 100%; background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.35); border-radius: 10px; padding: .6rem .9rem; color: #fff; font-size: .95rem; outline: none; }
+  #pt-modal-box input::placeholder { color: rgba(255,255,255,.45); }
+  #pt-modal-box input:focus { border-color: rgba(249,168,37,.9); }
+  #pt-modal-btn { width: 100%; padding: .7rem; border: none; border-radius: 12px; background: linear-gradient(135deg,#FFDF2D,#FFDF2D); color: #1E2843; font-weight: 900; font-size: 1rem; cursor: pointer; margin-top: .4rem; transition: opacity .15s; }
+  #pt-modal-btn:hover { opacity: .9; }
+  #pt-modal-btn-search { padding: .65rem 1.2rem; border: none; border-radius: 10px; background: rgba(255,255,255,.18); color: #fff; font-weight: 700; font-size: .92rem; cursor: pointer; transition: background .15s; flex-shrink: 0; }
+  #pt-modal-btn-search:hover { background: rgba(255,255,255,.28); }
+  #pt-modal-error, #pt-modal-error2, #pt-modal-error3 { color: #ff8a80; font-size: .8rem; margin-top: .5rem; min-height: 1em; }
+  #pt-modal-xp { text-align: center; font-size: .78rem; opacity: .7; margin-top: .7rem; }
+  .pt-found-card { background: rgba(255,255,255,.1); border: 1.5px solid rgba(249,168,37,.6); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: .9rem; }
+  .pt-found-card .pt-fc-name { font-size: 1rem; font-weight: 800; margin-bottom: .25rem; }
+  .pt-found-card .pt-fc-meta { font-size: .8rem; opacity: .8; line-height: 1.6; }
+  .pt-step { transition: opacity .2s; }
+  .pt-link-btn { background: none; border: none; color: rgba(255,255,255,.6); font-size: .8rem; cursor: pointer; text-decoration: underline; padding: .3rem 0 0; display: block; text-align: center; width: 100%; }
+  .pt-link-btn:hover { color: #fff; }
+  </style>
+
+  <script src="../js/supabase-config.js"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+    <header>
+      <div class="badge-module">TGA04 · Fundamentos de Computación para los Negocios · Semana 4 de 13</div>
+      <h1>🧭 Condicional Doble, Múltiple y Anidada</h1>
+      <p>SI-SINO-FSI · DD-FDD · Clasificación de riesgo · NeuroBiz S.A.S.</p>
+      <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar"></div></div>
+      <p class="xp-label">XP de sesión: <span id="xpCount">0</span> / 65 pts</p>
+    </header>
+
+    <!-- NAV -->
+<nav>
+  <a href="#mision">🎯 Misión</a>
+  <a href="#teoria">📚 Teoría</a>
+  <a href="#pseudocodigo">📝 Pseudocódigo</a>
+  <a href="#actividad">⚙️ Actividad</a>
+  <a href="#hti">🏠 HTI</a>
+  <a href="#quiz">🎮 Quiz</a>
+  <a href="#bib">📖 Fuentes</a>
+</nav>
+
+
+    <main>
+
+    <!-- PROGRESS TRACKER WIDGET -->
+<div id="pt-widget">
+  <div id="pt-header" onclick="ptToggle()">
+    <strong>📊 Mi Progreso TGA04</strong>
+    <button id="pt-toggle">▲</button>
+  </div>
+  <div id="pt-body">
+    <div id="pt-xp-bar-wrap"><div id="pt-xp-bar" style="width:0%"></div></div>
+    <div id="pt-xp-label"><span id="pt-semana-label">Semana 4</span><span id="pt-xp-count">0 XP</span></div>
+    <div id="pt-btns">
+      <button class="pt-btn" id="pt-btn-save" onclick="ptSyncCloud()" style="flex:1">☁️ Guardar</button>
+      <button class="pt-btn" onclick="(function(){var a=document.getElementById('pt-advanced');a.style.display=a.style.display==='block'?'none':'block'})()" style="width:32px;flex-shrink:0;padding:0;font-size:.8rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)">⚙️</button>
+    </div>
+    <div id="pt-advanced">
+      <button class="pt-btn" onclick="ptExportCode()" style="width:100%;margin-bottom:3px;font-size:.72rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📋 Exportar respaldo</button>
+      <button class="pt-btn" onclick="ptImportCode()" style="width:100%;font-size:.72rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📥 Cargar desde código</button>
+    </div>
+    <div id="pt-msg"></div>
+  </div>
+</div>
+
+
+
+    <!-- ══ MISIÓN / MEMORANDO ══ -->
+<section id="mision" class="card">
+  <h2>📋 El Memorando — Tu Misión esta Semana</h2>
+  <div class="memo">
+    <strong>Para: Consultores Junior de Datos — Equipo TGA04<br>
+    De: Dirección de Operaciones Clínicas, NeuroBiz S.A.S.<br>
+    Asunto: Clasificar pacientes por nivel de riesgo</strong>
+
+    El sistema necesita clasificar a los pacientes en tres categorías según su tasa de retención:
+    <strong>Verde (≥80%)</strong>, <strong>Amarillo (50-79%)</strong> y <strong>Rojo (&lt;50%)</strong>.
+    Esta semana diseñarás algoritmos con <strong>SI-SINO-FSI</strong>, <strong>DD-FDD</strong> y decisiones anidadas
+    para que la clasificación sea clara, coherente y útil para la toma de decisiones.
+  </div>
+
+  <div class="bloom">🧠 RA2 · CE3 · Bloom: Comprender → Aplicar → Analizar</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon">🟢</div>
+      <div class="kpi-name">Caso verde</div>
+      <div class="kpi-val">85%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">🟡</div>
+      <div class="kpi-name">Caso amarillo</div>
+      <div class="kpi-val">65%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">🔴</div>
+      <div class="kpi-name">Caso rojo</div>
+      <div class="kpi-val">45%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">📍</div>
+      <div class="kpi-name">Frontera</div>
+      <div class="kpi-val">80%</div>
+    </div>
+  </div>
+
+  <table>
+    <tbody>
+      <tr><td><strong>LS_KEY</strong></td><td><code>tga04_s4</code></td></tr>
+      <tr><td><strong>XP máximo</strong></td><td>65 XP</td></tr>
+      <tr><td><strong>Pregunta central</strong></td><td>¿Qué estructura conviene: doble decisión, múltiple decisión o una condición anidada?</td></tr>
+      <tr><td><strong>Analogía guía</strong></td><td>Semáforo completo: rojo / amarillo / verde</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══ TEORÍA ══ -->
+<section id="teoria" class="card">
+  <h2>📚 Marco Teórico</h2>
+
+  <h3>1. Condicional doble SI-SINO-FSI <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <p>
+    La estructura <strong>SI-SINO-FSI</strong> se usa cuando el algoritmo debe escoger entre <strong>dos caminos</strong>.
+    Si la condición es verdadera, ejecuta el bloque ENTONCES; si es falsa, ejecuta el bloque SINO.
+  </p>
+
+  <div class="info-box tip">
+    <span class="icon">🚦</span>
+    <p><strong>Analogía de vida real:</strong> SI el semáforo está en rojo ENTONCES frenar;
+    SINO seguir. Cuando solo hay dos posibles reacciones, esta estructura es la más clara.</p>
+  </div>
+
+  <h3>2. Decisión múltiple DD-FDD <span class="relevance-badge evo">🟡 EVOLUCIONADO</span></h3>
+  <p>
+    Cuando existen <strong>tres o más casos mutuamente excluyentes</strong>, la notación Cairó usa
+    <code>DD ... CASO ... FDD</code>. En la industria moderna suele representarse con
+    <code>if / elif / else</code> o con <code>match / case</code> en Python 3.10+.
+  </p>
+
+  <table>
+    <thead><tr><th>Estructura</th><th>Cuándo usarla</th><th>Ejemplo NeuroBiz</th></tr></thead>
+    <tbody>
+      <tr><td>SI-SINO-FSI</td><td>Dos rutas</td><td>Aprobado / revisar</td></tr>
+      <tr><td>DD-FDD</td><td>Tres o más rutas</td><td>Verde / amarillo / rojo</td></tr>
+      <tr><td>SI anidado</td><td>Cuando una segunda decisión depende de la primera</td><td>Paciente en riesgo y además terapia crítica</td></tr>
+    </tbody>
+  </table>
+
+  <h3>3. Condicionales anidadas <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <p>
+    Una condición anidada aparece cuando un <code>SI</code> está dentro de otro <code>SI</code>.
+    Sirve para refinar decisiones, pero si se abusa de ella el algoritmo se vuelve difícil de leer.
+  </p>
+
+  <div class="info-box warn">
+    <span class="icon">⚠️</span>
+    <p><strong>Alerta de diseño:</strong> si aparecen demasiados <code>SI</code> anidados y los casos son
+    categorías claras, probablemente conviene un DD-FDD o un <code>if/elif/else</code>.</p>
+  </div>
+
+  <h3>4. Límites y condiciones de frontera <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <p>
+    Las clasificaciones dependen de definir bien los límites: ¿qué pasa exactamente con 80? ¿Y con 50?
+    Un buen algoritmo evita solapamientos y huecos entre casos.
+  </p>
+  <table>
+    <thead><tr><th>Valor</th><th>Clasificación esperada</th><th>Razón</th></tr></thead>
+    <tbody>
+      <tr><td>85</td><td>Verde</td><td>Mayor o igual a 80</td></tr>
+      <tr><td>65</td><td>Amarillo</td><td>Está entre 50 y 79</td></tr>
+      <tr><td>45</td><td>Rojo</td><td>Es menor a 50</td></tr>
+      <tr><td>80</td><td>Verde</td><td>La frontera superior incluye el 80</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5. Conexión con Python e industria <span class="relevance-badge evo">🟡 EVOLUCIONADO</span></h3>
+  <p>
+    El DD-FDD es útil didácticamente, pero en entornos modernos la industria prefiere
+    <code>if/elif/else</code> o <code>match/case</code>. El concepto sigue siendo totalmente vigente.
+  </p>
+
+  <div class="info-box hist">
+    <span class="icon">📚</span>
+    <p><strong>Nota histórica:</strong> muchos libros antiguos, como Deitel en Java, usan
+    <code>switch-case</code> como referencia principal. <span class="relevance-badge hist-badge">🔴 HISTÓRICO</span>
+    Hoy ese ejemplo sirve para contexto, pero el curso conectará con Python en semanas posteriores.</p>
+  </div>
+
+  <h3>6. Checklist para escoger estructura <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <table>
+    <thead><tr><th>Pregunta docente</th><th>Si la respuesta es sí…</th><th>Estructura sugerida</th></tr></thead>
+    <tbody>
+      <tr><td>¿Solo hay dos caminos posibles?</td><td>Hay un caso verdadero y un alterno</td><td>SI-SINO-FSI</td></tr>
+      <tr><td>¿Hay tres o más categorías excluyentes?</td><td>Se clasifica por grupos cerrados</td><td>DD-FDD</td></tr>
+      <tr><td>¿La segunda decisión depende de la primera?</td><td>Primero filtro, luego refinamiento</td><td>SI anidado</td></tr>
+      <tr><td>¿Existen fronteras delicadas como 50/80?</td><td>Se deben probar límites y evitar solapes</td><td>Casos de prueba explícitos</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══ PSEUDOCÓDIGO ══ -->
+<section id="pseudocodigo" class="card">
+  <h2>📝 Pseudocódigo — Clasificación de Riesgo</h2>
+
+  <div class="code-wrap">
+    <div class="code-title">📝 Pseudocódigo — ClasificarPacienteSimple</div>
+    <pre>
+<span class="kw">ALGORITMO</span> ClasificarPacienteSimple
+  <span class="kw">VARIABLES</span>
+    tasa_retencion: <span class="kw">REAL</span>
+    clasificacion: <span class="kw">CADENA</span>
+  <span class="kw">INICIO</span>
+    <span class="fn">LEER</span> tasa_retencion
+    <span class="kw">SI</span> tasa_retencion &gt;= <span class="num">80.0</span> <span class="kw">ENTONCES</span>
+      clasificacion <span class="kw">←</span> <span class="str">"VERDE: Buen progreso"</span>
+    <span class="kw">SINO</span>
+      clasificacion <span class="kw">←</span> <span class="str">"ATENCIÓN: Revisar plan terapéutico"</span>
+    <span class="kw">FSI</span>
+    <span class="fn">ESCRIBIR</span> <span class="str">"Estado del paciente: "</span>, clasificacion
+  <span class="kw">FIN</span>
+    </pre>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-title">📝 Pseudocódigo — ClasificarRiesgoNeuroBiz</div>
+    <pre>
+<span class="kw">ALGORITMO</span> ClasificarRiesgoNeuroBiz
+  <span class="kw">VARIABLES</span>
+    tasa_retencion: <span class="kw">REAL</span>
+  <span class="kw">INICIO</span>
+    <span class="fn">LEER</span> tasa_retencion
+    <span class="kw">DD</span> tasa_retencion
+      <span class="kw">CASO</span> &gt;= <span class="num">80.0</span>: <span class="fn">ESCRIBIR</span> <span class="str">"🟢 VERDE — Retención excelente"</span>
+      <span class="kw">CASO</span> &gt;= <span class="num">50.0</span>: <span class="fn">ESCRIBIR</span> <span class="str">"🟡 AMARILLO — Retención en riesgo"</span>
+      <span class="kw">CASO</span> OTRO:   <span class="fn">ESCRIBIR</span> <span class="str">"🔴 ROJO — Intervención urgente"</span>
+    <span class="kw">FDD</span>
+  <span class="kw">FIN</span>
+    </pre>
+  </div>
+
+  <h3>Comparación rápida de estructuras</h3>
+  <table>
+    <thead><tr><th>Estructura</th><th>Número de caminos</th><th>Ventaja</th><th>Riesgo</th></tr></thead>
+    <tbody>
+      <tr><td>SI-SINO-FSI</td><td>2</td><td>Muy legible cuando solo hay dos salidas</td><td>Se queda corto si hay 3 o más categorías</td></tr>
+      <tr><td>DD-FDD</td><td>N</td><td>Ordena múltiples casos de clasificación</td><td>Debe cuidarse que los casos no se solapen</td></tr>
+      <tr><td>SI anidado</td><td>Variable</td><td>Permite refinar una decisión dentro de otra</td><td>Se vuelve difícil de seguir si crece demasiado</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box brain">
+    <span class="icon">🐍</span>
+    <p><strong>Preview de Python:</strong> la notación Cairó DD-FDD se traducirá más adelante a
+    <code>if/elif/else</code> o <code>match/case</code>. Aprender a elegir la estructura correcta es más importante que memorizar una palabra reservada.</p>
+  </div>
+
+  <h3>Batería mínima de pruebas</h3>
+  <table>
+    <thead><tr><th>Caso</th><th>Entrada</th><th>Salida esperada</th><th>Qué valida</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>85</code></td><td>🟢 VERDE</td><td>Camino superior</td></tr>
+      <tr><td>2</td><td><code>65</code></td><td>🟡 AMARILLO</td><td>Categoría intermedia</td></tr>
+      <tr><td>3</td><td><code>45</code></td><td>🔴 ROJO</td><td>Caso OTRO</td></tr>
+      <tr><td>4</td><td><code>80</code></td><td>🟢 VERDE</td><td>Frontera incluida correctamente</td></tr>
+      <tr><td>5</td><td><code>50</code></td><td>🟡 AMARILLO</td><td>Inicio exacto del rango medio</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box warn">
+    <span class="icon">📏</span>
+    <p><strong>Regla de frontera:</strong> antes de dar por bueno un DD-FDD, prueba exactamente los valores límite. Si <code>80</code> y <code>50</code> no están claros, la clasificación del negocio será inconsistente.</p>
+  </div>
+
+  <ul>
+    <li><strong>85</strong> valida el caso verde.</li>
+    <li><strong>65</strong> valida el caso amarillo.</li>
+    <li><strong>45</strong> valida el caso rojo.</li>
+    <li><strong>80 y 50</strong> validan fronteras.</li>
+  </ul>
+
+  <p><em>Elegir bien la estructura también es una decisión de diseño:</em> claridad primero, complejidad después.</p>
+  <p>
+    Cuando el estudiante justifica por qué escogió SI-SINO, DD-FDD o anidación,
+    ya está pensando como analista y no solo como copiador de sintaxis.
+  </p>
+  <p>Ese criterio será clave cuando el curso pase a Python.</p>
+</section>
+
+<!-- ══ ACTIVIDAD PRESENCIAL ══ -->
+<section id="actividad" class="card">
+  <h2>⚙️ Actividad Presencial (4 horas)</h2>
+
+  <div class="dojo-panel">
+    <h3>🏆 Puntos disponibles esta sesión</h3>
+    <div class="dojo-items">
+      <div class="dojo-item">📋 <span>Asistencia</span> <span class="pts">+10 XP</span></div>
+      <div class="dojo-item">🎮 <span>Quiz (5 preguntas)</span> <span class="pts">+25 XP</span></div>
+      <div class="dojo-item">🎯 <span>Misión NeuroBiz</span> <span class="pts">+30 XP</span></div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header presencial">⏱️ Bloque 1 — Doble vs múltiple decisión (80 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Comprender</em></div>
+    <div class="activity-body">
+      <ol>
+        <li>Comparar el semáforo de dos rutas con el semáforo completo de tres colores.</li>
+        <li>Identificar cuándo basta un SI-SINO y cuándo conviene DD-FDD.</li>
+        <li>Discutir por qué las fronteras 80 y 50 deben quedar explícitas.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header presencial">⏱️ Bloque 2 — Casos de prueba (90 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Aplicar</em></div>
+    <div class="activity-body">
+      <ol>
+        <li>Ejecutar manualmente ambos algoritmos con <code>tasa = 85</code>, <code>65</code>, <code>45</code> y <code>80</code>.</li>
+        <li>Comparar las salidas y discutir cuál estructura comunica mejor el resultado.</li>
+        <li>Buscar posibles errores de solapamiento o de fronteras mal definidas.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header presencial">⏱️ Bloque 3 — Misión NeuroBiz (70 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Analizar</em></div>
+    <div class="activity-body">
+      <p><strong>🎯 Misión:</strong> elegir la estructura adecuada para clasificar.</p>
+      <ol>
+        <li>Diseña un DD-FDD que clasifique terapeutas por número de sesiones: <code>&lt;10</code>, <code>10-20</code>, <code>&gt;20</code>.</li>
+        <li>Convierte el algoritmo SI-SINO-FSI del material a una versión DD-FDD.</li>
+        <li>Escribe dos frases comparando cuál formato te parece más legible y por qué.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HTI ══ -->
+<section id="hti" class="card">
+  <h2>🏠 HTI — Trabajo Independiente (5 horas)</h2>
+  <p style="color:var(--muted);font-size:.88rem">Esta semana el reto es elegir bien la estructura, no solo escribirla.</p>
+
+  <div class="activity">
+    <div class="activity-header hti-a">📚 HTI-A — Lectura de repaso (1.5 horas)</div>
+    <div class="activity-body">
+      <ol>
+        <li>Revisa las tablas comparativas de SI-SINO-FSI y DD-FDD.</li>
+        <li>Anota un ejemplo de dos caminos y otro de tres caminos en contexto empresarial.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header hti-b">✏️ HTI-B — Diseño de clasificación de terapeutas (2 horas)</div>
+    <div class="activity-body">
+      <ol>
+        <li>Diseña un algoritmo DD-FDD para clasificar terapeutas por número de sesiones:</li>
+        <li><code>&lt;10</code> = sobrecarga baja, <code>10-20</code> = óptimo, <code>&gt;20</code> = alerta sobrecarga.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header hti-b">🧠 HTI-C — Conversión y comparación (1.5 horas)</div>
+    <div class="activity-body">
+      <ol>
+        <li>Convierte el SI-SINO-FSI del material a DD-FDD.</li>
+        <li>Compara cuál es más legible y en qué contexto usarías cada uno.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══ QUIZ ══ -->
+<section id="quiz" class="card">
+  <h2>🎮 Quiz Interactivo — Semana 4</h2>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">5 preguntas · 5 XP por acierto · piensa en el número de caminos</p>
+
+  <div class="quiz-box">
+    <h3>⚡ Quiz Semana 4 — Condicional doble, múltiple y anidada</h3>
+
+    <div class="quiz-q">
+      <p>1. En SI-SINO-FSI, si la condición es FALSA se ejecuta:</p>
+      <ol type="a">
+        <li>Ambos bloques</li>
+        <li>Ningún bloque</li>
+        <li>El bloque SINO</li>
+        <li>Se repite la condición</li>
+      </ol>
+      <div class="quiz-answer">✅ c — Cuando la condición es falsa, corre el bloque SINO.</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>2. DD-FDD en Python moderno (3.10+) equivale a:</p>
+      <ol type="a">
+        <li><code>match/case</code></li>
+        <li><code>while</code></li>
+        <li><code>for</code></li>
+        <li><code>import</code></li>
+      </ol>
+      <div class="quiz-answer">✅ a — El paralelo más cercano en Python moderno es match/case.</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>3. ¿En qué casos usar DD-FDD en lugar de SI anidados?</p>
+      <ol type="a">
+        <li>Solo cuando hay 2 casos</li>
+        <li>Cuando hay 3 o más casos mutuamente excluyentes</li>
+        <li>Nunca, son lo mismo</li>
+        <li>Solo en Python</li>
+      </ol>
+      <div class="quiz-answer">✅ b — DD-FDD organiza mejor 3 o más categorías excluyentes.</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>4. En NeuroBiz, ¿qué estructura usarías para clasificar tasa ≥80, 50-79 y &lt;50?</p>
+      <ol type="a">
+        <li>MQ-FMQ</li>
+        <li>HH-FHH</li>
+        <li>PARA-FPARA</li>
+        <li>DD-FDD</li>
+      </ol>
+      <div class="quiz-answer">✅ d — Son tres rutas de clasificación, por eso DD-FDD es la opción natural.</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>5. La notación Cairó DD-FDD tiene relevancia 🟡 porque:</p>
+      <ol type="a">
+        <li>La industria usa <code>if/elif/else</code> o <code>match/case</code> en Python/JavaScript</li>
+        <li>Ya no existe en ningún contexto</li>
+        <li>Es solo para Java</li>
+        <li>Es más avanzada que Python</li>
+      </ol>
+      <div class="quiz-answer">✅ a — El concepto sigue vigente, aunque la forma de escribirlo cambie según el lenguaje.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BIBLIOGRAFÍA ══ -->
+<section id="bib" class="card">
+  <h2>📖 Fuentes y Referencias</h2>
+  <ul class="bib">
+    <li><strong>Cairó Battistutti, O. & Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em>. Sección de selección múltiple.</li>
+    <li><strong>Joyanes Aguilar, L.</strong> (2008). <em>Fundamentos de programación</em>. Referencia de decisiones, condicionales anidadas y control de flujo.</li>
+    <li><strong>Python Software Foundation.</strong> Documentación oficial sobre <code>if</code>, <code>elif</code>, <code>else</code> y <code>match/case</code>.</li>
+    <li><strong>Deitel & Deitel.</strong> Referencia histórica de <code>switch-case</code> en Java. Útil como contraste pedagógico, no como lenguaje meta del módulo.</li>
+    <li><strong>Microsoft Power Automate.</strong> Acción <em>Switch</em> como paralelo empresarial de DD-FDD.</li>
+  </ul>
+</section>
+
+
+    </main>
+
+    <footer>
+      TGA04 · Fundamentos de Computación para los Negocios · IUB 2026 · Semana 4: Condicional Doble y Anidada · Caso de estudio: NeuroBiz S.A.S. · Prof. Diego Domínguez Tapia
+    </footer>
+
+    <!-- ══ PROGRESS TRACKER SCRIPT ══ -->
+<script id="pt-js">
+const PT = (function() {
+  const SEMANA    = 4;
+  const XP_MAX    = 65;
+  const LS_KEY    = "tga04_s4";
+  const LS_GLOBAL = "tga04_global";
+
+  let state = {
+    nombre: "", cc: "", id_estudiante: "", grupo: "", horario: "",
+    semana: SEMANA, xp: 0,
+    quiz_respuestas: {}, quiz_puntaje: 0,
+    hti_entregado: false, actividad_completada: false,
+    dispositivo: navigator.userAgent.substring(0, 80)
+  };
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) Object.assign(state, JSON.parse(raw));
+      const g = JSON.parse(localStorage.getItem(LS_GLOBAL) || "{}");
+      if (!state.nombre        && g.nombre)   state.nombre        = g.nombre;
+      if (!state.cc            && g.cc)        state.cc            = g.cc;
+      if (!state.id_estudiante && g.cc)        state.id_estudiante = g.cc;
+      if (!state.grupo         && g.grupo)     state.grupo         = g.grupo;
+      if (!state.horario       && g.horario)   state.horario       = g.horario;
+    } catch(e) {}
+  }
+
+  function save() {
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+    render();
+  }
+
+  function render() {
+    const bar   = document.getElementById("pt-xp-bar");
+    const cnt   = document.getElementById("pt-xp-count");
+    const lbl   = document.getElementById("pt-semana-label");
+    const hBar  = document.getElementById("xpBar");
+    const hCnt  = document.getElementById("xpCount");
+    const pct   = Math.min((state.xp / XP_MAX) * 100, 100);
+    if (bar)  bar.style.width  = pct + "%";
+    if (cnt)  cnt.textContent  = state.xp + " XP";
+    if (lbl)  lbl.textContent  = "Semana " + SEMANA;
+    if (hBar) hBar.style.width = pct + "%";
+    if (hCnt) hCnt.textContent = state.xp;
+  }
+
+  function addXP(pts, motivo) {
+    state.xp = Math.min(state.xp + pts, XP_MAX);
+    msg("✨ +" + pts + " XP — " + motivo, "lime");
+    save();
+  }
+
+  async function syncCloud() {
+    save();
+    const sbUrl = localStorage.getItem("tga04_supabase_url") || "";
+    const sbKey = localStorage.getItem("tga04_supabase_key") || "";
+    if (!sbUrl || !sbKey) { msg("⚠️ Supabase no configurado", "orange"); return; }
+    msg("⏳ Sincronizando…", "#fff9c4");
+    try {
+      const res = await fetch(sbUrl + "/rest/v1/student_progress", {
+        method: "POST",
+        headers: { "apikey": sbKey, "Authorization": "Bearer " + sbKey, "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates" },
+        body: JSON.stringify({
+          student_name: state.nombre || "Anónimo",
+          student_id: state.id_estudiante || state.cc || "desconocido",
+          semana: state.semana, xp: state.xp || 0,
+          quiz_answers: state.quiz_respuestas || {}, quiz_score: state.quiz_puntaje || 0,
+          hti_done: !!state.hti_entregado, activity_done: !!state.actividad_completada,
+          grupo: state.grupo || "", horario: state.horario || "",
+          updated_at: new Date().toISOString()
+        })
+      });
+      if (res.ok || res.status === 201) msg("✅ Guardado en Supabase ☁️", "lightgreen");
+      else msg("❌ Error " + res.status, "salmon");
+    } catch(e) { msg("❌ Sin conexión. Guardado local.", "salmon"); }
+  }
+
+  function exportCode() {
+    save();
+    const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    const ta = document.createElement("textarea");
+    ta.value = code;
+    document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+    document.body.removeChild(ta);
+    const a = document.createElement("a");
+    a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(code);
+    a.download = "progreso_tga04_s4_" + (state.id_estudiante || "est") + ".txt";
+    a.click();
+    msg("📋 ¡Código copiado!", "#fff9c4");
+  }
+
+  function importCode() {
+    const code = prompt("Pega tu código de progreso:");
+    if (!code) return;
+    try {
+      Object.assign(state, JSON.parse(decodeURIComponent(escape(atob(code.trim())))));
+      save(); msg("✅ Progreso restaurado.", "lightgreen");
+    } catch(e) { msg("❌ Código inválido.", "salmon"); }
+  }
+
+  function toggle() {
+    const w = document.getElementById("pt-widget");
+    const t = document.getElementById("pt-toggle");
+    if (w) w.classList.toggle("collapsed");
+    if (t) t.textContent = w && w.classList.contains("collapsed") ? "▼" : "▲";
+  }
+
+  function msg(text, color) {
+    const el = document.getElementById("pt-msg");
+    if (!el) return;
+    el.textContent = text; el.style.color = color || "#fff";
+    setTimeout(() => { if (el.textContent === text) el.textContent = ""; }, 4000);
+  }
+
+  function init() {
+    load(); render();
+    // XP por visitar (una vez)
+    if (!localStorage.getItem("tga04_visited_s4")) {
+      localStorage.setItem("tga04_visited_s4", "1");
+      addXP(10, "Asistencia Semana 4 ✅");
+    }
+    // Hacer quiz interactivo
+    document.querySelectorAll(".quiz-q").forEach((qEl, qi) => {
+      const answers   = qEl.querySelectorAll("li");
+      const answerEl  = qEl.querySelector(".quiz-answer");
+      const correctTxt = answerEl ? answerEl.textContent : "";
+      const m = correctTxt.match(/^✅\s*([a-d])/i);
+      const correctIdx = m ? ["a","b","c","d"].indexOf(m[1].toLowerCase()) : -1;
+
+      answers.forEach((li, ai) => {
+        li.addEventListener("click", () => {
+          const key = "q" + qi;
+          if (state.quiz_respuestas[key] !== undefined) return;
+          answers.forEach(a => { a.dataset.answered = "1"; });
+          if (ai === correctIdx) {
+            li.style.background = "#2e7d32"; li.style.color = "#fff";
+            addXP(5, "Respuesta correcta Q" + (qi+1));
+            state.quiz_puntaje = (state.quiz_puntaje || 0) + 1;
+          } else {
+            li.style.background = "#c62828"; li.style.color = "#fff";
+            if (correctIdx >= 0) { answers[correctIdx].style.background = "#2e7d32"; answers[correctIdx].style.color = "#fff"; }
+          }
+          state.quiz_respuestas[key] = ai;
+          if (answerEl) answerEl.style.display = "block";
+          save();
+        });
+      });
+
+      // Restaurar estado previo
+      const prev = state.quiz_respuestas["q" + qi];
+      if (prev !== undefined) {
+        answers.forEach(a => { a.dataset.answered = "1"; });
+        if (prev === correctIdx && correctIdx >= 0) {
+          answers[prev].style.background = "#2e7d32"; answers[prev].style.color = "#fff";
+        } else {
+          if (prev < answers.length) { answers[prev].style.background = "#c62828"; answers[prev].style.color = "#fff"; }
+          if (correctIdx >= 0) { answers[correctIdx].style.background = "#2e7d32"; answers[correctIdx].style.color = "#fff"; }
+        }
+        if (answerEl) answerEl.style.display = "block";
+      }
+    });
+  }
+
+  return { init, addXP, save, sync: syncCloud, export: exportCode, import: importCode, toggle, state: () => state };
+})();
+
+function ptSyncCloud()  { PT.sync(); }
+function ptExportCode() { PT.export(); }
+function ptImportCode() { PT.import(); }
+function ptToggle()     { PT.toggle(); }
+
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", PT.init);
+else PT.init();
+</script>
+
+
+
+    <!-- ══ WELCOME MODAL (CC lookup) ══ -->
+<div id="pt-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="pt-modal-title">
+  <div id="pt-modal-box">
+    <h2 id="pt-modal-title">👋 ¡Bienvenido a TGA04!</h2>
+    <p class="sub">NeuroBiz S.A.S. · Fundamentos de Computación para los Negocios</p>
+
+    <!-- PASO 1: Cédula -->
+    <div id="pt-step1" class="pt-step">
+      <div class="field">
+        <label for="pt-modal-cc">Número de cédula / documento *</label>
+        <div style="display:flex;gap:.5rem">
+          <input id="pt-modal-cc" type="tel" inputmode="numeric" pattern="[0-9]*"
+            placeholder="Ej: 1043158867" autocomplete="off"
+            onkeydown="if(event.key==='Enter')ptSearchCC()" />
+          <button id="pt-modal-btn-search" onclick="ptSearchCC()">Buscar →</button>
+        </div>
+      </div>
+      <div id="pt-modal-error"></div>
+      <p id="pt-modal-xp">🔒 Tu cédula identifica tu progreso de forma segura — no se comparte.</p>
+    </div>
+
+    <!-- PASO 2A: Encontrado -->
+    <div id="pt-step2a" class="pt-step" style="display:none">
+      <div class="pt-found-card">
+        <div class="pt-fc-name" id="pt-fc-name">—</div>
+        <div class="pt-fc-meta" id="pt-fc-meta">—</div>
+      </div>
+      <button id="pt-modal-btn" onclick="ptConfirmFound()">¡Empezar! 🚀</button>
+      <button class="pt-link-btn" onclick="ptBackToCC()">← No soy yo — volver a buscar</button>
+      <div id="pt-modal-error2"></div>
+    </div>
+
+    <!-- PASO 2B: No encontrado -->
+    <div id="pt-step2b" class="pt-step" style="display:none">
+      <p style="font-size:.82rem;opacity:.75;margin-bottom:1rem;background:rgba(255,255,255,.08);border-radius:8px;padding:.6rem .8rem">
+        ⚠️ No encontramos tu cédula en la lista del grupo.<br>
+        Completa tus datos manualmente. El docente podrá importarte en la próxima clase.
+      </p>
+      <div class="field">
+        <label for="pt-modal-nombre">Tu nombre completo *</label>
+        <input id="pt-modal-nombre" type="text" placeholder="Ej: María García López"
+          autocomplete="name" onkeydown="if(event.key==='Enter')ptModalSetupManual()" />
+      </div>
+      <div class="field">
+        <label for="pt-modal-grupo">Grupo / Paralelo</label>
+        <input id="pt-modal-grupo" type="text" placeholder="Ej: 7_GA_G1" />
+      </div>
+      <button id="pt-modal-btn" onclick="ptModalSetupManual()">Continuar →</button>
+      <button class="pt-link-btn" onclick="ptBackToCC()">← Volver a ingresar cédula</button>
+      <div id="pt-modal-error3"></div>
+    </div>
+  </div>
+</div>
+
+<script id="modal-js">
+(function() {
+  function shouldShowModal() {
+    try { var g = JSON.parse(localStorage.getItem("tga04_global") || "{}"); return !g.cc || String(g.cc).trim().length < 3; }
+    catch(e) { return true; }
+  }
+  function showStep(name) {
+    ["pt-step1","pt-step2a","pt-step2b"].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.style.display = (id === name) ? "block" : "none";
+    });
+  }
+  function showModal() {
+    var overlay = document.getElementById("pt-overlay");
+    if (overlay) overlay.style.display = "flex";
+    showStep("pt-step1");
+    try {
+      var g = JSON.parse(localStorage.getItem("tga04_global") || "{}");
+      if (g.cc) { var i = document.getElementById("pt-modal-cc"); if (i) i.value = g.cc; }
+    } catch(e) {}
+    var inp = document.getElementById("pt-modal-cc");
+    if (inp) setTimeout(function(){ inp.focus(); }, 100);
+  }
+  function closeModal() {
+    var overlay = document.getElementById("pt-overlay");
+    if (overlay) {
+      overlay.style.opacity = "0"; overlay.style.transition = "opacity .2s";
+      setTimeout(function(){ overlay.style.display = "none"; overlay.style.opacity = ""; }, 200);
+    }
+  }
+  function getStudents() {
+    try { return JSON.parse(localStorage.getItem("tga04_students_v1") || "[]"); }
+    catch(e) { return []; }
+  }
+  function saveProfile(cc, nombre, grupo, horario) {
+    var profile = {};
+    try { profile = JSON.parse(localStorage.getItem("tga04_global") || "{}"); } catch(e) {}
+    profile.cc = cc; profile.nombre = nombre;
+    profile.grupo   = grupo   || profile.grupo   || "";
+    profile.horario = horario || profile.horario || "";
+    profile.id_estudiante = cc;
+    localStorage.setItem("tga04_global", JSON.stringify(profile));
+    if (typeof PT !== "undefined" && typeof PT.addXP === "function") {
+      setTimeout(function(){ PT.sync && PT.sync(); }, 800);
+    }
+    closeModal();
+  }
+
+  window.ptSearchCC = function() {
+    var ccInp = document.getElementById("pt-modal-cc");
+    var errEl = document.getElementById("pt-modal-error");
+    var cc    = ccInp ? ccInp.value.trim().replace(/\D/g,"") : "";
+    if (!cc || cc.length < 5) {
+      if (errEl) errEl.textContent = "Ingresa tu número de cédula (mínimo 5 dígitos).";
+      if (ccInp) ccInp.focus(); return;
+    }
+    if (errEl) errEl.textContent = "";
+
+    // 1. Buscar en localStorage
+    var students = getStudents();
+    var found = students.find(function(s){ return String(s.cc) === cc; });
+    if (found) {
+      var nameEl = document.getElementById("pt-fc-name");
+      var metaEl = document.getElementById("pt-fc-meta");
+      if (nameEl) nameEl.textContent = "✅ " + found.name;
+      if (metaEl) metaEl.innerHTML =
+        (found.grupo   ? "📚 Grupo: <strong>" + found.grupo + "</strong>" : "") +
+        (found.horario ? " &nbsp;·&nbsp; ⏰ " + found.horario : "");
+      nameEl.dataset.cc = cc; nameEl.dataset.nombre = found.name;
+      nameEl.dataset.grupo = found.grupo || ""; nameEl.dataset.horario = found.horario || "";
+      showStep("pt-step2a");
+      var btn = document.getElementById("pt-modal-btn");
+      if (btn) setTimeout(function(){ btn.focus(); }, 100);
+      return;
+    }
+
+    // 2. Buscar en Supabase
+    var sUrl = localStorage.getItem("tga04_supabase_url");
+    var sKey = localStorage.getItem("tga04_supabase_key");
+    if (sUrl && sKey) {
+      if (errEl) errEl.textContent = "⏳ Buscando…";
+      fetch(sUrl + "/rest/v1/students?cc=eq." + encodeURIComponent(cc) + "&limit=1", {
+        headers: { "apikey": sKey, "Authorization": "Bearer " + sKey }
+      }).then(function(r){ return r.json(); })
+        .then(function(rows){
+          if (errEl) errEl.textContent = "";
+          if (rows && rows.length) {
+            var r = rows[0];
+            var nameEl = document.getElementById("pt-fc-name");
+            var metaEl = document.getElementById("pt-fc-meta");
+            if (nameEl) nameEl.textContent = "✅ " + r.name;
+            if (metaEl) metaEl.innerHTML =
+              (r.grupo   ? "📚 Grupo: <strong>" + r.grupo + "</strong>" : "") +
+              (r.horario ? " &nbsp;·&nbsp; ⏰ " + r.horario : "");
+            nameEl.dataset.cc = cc; nameEl.dataset.nombre = r.name;
+            nameEl.dataset.grupo = r.grupo || ""; nameEl.dataset.horario = r.horario || "";
+            showStep("pt-step2a");
+          } else {
+            var ni = document.getElementById("pt-modal-nombre");
+            if (ni) ni.dataset.cc = cc;
+            showStep("pt-step2b");
+            if (ni) setTimeout(function(){ ni.focus(); }, 100);
+          }
+        }).catch(function(){
+          var ni = document.getElementById("pt-modal-nombre");
+          if (ni) ni.dataset.cc = cc;
+          showStep("pt-step2b");
+          if (ni) setTimeout(function(){ ni.focus(); }, 100);
+        });
+      return;
+    }
+
+    // 3. Manual
+    var ni = document.getElementById("pt-modal-nombre");
+    if (ni) ni.dataset.cc = cc;
+    showStep("pt-step2b");
+    if (ni) setTimeout(function(){ ni.focus(); }, 100);
+  };
+
+  window.ptConfirmFound = function() {
+    var nameEl  = document.getElementById("pt-fc-name");
+    var cc      = nameEl ? nameEl.dataset.cc      : "";
+    var nombre  = nameEl ? nameEl.dataset.nombre  : "";
+    var grupo   = nameEl ? nameEl.dataset.grupo   : "";
+    var horario = nameEl ? nameEl.dataset.horario : "";
+    if (!cc || !nombre) { var e2 = document.getElementById("pt-modal-error2"); if (e2) e2.textContent = "Error al leer datos. Intenta de nuevo."; return; }
+    saveProfile(cc, nombre, grupo, horario);
+  };
+
+  window.ptModalSetupManual = function() {
+    var ni    = document.getElementById("pt-modal-nombre");
+    var gi    = document.getElementById("pt-modal-grupo");
+    var ccInp = document.getElementById("pt-modal-cc");
+    var errEl = document.getElementById("pt-modal-error3");
+    var nombre = ni ? ni.value.trim() : "";
+    var grupo  = gi ? gi.value.trim() : "";
+    var cc     = ccInp ? ccInp.value.trim().replace(/\D/g,"") : "";
+    if (!nombre || nombre.length < 3) {
+      if (errEl) errEl.textContent = "Por favor escribe tu nombre completo (mínimo 3 caracteres).";
+      if (ni) ni.focus(); return;
+    }
+    if (!cc) cc = "MANUAL_" + Date.now();
+    saveProfile(cc, nombre, grupo, "");
+  };
+
+  window.ptBackToCC = function() {
+    showStep("pt-step1");
+    var inp = document.getElementById("pt-modal-cc");
+    if (inp) setTimeout(function(){ inp.focus(); }, 100);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function(){ if (shouldShowModal()) showModal(); });
+  } else {
+    if (shouldShowModal()) showModal();
+  }
+})();
+</script>
+
+</body>
+</html>

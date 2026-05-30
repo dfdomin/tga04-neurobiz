@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notas del Profesor — Semana 14 | TGA04</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1E2843; --accent: #2d3a5e; --gold: #FFDF2D;
+      --green: #1b5e20; --green-bg: #e8f5e9;
+      --orange: #e65100; --orange-bg: #fff3e0;
+      --purple: #4a148c; --purple-bg: #f3e5f5;
+      --border: #DEDFE4; --muted: #546e7a;
+      --card-bg: #fff; --light: #FAFAFA;
+      --radius: 12px;
+    }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--light); color: #212121; line-height: 1.75; font-size: 16px; }
+    header { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: #fff; padding: 2rem 2rem 1.8rem; position: relative; overflow: hidden; }
+    header::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 35px; background: var(--light); clip-path: ellipse(55% 100% at 50% 100%); }
+    .badge-prof { display: inline-block; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); border-radius: 20px; padding: .25rem .9rem; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .7rem; }
+    header h1 { font-size: 1.7rem; font-weight: 800; }
+    header p { opacity: .88; margin-top: .3rem; font-size: .95rem; }
+    nav { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: .5rem 1.5rem; display: flex; gap: .4rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 99; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+    nav a { color: var(--accent); text-decoration: none; font-size: .82rem; font-weight: 700; padding: .25rem .65rem; border-radius: 7px; }
+    nav a:hover { background: var(--border); }
+    main { max-width: 900px; margin: 2rem auto; padding: 0 1.2rem 4rem; }
+    .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.6rem 1.8rem; margin-bottom: 1.8rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .card h2 { font-size: 1.2rem; color: var(--primary); border-left: 5px solid var(--gold); padding-left: .7rem; margin-bottom: 1.1rem; }
+    .card h3 { font-size: 1rem; color: var(--accent); margin: 1.1rem 0 .5rem; }
+    .card p { margin-bottom: .75rem; }
+    .card ul, .card ol { padding-left: 1.3rem; margin-bottom: .75rem; }
+    .card li { margin-bottom: .45rem; }
+    .callout { border-radius: 10px; padding: .9rem 1.2rem; margin: .9rem 0; display: flex; gap: .7rem; align-items: flex-start; }
+    .callout.estrategia { background: var(--green-bg); border-left: 4px solid #2e7d32; }
+    .callout.alerta { background: var(--orange-bg); border-left: 4px solid #ef6c00; }
+    .callout.teoria { background: var(--purple-bg); border-left: 4px solid #7b1fa2; }
+    .callout.cite { background: #e3f2fd; border-left: 4px solid #1565c0; }
+    .callout .ico { font-size: 1.3rem; flex-shrink: 0; line-height: 1; }
+    .callout p { margin: 0; font-size: .92rem; }
+    .time-block { border: 2px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1rem 0; }
+    .time-header { background: var(--primary); color: #fff; padding: .6rem 1.2rem; font-weight: 700; font-size: .92rem; display: flex; justify-content: space-between; align-items: center; }
+    .time-header .mins { background: var(--gold); color: var(--primary); border-radius: 20px; padding: .1rem .6rem; font-size: .78rem; }
+    .time-body { padding: 1rem 1.4rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: .8rem 0; }
+    th { background: var(--primary); color: #fff; padding: .6rem .9rem; text-align: left; }
+    td { padding: .55rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--light); }
+    .badge { display: inline-block; border-radius: 6px; padding: .12rem .5rem; font-size: .72rem; font-weight: 800; }
+    .b-bloom { background: #fff9c4; color: #5d4037; border: 1px solid #FFDF2D; }
+    .quiz-key { background: #f1f8e9; border: 1px solid #aed581; border-radius: 8px; padding: .8rem 1.1rem; margin: .5rem 0; font-size: .88rem; }
+    .quiz-key strong { color: #33691e; }
+    footer { text-align: center; padding: 1.5rem; font-size: .8rem; color: var(--muted); border-top: 1px solid var(--border); }
+    @media (max-width: 640px) { header h1 { font-size: 1.3rem; } .card { padding: 1.1rem; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="badge-prof">🔒 USO EXCLUSIVO DOCENTE · TGA04 · Semana 14</div>
+  <h1>📋 Notas del Profesor — Semana 14</h1>
+  <p>Proyecto Integrador Python: Sistema NeuroBiz Completo · Prof. Diego Domínguez Tapia · IUB Colombia</p>
+</header>
+<nav>
+  <a href="#resumen">🗺️ Resumen</a>
+  <a href="#cronograma">⏱️ Cronograma</a>
+  <a href="#didactica">🎓 Didáctica</a>
+  <a href="#analogias">💡 Analogías</a>
+  <a href="#neurobiz">🏢 NeuroBiz</a>
+  <a href="#quiz-key">🎮 Quiz clave</a>
+  <a href="#hti-guia">🏠 HTI</a>
+  <a href="#fuentes">📚 Fuentes</a>
+</nav>
+<main>
+<section id="resumen" class="card">
+  <h2>🗺️ Resumen Rápido — Semana 14</h2>
+  <table><tbody>
+<tr><td><strong>RA / CE</strong></td><td>RA4 · CE6 + CE7 — Integrador</td></tr>
+<tr><td><strong>Bloom</strong></td><td><span class="badge b-bloom">Sintetizar → Crear</span></td></tr>
+<tr><td><strong>Duración</strong></td><td>4 horas orientadas a proyecto</td></tr>
+<tr><td><strong>Herramientas</strong></td><td>Google Colab, funciones, listas y diccionarios</td></tr>
+<tr><td><strong>XP disponible</strong></td><td>10 asistencia + 25 quiz + 45 misión = <strong>80 XP</strong></td></tr>
+<tr><td><strong>Entregable</strong></td><td>Sistema NeuroBiz funcionando en Colab</td></tr>
+<tr><td><strong>Material estudiante</strong></td><td><code>semana14/index.html</code></td></tr>
+</tbody></table>
+</section>
+<section id="cronograma" class="card">
+  <h2>⏱️ Cronograma Detallado (4 horas)</h2>
+  
+<div class="time-block">
+  <div class="time-header">Momento 1 — Apertura del proyecto <span class="mins">20 min</span></div>
+  <div class="time-body"><ul><li>Revisar objetivo integrador.</li><li>Mostrar el programa completo como meta visible.</li></ul></div>
+</div>
+
+<div class="time-block">
+  <div class="time-header">Momento 2 — Funciones y responsabilidades <span class="mins">50 min</span></div>
+  <div class="time-body"><ul><li>Separar cálculo, clasificación y reporte.</li><li>Explicar <code>return</code>.</li></ul></div>
+</div>
+
+<div class="time-block">
+  <div class="time-header">Momento 3 — Listas y diccionarios <span class="mins">60 min</span></div>
+  <div class="time-body"><ul><li>Explicar pacientes como lista de registros.</li><li>Leer diccionarios con nombre, asistidas, fallidas, tipo.</li></ul></div>
+</div>
+
+<div class="time-block">
+  <div class="time-header">Momento 4 — Construcción del reporte <span class="mins">90 min</span></div>
+  <div class="time-body"><ul><li>Ejecutar el programa.</li><li>Agregar pacientes nuevos.</li><li>Interpretar el reporte en lenguaje de junta directiva.</li></ul></div>
+</div>
+
+<div class="time-block">
+  <div class="time-header">Momento 5 — Quiz y cierre del integrador <span class="mins">20 min</span></div>
+  <div class="time-body"><ul><li>Resolver quiz.</li><li>Preparar HTI obligatorio con enlace de Colab.</li></ul></div>
+</div>
+
+</section>
+<section id="didactica" class="card">
+  <h2>🎓 Estrategias Didácticas Recomendadas</h2>
+  <div class="callout estrategia"><span class="ico">✅</span><p><strong>Trabaje por capas:</strong> primero funciones, luego datos, luego reporte. Evita que el código completo abrume.</p></div><div class="callout teoria"><span class="ico">🧠</span><p><strong>Concepto clave:</strong> semana 14 sintetiza todo el cuatrimestre. Nombre explícitamente cada estructura ya dominada.</p></div><div class="callout alerta"><span class="ico">⚠️</span><p><strong>Error frecuente:</strong> confundir lista con diccionario. Use la metáfora: “lista = caja de fichas; diccionario = una ficha”.</p></div><div class="callout cite"><span class="ico">🏛️</span><p><strong>Mensaje de valor:</strong> crear un sistema pequeño pero completo es evidencia poderosa de transferencia del aprendizaje.</p></div>
+</section>
+<section id="analogias" class="card">
+  <h2>💡 Banco de Analogías</h2>
+  <table><thead><tr><th>Concepto</th><th>Vida real</th><th>Empresa</th><th>Uso</th></tr></thead><tbody>
+<tr><td>Función</td><td>Receta reutilizable</td><td>SOP repetible</td><td>calcular_tasa, clasificar_paciente</td></tr>
+<tr><td>Lista</td><td>Fila de personas</td><td>Lote de registros</td><td>pacientes_neurobiz</td></tr>
+<tr><td>Diccionario</td><td>Ficha con campos</td><td>Registro maestro</td><td>{nombre, asistidas, fallidas}</td></tr>
+</tbody></table>
+</section>
+<section id="neurobiz" class="card">
+  <h2>🏢 Cómo narrar NeuroBiz esta semana</h2>
+  <p>Presente la semana como la “reunión con Junta Directiva”. Todo el código debe leerse como un sistema que apoya una decisión ejecutiva.</p><p>La pregunta final al grupo puede ser: <strong>“Si yo fuera la directora, ¿qué decisión tomaría con este reporte?”</strong></p>
+</section>
+<section id="quiz-key" class="card">
+  <h2>🎮 Quiz clave — Respuestas y énfasis</h2>
+  <div class="quiz-key"><strong>1.</strong> def = función reutilizable.</div><div class="quiz-key"><strong>2.</strong> Diccionario = clave: valor.</div><div class="quiz-key"><strong>3.</strong> return devuelve el cálculo.</div><div class="quiz-key"><strong>4.</strong> Bloom = Crear/Sintetizar.</div><div class="quiz-key"><strong>5.</strong> El proyecto demuestra dominio integral.</div>
+</section>
+<section id="hti-guia" class="card">
+  <h2>🏠 HTI — Guía para el docente</h2>
+  <ul><li><strong>HTI-B:</strong> exigir el enlace del notebook y tres pacientes nuevos.</li><li><strong>HTI-C:</strong> sugerir una versión con input interactivo y cierre por palabra clave.</li></ul>
+</section>
+<section id="fuentes" class="card">
+  <h2>📚 Fuentes para soporte docente</h2>
+  <ul><li>Python docs: functions and data structures.</li><li>Google Colab docs.</li><li>Cairó Battistutti & Guardati.</li><li>Joyanes Aguilar.</li></ul>
+</section>
+</main>
+<footer>TGA04 · Semana 14 · Notas del profesor · Uso exclusivo docente</footer>
+</body>
+</html>

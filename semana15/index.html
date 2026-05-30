@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semana 15 — Debugging y Buenas Prácticas en Google Colab | TGA04</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1E2843;
+      --accent: #2d3a5e;
+      --gold: #FFDF2D;
+      --green: #2e7d32;
+      --red: #c62828;
+      --light-bg: #FAFAFA;
+      --card-bg: #ffffff;
+      --text: #212121;
+      --muted: #546e7a;
+      --border: #DEDFE4;
+      --radius: 12px;
+    }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--light-bg); color: var(--text); line-height: 1.72; font-size: 16px; }
+    header { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: #fff; padding: 2.6rem 2rem 2rem; text-align: center; position: relative; overflow: hidden; }
+    header::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 40px; background: var(--light-bg); clip-path: ellipse(55% 100% at 50% 100%); }
+    .badge-module { display: inline-block; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: .3rem 1rem; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .8rem; }
+    header h1 { font-size: 2rem; font-weight: 800; line-height: 1.2; }
+    header p { font-size: 1rem; opacity: .88; margin-top: .5rem; }
+    .xp-bar-wrap { margin: 1rem auto .35rem; max-width: 420px; background: rgba(255,255,255,.2); border-radius: 20px; height: 14px; overflow: hidden; }
+    .xp-bar { height: 100%; width: 0%; background: var(--gold); border-radius: 20px; transition: width 1.2s ease; }
+    .xp-label, .rank-label { font-size: .82rem; opacity: .84; }
+    nav { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: .6rem 1.5rem; display: flex; gap: .5rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 99; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    nav a { color: var(--accent); text-decoration: none; font-size: .85rem; font-weight: 700; padding: .3rem .7rem; border-radius: 8px; transition: background .2s; }
+    nav a:hover { background: var(--border); }
+    main { max-width: 980px; margin: 2rem auto; padding: 0 1.2rem 4rem; }
+    .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.8rem 2rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .card h2 { font-size: 1.28rem; color: var(--primary); border-left: 5px solid var(--gold); padding-left: .8rem; margin-bottom: 1.15rem; }
+    .card h3 { font-size: 1.02rem; color: var(--accent); margin: 1.15rem 0 .55rem; }
+    .card p { margin-bottom: .8rem; }
+    .card ul, .card ol { padding-left: 1.35rem; margin-bottom: .9rem; }
+    .card li { margin-bottom: .45rem; }
+    .bloom, .meta-chip { display: inline-flex; align-items: center; gap: .4rem; border-radius: 20px; padding: .28rem .82rem; font-size: .8rem; font-weight: 700; margin: .25rem .45rem .25rem 0; }
+    .bloom { background: #fff9c4; border: 1px solid var(--gold); color: #5d4037; }
+    .meta-chip { background: #eef2ff; border: 1px solid #c7d2fe; color: var(--accent); }
+    .memo { background: #fffde7; border-left: 5px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.2rem 1.5rem; margin-bottom: 1.4rem; font-style: italic; }
+    .memo strong { display: block; margin-bottom: .5rem; color: var(--primary); font-style: normal; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .kpi-card { background: var(--light-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .kpi-icon { font-size: 1.7rem; }
+    .kpi-name { font-size: .78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin: .45rem 0; }
+    .kpi-val { font-size: 1.45rem; font-weight: 800; color: var(--primary); }
+    .code-wrap { background: #1E2843; border-radius: 10px; overflow: hidden; margin: 1rem 0; }
+    .code-title { background: #2d3a5e; color: #cdd6f4; font-size: .78rem; padding: .45rem 1rem; font-family: 'Courier New', monospace; }
+    pre { padding: 1.15rem 1.4rem; overflow-x: auto; font-size: .88rem; line-height: 1.6; color: #cdd6f4; font-family: 'Courier New', monospace; margin: 0; }
+    .python-code .kw { color: #cba6f7; font-weight: 700; }
+    .python-code .fn { color: #89b4fa; }
+    .python-code .str { color: #a6e3a1; }
+    .python-code .cm { color: #94a3b8; font-style: italic; }
+    .python-code .num { color: #fab387; }
+    .info-box { border-radius: 10px; padding: 1rem 1.2rem; margin: 1rem 0; display: flex; gap: .8rem; align-items: flex-start; }
+    .info-box.tip { background: #e8f5e9; border-left: 4px solid #43a047; }
+    .info-box.warn { background: #fff8e1; border-left: 4px solid #e6c800; }
+    .info-box.brain { background: #f3e5f5; border-left: 4px solid #8e24aa; }
+    .info-box.cite { background: #e3f2fd; border-left: 4px solid #1976d2; }
+    .info-box .icon { font-size: 1.3rem; line-height: 1; flex-shrink: 0; }
+    .info-box p { margin: 0; font-size: .93rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 1rem 0; }
+    th { background: var(--primary); color: #fff; padding: .72rem .9rem; text-align: left; }
+    td { padding: .62rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--light-bg); }
+    .table-scroll { overflow-x: auto; }
+    .relevance-badge { display: inline-block; border-radius: 6px; padding: .15rem .55rem; font-size: .75rem; font-weight: 800; margin-left: .4rem; }
+    .vig { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+    .evo { background: #fff8e1; color: #e65100; border: 1px solid #ffe082; }
+    .hist-badge { background: #fce4ec; color: #880e4f; border: 1px solid #f48fb1; }
+    .activity { border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 1.2rem 0; }
+    .activity-header { padding: .8rem 1.2rem; display: flex; align-items: center; gap: .7rem; font-weight: 700; font-size: .98rem; }
+    .activity-header.presencial { background: #E9EAED; color: var(--primary); }
+    .activity-header.hti-a { background: #e8f5e9; color: var(--green); }
+    .activity-header.hti-b { background: #fff8e1; color: #e65100; }
+    .activity-header.hti-c { background: #ede7f6; color: #5e35b1; }
+    .activity-body { padding: 1.15rem 1.4rem; }
+    .dojo-panel { background: linear-gradient(135deg, #1E2843 0%, #2d3a5e 100%); color: #fff; border-radius: var(--radius); padding: 1.4rem 1.8rem; margin: 1.3rem 0; }
+    .dojo-panel h3 { color: var(--gold); margin-bottom: .9rem; font-size: 1.02rem; }
+    .dojo-items { display: flex; flex-wrap: wrap; gap: .8rem; }
+    .dojo-item { background: rgba(255,255,255,.12); border-radius: 8px; padding: .5rem 1rem; font-size: .85rem; display: flex; align-items: center; gap: .45rem; }
+    .pts { color: var(--gold); font-weight: 800; }
+    .quiz-box { background: #e3f2fd; border: 2px solid #1565c0; border-radius: var(--radius); padding: 1.3rem 1.6rem; margin: 1rem 0; }
+    .quiz-box h3 { color: #0d47a1; margin-bottom: .8rem; }
+    .quiz-q { margin-bottom: 1.3rem; }
+    .quiz-q p { font-weight: 700; margin-bottom: .45rem; }
+    .quiz-q li { margin-bottom: .35rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background .15s; }
+    .quiz-q li:hover { background: rgba(25,118,210,.12); }
+    .quiz-answer { display: none; background: #e8f5e9; border-radius: 6px; padding: .45rem .8rem; font-size: .85rem; margin-top: .4rem; color: var(--green); font-weight: 600; }
+    .trace-switcher, .chip-row { display: flex; flex-wrap: wrap; gap: .6rem; margin: .8rem 0 1rem; }
+    .trace-btn, .chip { border: 1px solid var(--border); background: #fff; border-radius: 999px; padding: .45rem .9rem; font-weight: 700; font-size: .84rem; cursor: pointer; }
+    .trace-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .trace-summary, .colab-callout, .journey-box { border-radius: 12px; padding: 1rem 1.2rem; margin: 1rem 0; }
+    .trace-summary { background: #eef2ff; border: 1px solid #c7d2fe; }
+    .colab-callout { background: #fff8e1; border-left: 4px solid var(--gold); }
+    .colab-btn { display: inline-block; margin-top: .7rem; background: var(--primary); color: #fff; text-decoration: none; padding: .65rem 1rem; border-radius: 10px; font-weight: 800; }
+    .debug-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; }
+    .debug-card { border: 1px solid var(--border); border-radius: 12px; background: #fff; padding: 1rem; }
+    .debug-card details summary { cursor: pointer; font-weight: 800; color: var(--primary); }
+    .journey-box { background: linear-gradient(135deg, #1E2843, #24385f); color: #fff; }
+    .timeline { list-style: none; padding: 0; margin: 1rem 0; }
+    .timeline li { position: relative; padding-left: 1.5rem; margin-bottom: .75rem; }
+    .timeline li::before { content: '•'; position: absolute; left: 0; color: var(--gold); font-size: 1.2rem; }
+    .bib { font-size: .88rem; line-height: 1.8; }
+    .bib li { margin-bottom: .55rem; }
+    footer { text-align: center; padding: 2rem; font-size: .82rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+    @media (max-width: 640px) { header h1 { font-size: 1.45rem; } .card { padding: 1.2rem; } main { padding: 0 .8rem 3rem; } }
+  </style>
+  <style id="pt-css">
+  #pt-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg,#1E2843,#2d3a5e); color: #fff; border-radius: 16px; padding: 14px 18px; min-width: 250px; max-width: 290px; box-shadow: 0 8px 32px rgba(0,0,0,.35); font-family: 'Open Sans', Arial, sans-serif; font-size: .85rem; transition: transform .3s; }
+  #pt-widget.collapsed { transform: translateY(calc(100% - 42px)); }
+  #pt-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  #pt-header strong { font-size: .92rem; }
+  #pt-toggle { background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; line-height: 1; }
+  #pt-body { margin-top: 10px; }
+  #pt-xp-bar-wrap { background: rgba(255,255,255,.2); border-radius: 20px; height: 10px; overflow: hidden; }
+  #pt-xp-bar { height: 100%; background: linear-gradient(90deg,#FFDF2D,#fff176); border-radius: 20px; transition: width .8s ease; }
+  #pt-xp-label { display: flex; justify-content: space-between; font-size: .75rem; opacity: .84; margin-top: 4px; }
+  #pt-rank, #pt-total { margin-top: 7px; font-size: .74rem; opacity: .92; }
+  #pt-btns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .pt-btn { flex: 1; padding: 5px 8px; border: none; border-radius: 8px; font-size: .75rem; font-weight: 700; cursor: pointer; transition: opacity .2s; }
+  .pt-btn:hover { opacity: .85; }
+  #pt-btn-save { background: #43a047; color: #fff; }
+  #pt-advanced { display: none; margin-top: 5px; }
+  #pt-msg { font-size: .72rem; margin-top: 6px; min-height: 16px; opacity: .85; text-align: center; }
+  </style>
+  <style id="modal-css">
+  #pt-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 10000; display: flex; align-items: center; justify-content: center; animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+  #pt-modal-box { background: linear-gradient(160deg,#1E2843,#1E2843 70%,#2d3a5e); color: #fff; border-radius: 20px; padding: 2rem 2rem 1.5rem; width: min(94vw,420px); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  #pt-modal-box h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: .3rem; }
+  #pt-modal-box .sub { opacity: .75; font-size: .85rem; margin-bottom: 1.3rem; }
+  #pt-modal-box .field { margin-bottom: .9rem; }
+  #pt-modal-box label { display: block; font-size: .78rem; font-weight: 700; opacity: .85; margin-bottom: .3rem; text-transform: uppercase; letter-spacing: .05em; }
+  #pt-modal-box input { width: 100%; background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.35); border-radius: 10px; padding: .6rem .9rem; color: #fff; font-size: .95rem; outline: none; }
+  #pt-modal-box input::placeholder { color: rgba(255,255,255,.45); }
+  #pt-modal-btn, #pt-modal-btn-search { border: none; border-radius: 12px; font-weight: 900; cursor: pointer; }
+  #pt-modal-btn { width: 100%; padding: .7rem; background: linear-gradient(135deg,#FFDF2D,#FFDF2D); color: #1E2843; font-size: 1rem; margin-top: .4rem; }
+  #pt-modal-btn-search { padding: .65rem 1.2rem; background: rgba(255,255,255,.18); color: #fff; font-size: .92rem; flex-shrink: 0; }
+  #pt-modal-error, #pt-modal-error2, #pt-modal-error3 { color: #ff8a80; font-size: .8rem; margin-top: .5rem; min-height: 1em; }
+  #pt-modal-xp { text-align: center; font-size: .78rem; opacity: .7; margin-top: .7rem; }
+  .pt-found-card { background: rgba(255,255,255,.1); border: 1.5px solid rgba(249,168,37,.6); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: .9rem; }
+  .pt-found-card .pt-fc-name { font-size: 1rem; font-weight: 800; margin-bottom: .25rem; }
+  .pt-found-card .pt-fc-meta { font-size: .8rem; opacity: .8; line-height: 1.6; }
+  .pt-link-btn { background: none; border: none; color: rgba(255,255,255,.7); font-size: .8rem; cursor: pointer; text-decoration: underline; padding: .3rem 0 0; display: block; text-align: center; width: 100%; }
+  </style>
+  <script src="../js/supabase-config.js"></script>
+</head>
+<body>
+<header>
+  <div class="badge-module">TGA04 · Fundamentos de Computación para los Negocios · Semana 15</div>
+  <h1>Debugging y Buenas Prácticas en Google Colab</h1>
+  <p>RA5 · CE8 · Evaluar → Crear · Corregir errores antes del lanzamiento final</p>
+  <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar"></div></div>
+  <p class="xp-label">XP de sesión: <span id="xpCount">0</span> / 70 pts</p>
+  <p class="rank-label">Rango del curso: <span id="rankLabel">Aprendiz</span></p>
+</header>
+<nav>
+  <a href="#mision">🎯 Misión</a>
+  <a href="#teoria">📚 Teoría</a>
+  <a href="#debug">🐞 Debug</a><a href="#viaje">🎓 Viaje</a>
+  <a href="#actividad">⚙️ Taller</a>
+  <a href="#hti">🏠 HTI</a>
+  <a href="#quiz">🎮 Quiz</a>
+  <a href="#bib">📖 Fuentes</a>
+</nav>
+<main>
+  <div id="pt-widget">
+    <div id="pt-header" onclick="ptToggle()"><strong>📊 Mi Progreso TGA04</strong><button id="pt-toggle">▲</button></div>
+    <div id="pt-body">
+      <div id="pt-xp-bar-wrap"><div id="pt-xp-bar" style="width:0%"></div></div>
+      <div id="pt-xp-label"><span id="pt-semana-label">Semana 15</span><span id="pt-xp-count">0 XP</span></div>
+      <div id="pt-rank">Rango: <strong id="pt-rank-label">Aprendiz</strong></div>
+      <div id="pt-total">XP total acumulada: <strong id="pt-total-xp">0</strong></div>
+      <div id="pt-btns">
+        <button class="pt-btn" id="pt-btn-save" onclick="ptSyncCloud()">☁️ Guardar</button>
+        <button class="pt-btn" onclick="(function(){var a=document.getElementById('pt-advanced');a.style.display=a.style.display==='block'?'none':'block'})()" style="width:32px;flex-shrink:0;padding:0;font-size:.8rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)">⚙️</button>
+      </div>
+      <div id="pt-advanced">
+        <button class="pt-btn" onclick="ptExportCode()" style="width:100%;margin-bottom:3px;font-size:.72rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📋 Exportar respaldo</button>
+        <button class="pt-btn" onclick="ptImportCode()" style="width:100%;font-size:.72rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📥 Cargar respaldo</button>
+      </div>
+      <div id="pt-msg"></div>
+    </div>
+  </div>
+  <section id="mision" class="card">
+    <h2>📋 Memorando NeuroBiz — Semana 15</h2>
+    <div class="memo">
+      <strong>Para: Consultores Junior de Datos · Equipo TGA04<br>De: Dirección Ejecutiva, NeuroBiz S.A.S.<br>Asunto: QA final del sistema NeuroBiz antes del lanzamiento</strong>
+      El sistema está casi listo, pero la QA de NeuroBiz encontró 5 bugs. Tu misión final es identificar y corregir los errores para el lanzamiento oficial. <strong>Ahora ya no solo programas: también depuras, revisas y mejoras.</strong>
+    </div>
+    <div>
+      <span class="bloom">🧠 Bloom: Evaluar → Crear (aplicado)</span>
+      <span class="meta-chip">🎯 RA5 · CE8 — Identifica, interpreta y corrige errores de programación</span>
+      <span class="meta-chip">💾 <code>tga04_s15</code></span>
+      <span class="meta-chip">🏆 XP máxima: 70</span>
+    </div>
+    <div class="kpi-grid"><div class="kpi-card"><div class="kpi-icon">🐞</div><div class="kpi-name">Bugs a corregir</div><div class="kpi-val">5</div></div>
+<div class="kpi-card"><div class="kpi-icon">📍</div><div class="kpi-name">Traceback</div><div class="kpi-val">archivo + línea</div></div>
+<div class="kpi-card"><div class="kpi-icon">🛡️</div><div class="kpi-name">Práctica clave</div><div class="kpi-val">try/except</div></div>
+<div class="kpi-card"><div class="kpi-icon">🏆</div><div class="kpi-name">XP semana</div><div class="kpi-val">70</div></div></div>
+  </section>
+  
+<section id="teoria" class="card">
+  <h2>📚 Marco Teórico — Leer el error para poder corregirlo</h2>
+  <h3>Tipos de errores en Python <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <table>
+    <thead><tr><th>Error</th><th>Qué significa</th><th>Ejemplo típico</th></tr></thead>
+    <tbody>
+      <tr><td>SyntaxError</td><td>La sintaxis está mal escrita</td><td>Falta dos puntos o paréntesis</td></tr>
+      <tr><td>NameError</td><td>Se usa un nombre no definido</td><td><code>resultadoo</code> en vez de <code>resultado</code></td></tr>
+      <tr><td>TypeError</td><td>Tipos incompatibles</td><td><code>"18" + 2</code></td></tr>
+      <tr><td>ValueError</td><td>Valor válido en tipo, pero no en contexto</td><td><code>int("hola")</code></td></tr>
+      <tr><td>ZeroDivisionError</td><td>División por cero</td><td>Total de sesiones igual a 0</td></tr>
+    </tbody>
+  </table>
+  <div class="info-box cite"><span class="icon">🧠</span><p><strong>Wing 2006:</strong> el pensamiento computacional también implica evaluar, revisar y mejorar soluciones. Debugging no es “arreglar por intuición”: es razonar con evidencia.</p></div>
+  <div class="info-box tip"><span class="icon">🧰</span><p><strong>Técnicas de debugging:</strong> leer el traceback, insertar <code>print()</code> estratégicos, validar entradas y usar <code>try/except</code> para capturar errores recuperables.</p></div>
+  
+<div class="code-wrap">
+  <div class="code-title">🐍 Python — try/except básico</div>
+  <pre><code class="python-code"><span class="cm"># Manejo básico de errores</span>
+<span class="kw">try</span>:
+    asistidas = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">&quot;Sesiones asistidas: &quot;</span>))
+    fallidas = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">&quot;Sesiones fallidas: &quot;</span>))
+    total = asistidas + fallidas
+    <span class="kw">if</span> total == <span class="num">0</span>:
+        <span class="kw">raise</span> ValueError(<span class="str">&quot;No hay sesiones registradas&quot;</span>)
+    tasa = (asistidas / total) * <span class="num">100</span>
+    <span class="fn">print</span>(f&quot;Tasa: {tasa:.1f}%&quot;)
+<span class="kw">except</span> ValueError <span class="kw">as</span> e:
+    <span class="fn">print</span>(f&quot;Error de valor: {e}&quot;)
+<span class="kw">except</span> ZeroDivisionError:
+    <span class="fn">print</span>(<span class="str">&quot;Error: división por cero&quot;</span>)</code></pre>
+</div>
+
+</section>
+
+  
+<section id="debug" class="card">
+  <h2>🐞 Desafío de Debugging — Encuentra y corrige los 5 bugs</h2>
+  <div class="debug-grid">
+    <div class="debug-card"><details open><summary>BUG 1 — NameError</summary>
+<div class="code-wrap">
+  <div class="code-title">Código buggy</div>
+  <pre><code class="plain-code"># BUG 1: NameError
+def calcular_tasa(asistidas, fallidas):
+    total = asistidas + fallidas
+    return (asistidas / total) * 100
+resultado = calcular_tasa(18, 2)
+print(resultadoo)</code></pre>
+</div>
+<p><strong>Pista:</strong> el cálculo funciona; el error está en el nombre usado al imprimir.</p></details></div>
+    <div class="debug-card"><details><summary>BUG 2 — ZeroDivisionError</summary>
+<div class="code-wrap">
+  <div class="code-title">Código buggy</div>
+  <pre><code class="plain-code"># BUG 2: ZeroDivisionError
+def tasa_con_error(asistidas, fallidas):
+    total = asistidas + fallidas
+    return asistidas / total * 100</code></pre>
+</div>
+<p><strong>Pista:</strong> falta validar <code>total == 0</code> antes de dividir.</p></details></div>
+    <div class="debug-card"><details><summary>BUG 3 — TypeError</summary>
+<div class="code-wrap">
+  <div class="code-title">Código buggy</div>
+  <pre><code class="plain-code"># BUG 3: TypeError
+sesiones = &quot;18&quot;
+fallidas = 2
+print(sesiones + fallidas)</code></pre>
+</div>
+<p><strong>Pista:</strong> no puedes sumar directamente texto y entero.</p></details></div>
+    <div class="debug-card"><details><summary>BUG 4 — Error lógico</summary>
+<div class="code-wrap">
+  <div class="code-title">Código buggy</div>
+  <pre><code class="plain-code"># BUG 4: Error lógico
+def clasificar(tasa):
+    if tasa &gt; 80:
+        return &quot;VERDE&quot;
+    elif tasa &gt; 50:
+        return &quot;AMARILLO&quot;
+    else:
+        return &quot;ROJO&quot;</code></pre>
+</div>
+<p><strong>Pista:</strong> revisa los bordes exactos 80 y 50.</p></details></div>
+    <div class="debug-card"><details><summary>BUG 5 — IndentationError</summary>
+<div class="code-wrap">
+  <div class="code-title">Código buggy</div>
+  <pre><code class="plain-code"># BUG 5: IndentationError
+def reporte(pacientes):
+for p in pacientes:
+    print(p)</code></pre>
+</div>
+<p><strong>Pista:</strong> el cuerpo de la función debe ir indentado debajo de <code>def</code>.</p></details></div>
+  </div>
+</section>
+<section id="viaje" class="card">
+  <h2>🎓 El Viaje Completo</h2>
+  <div class="journey-box">
+    <p>De pseudocódigo a Python, de diseñar a depurar. Este módulo te llevó por todas las etapas del pensamiento computacional aplicado al negocio.</p>
+    <ul class="timeline">
+      <li><strong>Semana 1:</strong> Dato → Información → Algoritmo (conceptual)</li>
+      <li><strong>Semanas 2-4:</strong> Variables, tipos y condicionales en pseudocódigo</li>
+      <li><strong>Semanas 6-9:</strong> Ciclos y algoritmos complejos en pseudocódigo</li>
+      <li><strong>Semana 11:</strong> Pruebas de escritorio y verificación</li>
+      <li><strong>Semanas 12-14:</strong> Python en Google Colab e implementación real</li>
+      <li><strong>Semana 15:</strong> Debugging y calidad</li>
+    </ul>
+    <p><strong>740 XP disponibles. ¿Cuántos alcanzaste?</strong></p>
+  </div>
+</section>
+
+  
+<section id="actividad" class="card">
+  <h2>⚙️ Taller Presencial — QA final</h2>
+  <div class="dojo-panel"><h3>🏆 XP disponibles esta semana</h3><div class="dojo-items"><div class="dojo-item">📋 <span>Asistencia</span> <span class="pts">+10 XP</span></div><div class="dojo-item">🎮 <span>Quiz</span> <span class="pts">+25 XP</span></div><div class="dojo-item">🐞 <span>Misión debugging</span> <span class="pts">+35 XP</span></div></div></div>
+  
+<div class="activity">
+  <div class="activity-header presencial">⏱️ Bloque 1 — Leer el traceback (90 min)</div>
+  <div class="activity-body"><ol><li>Provocar errores controlados en Colab.</li><li>Identificar archivo, línea y tipo de error.</li><li>Distinguir errores de sintaxis, tipo, nombre y lógica.</li></ol></div>
+</div>
+
+  
+<div class="activity">
+  <div class="activity-header presencial">⏱️ Bloque 2 — Corrección y buenas prácticas (120 min)</div>
+  <div class="activity-body"><ol><li>Corregir los 5 bugs del desafío.</li><li>Aplicar nombres descriptivos, funciones pequeñas y comentarios precisos.</li><li>Hacer code review cruzado de un fragmento del proyecto de semana 14.</li></ol></div>
+</div>
+
+</section>
+
+  
+<section id="hti" class="card">
+  <h2>🏠 HTI — Trabajo Independiente</h2>
+  <div class="activity">
+    <div class="activity-header hti-b">📚 HTI-B — Corregir los 5 bugs y documentar evidencia</div>
+    <div class="activity-body"><ol><li>Arreglar los cinco errores en Google Colab.</li><li>Ejecutar el notebook sin fallos.</li><li>Tomar una captura de pantalla o prueba de ejecución correcta.</li></ol></div>
+  </div>
+  <div class="activity">
+    <div class="activity-header hti-c">🤝 HTI-C — Code review a un compañero</div>
+    <div class="activity-body"><ol><li>Revisar el proyecto de semana 14 de un compañero.</li><li>Escribir 3 sugerencias concretas de mejora.</li><li>Clasificarlas en: claridad, robustez y estilo.</li></ol></div>
+  </div>
+</section>
+
+  
+<section id="quiz" class="card">
+  <h2>🎮 Quiz Interactivo — Semana 15</h2>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">5 preguntas · clic para responder · <strong>5 XP</strong> por acierto · sincronización automática al completar cada respuesta</p>
+  <div class="quiz-box">
+    <h3>⚡ Evaluación rápida NeuroBiz</h3>
+    
+<div class="quiz-q">
+  <p>1. NameError en Python ocurre cuando:</p>
+  <ol type="a"><li>Se usa una variable no definida</li><li>Hay un error de tipo</li><li>División por cero</li><li>Error de indentación</li></ol>
+  <div class="quiz-answer">✅ a — El intérprete no reconoce el nombre porque no existe o está mal escrito.</div>
+</div>
+
+<div class="quiz-q">
+  <p>2. try/except sirve para:</p>
+  <ol type="a"><li>Manejar errores en tiempo de ejecución</li><li>Evitar SyntaxErrors</li><li>Mejorar velocidad</li><li>Comentar código</li></ol>
+  <div class="quiz-answer">✅ a — Permite capturar excepciones y responder de forma controlada.</div>
+</div>
+
+<div class="quiz-q">
+  <p>3. print("sesiones" + 18) daría:</p>
+  <ol type="a"><li>TypeError</li><li>NameError</li><li>SyntaxError</li><li>ValueError</li></ol>
+  <div class="quiz-answer">✅ a — No se puede concatenar directamente una cadena con un entero.</div>
+</div>
+
+<div class="quiz-q">
+  <p>4. El traceback de Python indica:</p>
+  <ol type="a"><li>El archivo, línea y tipo de error</li><li>Solo el tipo de error</li><li>Solo la línea</li><li>Ningún dato útil</li></ol>
+  <div class="quiz-answer">✅ a — El traceback es el mapa de dónde falló el programa.</div>
+</div>
+
+<div class="quiz-q">
+  <p>5. Debugging con print() es efectivo cuando:</p>
+  <ol type="a"><li>Quieres ver el valor de variables en puntos específicos</li><li>Hay errores de sintaxis</li><li>El código no se ejecuta</li><li>Hay problemas de red</li></ol>
+  <div class="quiz-answer">✅ a — print debugging permite observar el estado interno del programa.</div>
+</div>
+
+  </div>
+</section>
+
+  
+<section id="bib" class="card">
+  <h2>📖 Fuentes y Referencias</h2>
+  <ul class="bib"><li><strong>Python Software Foundation.</strong> Excepciones y errores. <a href="https://docs.python.org/3/tutorial/errors.html" target="_blank">Errors and Exceptions</a>.</li><li><strong>Google Colaboratory.</strong> Entorno usado para depuración y evidencias. <a href="https://colab.research.google.com/" target="_blank">colab.research.google.com</a>.</li><li><strong>Wing, J. M.</strong> (2006). “Computational Thinking”. <em>Communications of the ACM</em>, 49(3), 33–35.</li><li><strong>Cairó Battistutti, O. & Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em>. Alfaomega.</li><li><strong>Martin, R. C.</strong> (2008). <em>Clean Code</em>. Prentice Hall. Buenas prácticas y claridad del código.</li></ul>
+</section>
+
+</main>
+<footer>TGA04 · IUB Colombia · Prof. Diego Domínguez Tapia · Semana 15 · Debugging y Buenas Prácticas en Google Colab · Caso de estudio: NeuroBiz S.A.S.</footer>
+<script id="pt-js">
+const PT = (function() {
+  const SEMANA = 15;
+  const XP_MAX = 70;
+  const LS_KEY = "tga04_s15";
+  const VISITED_KEY = "tga04_visited_s15";
+  const LS_GLOBAL = "tga04_global";
+  const COURSE_CODE = "TGA04-2026-2";
+  let state = {
+    nombre: "", cc: "", id_estudiante: "", grupo: "", horario: "",
+    semana: SEMANA, xp: 0, quiz_respuestas: {}, quiz_puntaje: 0,
+    hti_entregado: false, actividad_completada: false,
+    curso: COURSE_CODE, dispositivo: navigator.userAgent.substring(0, 80)
+  };
+  function rankFor(total) {
+    if (total >= 650) return 'CTO';
+    if (total >= 450) return 'Arquitecto';
+    if (total >= 250) return 'Consultor';
+    if (total >= 100) return 'Analista Junior';
+    return 'Aprendiz';
+  }
+  function totalXP() {
+    let total = 0;
+    for (let i = 1; i <= 15; i++) {
+      try {
+        const raw = localStorage.getItem('tga04_s' + i);
+        if (!raw) continue;
+        const obj = JSON.parse(raw);
+        total += Number(obj.xp || 0);
+      } catch (e) {}
+    }
+    return total;
+  }
+  function load() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) Object.assign(state, JSON.parse(raw));
+      const g = JSON.parse(localStorage.getItem(LS_GLOBAL) || '{}');
+      if (!state.nombre && g.nombre) state.nombre = g.nombre;
+      if (!state.cc && g.cc) state.cc = g.cc;
+      if (!state.id_estudiante && g.cc) state.id_estudiante = g.cc;
+      if (!state.grupo && g.grupo) state.grupo = g.grupo;
+      if (!state.horario && g.horario) state.horario = g.horario;
+    } catch (e) {}
+  }
+  function save() {
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+    render();
+  }
+  function render() {
+    const pct = Math.min((state.xp / XP_MAX) * 100, 100);
+    const total = totalXP();
+    const rank = rankFor(total);
+    const set = function(id, value) { const el = document.getElementById(id); if (el) el.textContent = value; };
+    const bar = document.getElementById('pt-xp-bar'); if (bar) bar.style.width = pct + '%';
+    const hBar = document.getElementById('xpBar'); if (hBar) hBar.style.width = pct + '%';
+    set('pt-xp-count', state.xp + ' XP');
+    set('xpCount', state.xp);
+    set('pt-semana-label', 'Semana ' + SEMANA);
+    set('pt-rank-label', rank);
+    set('pt-total-xp', total);
+    set('rankLabel', rank);
+  }
+  function msg(text, color) {
+    const el = document.getElementById('pt-msg');
+    if (!el) return;
+    el.textContent = text;
+    el.style.color = color || '#fff';
+    setTimeout(function() { if (el.textContent === text) el.textContent = ''; }, 4000);
+  }
+  function addXP(pts, motivo) {
+    state.xp = Math.min(state.xp + pts, XP_MAX);
+    msg('✨ +' + pts + ' XP — ' + motivo, 'lime');
+    save();
+  }
+  async function syncCloud() {
+    save();
+    const sbUrl = localStorage.getItem('tga04_supabase_url') || '';
+    const sbKey = localStorage.getItem('tga04_supabase_key') || '';
+    if (!sbUrl || !sbKey) { msg('⚠️ Supabase no configurado', 'orange'); return; }
+    msg('⏳ Sincronizando…', '#fff9c4');
+    try {
+      const res = await fetch(sbUrl + '/rest/v1/student_progress', {
+        method: 'POST',
+        headers: {
+          'apikey': sbKey,
+          'Authorization': 'Bearer ' + sbKey,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify({
+          student_name: state.nombre || 'Anónimo',
+          student_id: state.id_estudiante || state.cc || 'desconocido',
+          semana: state.semana,
+          xp: state.xp || 0,
+          quiz_answers: state.quiz_respuestas || {},
+          quiz_score: state.quiz_puntaje || 0,
+          hti_done: !!state.hti_entregado,
+          activity_done: !!state.actividad_completada,
+          grupo: state.grupo || '',
+          horario: state.horario || '',
+          updated_at: new Date().toISOString()
+        })
+      });
+      if (res.ok || res.status === 201) msg('✅ Guardado en Supabase ☁️', 'lightgreen');
+      else msg('❌ Error ' + res.status, 'salmon');
+    } catch (e) {
+      msg('❌ Sin conexión. Guardado local.', 'salmon');
+    }
+  }
+  function exportCode() {
+    save();
+    const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    const ta = document.createElement('textarea');
+    ta.value = code; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    const a = document.createElement('a');
+    a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(code);
+    a.download = 'progreso_tga04_s' + SEMANA + '_' + (state.id_estudiante || 'est') + '.txt';
+    a.click();
+    msg('📋 Código copiado.', '#fff9c4');
+  }
+  function importCode() {
+    const code = prompt('Pega tu código de progreso:');
+    if (!code) return;
+    try {
+      Object.assign(state, JSON.parse(decodeURIComponent(escape(atob(code.trim())))));
+      save();
+      msg('✅ Progreso restaurado.', 'lightgreen');
+    } catch (e) {
+      msg('❌ Código inválido.', 'salmon');
+    }
+  }
+  function toggle() {
+    const w = document.getElementById('pt-widget');
+    const t = document.getElementById('pt-toggle');
+    if (!w) return;
+    w.classList.toggle('collapsed');
+    const collapsed = w.classList.contains('collapsed');
+    if (t) t.textContent = collapsed ? '▼' : '▲';
+    localStorage.setItem('tga04_pt_collapsed', collapsed ? '1' : '0');
+  }
+  function initQuiz() {
+    document.querySelectorAll('.quiz-q').forEach(function(qEl, qi) {
+      const answers = qEl.querySelectorAll('li');
+      const answerEl = qEl.querySelector('.quiz-answer');
+      const correctTxt = answerEl ? answerEl.textContent : '';
+      const m = correctTxt.match(/^✅\s*([a-d])/i);
+      const correctIdx = m ? ['a', 'b', 'c', 'd'].indexOf(m[1].toLowerCase()) : -1;
+      answers.forEach(function(li, ai) {
+        li.addEventListener('click', function() {
+          const key = 'q' + qi;
+          if (state.quiz_respuestas[key] !== undefined) return;
+          if (ai === correctIdx) {
+            li.style.background = '#2e7d32'; li.style.color = '#fff';
+            addXP(5, 'Respuesta correcta Q' + (qi + 1));
+            state.quiz_puntaje = (state.quiz_puntaje || 0) + 1;
+          } else {
+            li.style.background = '#c62828'; li.style.color = '#fff';
+            if (correctIdx >= 0 && answers[correctIdx]) { answers[correctIdx].style.background = '#2e7d32'; answers[correctIdx].style.color = '#fff'; }
+          }
+          state.quiz_respuestas[key] = ai;
+          if (answerEl) answerEl.style.display = 'block';
+          save();
+          setTimeout(syncCloud, 250);
+        });
+      });
+      const prev = state.quiz_respuestas['q' + qi];
+      if (prev !== undefined) {
+        if (prev === correctIdx && answers[prev]) {
+          answers[prev].style.background = '#2e7d32'; answers[prev].style.color = '#fff';
+        } else {
+          if (answers[prev]) { answers[prev].style.background = '#c62828'; answers[prev].style.color = '#fff'; }
+          if (correctIdx >= 0 && answers[correctIdx]) { answers[correctIdx].style.background = '#2e7d32'; answers[correctIdx].style.color = '#fff'; }
+        }
+        if (answerEl) answerEl.style.display = 'block';
+      }
+    });
+  }
+  function init() {
+    load();
+    render();
+    if (localStorage.getItem('tga04_pt_collapsed') === '1') {
+      const w = document.getElementById('pt-widget');
+      const t = document.getElementById('pt-toggle');
+      if (w) w.classList.add('collapsed');
+      if (t) t.textContent = '▼';
+    }
+    if (!localStorage.getItem(VISITED_KEY)) {
+      localStorage.setItem(VISITED_KEY, '1');
+      addXP(10, 'Asistencia Semana ' + SEMANA + ' ✅');
+    }
+    initQuiz();
+  }
+  return { init, addXP, sync: syncCloud, export: exportCode, import: importCode, toggle };
+})();
+function ptSyncCloud() { PT.sync(); }
+function ptExportCode() { PT.export(); }
+function ptImportCode() { PT.import(); }
+function ptToggle() { PT.toggle(); }
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', PT.init); else PT.init();
+</script>
+<div id="pt-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="pt-modal-title">
+  <div id="pt-modal-box">
+    <h2 id="pt-modal-title">👋 ¡Bienvenido a TGA04!</h2>
+    <p class="sub">NeuroBiz S.A.S. · Fundamentos de Computación para los Negocios</p>
+    <div id="pt-step1" class="pt-step">
+      <div class="field">
+        <label for="pt-modal-cc">Número de cédula / documento *</label>
+        <div style="display:flex;gap:.5rem">
+          <input id="pt-modal-cc" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ej: 1043158867" autocomplete="off" onkeydown="if(event.key==='Enter')ptSearchCC()" />
+          <button id="pt-modal-btn-search" onclick="ptSearchCC()">Buscar →</button>
+        </div>
+      </div>
+      <div id="pt-modal-error"></div>
+      <p id="pt-modal-xp">🔒 Tu cédula identifica tu progreso de forma segura. Primero se busca en Supabase y, si no aparece, puedes registrarte manualmente.</p>
+    </div>
+    <div id="pt-step2a" class="pt-step" style="display:none">
+      <div class="pt-found-card"><div class="pt-fc-name" id="pt-fc-name">—</div><div class="pt-fc-meta" id="pt-fc-meta">—</div></div>
+      <button id="pt-modal-btn" onclick="ptConfirmFound()">¡Empezar! 🚀</button>
+      <button class="pt-link-btn" onclick="ptBackToCC()">← No soy yo — volver a buscar</button>
+      <div id="pt-modal-error2"></div>
+    </div>
+    <div id="pt-step2b" class="pt-step" style="display:none">
+      <p style="font-size:.82rem;opacity:.8;margin-bottom:1rem;background:rgba(255,255,255,.08);border-radius:8px;padding:.6rem .8rem">⚠️ No encontramos tu cédula en la lista. Completa los datos manualmente y el docente podrá consolidarlos después.</p>
+      <div class="field"><label for="pt-modal-nombre">Tu nombre completo *</label><input id="pt-modal-nombre" type="text" placeholder="Ej: María García López" autocomplete="name" onkeydown="if(event.key==='Enter')ptModalSetupManual()" /></div>
+      <div class="field"><label for="pt-modal-grupo">Grupo / paralelo</label><input id="pt-modal-grupo" type="text" placeholder="Ej: 7_GA_G1" /></div>
+      <button id="pt-modal-btn" onclick="ptModalSetupManual()">Continuar →</button>
+      <button class="pt-link-btn" onclick="ptBackToCC()">← Volver a ingresar cédula</button>
+      <div id="pt-modal-error3"></div>
+    </div>
+  </div>
+</div>
+<script id="modal-js">
+(function() {
+  function shouldShowModal() {
+    try { var g = JSON.parse(localStorage.getItem('tga04_global') || '{}'); return !g.cc || String(g.cc).trim().length < 3; }
+    catch (e) { return true; }
+  }
+  function showStep(name) {
+    ['pt-step1', 'pt-step2a', 'pt-step2b'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = (id === name) ? 'block' : 'none';
+    });
+  }
+  function showModal() {
+    var overlay = document.getElementById('pt-overlay');
+    if (overlay) overlay.style.display = 'flex';
+    showStep('pt-step1');
+    var inp = document.getElementById('pt-modal-cc');
+    if (inp) setTimeout(function() { inp.focus(); }, 120);
+  }
+  function closeModal() {
+    var overlay = document.getElementById('pt-overlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+  function getStudents() {
+    try { return JSON.parse(localStorage.getItem('tga04_students_v1') || '[]'); }
+    catch (e) { return []; }
+  }
+  function saveProfile(cc, nombre, grupo, horario) {
+    var profile = {};
+    try { profile = JSON.parse(localStorage.getItem('tga04_global') || '{}'); } catch (e) {}
+    profile.cc = cc;
+    profile.nombre = nombre;
+    profile.grupo = grupo || profile.grupo || '';
+    profile.horario = horario || profile.horario || '';
+    profile.id_estudiante = cc;
+    localStorage.setItem('tga04_global', JSON.stringify(profile));
+    closeModal();
+    setTimeout(function() { if (typeof ptSyncCloud === 'function') ptSyncCloud(); }, 500);
+  }
+  window.ptSearchCC = function() {
+    var ccInp = document.getElementById('pt-modal-cc');
+    var errEl = document.getElementById('pt-modal-error');
+    var cc = ccInp ? ccInp.value.trim().replace(/\D/g, '') : '';
+    if (!cc || cc.length < 5) {
+      if (errEl) errEl.textContent = 'Ingresa tu número de cédula (mínimo 5 dígitos).';
+      if (ccInp) ccInp.focus();
+      return;
+    }
+    if (errEl) errEl.textContent = '';
+    var students = getStudents();
+    var found = students.find(function(s) { return String(s.cc) === cc; });
+    if (found) {
+      var nameEl = document.getElementById('pt-fc-name');
+      var metaEl = document.getElementById('pt-fc-meta');
+      if (nameEl) nameEl.textContent = '✅ ' + found.name;
+      if (metaEl) metaEl.innerHTML = (found.grupo ? '📚 Grupo: <strong>' + found.grupo + '</strong>' : '') + (found.horario ? ' &nbsp;·&nbsp; ⏰ ' + found.horario : '');
+      if (nameEl) {
+        nameEl.dataset.cc = cc; nameEl.dataset.nombre = found.name; nameEl.dataset.grupo = found.grupo || ''; nameEl.dataset.horario = found.horario || '';
+      }
+      showStep('pt-step2a');
+      return;
+    }
+    var sUrl = localStorage.getItem('tga04_supabase_url');
+    var sKey = localStorage.getItem('tga04_supabase_key');
+    if (sUrl && sKey) {
+      if (errEl) errEl.textContent = '⏳ Buscando…';
+      fetch(sUrl + '/rest/v1/students?cc=eq.' + encodeURIComponent(cc) + '&limit=1', {
+        headers: { 'apikey': sKey, 'Authorization': 'Bearer ' + sKey }
+      }).then(function(r) { return r.json(); }).then(function(rows) {
+        if (errEl) errEl.textContent = '';
+        if (rows && rows.length) {
+          var r = rows[0];
+          var nameEl = document.getElementById('pt-fc-name');
+          var metaEl = document.getElementById('pt-fc-meta');
+          if (nameEl) nameEl.textContent = '✅ ' + r.name;
+          if (metaEl) metaEl.innerHTML = (r.grupo ? '📚 Grupo: <strong>' + r.grupo + '</strong>' : '') + (r.horario ? ' &nbsp;·&nbsp; ⏰ ' + r.horario : '');
+          if (nameEl) {
+            nameEl.dataset.cc = cc; nameEl.dataset.nombre = r.name; nameEl.dataset.grupo = r.grupo || ''; nameEl.dataset.horario = r.horario || '';
+          }
+          showStep('pt-step2a');
+        } else {
+          var ni = document.getElementById('pt-modal-nombre');
+          if (ni) ni.dataset.cc = cc;
+          showStep('pt-step2b');
+        }
+      }).catch(function() {
+        var ni = document.getElementById('pt-modal-nombre');
+        if (ni) ni.dataset.cc = cc;
+        showStep('pt-step2b');
+      });
+      return;
+    }
+    var ni = document.getElementById('pt-modal-nombre');
+    if (ni) ni.dataset.cc = cc;
+    showStep('pt-step2b');
+  };
+  window.ptConfirmFound = function() {
+    var nameEl = document.getElementById('pt-fc-name');
+    var cc = nameEl ? nameEl.dataset.cc : '';
+    var nombre = nameEl ? nameEl.dataset.nombre : '';
+    var grupo = nameEl ? nameEl.dataset.grupo : '';
+    var horario = nameEl ? nameEl.dataset.horario : '';
+    if (!cc || !nombre) { var e2 = document.getElementById('pt-modal-error2'); if (e2) e2.textContent = 'Error al leer datos. Intenta de nuevo.'; return; }
+    saveProfile(cc, nombre, grupo, horario);
+  };
+  window.ptModalSetupManual = function() {
+    var ni = document.getElementById('pt-modal-nombre');
+    var gi = document.getElementById('pt-modal-grupo');
+    var ccInp = document.getElementById('pt-modal-cc');
+    var errEl = document.getElementById('pt-modal-error3');
+    var nombre = ni ? ni.value.trim() : '';
+    var grupo = gi ? gi.value.trim() : '';
+    var cc = ccInp ? ccInp.value.trim().replace(/\D/g, '') : '';
+    if (!nombre || nombre.length < 3) {
+      if (errEl) errEl.textContent = 'Por favor escribe tu nombre completo.';
+      if (ni) ni.focus();
+      return;
+    }
+    if (!cc) cc = 'MANUAL_' + Date.now();
+    saveProfile(cc, nombre, grupo, '');
+  };
+  window.ptBackToCC = function() { showStep('pt-step1'); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function() { if (shouldShowModal()) showModal(); });
+  else if (shouldShowModal()) showModal();
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){});
+</script>
+</body>
+</html>

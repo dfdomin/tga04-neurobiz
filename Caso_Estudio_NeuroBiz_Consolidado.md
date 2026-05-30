@@ -38,8 +38,8 @@ NeuroBiz integra la sostenibilidad como eje operativo para su expansión interna
 ### C. Transformación Digital para las Empresas
 * **Reto (Modernización y Escalabilidad):** NeuroBiz necesita dejar atrás los sistemas aislados. El estudiante diseña un plan de transformación digital que incluye la adopción de ecosistemas Cloud, la integración de IoT para monitorear el consumo de energía renovable en tiempo real, y estrategias de automatización para escalar las terapias a nivel internacional.
 
-### D. Estructura de Datos para los Negocios
-* **Reto (Eficiencia y Organización Analítica):** A medida que la empresa crece, el manejo de datos se vuelve complejo. Los estudiantes deben aplicar estructuras de datos en Python para optimizar el negocio. Por ejemplo: usar **Diccionarios (Hash Maps)** para buscar instantáneamente el historial terapéutico de un paciente sin ralentizar el sistema; usar **Colas (Queues)** para automatizar la asignación justa de terapeutas a pacientes en lista de espera; o usar **Grafos** para mapear la red logística y energética de las sucursales internacionales.
+### D. Fundamentos de Computación para los Negocios
+* **Reto (Automatización Algorítmica):** NeuroBiz necesita que sus coordinadores puedan formular soluciones a problemas operativos sin depender del área de TI. Los estudiantes diseñan algoritmos (diagramas de flujo y pseudocódigo) para automatizar procesos clave: calcular la tasa de retención de pacientes usando primitivas repetitivas, clasificar pacientes por prioridad de atención mediante condicionales (SI-SINO), y codificar estas soluciones en un lenguaje de alto nivel como Python. El resultado: los coordinadores de NeuroBiz reducen errores manuales y toman decisiones más rápidas con lógica algorítmica básica.
 
 ## 6. Dinámica de Implementación (Gamificación)
 1. **El Memorando:** Los estudiantes reciben un informe de la junta directiva sobre la necesidad inminente de modernizar los procesos, procesar datos estancados y cumplir metas de los ODS.

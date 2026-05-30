@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semana 1 — Algoritmos y Pensamiento Computacional | TGA04</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary:   #1E2843;
+      --accent:    #2d3a5e;
+      --gold:      #FFDF2D;
+      --green:     #2e7d32;
+      --red:       #c62828;
+      --light-bg:  #FAFAFA;
+      --card-bg:   #ffffff;
+      --text:      #212121;
+      --muted:     #546e7a;
+      --border:    #DEDFE4;
+      --radius:    12px;
+    }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--light-bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    header { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: #fff; padding: 2.5rem 2rem 2rem; text-align: center; position: relative; overflow: hidden; }
+    header::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 40px; background: var(--light-bg); clip-path: ellipse(55% 100% at 50% 100%); }
+    .badge-module { display: inline-block; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: .3rem 1rem; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .8rem; }
+    header h1 { font-size: 2rem; font-weight: 800; line-height: 1.2; }
+    header p  { font-size: 1rem; opacity: .85; margin-top: .5rem; }
+    .xp-bar-wrap { margin: 1.2rem auto 0; max-width: 400px; background: rgba(255,255,255,.2); border-radius: 20px; height: 14px; overflow: hidden; }
+    .xp-bar { height: 100%; width: 0%; background: var(--gold); border-radius: 20px; transition: width 1.5s ease; }
+    .xp-label { font-size: .78rem; opacity: .8; margin-top: .4rem; }
+
+    nav { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: .6rem 1.5rem; display: flex; gap: .5rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 99; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    nav a { color: var(--accent); text-decoration: none; font-size: .85rem; font-weight: 600; padding: .3rem .7rem; border-radius: 8px; transition: background .2s; }
+    nav a:hover { background: var(--border); }
+
+    main { max-width: 960px; margin: 2rem auto; padding: 0 1.2rem 4rem; }
+
+    .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.8rem 2rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .card h2 { font-size: 1.3rem; color: var(--primary); border-left: 5px solid var(--gold); padding-left: .8rem; margin-bottom: 1.2rem; }
+    .card h3 { font-size: 1.05rem; color: var(--accent); margin: 1.2rem 0 .6rem; }
+    .card p  { margin-bottom: .8rem; }
+    .card ul, .card ol { padding-left: 1.4rem; margin-bottom: .8rem; }
+    .card li { margin-bottom: .4rem; }
+
+    .bloom { display: inline-flex; align-items: center; gap: .4rem; background: #fff9c4; border: 1px solid #FFDF2D; border-radius: 20px; padding: .25rem .85rem; font-size: .8rem; font-weight: 700; color: #5d4037; margin-bottom: 1rem; }
+
+    .memo { background: #fffde7; border-left: 5px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; font-style: italic; }
+    .memo strong { font-style: normal; display: block; margin-bottom: .4rem; color: var(--primary); }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 1rem; margin: 1rem 0; }
+    .kpi-card { background: var(--light-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .kpi-card .kpi-icon { font-size: 1.8rem; }
+    .kpi-card .kpi-name { font-size: .78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin: .4rem 0; }
+    .kpi-card .kpi-val  { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+
+    .code-wrap { background: #1E2843; border-radius: 10px; overflow: hidden; margin: 1rem 0; }
+    .code-title { background: #2d3a5e; color: #cdd6f4; font-size: .78rem; padding: .4rem 1rem; font-family: monospace; display: flex; justify-content: space-between; align-items: center; }
+    pre { padding: 1.2rem 1.5rem; overflow-x: auto; font-size: .88rem; line-height: 1.6; color: #cdd6f4; font-family: 'Courier New', monospace; }
+    .kw  { color: #cba6f7; }
+    .fn  { color: #89b4fa; }
+    .str { color: #a6e3a1; }
+    .cm  { color: #6c7086; font-style: italic; }
+    .num { color: #fab387; }
+
+    .info-box { border-radius: 10px; padding: 1rem 1.3rem; margin: 1rem 0; display: flex; gap: .8rem; align-items: flex-start; }
+    .info-box.tip   { background: #e8f5e9; border-left: 4px solid #43a047; }
+    .info-box.warn  { background: #fff8e1; border-left: 4px solid #e6c800; }
+    .info-box.brain { background: #f3e5f5; border-left: 4px solid #8e24aa; }
+    .info-box.cite  { background: #e3f2fd; border-left: 4px solid #1976d2; }
+    .info-box.hist  { background: #fce4ec; border-left: 4px solid #e91e63; }
+    .info-box .icon { font-size: 1.4rem; line-height: 1; flex-shrink: 0; }
+    .info-box p     { margin: 0; font-size: .93rem; }
+
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 1rem 0; }
+    th { background: var(--primary); color: #fff; padding: .7rem 1rem; text-align: left; }
+    td { padding: .6rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--light-bg); }
+
+    .relevance-badge { display: inline-block; border-radius: 6px; padding: .15rem .55rem; font-size: .75rem; font-weight: 800; margin-left: .4rem; }
+    .vig  { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+    .evo  { background: #fff8e1; color: #e65100; border: 1px solid #ffe082; }
+    .hist-badge { background: #fce4ec; color: #880e4f; border: 1px solid #f48fb1; }
+
+    .activity { border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 1.2rem 0; }
+    .activity-header { padding: .8rem 1.3rem; display: flex; align-items: center; gap: .7rem; font-weight: 700; font-size: 1rem; }
+    .activity-header.presencial { background: #E9EAED; color: var(--primary); }
+    .activity-header.hti-a      { background: #e8f5e9; color: var(--green); }
+    .activity-header.hti-b      { background: #fff8e1; color: #e65100; }
+    .activity-body { padding: 1.2rem 1.5rem; }
+    .activity-body ol, .activity-body ul { padding-left: 1.4rem; }
+    .activity-body li { margin-bottom: .5rem; }
+
+    .dojo-panel { background: linear-gradient(135deg, #1E2843 0%, #2d3a5e 100%); color: #fff; border-radius: var(--radius); padding: 1.5rem 2rem; margin: 1.5rem 0; }
+    .dojo-panel h3 { color: var(--gold); margin-bottom: 1rem; font-size: 1.05rem; }
+    .dojo-items { display: flex; flex-wrap: wrap; gap: .8rem; }
+    .dojo-item { background: rgba(255,255,255,.12); border-radius: 8px; padding: .5rem 1rem; font-size: .85rem; display: flex; align-items: center; gap: .5rem; }
+    .pts { color: var(--gold); font-weight: 800; font-size: 1.1rem; }
+
+    .quiz-box { background: #e3f2fd; border: 2px solid #1565c0; border-radius: var(--radius); padding: 1.4rem 1.8rem; margin: 1.5rem 0; }
+    .quiz-box h3 { color: #0d47a1; margin-bottom: 1rem; }
+    .quiz-q { margin-bottom: 1.4rem; }
+    .quiz-q p { font-weight: 600; margin-bottom: .5rem; }
+    .quiz-q ol { padding-left: 1.4rem; }
+    .quiz-q li { margin-bottom: .35rem; font-size: .93rem; cursor: pointer; padding: 3px 8px; border-radius: 6px; transition: background .15s; }
+    .quiz-q li:hover { background: rgba(25,118,210,.12); }
+    .quiz-answer { display: none; background: #e8f5e9; border-radius: 6px; padding: .4rem .8rem; font-size: .85rem; margin-top: .4rem; color: var(--green); font-weight: 600; }
+
+    .bib { font-size: .88rem; line-height: 1.8; }
+    .bib li { margin-bottom: .6rem; padding-left: .5rem; }
+
+    footer { text-align: center; padding: 2rem; font-size: .82rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.4rem; }
+      .card { padding: 1.2rem; }
+      main { padding: 0 .8rem 3rem; }
+    }
+  </style>
+
+  <style id="pt-css">
+  #pt-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg,#1E2843,#2d3a5e); color: #fff; border-radius: 16px; padding: 14px 18px; min-width: 240px; max-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,.35); font-family: 'Open Sans', Arial, sans-serif; font-size: .85rem; transition: transform .3s; }
+  #pt-widget.collapsed { transform: translateY(calc(100% - 42px)); }
+  #pt-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  #pt-header strong { font-size: .92rem; }
+  #pt-toggle { background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; line-height: 1; }
+  #pt-body { margin-top: 10px; }
+  #pt-xp-bar-wrap { background: rgba(255,255,255,.2); border-radius: 20px; height: 10px; overflow: hidden; }
+  #pt-xp-bar { height: 100%; background: linear-gradient(90deg,#FFDF2D,#fff176); border-radius: 20px; transition: width .8s ease; }
+  #pt-xp-label { display: flex; justify-content: space-between; font-size: .75rem; opacity: .8; margin-top: 4px; }
+  #pt-btns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .pt-btn { flex: 1; padding: 5px 8px; border: none; border-radius: 8px; font-size: .75rem; font-weight: 700; cursor: pointer; transition: opacity .2s; }
+  .pt-btn:hover { opacity: .85; }
+  #pt-btn-save { background: #43a047; color: #fff; }
+  #pt-advanced { display: none; margin-top: 5px; }
+  #pt-msg { font-size: .72rem; margin-top: 6px; min-height: 16px; opacity: .85; text-align: center; }
+  </style>
+
+  <style id="modal-css">
+  #pt-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 10000; display: flex; align-items: center; justify-content: center; animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+  #pt-modal-box { background: linear-gradient(160deg,#1E2843,#1E2843 70%,#2d3a5e); color: #fff; border-radius: 20px; padding: 2rem 2rem 1.5rem; width: min(94vw,420px); box-shadow: 0 20px 60px rgba(0,0,0,.5); animation: slideUp .35s cubic-bezier(.2,.8,.3,1); }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+  #pt-modal-box h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: .3rem; }
+  #pt-modal-box .sub { opacity: .75; font-size: .85rem; margin-bottom: 1.3rem; }
+  #pt-modal-box .field { margin-bottom: .9rem; }
+  #pt-modal-box label { display: block; font-size: .78rem; font-weight: 700; opacity: .85; margin-bottom: .3rem; text-transform: uppercase; letter-spacing: .05em; }
+  #pt-modal-box input { width: 100%; background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.35); border-radius: 10px; padding: .6rem .9rem; color: #fff; font-size: .95rem; outline: none; }
+  #pt-modal-box input::placeholder { color: rgba(255,255,255,.45); }
+  #pt-modal-box input:focus { border-color: rgba(249,168,37,.9); }
+  #pt-modal-btn { width: 100%; padding: .7rem; border: none; border-radius: 12px; background: linear-gradient(135deg,#FFDF2D,#FFDF2D); color: #1E2843; font-weight: 900; font-size: 1rem; cursor: pointer; margin-top: .4rem; transition: opacity .15s; }
+  #pt-modal-btn:hover { opacity: .9; }
+  #pt-modal-btn-search { padding: .65rem 1.2rem; border: none; border-radius: 10px; background: rgba(255,255,255,.18); color: #fff; font-weight: 700; font-size: .92rem; cursor: pointer; transition: background .15s; flex-shrink: 0; }
+  #pt-modal-btn-search:hover { background: rgba(255,255,255,.28); }
+  #pt-modal-error, #pt-modal-error2, #pt-modal-error3 { color: #ff8a80; font-size: .8rem; margin-top: .5rem; min-height: 1em; }
+  #pt-modal-xp { text-align: center; font-size: .78rem; opacity: .7; margin-top: .7rem; }
+  .pt-found-card { background: rgba(255,255,255,.1); border: 1.5px solid rgba(249,168,37,.6); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: .9rem; }
+  .pt-found-card .pt-fc-name { font-size: 1rem; font-weight: 800; margin-bottom: .25rem; }
+  .pt-found-card .pt-fc-meta { font-size: .8rem; opacity: .8; line-height: 1.6; }
+  .pt-step { transition: opacity .2s; }
+  .pt-link-btn { background: none; border: none; color: rgba(255,255,255,.6); font-size: .8rem; cursor: pointer; text-decoration: underline; padding: .3rem 0 0; display: block; text-align: center; width: 100%; }
+  .pt-link-btn:hover { color: #fff; }
+  </style>
+
+  <script src="../js/supabase-config.js"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="badge-module">TGA04 · Fundamentos de Computación para los Negocios · Semana 1 de 13</div>
+  <h1>🧮 Algoritmos y Pensamiento Computacional</h1>
+  <p>Datos · Información · Algoritmos · Diagramas de Flujo · NeuroBiz S.A.S.</p>
+  <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar"></div></div>
+  <p class="xp-label">XP de sesión: <span id="xpCount">0</span> / 55 pts</p>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#mision">🎯 Misión</a>
+  <a href="#teoria">📚 Teoría</a>
+  <a href="#pseudocodigo">📝 Pseudocódigo</a>
+  <a href="#actividad">⚙️ Actividad</a>
+  <a href="#hti">🏠 HTI</a>
+  <a href="#quiz">🎮 Quiz</a>
+  <a href="#bib">📖 Fuentes</a>
+</nav>
+
+<main>
+
+<!-- PROGRESS TRACKER WIDGET -->
+<div id="pt-widget">
+  <div id="pt-header" onclick="ptToggle()">
+    <strong>📊 Mi Progreso TGA04</strong>
+    <button id="pt-toggle">▲</button>
+  </div>
+  <div id="pt-body">
+    <div id="pt-xp-bar-wrap"><div id="pt-xp-bar" style="width:0%"></div></div>
+    <div id="pt-xp-label"><span id="pt-semana-label">Semana 1</span><span id="pt-xp-count">0 XP</span></div>
+    <div id="pt-btns">
+      <button class="pt-btn" id="pt-btn-save" onclick="ptSyncCloud()" style="flex:1">☁️ Guardar</button>
+      <button class="pt-btn" onclick="(function(){var a=document.getElementById('pt-advanced');a.style.display=a.style.display==='block'?'none':'block'})()" style="width:32px;flex-shrink:0;padding:0;font-size:.8rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)">⚙️</button>
+    </div>
+    <div id="pt-advanced">
+      <button class="pt-btn" onclick="ptExportCode()" style="width:100%;margin-bottom:3px;font-size:.72rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📋 Exportar respaldo</button>
+      <button class="pt-btn" onclick="ptImportCode()" style="width:100%;font-size:.72rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📥 Cargar desde código</button>
+    </div>
+    <div id="pt-msg"></div>
+  </div>
+</div>
+
+<!-- ══ MISIÓN / MEMORANDO ══ -->
+<section id="mision" class="card">
+  <h2>📋 El Memorando — Tu Misión esta Semana</h2>
+  <div class="memo">
+    <strong>Para: Consultores Junior de Datos — Equipo TGA04<br>
+    De: Dirección Ejecutiva, NeuroBiz S.A.S.<br>
+    Asunto: Rediseño del Sistema de Información Terapéutico</strong>
+
+    NeuroBiz S.A.S. atiende actualmente más de <strong>1.200 sesiones mensuales</strong> en sus sedes de Barranquilla,
+    Bogotá y Medellín. Sin embargo, los registros de los pacientes se gestionan de forma dispersa:
+    algunas áreas usan hojas de cálculo, otras notas de papel, y algunos terapeutas guardan los datos
+    en mensajes de WhatsApp. Esto genera errores, duplicados e inconsistencias.<br><br>
+    La junta directiva ha aprobado un proyecto de digitalización. <strong>Tu primer trabajo como
+    Consultor Junior de Datos</strong> es establecer las bases: aprender a pensar como un computador,
+    diseñar algoritmos que automaticen los procesos del negocio.
+  </div>
+
+  <div class="bloom">🧠 Nivel Bloom: Recordar → Comprender</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon">🧑‍⚕️</div>
+      <div class="kpi-name">Sesiones Asistidas</div>
+      <div class="kpi-val">847</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">❌</div>
+      <div class="kpi-name">Sesiones Fallidas</div>
+      <div class="kpi-val">112</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">🔁</div>
+      <div class="kpi-name">Tasa Retención</div>
+      <div class="kpi-val">78%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">📈</div>
+      <div class="kpi-name">Índice Progreso</div>
+      <div class="kpi-val">6.4 / 10</div>
+    </div>
+  </div>
+  <p style="font-size:.85rem;color:var(--muted)">
+    <em>Estos son los indicadores reales que gestionarás durante todo el módulo. Esta semana aprenderás
+    a pensar algorítmicamente para calcularlos y automatizarlos.</em>
+  </p>
+</section>
+
+<!-- ══ TEORÍA ══ -->
+<section id="teoria" class="card">
+  <h2>📚 Marco Teórico</h2>
+
+  <h3>1. Dato vs. Información <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <p>
+    Un <strong>dato</strong> es un hecho crudo, sin contexto: <code>"847"</code>, <code>"2026-01-15"</code>,
+    <code>"Ana García"</code>. Una <strong>información</strong> es un dato procesado que responde
+    una pregunta de negocio: <em>"La tasa de retención de NeuroBiz en enero fue del 78%"</em>.
+    (Cairó Battistutti & Guardati, 2022)
+  </p>
+
+  <div class="info-box tip">
+    <span class="icon">💡</span>
+    <p><strong>Analogía:</strong> Los ingredientes de una receta son <em>datos</em>. El plato terminado
+    y servido es la <em>información</em>: ha sido procesada, tiene contexto y responde una necesidad.</p>
+  </div>
+
+  <div class="info-box cite">
+    <span class="icon">🏛️</span>
+    <p><strong>Harvard CS50 Business:</strong> <em>"The difference between data and information is
+    the same as the difference between ingredients and a meal — one requires transformation to have value."</em>
+    — David Malan, CS50 Business Professionals, Harvard University.</p>
+  </div>
+
+  <h3>2. Software y Sistemas de Información <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <p>
+    El <strong>software</strong> es el conjunto de instrucciones que le indica al computador qué hacer
+    con los datos. Un <strong>sistema de información</strong> integra personas, procesos, datos y
+    tecnología para apoyar la toma de decisiones. (Joyanes Aguilar, 2008)
+  </p>
+  <p>
+    En NeuroBiz, el sistema que vamos a construir algorítmicamente tomará datos de las sesiones
+    y los convertirá en indicadores de gestión que la dirección pueda interpretar.
+  </p>
+
+  <div class="info-box brain">
+    <span class="icon">🧠</span>
+    <p><strong>Relevancia empresarial (WEF, 2025):</strong> El Foro Económico Mundial identifica
+    el <em>pensamiento analítico</em> como la competencia #1 para 2025–2030. Saber distinguir
+    dato de información, y diseñar el proceso de transformación entre ellos, es la base de toda
+    carrera en gestión empresarial moderna.</p>
+  </div>
+
+  <h3>3. ¿Qué es un Algoritmo? <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <p>
+    Un <strong>algoritmo</strong> es una secuencia finita, precisa y efectiva de pasos para
+    resolver un problema. Las tres propiedades son fundamentales (Cairó & Guardati, 2022):
+  </p>
+  <table>
+    <thead><tr><th>Propiedad</th><th>Significado</th><th>Ejemplo en NeuroBiz</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Finito</strong></td><td>Siempre termina</td><td>El proceso de calcular la tasa de retención tiene un principio y un fin claros</td></tr>
+      <tr><td><strong>Preciso</strong></td><td>Sin ambigüedad; cada paso es único</td><td>"Dividir sesiones asistidas entre total de sesiones" — no hay otra interpretación</td></tr>
+      <tr><td><strong>Efectivo</strong></td><td>Cada paso es realizable</td><td>Un computador puede ejecutar cada instrucción matemática del algoritmo</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box tip">
+    <span class="icon">💡</span>
+    <p><strong>Analogía empresarial:</strong> El SOP (Standard Operating Procedure / Procedimiento
+    Operativo Estándar) de incorporación de un empleado nuevo es un algoritmo de negocio:
+    tiene pasos definidos, en orden, que siempre terminan con el empleado incorporado.
+    Cada paso es preciso: "Entregar credencial de acceso en RR.HH. → Asignar puesto de trabajo →
+    Instalar computador → Iniciar inducción de 8 horas."</p>
+  </div>
+
+  <h3>4. Representación de Algoritmos <span class="relevance-badge evo">🟡 EVOLUCIONADO</span></h3>
+  <p>Los algoritmos pueden representarse de tres formas:</p>
+  <table>
+    <thead><tr><th>Forma</th><th>Descripción</th><th>Uso hoy en industria</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Lenguaje natural</strong></td>
+        <td>Descripción en palabras</td>
+        <td>✅ Documentación, requerimientos, historias de usuario</td>
+      </tr>
+      <tr>
+        <td><strong>Diagrama de flujo</strong></td>
+        <td>Representación visual con figuras</td>
+        <td>🟡 Útil para aprender; en industria se usa BPMN 2.0 o UML Activity Diagrams</td>
+      </tr>
+      <tr>
+        <td><strong>Pseudocódigo</strong></td>
+        <td>Notación estructurada legible por humanos</td>
+        <td>✅ Diseño previo a codificar; estándar en entrevistas técnicas, diseño de sistemas</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box warn">
+    <span class="icon">⚠️</span>
+    <p><strong>Nota sobre diagramas de flujo:</strong> Los diagramas con las figuras clásicas de
+    Cairó (óvalos, rombos, rectángulos) son la herramienta de APRENDIZAJE de este curso.
+    En empresas modernas, los analistas usan herramientas como <strong>Lucidchart, Miro o draw.io</strong>
+    con notación BPMN. El CONCEPTO es el mismo; la herramienta evoluciona.</p>
+  </div>
+
+  <h3>5. Símbolos Básicos del Diagrama de Flujo</h3>
+  <table>
+    <thead><tr><th>Símbolo</th><th>Figura</th><th>Uso</th></tr></thead>
+    <tbody>
+      <tr><td>Inicio / Fin</td><td>Óvalo redondeado ⬭</td><td>Delimita el algoritmo</td></tr>
+      <tr><td>Proceso</td><td>Rectángulo □</td><td>Instrucción o cálculo</td></tr>
+      <tr><td>Decisión</td><td>Rombo ◇</td><td>Condición: bifurca en SÍ/NO</td></tr>
+      <tr><td>Entrada/Salida</td><td>Paralelogramo ▱</td><td>LEER datos / ESCRIBIR resultados</td></tr>
+      <tr><td>Conector</td><td>Círculo ○</td><td>Conecta partes del diagrama</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══ PSEUDOCÓDIGO ══ -->
+<section id="pseudocodigo" class="card">
+  <h2>📝 Pseudocódigo — La Notación del Curso</h2>
+
+  <p>El pseudocódigo que usaremos sigue la notación de <strong>Cairó Battistutti & Guardati</strong>
+  (Alfaomega), el libro de referencia del módulo. Es independiente del lenguaje de programación
+  y se puede escribir en papel, en PSeInt o en cualquier editor de texto.</p>
+
+  <h3>Estructura básica de un algoritmo</h3>
+  <div class="code-wrap">
+    <div class="code-title">📝 Notación Cairó — Estructura mínima</div>
+    <pre>
+<span class="kw">ALGORITMO</span> NombreDelAlgoritmo
+<span class="kw">VARIABLES</span>
+  <span class="cm">{ Declarar aquí cada variable: nombre : TIPO }</span>
+<span class="kw">INICIO</span>
+  <span class="cm">{ Instrucciones aquí }</span>
+  <span class="fn">LEER</span>  nombre_variable         <span class="cm">{ Entrada de datos }</span>
+  <span class="fn">ESCRIBIR</span> expresion_o_mensaje  <span class="cm">{ Salida de datos }</span>
+<span class="kw">FIN</span>
+    </pre>
+  </div>
+
+  <h3>Primer pseudocódigo: Proceso de admisión NeuroBiz</h3>
+  <div class="code-wrap">
+    <div class="code-title">📝 Pseudocódigo — Admisión de paciente (lenguaje natural → algoritmo)</div>
+    <pre>
+<span class="kw">ALGORITMO</span> AdmisionPaciente
+<span class="kw">VARIABLES</span>
+  nombre_paciente   : <span class="kw">CADENA</span>
+  tipo_documento    : <span class="kw">CADENA</span>
+  numero_documento  : <span class="kw">ENTERO</span>
+  tipo_terapia      : <span class="kw">CADENA</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== SISTEMA DE ADMISIÓN NEUROBIZ S.A.S. ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese el nombre del paciente:"</span>
+  <span class="fn">LEER</span>     nombre_paciente
+  <span class="fn">ESCRIBIR</span> <span class="str">"Tipo de documento (CC/TI/CE):"</span>
+  <span class="fn">LEER</span>     tipo_documento
+  <span class="fn">ESCRIBIR</span> <span class="str">"Número de documento:"</span>
+  <span class="fn">LEER</span>     numero_documento
+  <span class="fn">ESCRIBIR</span> <span class="str">"Tipo de terapia (cognitiva/ocupacional/fonoaudiología):"</span>
+  <span class="fn">LEER</span>     tipo_terapia
+  <span class="fn">ESCRIBIR</span> <span class="str">"Paciente registrado: "</span> + nombre_paciente
+  <span class="fn">ESCRIBIR</span> <span class="str">"Terapia asignada: "</span> + tipo_terapia
+<span class="kw">FIN</span>
+    </pre>
+  </div>
+
+  <div class="info-box cite">
+    <span class="icon">🏛️</span>
+    <p><strong>MIT 18.S191:</strong> <em>"Before you write a single line of code, write the algorithm
+    in plain language. If you can't explain it to a human, a computer won't understand it either."</em>
+    — Computational Thinking course, MIT.</p>
+  </div>
+
+  <div class="info-box tip">
+    <span class="icon">💡</span>
+    <p><strong>Herramienta sugerida:</strong> <strong>PSeInt</strong> — software gratuito para
+    escribir pseudocódigo y generar diagramas de flujo automáticamente. Disponible en
+    <code>pseint.sourceforge.net</code>. Las semanas 1-11 trabajaremos principalmente en pseudocódigo.</p>
+  </div>
+</section>
+
+<!-- ══ ACTIVIDAD PRESENCIAL ══ -->
+<section id="actividad" class="card">
+  <h2>⚙️ Actividad Presencial (4 horas)</h2>
+
+  <div class="dojo-panel">
+    <h3>🏆 Puntos disponibles esta sesión</h3>
+    <div class="dojo-items">
+      <div class="dojo-item">📋 <span>Asistencia</span> <span class="pts">+10 XP</span></div>
+      <div class="dojo-item">🎮 <span>Quiz (5 preguntas)</span> <span class="pts">+25 XP</span></div>
+      <div class="dojo-item">🎯 <span>Misión NeuroBiz</span> <span class="pts">+20 XP</span></div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header presencial">⏱️ Bloque 1 — Conceptual (90 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Recordar → Comprender</em></div>
+    <div class="activity-body">
+      <p><strong>Parte A — Análisis de datos de NeuroBiz (30 min):</strong></p>
+      <p>El docente presentará los siguientes registros sin procesar de NeuroBiz:</p>
+      <div class="code-wrap" style="margin:.5rem 0">
+        <div class="code-title">📊 Datos crudos — Enero 2026 NeuroBiz</div>
+        <pre>
+fecha        paciente         tipo_terapia   sesion
+2026-01-05   Ana García       cognitiva      asistida
+2026-01-05   Luis Martín      ocupacional    fallida
+2026-01-06   Carmen Ruiz      cognitiva      asistida
+2026-01-07   Pedro Sosa       fonoaudiología asistida
+...          (112 registros más)
+        </pre>
+      </div>
+      <ol>
+        <li>¿Cuáles de estos elementos son <em>datos</em>? ¿Cuál sería la <em>información</em> derivada?</li>
+        <li>¿Qué preguntas de negocio puede responder este conjunto de datos?</li>
+        <li>¿Qué pasos (algoritmo en lenguaje natural) se necesitan para calcular la tasa de retención?</li>
+      </ol>
+      <p style="margin-top:.8rem"><strong>Parte B — Propiedades de los algoritmos (30 min):</strong></p>
+      <ol>
+        <li>En grupos de 3, describir en lenguaje natural el proceso de incorporación de un empleado nuevo. Luego verificar: ¿es finito, preciso, efectivo?</li>
+        <li>Comparar con el proceso de admisión de un paciente en NeuroBiz.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header presencial">⏱️ Bloque 2 — Pseudocódigo y Diagrama de Flujo (90 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Comprender → Aplicar</em></div>
+    <div class="activity-body">
+      <p><strong>🎯 Misión NeuroBiz — Semana 1:</strong></p>
+      <p>Diseña el algoritmo de admisión de NeuroBiz. El sistema debe:</p>
+      <ol>
+        <li>Leer el nombre del paciente, tipo de documento y número.</li>
+        <li>Leer el tipo de terapia solicitada.</li>
+        <li>Escribir un mensaje de confirmación de registro.</li>
+        <li>Representarlo TANTO en pseudocódigo (notación Cairó) COMO en diagrama de flujo.</li>
+      </ol>
+      <p style="margin-top:.8rem">
+        <strong>Entregable:</strong> Hoja con pseudocódigo + diagrama de flujo dibujado a mano alzada
+        (o usando PSeInt si hay acceso a computadores).
+      </p>
+
+      <div class="info-box tip">
+        <span class="icon">💡</span>
+        <p>No te preocupes por la perfección del diagrama. Lo importante es que los símbolos sean
+        correctos: óvalo para inicio/fin, rectángulo para procesos, paralelogramo para LEER/ESCRIBIR.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HTI ══ -->
+<section id="hti" class="card">
+  <h2>🏠 HTI — Trabajo Independiente (5 horas)</h2>
+  <p style="color:var(--muted);font-size:.88rem">Actividades de refuerzo para realizar en casa o en la sala de sistemas.</p>
+
+  <div class="activity">
+    <div class="activity-header hti-a">📚 HTI-A — Lectura y Reflexión (2 horas)</div>
+    <div class="activity-body">
+      <ol>
+        <li>
+          <strong>Leer el Capítulo 1</strong> de Cairó Battistutti & Guardati — <em>Metodología de
+          la programación</em>. Identificar: definición de algoritmo, propiedades, y tipos de
+          representación.
+        </li>
+        <li>
+          <strong>Ver (gratis):</strong> Harvard CS50 Lecture 0 en YouTube —
+          <em>"Computational Thinking"</em> (primeros 30 min). Anotar 3 analogías que use el profesor
+          para explicar algoritmos.
+        </li>
+        <li>
+          <strong>Reflexión:</strong> Escribe en tu cuaderno un algoritmo de tu vida diaria (diferente
+          a cocinar). Verifica que cumpla las 3 propiedades.
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header hti-b">✏️ HTI-B — Práctica de Pseudocódigo (3 horas)</div>
+    <div class="activity-body">
+      <ol>
+        <li>
+          <strong>Ejercicio 1:</strong> Escribe en pseudocódigo el proceso de calcular el promedio
+          de 5 calificaciones. Usa LEER 5 veces, calcula el promedio y ESCRIBE el resultado.
+        </li>
+        <li>
+          <strong>Ejercicio 2:</strong> Diagrama de flujo del proceso de apertura de una sucursal
+          de NeuroBiz: verificar local disponible → contratar terapeutas → instalar sistema → abrir.
+        </li>
+        <li>
+          <strong>Ejercicio 3 (Reto):</strong> El sistema de NeuroBiz necesita calcular cuántas
+          sesiones fallidas hay en el mes. Escribe el algoritmo en pseudocódigo usando las variables
+          del caso NeuroBiz (<code>sesiones_asistidas</code>, <code>sesiones_fallidas</code>,
+          <code>total_sesiones</code>).
+        </li>
+      </ol>
+
+      <div class="info-box tip">
+        <span class="icon">📱</span>
+        <p>Puedes usar <strong>PSeInt</strong> instalado en el computador, o simplemente papel y
+        lápiz. Si quieres una herramienta en línea, prueba <strong>draw.io</strong> (gratuito,
+        sin instalación) para diagramas de flujo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ QUIZ ══ -->
+<section id="quiz" class="card">
+  <h2>🎮 Quiz Interactivo — Semana 1</h2>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">5 preguntas · Haz clic en la opción que creas correcta · <strong>5 XP</strong> por cada acierto</p>
+
+  <div class="quiz-box">
+    <h3>⚡ Quiz Semana 1 — Algoritmos y Pensamiento Computacional</h3>
+
+    <div class="quiz-q">
+      <p>1. NeuroBiz tiene 847 registros con: fecha, nombre de paciente y tipo de sesión. ¿Cómo se clasifican esos 847 registros?</p>
+      <ol type="a">
+        <li>Información, porque están almacenados en un sistema</li>
+        <li>Datos crudos, porque no han sido procesados para responder una pregunta de negocio</li>
+        <li>Software, porque están en formato digital</li>
+        <li>Algoritmos, porque son instrucciones para el sistema</li>
+      </ol>
+      <div class="quiz-answer">✅ b — Los datos crudos son hechos sin contexto. Solo cuando se procesan y responden una pregunta de negocio se convierten en información.</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>2. Un terapeuta de NeuroBiz anota en papel: "Si el paciente no asiste, llamar al día siguiente". ¿Esta instrucción cumple las 3 propiedades de un algoritmo?</p>
+      <ol type="a">
+        <li>Sí, es finita, precisa y efectiva</li>
+        <li>No, porque no es finita — podría llamar indefinidamente</li>
+        <li>No, porque no es precisa — "al día siguiente" puede interpretarse de varias maneras</li>
+        <li>Sí, porque está escrita en lenguaje natural</li>
+      </ol>
+      <div class="quiz-answer">✅ c — "Al día siguiente" es ambiguo: ¿laborable, calendario, a qué hora? Un algoritmo preciso dice exactamente "llamar entre las 9am y 11am del siguiente día hábil".</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>3. ¿Qué símbolo de diagrama de flujo se usa para representar la instrucción LEER nombre_paciente?</p>
+      <ol type="a">
+        <li>Rectángulo □ — proceso</li>
+        <li>Rombo ◇ — decisión</li>
+        <li>Paralelogramo ▱ — entrada/salida</li>
+        <li>Óvalo ⬭ — inicio/fin</li>
+      </ol>
+      <div class="quiz-answer">✅ c — El paralelogramo (rectángulo inclinado) representa operaciones de entrada (LEER) y salida (ESCRIBIR).</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>4. El Foro Económico Mundial (WEF 2025) identifica como competencia #1 para la próxima década:</p>
+      <ol type="a">
+        <li>Programación en Java</li>
+        <li>Pensamiento analítico (que incluye el pensamiento algorítmico)</li>
+        <li>Manejo de redes sociales corporativas</li>
+        <li>Certificaciones en software contable</li>
+      </ol>
+      <div class="quiz-answer">✅ b — El WEF Future of Jobs Report 2025 ubica el pensamiento analítico como la competencia más demandada. Saber pensar algorítmicamente es parte de esta habilidad.</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>5. En el pseudocódigo Cairó, ¿cuál es la instrucción para que el usuario ingrese un valor?</p>
+      <ol type="a">
+        <li>OBTENER</li>
+        <li>INPUT</li>
+        <li>LEER</li>
+        <li>CAPTURAR</li>
+      </ol>
+      <div class="quiz-answer">✅ c — En la notación de Cairó Battistutti, la instrucción de entrada es LEER. En Python equivale a input(). En Java a Scanner.nextLine().</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ BIBLIOGRAFÍA ══ -->
+<section id="bib" class="card">
+  <h2>📖 Fuentes y Referencias</h2>
+  <ul class="bib">
+    <li>
+      <strong>Cairó Battistutti, O. & Guardati Bueno, S.</strong> (2022).
+      <em>Metodología de la programación: algoritmos, diagramas de flujo y programas</em> (3ª ed.).
+      Alfaomega. ISBN 9789586827492. — <em>Bibliografía principal del módulo</em>
+    </li>
+    <li>
+      <strong>Joyanes Aguilar, L.</strong> (2008).
+      <em>Fundamentos de programación: algoritmos, estructura de datos y objetos</em> (3ª ed.).
+      McGraw-Hill. ISBN 9786071508188.
+    </li>
+    <li>
+      <strong>Wing, J.M.</strong> (2006). "Computational Thinking".
+      <em>Communications of the ACM</em>, 49(3), 33–35.
+      Artículo fundacional: el pensamiento computacional como habilidad universal, no exclusiva de ingenieros.
+    </li>
+    <li>
+      <strong>World Economic Forum.</strong> (2025).
+      <em>The Future of Jobs Report 2025</em>. WEF.
+      Disponible en: <a href="https://www.weforum.org/reports" target="_blank">weforum.org/reports</a>
+    </li>
+    <li>
+      <strong>Harvard CS50 Business Professionals.</strong> (2024).
+      Curso gratuito de pensamiento computacional para profesionales no técnicos.
+      Disponible en: <a href="https://cs50.harvard.edu/business" target="_blank">cs50.harvard.edu/business</a>
+    </li>
+    <li>
+      <strong>McKinsey & Company.</strong> (2023).
+      <em>"We Are All Techies Now: Digital Skill-Building for the Future."</em>
+      Disponible en: mckinsey.com/capabilities/people-and-organizational-performance
+    </li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  TGA04 · Fundamentos de Computación para los Negocios · IUB 2026 ·
+  Semana 1: Algoritmos y Pensamiento Computacional ·
+  Caso de estudio: NeuroBiz S.A.S. · Prof. Diego Domínguez Tapia
+</footer>
+
+<!-- ══ PROGRESS TRACKER SCRIPT ══ -->
+<script id="pt-js">
+const PT = (function() {
+  const SEMANA    = 1;
+  const XP_MAX    = 55;
+  const LS_KEY    = "tga04_s1";
+  const LS_GLOBAL = "tga04_global";
+
+  let state = {
+    nombre: "", cc: "", id_estudiante: "", grupo: "", horario: "",
+    semana: SEMANA, xp: 0,
+    quiz_respuestas: {}, quiz_puntaje: 0,
+    hti_entregado: false, actividad_completada: false,
+    dispositivo: navigator.userAgent.substring(0, 80)
+  };
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) Object.assign(state, JSON.parse(raw));
+      const g = JSON.parse(localStorage.getItem(LS_GLOBAL) || "{}");
+      if (!state.nombre        && g.nombre)   state.nombre        = g.nombre;
+      if (!state.cc            && g.cc)        state.cc            = g.cc;
+      if (!state.id_estudiante && g.cc)        state.id_estudiante = g.cc;
+      if (!state.grupo         && g.grupo)     state.grupo         = g.grupo;
+      if (!state.horario       && g.horario)   state.horario       = g.horario;
+    } catch(e) {}
+  }
+
+  function save() {
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+    render();
+  }
+
+  function render() {
+    const bar   = document.getElementById("pt-xp-bar");
+    const cnt   = document.getElementById("pt-xp-count");
+    const lbl   = document.getElementById("pt-semana-label");
+    const hBar  = document.getElementById("xpBar");
+    const hCnt  = document.getElementById("xpCount");
+    const pct   = Math.min((state.xp / XP_MAX) * 100, 100);
+    if (bar)  bar.style.width  = pct + "%";
+    if (cnt)  cnt.textContent  = state.xp + " XP";
+    if (lbl)  lbl.textContent  = "Semana " + SEMANA;
+    if (hBar) hBar.style.width = pct + "%";
+    if (hCnt) hCnt.textContent = state.xp;
+  }
+
+  function addXP(pts, motivo) {
+    state.xp = Math.min(state.xp + pts, XP_MAX);
+    msg("✨ +" + pts + " XP — " + motivo, "lime");
+    save();
+  }
+
+  async function syncCloud() {
+    save();
+    const sbUrl = localStorage.getItem("tga04_supabase_url") || "";
+    const sbKey = localStorage.getItem("tga04_supabase_key") || "";
+    if (!sbUrl || !sbKey) { msg("⚠️ Supabase no configurado", "orange"); return; }
+    msg("⏳ Sincronizando…", "#fff9c4");
+    try {
+      const res = await fetch(sbUrl + "/rest/v1/student_progress", {
+        method: "POST",
+        headers: { "apikey": sbKey, "Authorization": "Bearer " + sbKey, "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates" },
+        body: JSON.stringify({
+          student_name: state.nombre || "Anónimo",
+          student_id: state.id_estudiante || state.cc || "desconocido",
+          semana: state.semana, xp: state.xp || 0,
+          quiz_answers: state.quiz_respuestas || {}, quiz_score: state.quiz_puntaje || 0,
+          hti_done: !!state.hti_entregado, activity_done: !!state.actividad_completada,
+          grupo: state.grupo || "", horario: state.horario || "",
+          updated_at: new Date().toISOString()
+        })
+      });
+      if (res.ok || res.status === 201) msg("✅ Guardado en Supabase ☁️", "lightgreen");
+      else msg("❌ Error " + res.status, "salmon");
+    } catch(e) { msg("❌ Sin conexión. Guardado local.", "salmon"); }
+  }
+
+  function exportCode() {
+    save();
+    const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    const ta = document.createElement("textarea");
+    ta.value = code;
+    document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+    document.body.removeChild(ta);
+    const a = document.createElement("a");
+    a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(code);
+    a.download = "progreso_tga04_s1_" + (state.id_estudiante || "est") + ".txt";
+    a.click();
+    msg("📋 ¡Código copiado!", "#fff9c4");
+  }
+
+  function importCode() {
+    const code = prompt("Pega tu código de progreso:");
+    if (!code) return;
+    try {
+      Object.assign(state, JSON.parse(decodeURIComponent(escape(atob(code.trim())))));
+      save(); msg("✅ Progreso restaurado.", "lightgreen");
+    } catch(e) { msg("❌ Código inválido.", "salmon"); }
+  }
+
+  function toggle() {
+    const w = document.getElementById("pt-widget");
+    const t = document.getElementById("pt-toggle");
+    if (w) w.classList.toggle("collapsed");
+    if (t) t.textContent = w && w.classList.contains("collapsed") ? "▼" : "▲";
+  }
+
+  function msg(text, color) {
+    const el = document.getElementById("pt-msg");
+    if (!el) return;
+    el.textContent = text; el.style.color = color || "#fff";
+    setTimeout(() => { if (el.textContent === text) el.textContent = ""; }, 4000);
+  }
+
+  function init() {
+    load(); render();
+    // XP por visitar (una vez)
+    if (!localStorage.getItem("tga04_visited_s1")) {
+      localStorage.setItem("tga04_visited_s1", "1");
+      addXP(10, "Asistencia Semana 1 ✅");
+    }
+    // Hacer quiz interactivo
+    document.querySelectorAll(".quiz-q").forEach((qEl, qi) => {
+      const answers   = qEl.querySelectorAll("li");
+      const answerEl  = qEl.querySelector(".quiz-answer");
+      const correctTxt = answerEl ? answerEl.textContent : "";
+      const m = correctTxt.match(/^✅\s*([a-d])/i);
+      const correctIdx = m ? ["a","b","c","d"].indexOf(m[1].toLowerCase()) : -1;
+
+      answers.forEach((li, ai) => {
+        li.addEventListener("click", () => {
+          const key = "q" + qi;
+          if (state.quiz_respuestas[key] !== undefined) return;
+          answers.forEach(a => { a.dataset.answered = "1"; });
+          if (ai === correctIdx) {
+            li.style.background = "#2e7d32"; li.style.color = "#fff";
+            addXP(5, "Respuesta correcta Q" + (qi+1));
+            state.quiz_puntaje = (state.quiz_puntaje || 0) + 1;
+          } else {
+            li.style.background = "#c62828"; li.style.color = "#fff";
+            if (correctIdx >= 0) { answers[correctIdx].style.background = "#2e7d32"; answers[correctIdx].style.color = "#fff"; }
+          }
+          state.quiz_respuestas[key] = ai;
+          if (answerEl) answerEl.style.display = "block";
+          save();
+        });
+      });
+
+      // Restaurar estado previo
+      const prev = state.quiz_respuestas["q" + qi];
+      if (prev !== undefined) {
+        answers.forEach(a => { a.dataset.answered = "1"; });
+        if (prev === correctIdx && correctIdx >= 0) {
+          answers[prev].style.background = "#2e7d32"; answers[prev].style.color = "#fff";
+        } else {
+          if (prev < answers.length) { answers[prev].style.background = "#c62828"; answers[prev].style.color = "#fff"; }
+          if (correctIdx >= 0) { answers[correctIdx].style.background = "#2e7d32"; answers[correctIdx].style.color = "#fff"; }
+        }
+        if (answerEl) answerEl.style.display = "block";
+      }
+    });
+  }
+
+  return { init, addXP, save, sync: syncCloud, export: exportCode, import: importCode, toggle, state: () => state };
+})();
+
+function ptSyncCloud()  { PT.sync(); }
+function ptExportCode() { PT.export(); }
+function ptImportCode() { PT.import(); }
+function ptToggle()     { PT.toggle(); }
+
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", PT.init);
+else PT.init();
+</script>
+
+<!-- ══ WELCOME MODAL (CC lookup) ══ -->
+<div id="pt-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="pt-modal-title">
+  <div id="pt-modal-box">
+    <h2 id="pt-modal-title">👋 ¡Bienvenido a TGA04!</h2>
+    <p class="sub">NeuroBiz S.A.S. · Fundamentos de Computación para los Negocios</p>
+
+    <!-- PASO 1: Cédula -->
+    <div id="pt-step1" class="pt-step">
+      <div class="field">
+        <label for="pt-modal-cc">Número de cédula / documento *</label>
+        <div style="display:flex;gap:.5rem">
+          <input id="pt-modal-cc" type="tel" inputmode="numeric" pattern="[0-9]*"
+            placeholder="Ej: 1043158867" autocomplete="off"
+            onkeydown="if(event.key==='Enter')ptSearchCC()" />
+          <button id="pt-modal-btn-search" onclick="ptSearchCC()">Buscar →</button>
+        </div>
+      </div>
+      <div id="pt-modal-error"></div>
+      <p id="pt-modal-xp">🔒 Tu cédula identifica tu progreso de forma segura — no se comparte.</p>
+    </div>
+
+    <!-- PASO 2A: Encontrado -->
+    <div id="pt-step2a" class="pt-step" style="display:none">
+      <div class="pt-found-card">
+        <div class="pt-fc-name" id="pt-fc-name">—</div>
+        <div class="pt-fc-meta" id="pt-fc-meta">—</div>
+      </div>
+      <button id="pt-modal-btn" onclick="ptConfirmFound()">¡Empezar! 🚀</button>
+      <button class="pt-link-btn" onclick="ptBackToCC()">← No soy yo — volver a buscar</button>
+      <div id="pt-modal-error2"></div>
+    </div>
+
+    <!-- PASO 2B: No encontrado -->
+    <div id="pt-step2b" class="pt-step" style="display:none">
+      <p style="font-size:.82rem;opacity:.75;margin-bottom:1rem;background:rgba(255,255,255,.08);border-radius:8px;padding:.6rem .8rem">
+        ⚠️ No encontramos tu cédula en la lista del grupo.<br>
+        Completa tus datos manualmente. El docente podrá importarte en la próxima clase.
+      </p>
+      <div class="field">
+        <label for="pt-modal-nombre">Tu nombre completo *</label>
+        <input id="pt-modal-nombre" type="text" placeholder="Ej: María García López"
+          autocomplete="name" onkeydown="if(event.key==='Enter')ptModalSetupManual()" />
+      </div>
+      <div class="field">
+        <label for="pt-modal-grupo">Grupo / Paralelo</label>
+        <input id="pt-modal-grupo" type="text" placeholder="Ej: 7_GA_G1" />
+      </div>
+      <button id="pt-modal-btn" onclick="ptModalSetupManual()">Continuar →</button>
+      <button class="pt-link-btn" onclick="ptBackToCC()">← Volver a ingresar cédula</button>
+      <div id="pt-modal-error3"></div>
+    </div>
+  </div>
+</div>
+
+<script id="modal-js">
+(function() {
+  function shouldShowModal() {
+    try { var g = JSON.parse(localStorage.getItem("tga04_global") || "{}"); return !g.cc || String(g.cc).trim().length < 3; }
+    catch(e) { return true; }
+  }
+  function showStep(name) {
+    ["pt-step1","pt-step2a","pt-step2b"].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.style.display = (id === name) ? "block" : "none";
+    });
+  }
+  function showModal() {
+    var overlay = document.getElementById("pt-overlay");
+    if (overlay) overlay.style.display = "flex";
+    showStep("pt-step1");
+    try {
+      var g = JSON.parse(localStorage.getItem("tga04_global") || "{}");
+      if (g.cc) { var i = document.getElementById("pt-modal-cc"); if (i) i.value = g.cc; }
+    } catch(e) {}
+    var inp = document.getElementById("pt-modal-cc");
+    if (inp) setTimeout(function(){ inp.focus(); }, 100);
+  }
+  function closeModal() {
+    var overlay = document.getElementById("pt-overlay");
+    if (overlay) {
+      overlay.style.opacity = "0"; overlay.style.transition = "opacity .2s";
+      setTimeout(function(){ overlay.style.display = "none"; overlay.style.opacity = ""; }, 200);
+    }
+  }
+  function getStudents() {
+    try { return JSON.parse(localStorage.getItem("tga04_students_v1") || "[]"); }
+    catch(e) { return []; }
+  }
+  function saveProfile(cc, nombre, grupo, horario) {
+    var profile = {};
+    try { profile = JSON.parse(localStorage.getItem("tga04_global") || "{}"); } catch(e) {}
+    profile.cc = cc; profile.nombre = nombre;
+    profile.grupo   = grupo   || profile.grupo   || "";
+    profile.horario = horario || profile.horario || "";
+    profile.id_estudiante = cc;
+    localStorage.setItem("tga04_global", JSON.stringify(profile));
+    if (typeof PT !== "undefined" && typeof PT.addXP === "function") {
+      setTimeout(function(){ PT.sync && PT.sync(); }, 800);
+    }
+    closeModal();
+  }
+
+  window.ptSearchCC = function() {
+    var ccInp = document.getElementById("pt-modal-cc");
+    var errEl = document.getElementById("pt-modal-error");
+    var cc    = ccInp ? ccInp.value.trim().replace(/\D/g,"") : "";
+    if (!cc || cc.length < 5) {
+      if (errEl) errEl.textContent = "Ingresa tu número de cédula (mínimo 5 dígitos).";
+      if (ccInp) ccInp.focus(); return;
+    }
+    if (errEl) errEl.textContent = "";
+
+    // 1. Buscar en localStorage
+    var students = getStudents();
+    var found = students.find(function(s){ return String(s.cc) === cc; });
+    if (found) {
+      var nameEl = document.getElementById("pt-fc-name");
+      var metaEl = document.getElementById("pt-fc-meta");
+      if (nameEl) nameEl.textContent = "✅ " + found.name;
+      if (metaEl) metaEl.innerHTML =
+        (found.grupo   ? "📚 Grupo: <strong>" + found.grupo + "</strong>" : "") +
+        (found.horario ? " &nbsp;·&nbsp; ⏰ " + found.horario : "");
+      nameEl.dataset.cc = cc; nameEl.dataset.nombre = found.name;
+      nameEl.dataset.grupo = found.grupo || ""; nameEl.dataset.horario = found.horario || "";
+      showStep("pt-step2a");
+      var btn = document.getElementById("pt-modal-btn");
+      if (btn) setTimeout(function(){ btn.focus(); }, 100);
+      return;
+    }
+
+    // 2. Buscar en Supabase
+    var sUrl = localStorage.getItem("tga04_supabase_url");
+    var sKey = localStorage.getItem("tga04_supabase_key");
+    if (sUrl && sKey) {
+      if (errEl) errEl.textContent = "⏳ Buscando…";
+      fetch(sUrl + "/rest/v1/students?cc=eq." + encodeURIComponent(cc) + "&limit=1", {
+        headers: { "apikey": sKey, "Authorization": "Bearer " + sKey }
+      }).then(function(r){ return r.json(); })
+        .then(function(rows){
+          if (errEl) errEl.textContent = "";
+          if (rows && rows.length) {
+            var r = rows[0];
+            var nameEl = document.getElementById("pt-fc-name");
+            var metaEl = document.getElementById("pt-fc-meta");
+            if (nameEl) nameEl.textContent = "✅ " + r.name;
+            if (metaEl) metaEl.innerHTML =
+              (r.grupo   ? "📚 Grupo: <strong>" + r.grupo + "</strong>" : "") +
+              (r.horario ? " &nbsp;·&nbsp; ⏰ " + r.horario : "");
+            nameEl.dataset.cc = cc; nameEl.dataset.nombre = r.name;
+            nameEl.dataset.grupo = r.grupo || ""; nameEl.dataset.horario = r.horario || "";
+            showStep("pt-step2a");
+          } else {
+            var ni = document.getElementById("pt-modal-nombre");
+            if (ni) ni.dataset.cc = cc;
+            showStep("pt-step2b");
+            if (ni) setTimeout(function(){ ni.focus(); }, 100);
+          }
+        }).catch(function(){
+          var ni = document.getElementById("pt-modal-nombre");
+          if (ni) ni.dataset.cc = cc;
+          showStep("pt-step2b");
+          if (ni) setTimeout(function(){ ni.focus(); }, 100);
+        });
+      return;
+    }
+
+    // 3. Manual
+    var ni = document.getElementById("pt-modal-nombre");
+    if (ni) ni.dataset.cc = cc;
+    showStep("pt-step2b");
+    if (ni) setTimeout(function(){ ni.focus(); }, 100);
+  };
+
+  window.ptConfirmFound = function() {
+    var nameEl  = document.getElementById("pt-fc-name");
+    var cc      = nameEl ? nameEl.dataset.cc      : "";
+    var nombre  = nameEl ? nameEl.dataset.nombre  : "";
+    var grupo   = nameEl ? nameEl.dataset.grupo   : "";
+    var horario = nameEl ? nameEl.dataset.horario : "";
+    if (!cc || !nombre) { var e2 = document.getElementById("pt-modal-error2"); if (e2) e2.textContent = "Error al leer datos. Intenta de nuevo."; return; }
+    saveProfile(cc, nombre, grupo, horario);
+  };
+
+  window.ptModalSetupManual = function() {
+    var ni    = document.getElementById("pt-modal-nombre");
+    var gi    = document.getElementById("pt-modal-grupo");
+    var ccInp = document.getElementById("pt-modal-cc");
+    var errEl = document.getElementById("pt-modal-error3");
+    var nombre = ni ? ni.value.trim() : "";
+    var grupo  = gi ? gi.value.trim() : "";
+    var cc     = ccInp ? ccInp.value.trim().replace(/\D/g,"") : "";
+    if (!nombre || nombre.length < 3) {
+      if (errEl) errEl.textContent = "Por favor escribe tu nombre completo (mínimo 3 caracteres).";
+      if (ni) ni.focus(); return;
+    }
+    if (!cc) cc = "MANUAL_" + Date.now();
+    saveProfile(cc, nombre, grupo, "");
+  };
+
+  window.ptBackToCC = function() {
+    showStep("pt-step1");
+    var inp = document.getElementById("pt-modal-cc");
+    if (inp) setTimeout(function(){ inp.focus(); }, 100);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function(){ if (shouldShowModal()) showModal(); });
+  } else {
+    if (shouldShowModal()) showModal();
+  }
+})();
+</script>
+
+</body>
+</html>

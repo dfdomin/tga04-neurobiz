@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notas del Profesor — Semana 3 | TGA04</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1E2843; --accent: #2d3a5e; --gold: #FFDF2D;
+      --green: #1b5e20; --green-bg: #e8f5e9;
+      --orange: #e65100; --orange-bg: #fff3e0;
+      --purple: #4a148c; --purple-bg: #f3e5f5;
+      --red-bg: #fce4ec; --red: #880e4f;
+      --border: #DEDFE4; --muted: #546e7a;
+      --card-bg: #fff; --light: #FAFAFA;
+      --radius: 12px;
+    }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--light); color: #212121; line-height: 1.75; font-size: 16px; }
+
+    header { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: #fff; padding: 2rem 2rem 1.8rem; position: relative; overflow: hidden; }
+    header::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 35px; background: var(--light); clip-path: ellipse(55% 100% at 50% 100%); }
+    .badge-prof { display: inline-block; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); border-radius: 20px; padding: .25rem .9rem; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .7rem; }
+    header h1 { font-size: 1.7rem; font-weight: 800; }
+    header p { opacity: .85; margin-top: .3rem; font-size: .95rem; }
+
+    nav { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: .5rem 1.5rem; display: flex; gap: .4rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 99; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+    nav a { color: var(--accent); text-decoration: none; font-size: .82rem; font-weight: 600; padding: .25rem .65rem; border-radius: 7px; transition: background .2s; }
+    nav a:hover { background: var(--border); }
+
+    main { max-width: 900px; margin: 2rem auto; padding: 0 1.2rem 4rem; }
+
+    .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.6rem 1.8rem; margin-bottom: 1.8rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .card h2 { font-size: 1.2rem; color: var(--primary); border-left: 5px solid var(--gold); padding-left: .7rem; margin-bottom: 1.1rem; }
+    .card h3 { font-size: 1rem; color: var(--accent); margin: 1.1rem 0 .5rem; }
+    .card p  { margin-bottom: .75rem; }
+    .card ul, .card ol { padding-left: 1.3rem; margin-bottom: .75rem; }
+    .card li { margin-bottom: .45rem; }
+
+    .callout { border-radius: 10px; padding: .9rem 1.2rem; margin: .9rem 0; display: flex; gap: .7rem; align-items: flex-start; }
+    .callout.estrategia { background: var(--green-bg); border-left: 4px solid #2e7d32; }
+    .callout.alerta     { background: var(--orange-bg); border-left: 4px solid #ef6c00; }
+    .callout.teoria     { background: var(--purple-bg); border-left: 4px solid #7b1fa2; }
+    .callout.cite       { background: #e3f2fd; border-left: 4px solid #1565c0; }
+    .callout.hist       { background: var(--red-bg); border-left: 4px solid #c62828; }
+    .callout .ico       { font-size: 1.3rem; flex-shrink: 0; line-height: 1; }
+    .callout p          { margin: 0; font-size: .92rem; }
+
+    .time-block { border: 2px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1rem 0; }
+    .time-header { background: var(--primary); color: #fff; padding: .6rem 1.2rem; font-weight: 700; font-size: .92rem; display: flex; justify-content: space-between; align-items: center; }
+    .time-header .mins { background: var(--gold); color: var(--primary); border-radius: 20px; padding: .1rem .6rem; font-size: .78rem; }
+    .time-body { padding: 1rem 1.4rem; }
+    .time-body ol, .time-body ul { padding-left: 1.3rem; }
+    .time-body li { margin-bottom: .45rem; font-size: .93rem; }
+
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: .8rem 0; }
+    th { background: var(--primary); color: #fff; padding: .6rem .9rem; text-align: left; }
+    td { padding: .55rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--light); }
+
+    .badge { display: inline-block; border-radius: 6px; padding: .12rem .5rem; font-size: .72rem; font-weight: 800; }
+    .b-bloom  { background: #fff9c4; color: #5d4037; border: 1px solid #FFDF2D; }
+    .b-vig    { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+    .b-evo    { background: #fff8e1; color: #e65100; border: 1px solid #ffe082; }
+    .b-hist   { background: #fce4ec; color: #880e4f; border: 1px solid #f48fb1; }
+
+    .quiz-key { background: #f1f8e9; border: 1px solid #aed581; border-radius: 8px; padding: .8rem 1.1rem; margin: .5rem 0; font-size: .88rem; }
+    .quiz-key strong { color: #33691e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: .8rem; color: var(--muted); border-top: 1px solid var(--border); }
+
+    @media (max-width: 640px) { header h1 { font-size: 1.3rem; } .card { padding: 1.1rem; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge-prof">🔒 USO EXCLUSIVO DOCENTE · TGA04 · Semana 3</div>
+  <h1>📋 Notas del Profesor — Semana 3</h1>
+  <p>Estructura Condicional Simple (SI-FSI) · Prof. Diego Domínguez Tapia · IUB 2026</p>
+</header>
+
+<nav>
+  <a href="#resumen">🗺️ Resumen</a>
+  <a href="#cronograma">⏱️ Cronograma</a>
+  <a href="#didactica">🎓 Didáctica</a>
+  <a href="#analogias">💡 Analogías</a>
+  <a href="#neurobiz">🏢 NeuroBiz</a>
+  <a href="#quiz-key">🎮 Quiz clave</a>
+  <a href="#hti-guia">🏠 HTI</a>
+  <a href="#fuentes">📚 Fuentes prof.</a>
+</nav>
+
+<main>
+<section id="resumen" class="card">
+  <h2>🗺️ Resumen Rápido — Semana 3</h2>
+  <table>
+    <tbody>
+      <tr><td><strong>RA / CE</strong></td><td>RA1 cont. + RA2 inicio · CE3</td></tr>
+      <tr><td><strong>Bloom</strong></td><td><span class="badge b-bloom">Comprender → Aplicar</span></td></tr>
+      <tr><td><strong>Duración</strong></td><td>4 horas presenciales + 5 horas HTI</td></tr>
+      <tr><td><strong>XP disponible</strong></td><td>10 + 25 + 25 = <strong>60 XP</strong></td></tr>
+      <tr><td><strong>Entregable</strong></td><td>Algoritmo SI-FSI + prueba de escritorio</td></tr>
+      <tr><td><strong>Material estudiante</strong></td><td><code>semana3/index.html</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="cronograma" class="card">
+  <h2>⏱️ Cronograma Detallado (4 horas)</h2>
+  <div class="time-block">
+    <div class="time-header">Momento 1 — Apertura y registro <span class="mins">15 min</span></div>
+    <div class="time-body"><ul><li>Ingreso al material y registro con modal CC.</li><li>Revisar asistencia y progreso acumulado.</li></ul></div>
+  </div>
+  <div class="time-block">
+    <div class="time-header">Momento 2 — El rombo y sus dos salidas <span class="mins">35 min</span></div>
+    <div class="time-body"><ul><li>Dibujar SI / NO en tablero.</li><li>Insistir en que el rombo siempre tiene dos ramas, aunque solo una ejecute acciones.</li></ul></div>
+  </div>
+  <div class="time-block">
+    <div class="time-header">Momento 3 — Prueba de escritorio <span class="mins">50 min</span></div>
+    <div class="time-body"><ul><li>Resolver manualmente los casos 65.0 y 82.0.</li><li>Seguir línea por línea el algoritmo.</li></ul></div>
+  </div>
+  <div class="time-block">
+    <div class="time-header">Momento 4 — Condiciones compuestas <span class="mins">45 min</span></div>
+    <div class="time-body"><ul><li>Introducir <code>Y</code> y <code>O</code> en contexto de alertas.</li><li>Comparar con la acción <em>Condition</em> de Power Automate.</li></ul></div>
+  </div>
+  <div class="time-block">
+    <div class="time-header">Momento 5 — Quiz y cierre <span class="mins">30 min</span></div>
+    <div class="time-body"><ul><li>Resolver quiz.</li><li>Dejar como mensaje final: “Esta semana importa ejecutar mentalmente el algoritmo, no solo copiarlo”.</li></ul></div>
+  </div>
+</section>
+
+<section id="didactica" class="card">
+  <h2>🎓 Estrategias Didácticas Recomendadas</h2>
+  <div class="callout alerta">
+    <span class="ico">⚠️</span>
+    <p><strong>Error frecuente:</strong> muchos estudiantes ponen <code>FSI</code> antes del bloque ENTONCES. Corregirlo escribiendo primero la condición completa y luego la acción indentada.</p>
+  </div>
+  <div class="callout estrategia">
+    <span class="ico">🔷</span>
+    <p><strong>Siempre dibuje el rombo con DOS salidas</strong>. Etiquete ambas ramas: Sí y No. El estudiante necesita ver que la rama “No” existe aunque no ejecute nada especial.</p>
+  </div>
+  <div class="callout teoria">
+    <span class="ico">🧠</span>
+    <p><strong>La habilidad clave es la prueba de escritorio:</strong> trazado manual, celda por celda, línea por línea. Si el grupo no domina esto, no avance a SI-SINO-FSI.</p>
+  </div>
+  <div class="callout cite">
+    <span class="ico">⚙️</span>
+    <p><strong>Power Automate bridge:</strong> el SI-FSI es literalmente una acción <em>Condition</em> → rama <em>If yes</em>. Es un puente excelente con automatización empresarial.</p>
+  </div>
+</section>
+
+<section id="analogias" class="card">
+  <h2>💡 Banco de Analogías</h2>
+  <table>
+    <thead><tr><th>Concepto</th><th>Analogía</th><th>Uso en clase</th></tr></thead>
+    <tbody>
+      <tr><td>SI-FSI</td><td>Semáforo rojo: si está rojo, detenerse</td><td>Explica que si no está rojo, no ocurre acción especial.</td></tr>
+      <tr><td>Condición compuesta</td><td>Descuento si compra &gt; 1.000.000 y es cliente frecuente</td><td>Introduce el operador <code>Y</code>.</td></tr>
+      <tr><td>Prueba de escritorio</td><td>Ensayo de una obra antes del estreno</td><td>Se verifica qué pasa paso a paso antes de implementar.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="neurobiz" class="card">
+  <h2>🏢 Contexto NeuroBiz — Semana 3</h2>
+  <p>La alerta clínica por retención baja es el primer ejemplo claro de <strong>automatización de decisiones</strong> en NeuroBiz. El estudiante deja de solo calcular KPI y empieza a reaccionar frente a ellos.</p>
+</section>
+
+<section id="quiz-key" class="card">
+  <h2>🎮 Clave y Análisis — Quiz Semana 3</h2>
+  <div class="quiz-key"><strong>P1 (a):</strong> Si la condición es falsa, no se ejecuta el bloque ENTONCES.</div>
+  <div class="quiz-key"><strong>P2 (b):</strong> El rombo tiene dos salidas: Sí y No.</div>
+  <div class="quiz-key"><strong>P3 (a):</strong> El operador Y exige que ambas condiciones sean verdaderas.</div>
+  <div class="quiz-key"><strong>P4 (c):</strong> La palabra de cierre es FSI.</div>
+  <div class="quiz-key"><strong>P5 (d):</strong> Se evalúa un valor LÓGICO.</div>
+</section>
+
+<section id="hti-guia" class="card">
+  <h2>🏠 Guía del HTI — Seguimiento Docente</h2>
+  <div class="callout estrategia">
+    <span class="ico">📋</span>
+    <p><strong>Chequeo sugerido:</strong> al inicio de la semana 4, pedir a un estudiante que explique en voz alta qué imprime el algoritmo cuando la tasa es 82.0. Si responde bien sin leer, dominó la lógica.</p>
+  </div>
+</section>
+
+<section id="fuentes" class="card">
+  <h2>📚 Fuentes para Profundización del Docente</h2>
+  <div class="callout cite"><span class="ico">📘</span><p><strong>Cairó Battistutti & Guardati</strong> — estructuras selectivas simples.</p></div>
+  <div class="callout cite"><span class="ico">⚙️</span><p><strong>Microsoft Power Automate</strong> — documentación de <em>Condition</em>.</p></div>
+  <div class="callout teoria"><span class="ico">🐍</span><p><strong>Puente a Python:</strong> mostrar solo como preview que <code>SI</code> equivale a <code>if:</code>.</p></div>
+</section>
+</main>
+
+<footer>
+  TGA04 · Notas del Profesor · Semana 3 · 🔒 Uso exclusivo docente ·
+  IUB 2026 · Prof. Diego Domínguez Tapia
+</footer>
+
+</body>
+</html>

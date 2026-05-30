@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notas del Profesor — Semana 12 | TGA04</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1E2843; --accent: #2d3a5e; --gold: #FFDF2D;
+      --green: #1b5e20; --green-bg: #e8f5e9;
+      --orange: #e65100; --orange-bg: #fff3e0;
+      --purple: #4a148c; --purple-bg: #f3e5f5;
+      --border: #DEDFE4; --muted: #546e7a;
+      --card-bg: #fff; --light: #FAFAFA;
+      --radius: 12px;
+    }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--light); color: #212121; line-height: 1.75; font-size: 16px; }
+    header { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: #fff; padding: 2rem 2rem 1.8rem; position: relative; overflow: hidden; }
+    header::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 35px; background: var(--light); clip-path: ellipse(55% 100% at 50% 100%); }
+    .badge-prof { display: inline-block; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); border-radius: 20px; padding: .25rem .9rem; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .7rem; }
+    header h1 { font-size: 1.7rem; font-weight: 800; }
+    header p { opacity: .88; margin-top: .3rem; font-size: .95rem; }
+    nav { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: .5rem 1.5rem; display: flex; gap: .4rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 99; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+    nav a { color: var(--accent); text-decoration: none; font-size: .82rem; font-weight: 700; padding: .25rem .65rem; border-radius: 7px; }
+    nav a:hover { background: var(--border); }
+    main { max-width: 900px; margin: 2rem auto; padding: 0 1.2rem 4rem; }
+    .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.6rem 1.8rem; margin-bottom: 1.8rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .card h2 { font-size: 1.2rem; color: var(--primary); border-left: 5px solid var(--gold); padding-left: .7rem; margin-bottom: 1.1rem; }
+    .card h3 { font-size: 1rem; color: var(--accent); margin: 1.1rem 0 .5rem; }
+    .card p { margin-bottom: .75rem; }
+    .card ul, .card ol { padding-left: 1.3rem; margin-bottom: .75rem; }
+    .card li { margin-bottom: .45rem; }
+    .callout { border-radius: 10px; padding: .9rem 1.2rem; margin: .9rem 0; display: flex; gap: .7rem; align-items: flex-start; }
+    .callout.estrategia { background: var(--green-bg); border-left: 4px solid #2e7d32; }
+    .callout.alerta { background: var(--orange-bg); border-left: 4px solid #ef6c00; }
+    .callout.teoria { background: var(--purple-bg); border-left: 4px solid #7b1fa2; }
+    .callout.cite { background: #e3f2fd; border-left: 4px solid #1565c0; }
+    .callout .ico { font-size: 1.3rem; flex-shrink: 0; line-height: 1; }
+    .callout p { margin: 0; font-size: .92rem; }
+    .time-block { border: 2px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1rem 0; }
+    .time-header { background: var(--primary); color: #fff; padding: .6rem 1.2rem; font-weight: 700; font-size: .92rem; display: flex; justify-content: space-between; align-items: center; }
+    .time-header .mins { background: var(--gold); color: var(--primary); border-radius: 20px; padding: .1rem .6rem; font-size: .78rem; }
+    .time-body { padding: 1rem 1.4rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: .8rem 0; }
+    th { background: var(--primary); color: #fff; padding: .6rem .9rem; text-align: left; }
+    td { padding: .55rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--light); }
+    .badge { display: inline-block; border-radius: 6px; padding: .12rem .5rem; font-size: .72rem; font-weight: 800; }
+    .b-bloom { background: #fff9c4; color: #5d4037; border: 1px solid #FFDF2D; }
+    .quiz-key { background: #f1f8e9; border: 1px solid #aed581; border-radius: 8px; padding: .8rem 1.1rem; margin: .5rem 0; font-size: .88rem; }
+    .quiz-key strong { color: #33691e; }
+    footer { text-align: center; padding: 1.5rem; font-size: .8rem; color: var(--muted); border-top: 1px solid var(--border); }
+    @media (max-width: 640px) { header h1 { font-size: 1.3rem; } .card { padding: 1.1rem; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="badge-prof">🔒 USO EXCLUSIVO DOCENTE · TGA04 · Semana 12</div>
+  <h1>📋 Notas del Profesor — Semana 12</h1>
+  <p>Introducción a Python en Google Colab · Prof. Diego Domínguez Tapia · IUB Colombia</p>
+</header>
+<nav>
+  <a href="#resumen">🗺️ Resumen</a>
+  <a href="#cronograma">⏱️ Cronograma</a>
+  <a href="#didactica">🎓 Didáctica</a>
+  <a href="#analogias">💡 Analogías</a>
+  <a href="#neurobiz">🏢 NeuroBiz</a>
+  <a href="#quiz-key">🎮 Quiz clave</a>
+  <a href="#hti-guia">🏠 HTI</a>
+  <a href="#fuentes">📚 Fuentes</a>
+</nav>
+<main>
+<section id="resumen" class="card">
+  <h2>🗺️ Resumen Rápido — Semana 12</h2>
+  <table><tbody>
+<tr><td><strong>RA / CE</strong></td><td>RA4 · CE6 — Usa Python básico</td></tr>
+<tr><td><strong>Bloom</strong></td><td><span class="badge b-bloom">Recordar → Comprender → Aplicar</span></td></tr>
+<tr><td><strong>Duración</strong></td><td>4 horas presenciales + práctica autónoma en Colab</td></tr>
+<tr><td><strong>Herramienta</strong></td><td>Google Colab (sin instalación)</td></tr>
+<tr><td><strong>XP disponible</strong></td><td>10 asistencia + 25 quiz + 35 misión = <strong>70 XP</strong></td></tr>
+<tr><td><strong>Entregable</strong></td><td>Primer notebook NeuroBiz con tasa_retención</td></tr>
+<tr><td><strong>Material estudiante</strong></td><td><code>semana12/index.html</code></td></tr>
+</tbody></table>
+</section>
+<section id="cronograma" class="card">
+  <h2>⏱️ Cronograma Detallado (4 horas)</h2>
+  
+<div class="time-block">
+  <div class="time-header">Momento 1 — Acceso y registro <span class="mins">15 min</span></div>
+  <div class="time-body"><ul><li>CC modal y apertura del material.</li><li>Confirmar que todos puedan abrir Colab en el navegador.</li></ul></div>
+</div>
+
+<div class="time-block">
+  <div class="time-header">Momento 2 — ¿Por qué Python en negocios? <span class="mins">35 min</span></div>
+  <div class="time-body"><ul><li>Comparar con Excel y automatización.</li><li>Explicar el puente pseudocódigo → Python.</li></ul></div>
+</div>
+
+<div class="time-block">
+  <div class="time-header">Momento 3 — Celdas, tipos y variables <span class="mins">60 min</span></div>
+  <div class="time-body"><ul><li>Diferenciar texto y código.</li><li>Practicar <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>.</li></ul></div>
+</div>
+
+<div class="time-block">
+  <div class="time-header">Momento 4 — Notebook NeuroBiz <span class="mins">90 min</span></div>
+  <div class="time-body"><ul><li>Construir el código de tasa_retención.</li><li>Ejecutar con Shift+Enter.</li><li>Leer la salida como reporte ejecutivo.</li></ul></div>
+</div>
+
+<div class="time-block">
+  <div class="time-header">Momento 5 — Quiz y HTI <span class="mins">40 min</span></div>
+  <div class="time-body"><ul><li>Resolver quiz.</li><li>Explicar el notebook obligatorio y la extensión de promedio mensual.</li></ul></div>
+</div>
+
+</section>
+<section id="didactica" class="card">
+  <h2>🎓 Estrategias Didácticas Recomendadas</h2>
+  <div class="callout estrategia"><span class="ico">✅</span><p><strong>Excel bridge:</strong> diga “esto es como escribir la fórmula fuera de Excel, con más control”. Reduce ansiedad tecnológica.</p></div><div class="callout teoria"><span class="ico">🧠</span><p><strong>Enfoque:</strong> enfatice que Python no reemplaza la lógica aprendida; la ejecuta.</p></div><div class="callout alerta"><span class="ico">⚠️</span><p><strong>Error frecuente:</strong> olvidar convertir <code>input()</code> a <code>int()</code> o <code>float()</code>. Muestre el fallo deliberadamente.</p></div><div class="callout cite"><span class="ico">🏛️</span><p><strong>Mensaje motivador:</strong> Python es estándar de facto en analítica y ciencia de datos; el valor para negocios está en su simplicidad y ecosistema.</p></div>
+</section>
+<section id="analogias" class="card">
+  <h2>💡 Banco de Analogías</h2>
+  <table><thead><tr><th>Concepto</th><th>Vida real</th><th>Empresa</th><th>Uso</th></tr></thead><tbody>
+<tr><td>Pseudocódigo → Python</td><td>Borrador → documento final</td><td>Acta interna → informe oficial</td><td>Explicar continuidad lógica</td></tr>
+<tr><td>Colab</td><td>Laboratorio prestado listo para usar</td><td>SaaS sin instalación</td><td>Destacar rapidez de entrada</td></tr>
+<tr><td>f-string</td><td>Plantilla con campos variables</td><td>Formato de reporte ejecutivo</td><td>Mostrar salidas legibles</td></tr>
+</tbody></table>
+</section>
+<section id="neurobiz" class="card">
+  <h2>🏢 Cómo narrar NeuroBiz esta semana</h2>
+  <p>Narre la semana como el primer día de “programación real” para NeuroBiz. Frase útil: <strong>“La lógica ya la tenían; hoy aprenden a hablarle al computador.”</strong></p><p>Resalte que Colab elimina la fricción técnica: el foco es la lógica.</p>
+</section>
+<section id="quiz-key" class="card">
+  <h2>🎮 Quiz clave — Respuestas y énfasis</h2>
+  <div class="quiz-key"><strong>1.</strong> = en Python — comparación con ←.</div><div class="quiz-key"><strong>2.</strong> print() — no usar tecnicismos excesivos, solo la idea de “mostrar”.</div><div class="quiz-key"><strong>3.</strong> :.1f = un decimal — practíquelo en vivo.</div><div class="quiz-key"><strong>4.</strong> int(input()) = entero — insista en la conversión.</div><div class="quiz-key"><strong>5.</strong> Colab funciona en el navegador — valor práctico inmediato.</div>
+</section>
+<section id="hti-guia" class="card">
+  <h2>🏠 HTI — Guía para el docente</h2>
+  <ul><li><strong>HTI-B:</strong> pedir enlace del notebook y tres pruebas.</li><li><strong>HTI-C:</strong> verificar que comprendan el promedio mensual, no solo que copien código.</li></ul>
+</section>
+<section id="fuentes" class="card">
+  <h2>📚 Fuentes para soporte docente</h2>
+  <ul><li>Documentación oficial de Python.</li><li>Google Colab documentation.</li><li>Cairó Battistutti & Guardati (2022).</li><li>Wing (2006) para continuidad del pensamiento computacional.</li></ul>
+</section>
+</main>
+<footer>TGA04 · Semana 12 · Notas del profesor · Uso exclusivo docente</footer>
+</body>
+</html>

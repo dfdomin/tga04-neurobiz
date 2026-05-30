@@ -185,7 +185,7 @@
     <div class="card"><h3>🎓 Módulo</h3>
       <ul>
         <li>Código: <strong>TGA04</strong></li>
-        <li>13 semanas (cuatrimestre)</li>
+        <li>15 semanas calendario (13 contenido + 2 parciales)</li>
         <li>4 h presenciales/semana (2 HAD + 2 HP)</li>
         <li>5 h HTI/semana</li>
         <li>5 RAs con criterios de evaluación</li>
@@ -351,16 +351,30 @@
     </div>
   </div>
   <div class="card">
-    <h3>📅 Distribución de semanas por RA (TGA04)</h3>
+    <h3>📅 Distribución de semanas por RA (TGA04) — 15 semanas calendario · 4 h/semana · 1 día</h3>
+    <div class="alert alert-info" style="margin-bottom:.7rem;font-size:.82rem">
+      <span>⏱</span>
+      <div>
+        <strong>Formato de clase:</strong> 4 horas un solo día por semana (2 h teoría + 2 h práctica · HAD+HP).
+        <strong>Sem 5 y Sem 10 = Parciales</strong> — no hay nuevo contenido esas semanas.
+        Total semanas con material: <strong>13</strong>.
+      </div>
+    </div>
     <table class="info">
       <tr><th>Pestaña Moodle</th><th>RA</th><th>Semanas</th><th>Tema principal</th></tr>
       <tr><td>Presentación</td><td>—</td><td>—</td><td>Docente + info curso + dashboard</td></tr>
       <tr><td>RA 1</td><td>Identificar variables y operaciones</td><td>1–2</td><td>Algoritmos, tipos de variables (num/alfa/lóg), operadores, diagramas de flujo, pseudocódigo</td></tr>
-      <tr><td>RA 2</td><td>Formular soluciones algorítmicas</td><td>3–8</td><td>Primitivas selectivas (SI-FSI, SI-SINO-FSI, DD-FDD) y repetitivas (MQ-FMQ, HH-FHH, PARA-FPARA)</td></tr>
-      <tr><td>RA 3</td><td>Pruebas de escritorio</td><td>9</td><td>Verificación paso a paso de algoritmos con variables</td></tr>
-      <tr><td>RA 4</td><td>Programar en lenguaje de alto nivel</td><td>10–12</td><td>IDE, codificación de variables y primitivas, laboratorio NeuroBiz</td></tr>
-      <tr><td>RA 5</td><td>Verificar y depurar programas</td><td>13</td><td>Debugging, identificación y corrección de fallas en IDE</td></tr>
+      <tr><td>RA 2</td><td>Formular soluciones algorítmicas</td><td>3–4, 6–9</td><td>Primitivas selectivas (SI-FSI, SI-SINO-FSI, DD-FDD) y repetitivas (MQ-FMQ, HH-FHH, PARA-FPARA)</td></tr>
+      <tr><td style="background:#fff3e0;color:#e65100;font-weight:700">⏸ PARCIAL C1</td><td>—</td><td style="font-weight:700">5</td><td style="color:#e65100">Evaluación Corte 1 · Sin contenido nuevo</td></tr>
+      <tr><td>RA 3</td><td>Pruebas de escritorio</td><td>11</td><td>Verificación paso a paso del estado de variables</td></tr>
+      <tr><td style="background:#fff3e0;color:#e65100;font-weight:700">⏸ PARCIAL C2</td><td>—</td><td style="font-weight:700">10</td><td style="color:#e65100">Evaluación Corte 2 · Sin contenido nuevo</td></tr>
+      <tr><td>RA 4</td><td>Programar en lenguaje de alto nivel</td><td>12–14</td><td>IDE, codificación de variables y primitivas, laboratorio NeuroBiz</td></tr>
+      <tr><td>RA 5</td><td>Verificar y depurar programas</td><td>15</td><td>Debugging, identificación y corrección de fallas en IDE</td></tr>
     </table>
+    <div class="alert alert-warn" style="margin-top:.8rem">
+      <span>⚠️</span>
+      <div><strong>Sem 5 y Sem 10:</strong> semanas de parcial — no se genera <span class="inline-code">index.html</span> de contenido. El sistema tiene <strong>13 archivos</strong> de semana (sem 1–4 y 6–9 y 11–15), saltando las semanas de evaluación.</div>
+    </div>
   </div>
   <div class="card">
     <h3>🏠 Horas trabajo independiente (HTI) — estrategia dual</h3>
@@ -497,9 +511,9 @@
 (function(){
   var SUPABASE_URL = <span class="hi">"https://XXX.supabase.co"</span>;
   var SUPABASE_KEY = <span class="hi">"eyJ..."</span>;
-  if(!localStorage.getItem('tga05_supabase_url')){
-    localStorage.setItem('tga05_supabase_url',SUPABASE_URL);
-    localStorage.setItem('tga05_supabase_key',SUPABASE_KEY);
+  if(!localStorage.getItem('tga04_supabase_url')){
+    localStorage.setItem('tga04_supabase_url',SUPABASE_URL);
+    localStorage.setItem('tga04_supabase_key',SUPABASE_KEY);
   }
 })();</code></pre>
     </div>
@@ -526,8 +540,8 @@
   <table class="info">
     <tr><th>Script</th><th>Estado</th><th>Uso</th></tr>
     <tr><td><span class="inline-code">apply_iub_colors.py</span></td><td><span class="tag tag-green">✅ Ejecutado</span></td><td>Aplica paleta IUB a 31 archivos. Idempotente.</td></tr>
-    <tr><td><span class="inline-code">update_widget_modal.py</span></td><td><span class="tag tag-green">✅ Ejecutado</span></td><td>Inyecta widget simplificado + modal bienvenida en 14 semanas.</td></tr>
-    <tr><td><span class="inline-code">update_supabase_sync.py</span></td><td><span class="tag tag-green">✅ Ejecutado</span></td><td>Inyecta syncCloud() con soporte Supabase en 14 semanas.</td></tr>
+    <tr><td><span class="inline-code">update_widget_modal.py</span></td><td><span class="tag tag-green">✅ Ejecutado</span></td><td>Inyecta widget simplificado + modal bienvenida en 13 semanas.</td></tr>
+    <tr><td><span class="inline-code">update_supabase_sync.py</span></td><td><span class="tag tag-green">✅ Ejecutado</span></td><td>Inyecta syncCloud() con soporte Supabase en 13 semanas.</td></tr>
     <tr><td><span class="inline-code">supabase_schema.sql</span></td><td><span class="tag tag-yellow">⏳ Pendiente</span></td><td>Ejecutar en Supabase SQL Editor. Solo 1 vez.</td></tr>
     <tr><td><span class="inline-code">exportar_notas.py</span></td><td><span class="tag tag-navy">🔧 Listo</span></td><td>Genera XLSX desde terminal. <span class="inline-code">python3 exportar_notas.py --corte 1</span></td></tr>
   </table>
@@ -566,9 +580,9 @@ nota_corte = nota_formativa × 0.70 + nota_parcial × 0.30
       <h3>📅 Cortes (semanas)</h3>
       <table class="info">
         <tr><th>Corte</th><th>Semanas</th></tr>
-        <tr><td>Corte 1</td><td>1 – 5</td></tr>
-        <tr><td>Corte 2</td><td>6 – 10</td></tr>
-        <tr><td>Corte 3</td><td>11 – 14</td></tr>
+        <tr><td>Corte 1</td><td>1 – 5 (sem 5 = parcial)</td></tr>
+        <tr><td>Corte 2</td><td>6 – 10 (sem 10 = parcial)</td></tr>
+        <tr><td>Corte 3</td><td>11 – 15</td></tr>
       </table>
       <p style="font-size:.82rem;margin-top:.5rem;color:var(--muted)">Ajustable en el dashboard de notas.</p>
     </div>
@@ -580,11 +594,11 @@ nota_corte = nota_formativa × 0.70 + nota_parcial × 0.30
   <div class="sec-title"><div class="sec-num">12</div><h2>Git → GitHub Pages</h2></div>
   <div class="card">
     <h3>Primera publicación (ejecutar una sola vez)</h3>
-    <pre id="c-git1"><button class="copy-btn" onclick="cp('c-git1',this)">Copiar</button><code><span class="cmd">cd</span> "...OneDrive.../copilot2/EstructuraDatos"
+    <pre id="c-git1"><button class="copy-btn" onclick="cp('c-git1',this)">Copiar</button><code><span class="cmd">cd</span> "...OneDrive.../copilot/FundamentosComputacion"
 <span class="cmd">git init</span>
 <span class="cmd">git add .</span>
-<span class="cmd">git commit -m</span> <span class="hi">"TGA05 NeuroBiz - Material completo IUB"</span>
-<span class="cmd">git remote add origin</span> https://github.com/<span class="hi">TU_USUARIO</span>/tga05-neurobiz.git
+<span class="cmd">git commit -m</span> <span class="hi">"TGA04 NeuroBiz - Material completo IUB"</span>
+<span class="cmd">git remote add origin</span> https://github.com/<span class="hi">TU_USUARIO</span>/tga04-fundamentos.git
 <span class="cmd">git push -u origin main</span></code></pre>
     <p style="font-size:.83rem;color:var(--muted);margin-top:.5rem">Luego en GitHub: <strong>Settings → Pages → Branch: main → / (root) → Save</strong></p>
   </div>
@@ -613,9 +627,9 @@ nota_corte = nota_formativa × 0.70 + nota_parcial × 0.30
       <li>Activar edición del curso → pestaña del RA correspondiente</li>
       <li>"Añadir actividad o recurso" → <strong>URL</strong></li>
       <li>Nombre: <code>📘 Semana N – [Título]</code></li>
-      <li>URL: <code>https://TU_USUARIO.github.io/tga05-neurobiz/semanaN/</code></li>
+      <li>URL: <code>https://TU_USUARIO.github.io/tga04-fundamentos/semanaN/</code></li>
       <li>Apariencia → <strong>Abrir en nueva ventana</strong></li>
-      <li>Repetir × 14 semanas + dashboard estudiante en Presentación</li>
+      <li>Repetir × 13 semanas + dashboard estudiante en Presentación</li>
     </ol>
   </div>
   <div class="grid-2">
@@ -635,7 +649,7 @@ nota_corte = nota_formativa × 0.70 + nota_parcial × 0.30
   <div class="sec-title"><div class="sec-num">14</div><h2>Replicar para otro módulo</h2></div>
   <div class="card card-navy">
     <h3>🔁 Proceso completo para nuevo módulo</h3>
-    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>1.</strong> Copiar carpeta EstructuraDatos → renombrar (ej: CostosPresupuesto)</div>
+    <div class="phase-row"><div class="phase-dot dot-done"></div><strong>1.</strong> Copiar carpeta FundamentosComputacion → renombrar (ej: CostosPresupuesto)</div>
     <div class="phase-row"><div class="phase-dot dot-done"></div><strong>2.</strong> Tener listos: microcurrículo del módulo + caso de estudio empresarial</div>
     <div class="phase-row"><div class="phase-dot dot-done"></div><strong>3.</strong> Nueva sesión IA → pegar Prompt Nueva Sesión (sección 15)</div>
     <div class="phase-row"><div class="phase-dot dot-done"></div><strong>4.</strong> IA genera 14× index.html + notas_profesor.html con nuevo contenido</div>
@@ -674,17 +688,38 @@ nota_corte = nota_formativa × 0.70 + nota_parcial × 0.30
 ## CONTEXTO: Material educativo IUB — continuación de sesión anterior
 
 ### ROL
-Actúa como experto en diseño curricular universitario y gamificación pedagógica (Framework GAME: Guiar, Articular, Motivar, Evaluar). Formación Basada en Competencias. Python como herramienta BI, no como fin. Taxonomía de Bloom explícita. Narrativa corporativa inmersiva. Cuatrimestros 13 semanas + 1 cierre.
+Actúa como experto en diseño curricular universitario y gamificación pedagógica (Framework GAME: Guiar, Articular, Motivar, Evaluar). Formación Basada en Competencias. Algoritmos y programación básica como eje central. Taxonomía de Bloom explícita. Narrativa corporativa inmersiva. Cuatrimestres 13 semanas.
 
 ### INSTITUCIÓN
 Institución Universitaria de Barranquilla (IUB). Paleta oficial DG-TSI-09-V4: primario #1E2843 (navy), amarillo #FFDF2D, fondo #FAFAFA, borde #DEDFE4. Fuente: Open Sans. Aula virtual: aulavirtual.unibarranquilla.edu.co (Moodle, modo pestaña, 1 pestaña Presentación + pestañas por RA).
 
-### ARQUITECTURA (ya construida para TGA05, replicar para nuevo módulo)
+### MÓDULO ACTIVO: TGA04 — Fundamentos de Computación para los Negocios
+- Programa: Tecnología en Gestión Administrativa
+- Créditos: 2 | HAD: 2h/sem | HP: 2h/sem | HTI: 5h/sem | Total: 117h | 13 semanas
+- 5 Resultados de Aprendizaje:
+  RA1 (sem 1-2, 18h): Identificar variables (num/alfa/lóg) y operaciones (mat/lóg/rel/est)
+  RA2 (sem 3-4 y 6-9, 54h): Formular soluciones algorítmicas – primitivas selectivas y repetitivas
+  RA3 (sem 11, 9h): Pruebas de escritorio para verificación de algoritmos
+  RA4 (sem 12-14, 27h): Programar en lenguaje de alto nivel (IDE)
+  RA5 (sem 15, 9h): Verificar y depurar programas (debugging en IDE)
+- Semanas calendario: 15 (13 contenido + sem 5 PARCIAL C1 + sem 10 PARCIAL C2)
+- Cortes: C1=sem1-5 (parcial sem5), C2=sem6-10 (parcial sem10), C3=sem11-15
+
+### CONTENIDOS CLAVE TGA04
+- Intro algoritmos: datos, información, software, SI, variables, operadores, diagramas de flujo, pseudocódigo
+- Primitivas selectivas: Inicio-Fin, E/S, SI-FSI, SI-SINO-FSI, DD-FDD
+- Primitivas repetitivas: MQ-FMQ, HH-FHH, PARA-FPARA
+- Pruebas de escritorio: seguimiento paso a paso de variables
+- IDE + codificación: variables, primitivas selectivas y repetitivas en lenguaje de alto nivel
+- Depuración: debugging, identificar y corregir fallas en IDE
+
+### ARQUITECTURA (ya construida para TGA04, replicar para nuevo módulo)
 - Stack: HTML estático + Supabase REST + GitHub Pages (JAMstack, sin servidor)
-- 14 semanas × 2 archivos: index.html (estudiante) + notas_profesor.html (docente)
-- Dashboards: dashboard/index.html (estudiante), dashboard/profesor.html (PIN: tga05), dashboard/notas.html (consolidar notas + exportar XLSX)
+- 13 semanas × 2 archivos: index.html (estudiante) + notas_profesor.html (docente)
+- Carpeta raíz: FundamentosComputacion/
+- Dashboards: dashboard/index.html (estudiante), dashboard/profesor.html (PIN: tga04), dashboard/notas.html (consolidar notas + exportar XLSX)
 - Central config: js/supabase-config.js (llenar URL+KEY antes de push)
-- localStorage keys: tga05_global (nombre/id/grupo), tga05_sN (por semana), tga05_visited_sN
+- localStorage keys: tga04_global (nombre/id/grupo), tga04_sN (por semana), tga04_visited_sN
 - Widget: botón ☁️ Guardar (prominente) + ⚙️ oculta Código/Cargar. Modal bienvenida en primera visita (+5 XP).
 - Supabase tabla student_progress: UNIQUE(student_id, semana), campos: student_id, student_name, grupo, semana, xp, quiz_score, quiz_answers (JSONB), activity_done
 
@@ -699,7 +734,7 @@ Toda actividad debe dar feedback inmediato y registrarse en Supabase (quiz_answe
 
 TIPOS según dimensión competencial:
 - Conceptual: opción múltiple con justificación, V/F con argumento, arrastrar-clasificar
-- Procedimental: ordenar secuencia, completar código/blanks, mini-editor + ejecución, Colab con assert
+- Procedimental: ordenar secuencia, completar pseudocódigo/blanks, mini-editor + ejecución, prueba de escritorio interactiva
 - Actitudinal: escenario+decisión, reflexión guiada (XP por completar, no por respuesta)
 
 FEEDBACK:
@@ -708,30 +743,21 @@ FEEDBACK:
 
 MÓDULOS CON CÓDIGO:
 - Mini-editor HTML para calentamiento rápido (5-10 min)
-- Google Colab (Opción B) para práctica profunda: notebook teoría→ejercicio→celda assert
+- IDE (PseInt, BlueJ, IntelliJ según nivel) para práctica profunda
 - Guardar en quiz_answers: {"code_attempts": N, "code_passed": true/false}
-
-CRÍTICA DE CONTENIDO — transparencia curricular:
-- 🟢 VIGENTE: presentar normalmente
-- 🟡 EVOLUCIONADO: enseñar concepto + nota "Hoy se usa X en su lugar"
-- 🔴 HISTÓRICO: explicar brevemente + qué lo reemplaza + cuándo aún aplica
-- Formato nota crítica: "Este tema forma parte del currículo oficial. En práctica moderna ha sido reemplazado por [X]. Sigue siendo útil para [Y]. Enfócate en el concepto, no en memorizarlo para producción."
-
-CHECKLIST IA por semana:
-1. Identificar RA + criterio → dimensión (conceptual/procedimental/actitudinal)
-2. Etiquetar temas: 🟢/🟡/🔴
-3. Seleccionar tipo de actividad apropiado
-4. Escribir feedback correcto E incorrecto específicos
-5. Si hay código: definir función + casos de prueba
-6. Verificar que activity_done y quiz_answers se registran
 
 ### FÓRMULA DE CALIFICACIÓN
 nota_formativa = (quiz_avg/10×5)×0.50 + (actividades/sem_esp×5)×0.30 + (visitas/sem_esp×5)×0.20
 nota_corte = nota_formativa×0.70 + nota_parcial×0.30 (pesos configurables)
-Cortes: C1=sem1-5, C2=sem6-10, C3=sem11-14
+Cortes: C1=sem1-5 (parcial sem5), C2=sem6-10 (parcial sem10), C3=sem11-15
 
-### CASO DE ESTUDIO ANTERIOR (TGA05)
-NeuroBiz S.A.S.: empresa de terapias IA para neurodivergentes (TDAH, Autismo, Altas Capacidades). KPIs: sesiones_asistidas, sesiones_fallidas, tasa_retencion, indice_progreso. ODS 7 y 13 (paneles solares, geotérmica). Doble propósito: técnico (BI) + sensibilización neurodiversidad.
+### CASO DE ESTUDIO (TGA04)
+NeuroBiz S.A.S.: empresa de terapias IA para neurodivergentes (TDAH, Autismo, Altas Capacidades). KPIs usados en algoritmos: sesiones_asistidas (numérica), sesiones_fallidas (numérica), tasa_retencion (numérica), indice_progreso (numérica), nombre_terapeuta (alfanumérica), activo (lógica). ODS 7 y 13. Doble propósito: técnico (algoritmos/prog) + sensibilización neurodiversidad.
+
+### BIBLIOGRAFÍA BASE
+- Cairó & Guardati: Metodología de la programación (Alfaomega, 3a ed.) ISBN 9789586827492
+- Deitel & Deitel: Cómo programar en Java (Pearson, 5a ed.) ISBN 9789702605188
+- Joyanes Aguilar: Fundamentos de programación (McGraw-Hill, 3a ed.) ISBN 9786071508188
 
 ### SCRIPTS DISPONIBLES (en setup/)
 - apply_iub_colors.py: aplica paleta IUB a todos los HTML (idempotente, reutilizable)
@@ -743,7 +769,7 @@ NeuroBiz S.A.S.: empresa de terapias IA para neurodivergentes (TDAH, Autismo, Al
 Usar recurso tipo URL (NO File) apuntando a GitHub Pages. Abrir en nueva ventana. NO usar SCORM por ahora.
 
 ### TAREA ACTUAL
-[DESCRIBE AQUÍ EL NUEVO MÓDULO: código, nombre, RAs, semanas, caso de estudio, microcurrículo]
+[DESCRIBE AQUÍ LA TAREA: semana a generar, RA a trabajar, contenidos específicos]
     </textarea>
     <div style="display:flex;gap:.6rem;margin-top:.8rem;flex-wrap:wrap">
       <button class="btn btn-yellow" onclick="copyCompact()">📋 Copiar prompt completo</button>
@@ -803,13 +829,13 @@ Usar recurso tipo URL (NO File) apuntando a GitHub Pages. Abrir en nueva ventana
         <td><strong>Completar código / blanks</strong></td>
         <td><span class="tag tag-green">Procedimental</span></td>
         <td>Funciones con huecos, corregir errores de sintaxis</td>
-        <td>Código (TGA05+)</td>
+        <td>Código (TGA04+)</td>
       </tr>
       <tr>
         <td><strong>Mini-editor de código + ejecución</strong></td>
         <td><span class="tag tag-green">Procedimental</span></td>
         <td>Practicar funciones, estructuras de datos, algoritmos</td>
-        <td>Código (TGA05+)</td>
+        <td>Código (TGA04+)</td>
       </tr>
       <tr>
         <td><strong>Escenario + decisión</strong></td>
@@ -862,7 +888,7 @@ Usar recurso tipo URL (NO File) apuntando a GitHub Pages. Abrir en nueva ventana
     </div>
     <div class="alert alert-info" style="margin-top:.8rem">
       <span>💡</span>
-      <div>Para TGA05 y módulos similares: usar <strong>Opción B (Colab)</strong> como actividad principal de código + mini-editor en HTML para ejercicios de calentamiento rápido (5–10 min).</div>
+      <div>Para TGA04 y módulos de algoritmia: usar el <strong>mini-editor embebido</strong> para pseudocódigo y traza de algoritmos + IDE (PseInt, BlueJ o IntelliJ) para laboratorios de codificación en clase.</div>
     </div>
   </div>
 
@@ -1017,8 +1043,8 @@ Enfócate en comprender el concepto, no en memorizarlo para producción.</code><
       <h3>🗄️ Storage keys</h3>
       <table class="info">
         <tr><th>Key localStorage</th><th>Contenido</th></tr>
-        <tr><td><code>tga05_students_v1</code></td><td>Array JSON con los estudiantes importados</td></tr>
-        <tr><td><code>tga05_group_info_v1</code></td><td>Metadata del grupo: grupo, horario, salón, asignatura</td></tr>
+        <tr><td><code>tga04_students_v1</code></td><td>Array JSON con los estudiantes importados</td></tr>
+        <tr><td><code>tga04_group_info_v1</code></td><td>Metadata del grupo: grupo, horario, salón, asignatura</td></tr>
       </table>
     </div>
   </div>
@@ -1051,7 +1077,7 @@ Enfócate en comprender el concepto, no en memorizarlo para producción.</code><
 GRUPO: 7_GA_G1
 HORARIO: Viernes 07:00 - 10:59
 SALÓN: CENH P1-7
-ASIGNATURA: ESTRUCTURA DE DATOS PARA LOS NEGOCIOS</code></pre>
+ASIGNATURA: FUNDAMENTOS DE COMPUTACION PARA LOS NEGOCIOS</code></pre>
     <div class="alert alert-warn">
       <span>⚠️</span>
       <div>Si el PDF extrae texto con columnas desordenadas (nombre y cédula en líneas separadas), el parser intentará un modo de recuperación más amplio. En caso de fallo, el estudiante aparecerá con CC = <code>SIN_DOC_N</code> — esto es editable manualmente en el código.</div>
@@ -1081,7 +1107,7 @@ ASIGNATURA: ESTRUCTURA DE DATOS PARA LOS NEGOCIOS</code></pre>
     <h3>🪪 Identificación por cédula (CC) en materiales de clase</h3>
     <p style="font-size:.87rem;margin-bottom:.8rem">A partir de esta versión, los estudiantes se identifican con su <strong>número de cédula</strong> en lugar de texto libre. Esto elimina duplicados y permite un repositorio único para múltiples grupos.</p>
     <table class="info">
-      <tr><th>Dato guardado en tga05_global</th><th>Cómo se obtiene</th></tr>
+      <tr><th>Dato guardado en tga04_global</th><th>Cómo se obtiene</th></tr>
       <tr><td><code>cc</code></td><td>Ingresado por el estudiante en el modal de bienvenida</td></tr>
       <tr><td><code>nombre</code></td><td>Auto-rellenado desde la lista del docente (Supabase o localStorage)</td></tr>
       <tr><td><code>grupo</code></td><td>Auto-rellenado desde el reporte importado</td></tr>
@@ -1094,7 +1120,7 @@ ASIGNATURA: ESTRUCTURA DE DATOS PARA LOS NEGOCIOS</code></pre>
       <li><strong>Paso 2a (CC encontrada):</strong> Sistema muestra nombre y grupo → estudiante confirma → perfil guardado</li>
       <li><strong>Paso 2b (CC no encontrada):</strong> Formulario manual con nombre+grupo → perfil guardado con CC = número ingresado</li>
     </ol>
-    <p style="font-size:.83rem;margin-top:.6rem;opacity:.85">La búsqueda primero revisa <code>tga05_students_v1</code> (localStorage del docente), luego llama a Supabase <code>/rest/v1/students?cc=eq.{CC}</code>. Si no hay conexión o la lista no existe, cae a entrada manual.</p>
+    <p style="font-size:.83rem;margin-top:.6rem;opacity:.85">La búsqueda primero revisa <code>tga04_students_v1</code> (localStorage del docente), luego llama a Supabase <code>/rest/v1/students?cc=eq.{CC}</code>. Si no hay conexión o la lista no existe, cae a entrada manual.</p>
   </div>
 
   <div class="card">
@@ -1114,8 +1140,8 @@ ASIGNATURA: ESTRUCTURA DE DATOS PARA LOS NEGOCIOS</code></pre>
     <p style="font-size:.87rem">El importador es completamente portable. Para usarlo en otro módulo:</p>
     <ol style="font-size:.87rem;line-height:2">
       <li>Copiar <span class="inline-code">dashboard/participacion.html</span> al nuevo módulo</li>
-      <li>Cambiar el prefijo del storage key (<span class="inline-code">tga05_</span>) por el código del nuevo módulo (ej: <span class="inline-code">tga03_</span>) para evitar conflictos entre módulos en el mismo navegador</li>
-      <li>Cambiar el nombre del módulo en el modal de bienvenida (semana*/index.html) — buscar "TGA05"</li>
+      <li>Cambiar el prefijo del storage key (<span class="inline-code">tga04_</span>) por el código del nuevo módulo (ej: <span class="inline-code">tga03_</span>) para evitar conflictos entre módulos en el mismo navegador</li>
+      <li>Cambiar el nombre del módulo en el modal de bienvenida (semana*/index.html) — buscar "TGA04"</li>
       <li>Ejecutar <span class="inline-code">setup/update_cc_modal.py</span> para aplicar el modal CC a todos los archivos de semana</li>
       <li>Ejecutar el SQL de <span class="inline-code">setup/supabase_schema.sql</span> en Supabase (tablas <code>students</code> y columnas grupo/horario)</li>
     </ol>
@@ -1254,7 +1280,7 @@ SCHEMA["student_progress"]["defaults"]["nivel_riesgo"] = "normal"
 </div>
 
 <footer>
-  <strong>TGA05 — Estructura de Datos para los Negocios · IUB · 2026</strong><br>
+  <strong>TGA04 — Fundamentos de Computación para los Negocios · IUB · 2026</strong><br>
   Framework GAME · NeuroBiz S.A.S. · Supabase + GitHub Pages · Open Sans · #1E2843
 </footer>
 

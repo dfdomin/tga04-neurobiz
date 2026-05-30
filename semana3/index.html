@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semana 3 — Estructura Condicional Simple (SI-FSI) | TGA04</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary:   #1E2843;
+      --accent:    #2d3a5e;
+      --gold:      #FFDF2D;
+      --green:     #2e7d32;
+      --red:       #c62828;
+      --light-bg:  #FAFAFA;
+      --card-bg:   #ffffff;
+      --text:      #212121;
+      --muted:     #546e7a;
+      --border:    #DEDFE4;
+      --radius:    12px;
+    }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--light-bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    header { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: #fff; padding: 2.5rem 2rem 2rem; text-align: center; position: relative; overflow: hidden; }
+    header::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 40px; background: var(--light-bg); clip-path: ellipse(55% 100% at 50% 100%); }
+    .badge-module { display: inline-block; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: .3rem 1rem; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .8rem; }
+    header h1 { font-size: 2rem; font-weight: 800; line-height: 1.2; }
+    header p  { font-size: 1rem; opacity: .85; margin-top: .5rem; }
+    .xp-bar-wrap { margin: 1.2rem auto 0; max-width: 400px; background: rgba(255,255,255,.2); border-radius: 20px; height: 14px; overflow: hidden; }
+    .xp-bar { height: 100%; width: 0%; background: var(--gold); border-radius: 20px; transition: width 1.5s ease; }
+    .xp-label { font-size: .78rem; opacity: .8; margin-top: .4rem; }
+
+    nav { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: .6rem 1.5rem; display: flex; gap: .5rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 99; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    nav a { color: var(--accent); text-decoration: none; font-size: .85rem; font-weight: 600; padding: .3rem .7rem; border-radius: 8px; transition: background .2s; }
+    nav a:hover { background: var(--border); }
+
+    main { max-width: 960px; margin: 2rem auto; padding: 0 1.2rem 4rem; }
+
+    .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.8rem 2rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .card h2 { font-size: 1.3rem; color: var(--primary); border-left: 5px solid var(--gold); padding-left: .8rem; margin-bottom: 1.2rem; }
+    .card h3 { font-size: 1.05rem; color: var(--accent); margin: 1.2rem 0 .6rem; }
+    .card p  { margin-bottom: .8rem; }
+    .card ul, .card ol { padding-left: 1.4rem; margin-bottom: .8rem; }
+    .card li { margin-bottom: .4rem; }
+
+    .bloom { display: inline-flex; align-items: center; gap: .4rem; background: #fff9c4; border: 1px solid #FFDF2D; border-radius: 20px; padding: .25rem .85rem; font-size: .8rem; font-weight: 700; color: #5d4037; margin-bottom: 1rem; }
+
+    .memo { background: #fffde7; border-left: 5px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; font-style: italic; }
+    .memo strong { font-style: normal; display: block; margin-bottom: .4rem; color: var(--primary); }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 1rem; margin: 1rem 0; }
+    .kpi-card { background: var(--light-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .kpi-card .kpi-icon { font-size: 1.8rem; }
+    .kpi-card .kpi-name { font-size: .78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin: .4rem 0; }
+    .kpi-card .kpi-val  { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+
+    .code-wrap { background: #1E2843; border-radius: 10px; overflow: hidden; margin: 1rem 0; }
+    .code-title { background: #2d3a5e; color: #cdd6f4; font-size: .78rem; padding: .4rem 1rem; font-family: monospace; display: flex; justify-content: space-between; align-items: center; }
+    pre { padding: 1.2rem 1.5rem; overflow-x: auto; font-size: .88rem; line-height: 1.6; color: #cdd6f4; font-family: 'Courier New', monospace; }
+    .kw  { color: #cba6f7; }
+    .fn  { color: #89b4fa; }
+    .str { color: #a6e3a1; }
+    .cm  { color: #6c7086; font-style: italic; }
+    .num { color: #fab387; }
+
+    .info-box { border-radius: 10px; padding: 1rem 1.3rem; margin: 1rem 0; display: flex; gap: .8rem; align-items: flex-start; }
+    .info-box.tip   { background: #e8f5e9; border-left: 4px solid #43a047; }
+    .info-box.warn  { background: #fff8e1; border-left: 4px solid #e6c800; }
+    .info-box.brain { background: #f3e5f5; border-left: 4px solid #8e24aa; }
+    .info-box.cite  { background: #e3f2fd; border-left: 4px solid #1976d2; }
+    .info-box.hist  { background: #fce4ec; border-left: 4px solid #e91e63; }
+    .info-box .icon { font-size: 1.4rem; line-height: 1; flex-shrink: 0; }
+    .info-box p     { margin: 0; font-size: .93rem; }
+
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 1rem 0; }
+    th { background: var(--primary); color: #fff; padding: .7rem 1rem; text-align: left; }
+    td { padding: .6rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--light-bg); }
+
+    .relevance-badge { display: inline-block; border-radius: 6px; padding: .15rem .55rem; font-size: .75rem; font-weight: 800; margin-left: .4rem; }
+    .vig  { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+    .evo  { background: #fff8e1; color: #e65100; border: 1px solid #ffe082; }
+    .hist-badge { background: #fce4ec; color: #880e4f; border: 1px solid #f48fb1; }
+
+    .activity { border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 1.2rem 0; }
+    .activity-header { padding: .8rem 1.3rem; display: flex; align-items: center; gap: .7rem; font-weight: 700; font-size: 1rem; }
+    .activity-header.presencial { background: #E9EAED; color: var(--primary); }
+    .activity-header.hti-a      { background: #e8f5e9; color: var(--green); }
+    .activity-header.hti-b      { background: #fff8e1; color: #e65100; }
+    .activity-body { padding: 1.2rem 1.5rem; }
+    .activity-body ol, .activity-body ul { padding-left: 1.4rem; }
+    .activity-body li { margin-bottom: .5rem; }
+
+    .dojo-panel { background: linear-gradient(135deg, #1E2843 0%, #2d3a5e 100%); color: #fff; border-radius: var(--radius); padding: 1.5rem 2rem; margin: 1.5rem 0; }
+    .dojo-panel h3 { color: var(--gold); margin-bottom: 1rem; font-size: 1.05rem; }
+    .dojo-items { display: flex; flex-wrap: wrap; gap: .8rem; }
+    .dojo-item { background: rgba(255,255,255,.12); border-radius: 8px; padding: .5rem 1rem; font-size: .85rem; display: flex; align-items: center; gap: .5rem; }
+    .pts { color: var(--gold); font-weight: 800; font-size: 1.1rem; }
+
+    .quiz-box { background: #e3f2fd; border: 2px solid #1565c0; border-radius: var(--radius); padding: 1.4rem 1.8rem; margin: 1.5rem 0; }
+    .quiz-box h3 { color: #0d47a1; margin-bottom: 1rem; }
+    .quiz-q { margin-bottom: 1.4rem; }
+    .quiz-q p { font-weight: 600; margin-bottom: .5rem; }
+    .quiz-q ol { padding-left: 1.4rem; }
+    .quiz-q li { margin-bottom: .35rem; font-size: .93rem; cursor: pointer; padding: 3px 8px; border-radius: 6px; transition: background .15s; }
+    .quiz-q li:hover { background: rgba(25,118,210,.12); }
+    .quiz-answer { display: none; background: #e8f5e9; border-radius: 6px; padding: .4rem .8rem; font-size: .85rem; margin-top: .4rem; color: var(--green); font-weight: 600; }
+
+    .bib { font-size: .88rem; line-height: 1.8; }
+    .bib li { margin-bottom: .6rem; padding-left: .5rem; }
+
+    footer { text-align: center; padding: 2rem; font-size: .82rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.4rem; }
+      .card { padding: 1.2rem; }
+      main { padding: 0 .8rem 3rem; }
+    }
+  </style>
+
+  <style id="pt-css">
+  #pt-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg,#1E2843,#2d3a5e); color: #fff; border-radius: 16px; padding: 14px 18px; min-width: 240px; max-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,.35); font-family: 'Open Sans', Arial, sans-serif; font-size: .85rem; transition: transform .3s; }
+  #pt-widget.collapsed { transform: translateY(calc(100% - 42px)); }
+  #pt-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  #pt-header strong { font-size: .92rem; }
+  #pt-toggle { background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; line-height: 1; }
+  #pt-body { margin-top: 10px; }
+  #pt-xp-bar-wrap { background: rgba(255,255,255,.2); border-radius: 20px; height: 10px; overflow: hidden; }
+  #pt-xp-bar { height: 100%; background: linear-gradient(90deg,#FFDF2D,#fff176); border-radius: 20px; transition: width .8s ease; }
+  #pt-xp-label { display: flex; justify-content: space-between; font-size: .75rem; opacity: .8; margin-top: 4px; }
+  #pt-btns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .pt-btn { flex: 1; padding: 5px 8px; border: none; border-radius: 8px; font-size: .75rem; font-weight: 700; cursor: pointer; transition: opacity .2s; }
+  .pt-btn:hover { opacity: .85; }
+  #pt-btn-save { background: #43a047; color: #fff; }
+  #pt-advanced { display: none; margin-top: 5px; }
+  #pt-msg { font-size: .72rem; margin-top: 6px; min-height: 16px; opacity: .85; text-align: center; }
+  </style>
+
+  <style id="modal-css">
+  #pt-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 10000; display: flex; align-items: center; justify-content: center; animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+  #pt-modal-box { background: linear-gradient(160deg,#1E2843,#1E2843 70%,#2d3a5e); color: #fff; border-radius: 20px; padding: 2rem 2rem 1.5rem; width: min(94vw,420px); box-shadow: 0 20px 60px rgba(0,0,0,.5); animation: slideUp .35s cubic-bezier(.2,.8,.3,1); }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+  #pt-modal-box h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: .3rem; }
+  #pt-modal-box .sub { opacity: .75; font-size: .85rem; margin-bottom: 1.3rem; }
+  #pt-modal-box .field { margin-bottom: .9rem; }
+  #pt-modal-box label { display: block; font-size: .78rem; font-weight: 700; opacity: .85; margin-bottom: .3rem; text-transform: uppercase; letter-spacing: .05em; }
+  #pt-modal-box input { width: 100%; background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.35); border-radius: 10px; padding: .6rem .9rem; color: #fff; font-size: .95rem; outline: none; }
+  #pt-modal-box input::placeholder { color: rgba(255,255,255,.45); }
+  #pt-modal-box input:focus { border-color: rgba(249,168,37,.9); }
+  #pt-modal-btn { width: 100%; padding: .7rem; border: none; border-radius: 12px; background: linear-gradient(135deg,#FFDF2D,#FFDF2D); color: #1E2843; font-weight: 900; font-size: 1rem; cursor: pointer; margin-top: .4rem; transition: opacity .15s; }
+  #pt-modal-btn:hover { opacity: .9; }
+  #pt-modal-btn-search { padding: .65rem 1.2rem; border: none; border-radius: 10px; background: rgba(255,255,255,.18); color: #fff; font-weight: 700; font-size: .92rem; cursor: pointer; transition: background .15s; flex-shrink: 0; }
+  #pt-modal-btn-search:hover { background: rgba(255,255,255,.28); }
+  #pt-modal-error, #pt-modal-error2, #pt-modal-error3 { color: #ff8a80; font-size: .8rem; margin-top: .5rem; min-height: 1em; }
+  #pt-modal-xp { text-align: center; font-size: .78rem; opacity: .7; margin-top: .7rem; }
+  .pt-found-card { background: rgba(255,255,255,.1); border: 1.5px solid rgba(249,168,37,.6); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: .9rem; }
+  .pt-found-card .pt-fc-name { font-size: 1rem; font-weight: 800; margin-bottom: .25rem; }
+  .pt-found-card .pt-fc-meta { font-size: .8rem; opacity: .8; line-height: 1.6; }
+  .pt-step { transition: opacity .2s; }
+  .pt-link-btn { background: none; border: none; color: rgba(255,255,255,.6); font-size: .8rem; cursor: pointer; text-decoration: underline; padding: .3rem 0 0; display: block; text-align: center; width: 100%; }
+  .pt-link-btn:hover { color: #fff; }
+  </style>
+
+  <script src="../js/supabase-config.js"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+    <header>
+      <div class="badge-module">TGA04 · Fundamentos de Computación para los Negocios · Semana 3 de 13</div>
+      <h1>🚦 Estructura Condicional Simple (SI-FSI)</h1>
+      <p>Selección simple · Condiciones compuestas · Alertas de retención · NeuroBiz S.A.S.</p>
+      <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar"></div></div>
+      <p class="xp-label">XP de sesión: <span id="xpCount">0</span> / 60 pts</p>
+    </header>
+
+    <!-- NAV -->
+<nav>
+  <a href="#mision">🎯 Misión</a>
+  <a href="#teoria">📚 Teoría</a>
+  <a href="#pseudocodigo">📝 Pseudocódigo</a>
+  <a href="#actividad">⚙️ Actividad</a>
+  <a href="#hti">🏠 HTI</a>
+  <a href="#quiz">🎮 Quiz</a>
+  <a href="#bib">📖 Fuentes</a>
+</nav>
+
+
+    <main>
+
+    <!-- PROGRESS TRACKER WIDGET -->
+<div id="pt-widget">
+  <div id="pt-header" onclick="ptToggle()">
+    <strong>📊 Mi Progreso TGA04</strong>
+    <button id="pt-toggle">▲</button>
+  </div>
+  <div id="pt-body">
+    <div id="pt-xp-bar-wrap"><div id="pt-xp-bar" style="width:0%"></div></div>
+    <div id="pt-xp-label"><span id="pt-semana-label">Semana 3</span><span id="pt-xp-count">0 XP</span></div>
+    <div id="pt-btns">
+      <button class="pt-btn" id="pt-btn-save" onclick="ptSyncCloud()" style="flex:1">☁️ Guardar</button>
+      <button class="pt-btn" onclick="(function(){var a=document.getElementById('pt-advanced');a.style.display=a.style.display==='block'?'none':'block'})()" style="width:32px;flex-shrink:0;padding:0;font-size:.8rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)">⚙️</button>
+    </div>
+    <div id="pt-advanced">
+      <button class="pt-btn" onclick="ptExportCode()" style="width:100%;margin-bottom:3px;font-size:.72rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📋 Exportar respaldo</button>
+      <button class="pt-btn" onclick="ptImportCode()" style="width:100%;font-size:.72rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📥 Cargar desde código</button>
+    </div>
+    <div id="pt-msg"></div>
+  </div>
+</div>
+
+
+
+    <!-- ══ MISIÓN / MEMORANDO ══ -->
+<section id="mision" class="card">
+  <h2>📋 El Memorando — Tu Misión esta Semana</h2>
+  <div class="memo">
+    <strong>Para: Consultores Junior de Datos — Equipo TGA04<br>
+    De: Dirección Clínica, NeuroBiz S.A.S.<br>
+    Asunto: Diseñar una alerta automática por baja retención</strong>
+
+    La directora clínica solicita una alerta: <strong>si la tasa de retención cae por debajo del 70%</strong>,
+    el sistema debe advertirlo inmediatamente. Tu trabajo esta semana es escribir el algoritmo que detecta
+    esa situación usando la estructura condicional simple <strong>SI ... ENTONCES ... FSI</strong>.
+  </div>
+
+  <div class="bloom">🧠 RA1 continua + RA2 inicia · CE3 · Bloom: Comprender → Aplicar</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon">📉</div>
+      <div class="kpi-name">Tasa actual</div>
+      <div class="kpi-val">65.0%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">🎯</div>
+      <div class="kpi-name">Meta mínima</div>
+      <div class="kpi-val">70.0%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">❌</div>
+      <div class="kpi-name">Sesiones fallidas</div>
+      <div class="kpi-val">58</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">🚨</div>
+      <div class="kpi-name">Estado</div>
+      <div class="kpi-val">ALERTA</div>
+    </div>
+  </div>
+
+  <table>
+    <tbody>
+      <tr><td><strong>LS_KEY</strong></td><td><code>tga04_s3</code></td></tr>
+      <tr><td><strong>XP máximo</strong></td><td>60 XP</td></tr>
+      <tr><td><strong>Pregunta central</strong></td><td>¿Qué hace el algoritmo cuando la condición es verdadera y qué hace cuando es falsa?</td></tr>
+      <tr><td><strong>Analogía guía</strong></td><td>Semáforo simple: SI está en rojo ENTONCES detenerse FSI</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══ TEORÍA ══ -->
+<section id="teoria" class="card">
+  <h2>📚 Marco Teórico</h2>
+
+  <h3>1. Estructura condicional simple <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <p>
+    La estructura <strong>SI-FSI</strong> permite ejecutar instrucciones <em>solo cuando una condición es verdadera</em>.
+    Si la condición resulta falsa, el algoritmo sigue su camino sin ejecutar ese bloque.
+  </p>
+
+  <div class="info-box tip">
+    <span class="icon">🚦</span>
+    <p><strong>Analogía de vida real:</strong> SI el semáforo está en rojo ENTONCES detenerse FSI.
+    Si está en verde, no hay instrucción especial: simplemente continúas.</p>
+  </div>
+
+  <div class="info-box cite">
+    <span class="icon">💼</span>
+    <p><strong>Analogía empresarial:</strong> SI el monto de la compra supera $1.000.000 ENTONCES aplicar 10% de descuento FSI.
+    La acción ocurre solo cuando la condición se cumple.</p>
+  </div>
+
+  <h3>2. Sintaxis Cairó <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <p>
+    En la notación del curso, la estructura se escribe como <code>SI condición ENTONCES</code> ... <code>FSI</code>.
+    Es una manera clara de visualizar dónde comienza y dónde termina el bloque condicional.
+  </p>
+
+  <div class="code-wrap">
+    <div class="code-title">🧱 Molde general — SI-FSI</div>
+    <pre>
+<span class="kw">SI</span> condicion <span class="kw">ENTONCES</span>
+  <span class="cm">{ instrucciones que solo ocurren si es VERDADERA }</span>
+<span class="kw">FSI</span>
+    </pre>
+  </div>
+
+  <h3>3. Diagrama de flujo del SI-FSI <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <p>
+    El rombo de decisión siempre tiene <strong>dos salidas</strong>: una para <em>Sí</em> y otra para <em>No</em>.
+    En el SI-FSI simple, la rama verdadera ejecuta acciones; la rama falsa continúa sin hacer nada adicional.
+  </p>
+  <table>
+    <thead><tr><th>Elemento</th><th>Qué representa</th><th>Lectura correcta</th></tr></thead>
+    <tbody>
+      <tr><td>Rombo</td><td>Pregunta lógica</td><td>¿La tasa es menor que 70?</td></tr>
+      <tr><td>Salida “Sí”</td><td>Bloque ENTONCES</td><td>Mostrar alerta</td></tr>
+      <tr><td>Salida “No”</td><td>Continuación normal</td><td>No se muestra alerta</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4. Condiciones compuestas con Y / O <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <p>
+    Cuando el negocio necesita verificar dos cosas al mismo tiempo, se usan condiciones compuestas.
+    <code>Y</code> exige que ambas sean verdaderas; <code>O</code> permite que una sola baste.
+  </p>
+  <table>
+    <thead><tr><th>Condición</th><th>Interpretación</th><th>Resultado esperado</th></tr></thead>
+    <tbody>
+      <tr><td><code>tasa_retencion &lt; 70.0 Y sesiones_fallidas &gt; 50</code></td><td>Alerta doble</td><td>Más severa</td></tr>
+      <tr><td><code>tipo_terapia = "cognitiva" O tipo_terapia = "ocupacional"</code></td><td>Pertenece a uno de dos grupos</td><td>Basta una coincidencia</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5. ¿Cuándo usar SI-FSI y cuándo no? <span class="relevance-badge evo">🟡 EVOLUCIONADO</span></h3>
+  <p>
+    Usa <strong>SI-FSI</strong> cuando solo quieres reaccionar a un caso verdadero. Si necesitas un camino alterno
+    cuando la condición es falsa, en la Semana 4 aprenderás <strong>SI-SINO-FSI</strong>. En Python moderno,
+    la idea sigue vigente con <code>if:</code> y operadores <code>and</code>/<code>or</code>.
+  </p>
+
+  <div class="info-box warn">
+    <span class="icon">⚠️</span>
+    <p><strong>Pista importante:</strong> si el estudiante siente que “falta algo” cuando la condición es falsa,
+    probablemente ya está necesitando un <code>SINO</code>. Eso se verá la próxima semana.</p>
+  </div>
+
+  <h3>6. Errores frecuentes al leer un SI-FSI <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
+  <table>
+    <thead><tr><th>Error</th><th>Qué cree el estudiante</th><th>Corrección docente</th></tr></thead>
+    <tbody>
+      <tr><td>Cerrar antes de tiempo</td><td>Escribe <code>FSI</code> antes del bloque ENTONCES</td><td>Primero condición, luego acción, al final cierre.</td></tr>
+      <tr><td>Ignorar la rama No</td><td>Piensa que el rombo solo tiene una salida</td><td>Siempre dibujar y nombrar Sí / No.</td></tr>
+      <tr><td>Adivinar la salida</td><td>No sigue el valor real de la condición</td><td>Hacer prueba de escritorio línea por línea.</td></tr>
+      <tr><td>Confundir Y con O</td><td>Cree que basta una sola condición</td><td>Comparar “ambas” vs “al menos una”.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══ PSEUDOCÓDIGO ══ -->
+<section id="pseudocodigo" class="card">
+  <h2>📝 Pseudocódigo — Alertas con SI-FSI</h2>
+
+  <div class="code-wrap">
+    <div class="code-title">📝 Pseudocódigo — AlertaRetencionNeuroBiz</div>
+    <pre>
+<span class="kw">ALGORITMO</span> AlertaRetencionNeuroBiz
+  <span class="kw">VARIABLES</span>
+    tasa_retencion: <span class="kw">REAL</span>
+    META_RETENCION: <span class="kw">REAL</span>
+  <span class="kw">INICIO</span>
+    META_RETENCION <span class="kw">←</span> <span class="num">70.0</span>
+    <span class="fn">LEER</span> tasa_retencion
+    <span class="kw">SI</span> tasa_retencion &lt; META_RETENCION <span class="kw">ENTONCES</span>
+      <span class="fn">ESCRIBIR</span> <span class="str">"⚠️ ALERTA: Tasa de retención crítica"</span>
+      <span class="fn">ESCRIBIR</span> <span class="str">"Tasa actual: "</span>, tasa_retencion, <span class="str">"%"</span>
+      <span class="fn">ESCRIBIR</span> <span class="str">"Meta mínima: "</span>, META_RETENCION, <span class="str">"%"</span>
+    <span class="kw">FSI</span>
+    <span class="fn">ESCRIBIR</span> <span class="str">"Análisis completado."</span>
+  <span class="kw">FIN</span>
+    </pre>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-title">📝 Pseudocódigo — AlertaDobleNeuroBiz</div>
+    <pre>
+<span class="kw">ALGORITMO</span> AlertaDobleNeuroBiz
+  <span class="kw">VARIABLES</span>
+    tasa_retencion: <span class="kw">REAL</span>
+    sesiones_fallidas: <span class="kw">ENTERO</span>
+  <span class="kw">INICIO</span>
+    <span class="fn">LEER</span> tasa_retencion
+    <span class="fn">LEER</span> sesiones_fallidas
+    <span class="kw">SI</span> tasa_retencion &lt; <span class="num">70.0</span> <span class="kw">Y</span> sesiones_fallidas &gt; <span class="num">50</span> <span class="kw">ENTONCES</span>
+      <span class="fn">ESCRIBIR</span> <span class="str">"🚨 ALERTA CRÍTICA: Intervención urgente requerida"</span>
+    <span class="kw">FSI</span>
+  <span class="kw">FIN</span>
+    </pre>
+  </div>
+
+  <h3>Prueba de escritorio guiada</h3>
+  <table>
+    <thead><tr><th>Caso</th><th>Dato de entrada</th><th>¿La condición se cumple?</th><th>¿Qué imprime?</th></tr></thead>
+    <tbody>
+      <tr><td>Caso 1</td><td><code>tasa_retencion = 65.0</code></td><td>Sí</td><td>La alerta + tasa actual + meta mínima + “Análisis completado”</td></tr>
+      <tr><td>Caso 2</td><td><code>tasa_retencion = 82.0</code></td><td>No</td><td>Solo “Análisis completado”</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box brain">
+    <span class="icon">🧠</span>
+    <p><strong>Habilidad central de la semana:</strong> seguir el algoritmo línea por línea sin adivinar.
+    La prueba de escritorio enseña a pensar como analista: observar entradas, condición y salida real.</p>
+  </div>
+
+  <h3>Checklist de prueba de escritorio</h3>
+  <table>
+    <thead><tr><th>Paso</th><th>Pregunta guía</th><th>Ejemplo en NeuroBiz</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>¿Qué valores entran?</td><td><code>tasa_retencion = 65.0</code></td></tr>
+      <tr><td>2</td><td>¿Cuál es la condición exacta?</td><td><code>tasa_retencion &lt; 70.0</code></td></tr>
+      <tr><td>3</td><td>¿La condición es verdadera o falsa?</td><td>Verdadera en el caso 65.0</td></tr>
+      <tr><td>4</td><td>¿Qué líneas se ejecutan?</td><td>Todo el bloque ENTONCES</td></tr>
+      <tr><td>5</td><td>¿Qué imprime siempre?</td><td><code>"Análisis completado."</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box cite">
+    <span class="icon">🧩</span>
+    <p><strong>Regla de oro:</strong> primero calcula la condición, después decide si el bloque ENTONCES entra o se omite. Ese orden lógico evita que el estudiante “invente” resultados.</p>
+  </div>
+
+  <p><strong>Resumen operacional:</strong> entrada → evaluación lógica → posible acción → continuidad del algoritmo.</p>
+  <p><em>Si no puedes explicar verbalmente la condición, todavía no está lista para codificarse.</em></p>
+  <p>Practicar la lectura en voz alta fortalece la precisión lógica.</p>
+</section>
+
+<!-- ══ ACTIVIDAD PRESENCIAL ══ -->
+<section id="actividad" class="card">
+  <h2>⚙️ Actividad Presencial (4 horas)</h2>
+
+  <div class="dojo-panel">
+    <h3>🏆 Puntos disponibles esta sesión</h3>
+    <div class="dojo-items">
+      <div class="dojo-item">📋 <span>Asistencia</span> <span class="pts">+10 XP</span></div>
+      <div class="dojo-item">🎮 <span>Quiz (5 preguntas)</span> <span class="pts">+25 XP</span></div>
+      <div class="dojo-item">🎯 <span>Misión NeuroBiz</span> <span class="pts">+25 XP</span></div>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header presencial">⏱️ Bloque 1 — Entender el SI-FSI (80 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Comprender</em></div>
+    <div class="activity-body">
+      <ol>
+        <li>Revisar la estructura general <code>SI ... ENTONCES ... FSI</code>.</li>
+        <li>Dibujar en el tablero el rombo con sus dos salidas: Sí y No.</li>
+        <li>Usar el ejemplo del semáforo para distinguir condición de acción.</li>
+        <li>Comparar con una política de descuento simple en una empresa.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header presencial">⏱️ Bloque 2 — Prueba de escritorio (90 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Comprender → Aplicar</em></div>
+    <div class="activity-body">
+      <ol>
+        <li>Ejecutar manualmente <code>AlertaRetencionNeuroBiz</code> con <code>65.0</code> y <code>82.0</code>.</li>
+        <li>Marcar qué líneas se ejecutan y cuáles se omiten.</li>
+        <li>Explicar en parejas por qué el bloque ENTONCES no corre cuando la condición es falsa.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header presencial">⏱️ Bloque 3 — Misión NeuroBiz (70 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Aplicar</em></div>
+    <div class="activity-body">
+      <p><strong>🎯 Misión:</strong> construir una alerta útil para el negocio.</p>
+      <ol>
+        <li>Escribe un algoritmo SI-FSI para mostrar un mensaje de reconocimiento si un terapeuta atiende más de 20 sesiones en la semana.</li>
+        <li>Extiende la condición para que además el tipo de terapia sea <code>"cognitiva"</code>.</li>
+        <li>Haz prueba de escritorio con dos casos distintos.</li>
+      </ol>
+      <div class="info-box tip">
+        <span class="icon">🧪</span>
+        <p><strong>Consejo:</strong> antes de escribir el algoritmo, formula la condición en español.
+        Si puedes decirla claramente, luego puedes traducirla a pseudocódigo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HTI ══ -->
+<section id="hti" class="card">
+  <h2>🏠 HTI — Trabajo Independiente (5 horas)</h2>
+  <p style="color:var(--muted);font-size:.88rem">La clave es practicar manualmente: seguir condiciones y anticipar salidas.</p>
+
+  <div class="activity">
+    <div class="activity-header hti-a">📚 HTI-A — Lectura y repaso (1.5 horas)</div>
+    <div class="activity-body">
+      <ol>
+        <li>Vuelve a leer la sección de teoría y observa la estructura del SI-FSI.</li>
+        <li>Dibuja un rombo y etiqueta ambas ramas: Sí / No.</li>
+        <li>Resume en una frase cuándo usarías una condición simple.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header hti-b">✏️ HTI-B — Nuevo algoritmo SI-FSI (2 horas)</div>
+    <div class="activity-body">
+      <ol>
+        <li>Escribe un algoritmo: <em>“Si el terapeuta ha atendido más de 20 sesiones esta semana, mostrar mensaje de reconocimiento”.</em></li>
+        <li>Usa variables con nombre claro y un mensaje de salida profesional.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activity">
+    <div class="activity-header hti-b">🧠 HTI-C — Extensión con condición compuesta (1.5 horas)</div>
+    <div class="activity-body">
+      <ol>
+        <li>Agrega la condición: <em>Y el tipo de terapia es “cognitiva”</em>.</li>
+        <li>Haz una prueba de escritorio con un caso que cumpla ambas condiciones y otro que falle una de ellas.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══ QUIZ ══ -->
+<section id="quiz" class="card">
+  <h2>🎮 Quiz Interactivo — Semana 3</h2>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">5 preguntas · Haz clic en la respuesta correcta · <strong>5 XP</strong> por acierto</p>
+
+  <div class="quiz-box">
+    <h3>⚡ Quiz Semana 3 — Condicional simple SI-FSI</h3>
+
+    <div class="quiz-q">
+      <p>1. En un SI-FSI, si la condición es FALSA:</p>
+      <ol type="a">
+        <li>No se ejecuta el bloque ENTONCES</li>
+        <li>Se ejecuta de todas formas</li>
+        <li>El programa termina</li>
+        <li>Se repite la condición</li>
+      </ol>
+      <div class="quiz-answer">✅ a — El bloque ENTONCES solo se ejecuta si la condición es verdadera.</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>2. ¿Cuántas flechas de salida tiene el rombo de decisión en un SI-FSI?</p>
+      <ol type="a">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+      </ol>
+      <div class="quiz-answer">✅ b — Tiene dos salidas: Sí y No.</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>3. La condición compuesta <code>tasa &gt; 80 Y sesiones &gt; 100</code> es VERDADERA cuando:</p>
+      <ol type="a">
+        <li>Ambas condiciones son verdaderas</li>
+        <li>Al menos una es verdadera</li>
+        <li><code>tasa &gt; 80</code> es suficiente</li>
+        <li>Ninguna es verdadera</li>
+      </ol>
+      <div class="quiz-answer">✅ a — El operador Y exige que ambas partes se cumplan.</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>4. ¿Qué instrucción cierra una estructura SI en notación Cairó?</p>
+      <ol type="a">
+        <li>FIN-SI</li>
+        <li>END</li>
+        <li>FSI</li>
+        <li>ELSE</li>
+      </ol>
+      <div class="quiz-answer">✅ c — La palabra de cierre es FSI.</div>
+    </div>
+
+    <div class="quiz-q">
+      <p>5. En NeuroBiz: <code>SI es_activo = VERDADERO ENTONCES</code> — ¿qué tipo de dato se evalúa?</p>
+      <ol type="a">
+        <li>CADENA</li>
+        <li>ENTERO</li>
+        <li>REAL</li>
+        <li>LÓGICO</li>
+      </ol>
+      <div class="quiz-answer">✅ d — La condición evalúa un valor lógico: VERDADERO o FALSO.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BIBLIOGRAFÍA ══ -->
+<section id="bib" class="card">
+  <h2>📖 Fuentes y Referencias</h2>
+  <ul class="bib">
+    <li><strong>Cairó Battistutti, O. & Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em>. Sección de estructuras selectivas.</li>
+    <li><strong>Joyanes Aguilar, L.</strong> (2008). <em>Fundamentos de programación</em>. Capítulos de decisiones y lógica booleana.</li>
+    <li><strong>Microsoft Power Automate.</strong> Documentación de la acción <em>Condition</em>, útil para conectar SI-FSI con automatización empresarial.</li>
+    <li><strong>Harvard CS50 Business Professionals.</strong> Casos de toma de decisiones automatizadas en entornos empresariales.</li>
+  </ul>
+</section>
+
+
+    </main>
+
+    <footer>
+      TGA04 · Fundamentos de Computación para los Negocios · IUB 2026 · Semana 3: Estructura Condicional Simple (SI-FSI) · Caso de estudio: NeuroBiz S.A.S. · Prof. Diego Domínguez Tapia
+    </footer>
+
+    <!-- ══ PROGRESS TRACKER SCRIPT ══ -->
+<script id="pt-js">
+const PT = (function() {
+  const SEMANA    = 3;
+  const XP_MAX    = 60;
+  const LS_KEY    = "tga04_s3";
+  const LS_GLOBAL = "tga04_global";
+
+  let state = {
+    nombre: "", cc: "", id_estudiante: "", grupo: "", horario: "",
+    semana: SEMANA, xp: 0,
+    quiz_respuestas: {}, quiz_puntaje: 0,
+    hti_entregado: false, actividad_completada: false,
+    dispositivo: navigator.userAgent.substring(0, 80)
+  };
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) Object.assign(state, JSON.parse(raw));
+      const g = JSON.parse(localStorage.getItem(LS_GLOBAL) || "{}");
+      if (!state.nombre        && g.nombre)   state.nombre        = g.nombre;
+      if (!state.cc            && g.cc)        state.cc            = g.cc;
+      if (!state.id_estudiante && g.cc)        state.id_estudiante = g.cc;
+      if (!state.grupo         && g.grupo)     state.grupo         = g.grupo;
+      if (!state.horario       && g.horario)   state.horario       = g.horario;
+    } catch(e) {}
+  }
+
+  function save() {
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+    render();
+  }
+
+  function render() {
+    const bar   = document.getElementById("pt-xp-bar");
+    const cnt   = document.getElementById("pt-xp-count");
+    const lbl   = document.getElementById("pt-semana-label");
+    const hBar  = document.getElementById("xpBar");
+    const hCnt  = document.getElementById("xpCount");
+    const pct   = Math.min((state.xp / XP_MAX) * 100, 100);
+    if (bar)  bar.style.width  = pct + "%";
+    if (cnt)  cnt.textContent  = state.xp + " XP";
+    if (lbl)  lbl.textContent  = "Semana " + SEMANA;
+    if (hBar) hBar.style.width = pct + "%";
+    if (hCnt) hCnt.textContent = state.xp;
+  }
+
+  function addXP(pts, motivo) {
+    state.xp = Math.min(state.xp + pts, XP_MAX);
+    msg("✨ +" + pts + " XP — " + motivo, "lime");
+    save();
+  }
+
+  async function syncCloud() {
+    save();
+    const sbUrl = localStorage.getItem("tga04_supabase_url") || "";
+    const sbKey = localStorage.getItem("tga04_supabase_key") || "";
+    if (!sbUrl || !sbKey) { msg("⚠️ Supabase no configurado", "orange"); return; }
+    msg("⏳ Sincronizando…", "#fff9c4");
+    try {
+      const res = await fetch(sbUrl + "/rest/v1/student_progress", {
+        method: "POST",
+        headers: { "apikey": sbKey, "Authorization": "Bearer " + sbKey, "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates" },
+        body: JSON.stringify({
+          student_name: state.nombre || "Anónimo",
+          student_id: state.id_estudiante || state.cc || "desconocido",
+          semana: state.semana, xp: state.xp || 0,
+          quiz_answers: state.quiz_respuestas || {}, quiz_score: state.quiz_puntaje || 0,
+          hti_done: !!state.hti_entregado, activity_done: !!state.actividad_completada,
+          grupo: state.grupo || "", horario: state.horario || "",
+          updated_at: new Date().toISOString()
+        })
+      });
+      if (res.ok || res.status === 201) msg("✅ Guardado en Supabase ☁️", "lightgreen");
+      else msg("❌ Error " + res.status, "salmon");
+    } catch(e) { msg("❌ Sin conexión. Guardado local.", "salmon"); }
+  }
+
+  function exportCode() {
+    save();
+    const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    const ta = document.createElement("textarea");
+    ta.value = code;
+    document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+    document.body.removeChild(ta);
+    const a = document.createElement("a");
+    a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(code);
+    a.download = "progreso_tga04_s3_" + (state.id_estudiante || "est") + ".txt";
+    a.click();
+    msg("📋 ¡Código copiado!", "#fff9c4");
+  }
+
+  function importCode() {
+    const code = prompt("Pega tu código de progreso:");
+    if (!code) return;
+    try {
+      Object.assign(state, JSON.parse(decodeURIComponent(escape(atob(code.trim())))));
+      save(); msg("✅ Progreso restaurado.", "lightgreen");
+    } catch(e) { msg("❌ Código inválido.", "salmon"); }
+  }
+
+  function toggle() {
+    const w = document.getElementById("pt-widget");
+    const t = document.getElementById("pt-toggle");
+    if (w) w.classList.toggle("collapsed");
+    if (t) t.textContent = w && w.classList.contains("collapsed") ? "▼" : "▲";
+  }
+
+  function msg(text, color) {
+    const el = document.getElementById("pt-msg");
+    if (!el) return;
+    el.textContent = text; el.style.color = color || "#fff";
+    setTimeout(() => { if (el.textContent === text) el.textContent = ""; }, 4000);
+  }
+
+  function init() {
+    load(); render();
+    // XP por visitar (una vez)
+    if (!localStorage.getItem("tga04_visited_s3")) {
+      localStorage.setItem("tga04_visited_s3", "1");
+      addXP(10, "Asistencia Semana 3 ✅");
+    }
+    // Hacer quiz interactivo
+    document.querySelectorAll(".quiz-q").forEach((qEl, qi) => {
+      const answers   = qEl.querySelectorAll("li");
+      const answerEl  = qEl.querySelector(".quiz-answer");
+      const correctTxt = answerEl ? answerEl.textContent : "";
+      const m = correctTxt.match(/^✅\s*([a-d])/i);
+      const correctIdx = m ? ["a","b","c","d"].indexOf(m[1].toLowerCase()) : -1;
+
+      answers.forEach((li, ai) => {
+        li.addEventListener("click", () => {
+          const key = "q" + qi;
+          if (state.quiz_respuestas[key] !== undefined) return;
+          answers.forEach(a => { a.dataset.answered = "1"; });
+          if (ai === correctIdx) {
+            li.style.background = "#2e7d32"; li.style.color = "#fff";
+            addXP(5, "Respuesta correcta Q" + (qi+1));
+            state.quiz_puntaje = (state.quiz_puntaje || 0) + 1;
+          } else {
+            li.style.background = "#c62828"; li.style.color = "#fff";
+            if (correctIdx >= 0) { answers[correctIdx].style.background = "#2e7d32"; answers[correctIdx].style.color = "#fff"; }
+          }
+          state.quiz_respuestas[key] = ai;
+          if (answerEl) answerEl.style.display = "block";
+          save();
+        });
+      });
+
+      // Restaurar estado previo
+      const prev = state.quiz_respuestas["q" + qi];
+      if (prev !== undefined) {
+        answers.forEach(a => { a.dataset.answered = "1"; });
+        if (prev === correctIdx && correctIdx >= 0) {
+          answers[prev].style.background = "#2e7d32"; answers[prev].style.color = "#fff";
+        } else {
+          if (prev < answers.length) { answers[prev].style.background = "#c62828"; answers[prev].style.color = "#fff"; }
+          if (correctIdx >= 0) { answers[correctIdx].style.background = "#2e7d32"; answers[correctIdx].style.color = "#fff"; }
+        }
+        if (answerEl) answerEl.style.display = "block";
+      }
+    });
+  }
+
+  return { init, addXP, save, sync: syncCloud, export: exportCode, import: importCode, toggle, state: () => state };
+})();
+
+function ptSyncCloud()  { PT.sync(); }
+function ptExportCode() { PT.export(); }
+function ptImportCode() { PT.import(); }
+function ptToggle()     { PT.toggle(); }
+
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", PT.init);
+else PT.init();
+</script>
+
+
+
+    <!-- ══ WELCOME MODAL (CC lookup) ══ -->
+<div id="pt-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="pt-modal-title">
+  <div id="pt-modal-box">
+    <h2 id="pt-modal-title">👋 ¡Bienvenido a TGA04!</h2>
+    <p class="sub">NeuroBiz S.A.S. · Fundamentos de Computación para los Negocios</p>
+
+    <!-- PASO 1: Cédula -->
+    <div id="pt-step1" class="pt-step">
+      <div class="field">
+        <label for="pt-modal-cc">Número de cédula / documento *</label>
+        <div style="display:flex;gap:.5rem">
+          <input id="pt-modal-cc" type="tel" inputmode="numeric" pattern="[0-9]*"
+            placeholder="Ej: 1043158867" autocomplete="off"
+            onkeydown="if(event.key==='Enter')ptSearchCC()" />
+          <button id="pt-modal-btn-search" onclick="ptSearchCC()">Buscar →</button>
+        </div>
+      </div>
+      <div id="pt-modal-error"></div>
+      <p id="pt-modal-xp">🔒 Tu cédula identifica tu progreso de forma segura — no se comparte.</p>
+    </div>
+
+    <!-- PASO 2A: Encontrado -->
+    <div id="pt-step2a" class="pt-step" style="display:none">
+      <div class="pt-found-card">
+        <div class="pt-fc-name" id="pt-fc-name">—</div>
+        <div class="pt-fc-meta" id="pt-fc-meta">—</div>
+      </div>
+      <button id="pt-modal-btn" onclick="ptConfirmFound()">¡Empezar! 🚀</button>
+      <button class="pt-link-btn" onclick="ptBackToCC()">← No soy yo — volver a buscar</button>
+      <div id="pt-modal-error2"></div>
+    </div>
+
+    <!-- PASO 2B: No encontrado -->
+    <div id="pt-step2b" class="pt-step" style="display:none">
+      <p style="font-size:.82rem;opacity:.75;margin-bottom:1rem;background:rgba(255,255,255,.08);border-radius:8px;padding:.6rem .8rem">
+        ⚠️ No encontramos tu cédula en la lista del grupo.<br>
+        Completa tus datos manualmente. El docente podrá importarte en la próxima clase.
+      </p>
+      <div class="field">
+        <label for="pt-modal-nombre">Tu nombre completo *</label>
+        <input id="pt-modal-nombre" type="text" placeholder="Ej: María García López"
+          autocomplete="name" onkeydown="if(event.key==='Enter')ptModalSetupManual()" />
+      </div>
+      <div class="field">
+        <label for="pt-modal-grupo">Grupo / Paralelo</label>
+        <input id="pt-modal-grupo" type="text" placeholder="Ej: 7_GA_G1" />
+      </div>
+      <button id="pt-modal-btn" onclick="ptModalSetupManual()">Continuar →</button>
+      <button class="pt-link-btn" onclick="ptBackToCC()">← Volver a ingresar cédula</button>
+      <div id="pt-modal-error3"></div>
+    </div>
+  </div>
+</div>
+
+<script id="modal-js">
+(function() {
+  function shouldShowModal() {
+    try { var g = JSON.parse(localStorage.getItem("tga04_global") || "{}"); return !g.cc || String(g.cc).trim().length < 3; }
+    catch(e) { return true; }
+  }
+  function showStep(name) {
+    ["pt-step1","pt-step2a","pt-step2b"].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.style.display = (id === name) ? "block" : "none";
+    });
+  }
+  function showModal() {
+    var overlay = document.getElementById("pt-overlay");
+    if (overlay) overlay.style.display = "flex";
+    showStep("pt-step1");
+    try {
+      var g = JSON.parse(localStorage.getItem("tga04_global") || "{}");
+      if (g.cc) { var i = document.getElementById("pt-modal-cc"); if (i) i.value = g.cc; }
+    } catch(e) {}
+    var inp = document.getElementById("pt-modal-cc");
+    if (inp) setTimeout(function(){ inp.focus(); }, 100);
+  }
+  function closeModal() {
+    var overlay = document.getElementById("pt-overlay");
+    if (overlay) {
+      overlay.style.opacity = "0"; overlay.style.transition = "opacity .2s";
+      setTimeout(function(){ overlay.style.display = "none"; overlay.style.opacity = ""; }, 200);
+    }
+  }
+  function getStudents() {
+    try { return JSON.parse(localStorage.getItem("tga04_students_v1") || "[]"); }
+    catch(e) { return []; }
+  }
+  function saveProfile(cc, nombre, grupo, horario) {
+    var profile = {};
+    try { profile = JSON.parse(localStorage.getItem("tga04_global") || "{}"); } catch(e) {}
+    profile.cc = cc; profile.nombre = nombre;
+    profile.grupo   = grupo   || profile.grupo   || "";
+    profile.horario = horario || profile.horario || "";
+    profile.id_estudiante = cc;
+    localStorage.setItem("tga04_global", JSON.stringify(profile));
+    if (typeof PT !== "undefined" && typeof PT.addXP === "function") {
+      setTimeout(function(){ PT.sync && PT.sync(); }, 800);
+    }
+    closeModal();
+  }
+
+  window.ptSearchCC = function() {
+    var ccInp = document.getElementById("pt-modal-cc");
+    var errEl = document.getElementById("pt-modal-error");
+    var cc    = ccInp ? ccInp.value.trim().replace(/\D/g,"") : "";
+    if (!cc || cc.length < 5) {
+      if (errEl) errEl.textContent = "Ingresa tu número de cédula (mínimo 5 dígitos).";
+      if (ccInp) ccInp.focus(); return;
+    }
+    if (errEl) errEl.textContent = "";
+
+    // 1. Buscar en localStorage
+    var students = getStudents();
+    var found = students.find(function(s){ return String(s.cc) === cc; });
+    if (found) {
+      var nameEl = document.getElementById("pt-fc-name");
+      var metaEl = document.getElementById("pt-fc-meta");
+      if (nameEl) nameEl.textContent = "✅ " + found.name;
+      if (metaEl) metaEl.innerHTML =
+        (found.grupo   ? "📚 Grupo: <strong>" + found.grupo + "</strong>" : "") +
+        (found.horario ? " &nbsp;·&nbsp; ⏰ " + found.horario : "");
+      nameEl.dataset.cc = cc; nameEl.dataset.nombre = found.name;
+      nameEl.dataset.grupo = found.grupo || ""; nameEl.dataset.horario = found.horario || "";
+      showStep("pt-step2a");
+      var btn = document.getElementById("pt-modal-btn");
+      if (btn) setTimeout(function(){ btn.focus(); }, 100);
+      return;
+    }
+
+    // 2. Buscar en Supabase
+    var sUrl = localStorage.getItem("tga04_supabase_url");
+    var sKey = localStorage.getItem("tga04_supabase_key");
+    if (sUrl && sKey) {
+      if (errEl) errEl.textContent = "⏳ Buscando…";
+      fetch(sUrl + "/rest/v1/students?cc=eq." + encodeURIComponent(cc) + "&limit=1", {
+        headers: { "apikey": sKey, "Authorization": "Bearer " + sKey }
+      }).then(function(r){ return r.json(); })
+        .then(function(rows){
+          if (errEl) errEl.textContent = "";
+          if (rows && rows.length) {
+            var r = rows[0];
+            var nameEl = document.getElementById("pt-fc-name");
+            var metaEl = document.getElementById("pt-fc-meta");
+            if (nameEl) nameEl.textContent = "✅ " + r.name;
+            if (metaEl) metaEl.innerHTML =
+              (r.grupo   ? "📚 Grupo: <strong>" + r.grupo + "</strong>" : "") +
+              (r.horario ? " &nbsp;·&nbsp; ⏰ " + r.horario : "");
+            nameEl.dataset.cc = cc; nameEl.dataset.nombre = r.name;
+            nameEl.dataset.grupo = r.grupo || ""; nameEl.dataset.horario = r.horario || "";
+            showStep("pt-step2a");
+          } else {
+            var ni = document.getElementById("pt-modal-nombre");
+            if (ni) ni.dataset.cc = cc;
+            showStep("pt-step2b");
+            if (ni) setTimeout(function(){ ni.focus(); }, 100);
+          }
+        }).catch(function(){
+          var ni = document.getElementById("pt-modal-nombre");
+          if (ni) ni.dataset.cc = cc;
+          showStep("pt-step2b");
+          if (ni) setTimeout(function(){ ni.focus(); }, 100);
+        });
+      return;
+    }
+
+    // 3. Manual
+    var ni = document.getElementById("pt-modal-nombre");
+    if (ni) ni.dataset.cc = cc;
+    showStep("pt-step2b");
+    if (ni) setTimeout(function(){ ni.focus(); }, 100);
+  };
+
+  window.ptConfirmFound = function() {
+    var nameEl  = document.getElementById("pt-fc-name");
+    var cc      = nameEl ? nameEl.dataset.cc      : "";
+    var nombre  = nameEl ? nameEl.dataset.nombre  : "";
+    var grupo   = nameEl ? nameEl.dataset.grupo   : "";
+    var horario = nameEl ? nameEl.dataset.horario : "";
+    if (!cc || !nombre) { var e2 = document.getElementById("pt-modal-error2"); if (e2) e2.textContent = "Error al leer datos. Intenta de nuevo."; return; }
+    saveProfile(cc, nombre, grupo, horario);
+  };
+
+  window.ptModalSetupManual = function() {
+    var ni    = document.getElementById("pt-modal-nombre");
+    var gi    = document.getElementById("pt-modal-grupo");
+    var ccInp = document.getElementById("pt-modal-cc");
+    var errEl = document.getElementById("pt-modal-error3");
+    var nombre = ni ? ni.value.trim() : "";
+    var grupo  = gi ? gi.value.trim() : "";
+    var cc     = ccInp ? ccInp.value.trim().replace(/\D/g,"") : "";
+    if (!nombre || nombre.length < 3) {
+      if (errEl) errEl.textContent = "Por favor escribe tu nombre completo (mínimo 3 caracteres).";
+      if (ni) ni.focus(); return;
+    }
+    if (!cc) cc = "MANUAL_" + Date.now();
+    saveProfile(cc, nombre, grupo, "");
+  };
+
+  window.ptBackToCC = function() {
+    showStep("pt-step1");
+    var inp = document.getElementById("pt-modal-cc");
+    if (inp) setTimeout(function(){ inp.focus(); }, 100);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function(){ if (shouldShowModal()) showModal(); });
+  } else {
+    if (shouldShowModal()) showModal();
+  }
+})();
+</script>
+
+</body>
+</html>
