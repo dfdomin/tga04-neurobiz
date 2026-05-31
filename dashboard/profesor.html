@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard docente · TGA04</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <script src="../js/supabase-config.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root { --primary:#1E2843; --accent:#2d3a5e; --gold:#FFDF2D; --green:#2e7d32; --red:#c62828; --light-bg:#FAFAFA; --card-bg:#fff; --text:#212121; --muted:#546e7a; --border:#DEDFE4; --radius:12px; }
+    body { font-family:'Open Sans', Arial, sans-serif; background:var(--light-bg); color:var(--text); line-height:1.55; }
+    header { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; padding:1.4rem 1.2rem; }
+    .wrap { max-width:1180px; margin:0 auto; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
+    h1 { font-size:clamp(1.5rem,4vw,2.3rem); }
+    .nav { display:flex; gap:.5rem; flex-wrap:wrap; }
+    .nav a, button, input, select { font-family:inherit; }
+    .nav a, button { border:1px solid var(--border); border-radius:10px; padding:.55rem .85rem; background:#fff; color:var(--primary); font-weight:800; text-decoration:none; cursor:pointer; }
+    main { padding:1.2rem; }
+    .login, .panel, .metric { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:1rem; box-shadow:0 2px 10px rgba(0,0,0,.04); }
+    .login { max-width:420px; margin:2rem auto; }
+    label { display:block; color:var(--muted); font-size:.8rem; font-weight:800; text-transform:uppercase; margin-bottom:.3rem; }
+    input, select { width:100%; border:1px solid var(--border); border-radius:10px; padding:.65rem .8rem; font-size:.95rem; margin-bottom:.8rem; }
+    .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin-bottom:1rem; }
+    .metric span { color:var(--muted); font-size:.78rem; font-weight:800; text-transform:uppercase; }
+    .metric strong { display:block; font-size:1.8rem; color:var(--primary); }
+    .toolbar { display:grid; grid-template-columns:1fr 170px auto; gap:.7rem; align-items:end; margin-bottom:.9rem; }
+    table { width:100%; border-collapse:collapse; font-size:.88rem; }
+    th { text-align:left; background:var(--primary); color:#fff; padding:.65rem .75rem; }
+    td { border-bottom:1px solid var(--border); padding:.6rem .75rem; vertical-align:top; }
+    tr:nth-child(even) td { background:#f8f9fb; }
+    .risk { font-weight:800; border-radius:999px; padding:.15rem .5rem; display:inline-block; font-size:.75rem; }
+    .risk.ok { background:#e8f5e9; color:#1b5e20; }
+    .risk.warn { background:#fff8e1; color:#e65100; }
+    .risk.high { background:#ffebee; color:#b71c1c; }
+    .msg { color:var(--muted); font-size:.9rem; margin:.7rem 0; min-height:1.3rem; }
+    @media (max-width:760px) { .toolbar { grid-template-columns:1fr; } table { min-width:760px; } .table-wrap { overflow-x:auto; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap top">
+      <div>
+        <h1>Dashboard docente</h1>
+        <p>Seguimiento de XP, quiz y actividad por estudiante.</p>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">Inicio</a>
+        <a href="participacion.html#importar-estudiantes">Importar estudiantes</a>
+        <a href="participacion.html">Participacion</a>
+        <a href="notas.html">Notas</a>
+        <a href="../setup/CONFIGURAR_SUPABASE.html">Setup</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="login" id="login">
+      <label for="pin">PIN docente</label>
+      <input id="pin" type="password" autocomplete="current-password" placeholder="tga04">
+      <button onclick="unlock()">Entrar</button>
+      <p class="msg">PIN local: protege la vista en clase, no reemplaza seguridad de base de datos.</p>
+    </section>
+    <section id="app" hidden>
+      <div class="summary">
+        <div class="metric"><span>Estudiantes</span><strong id="mStudents">0</strong></div>
+        <div class="metric"><span>Registros</span><strong id="mRows">0</strong></div>
+        <div class="metric"><span>XP promedio</span><strong id="mXp">0</strong></div>
+        <div class="metric"><span>En riesgo</span><strong id="mRisk">0</strong></div>
+      </div>
+      <div class="panel">
+        <strong style="color:var(--primary)">Lista de estudiantes</strong>
+        <p class="msg">La importacion se hace desde Participacion y Asistencia, en la pestaña Configuracion.</p>
+        <a href="participacion.html#importar-estudiantes" style="display:inline-block;border:1px solid var(--border);border-radius:10px;padding:.55rem .85rem;background:var(--gold);color:var(--primary);font-weight:800;text-decoration:none">Importar estudiantes</a>
+      </div>
+      <div class="panel">
+        <div class="toolbar">
+          <div><label for="search">Buscar</label><input id="search" placeholder="Nombre, cedula o grupo" oninput="render()"></div>
+          <div><label for="group">Grupo</label><select id="group" onchange="render()"><option value="">Todos</option></select></div>
+          <button onclick="loadData()">Actualizar</button>
+        </div>
+        <p class="msg" id="msg"></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Estudiante</th><th>Grupo</th><th>Semanas</th><th>XP</th><th>Quiz</th><th>Actividad</th><th>Riesgo</th><th>Ultima sync</th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    let records = [];
+    function unlock() {
+      if (document.getElementById("pin").value.trim().toLowerCase() !== "tga04") return alert("PIN incorrecto");
+      document.getElementById("login").hidden = true;
+      document.getElementById("app").hidden = false;
+      loadData();
+    }
+    async function loadData() {
+      const msg = document.getElementById("msg");
+      const url = localStorage.getItem("tga04_supabase_url");
+      const key = localStorage.getItem("tga04_supabase_key");
+      if (!url || !key) { msg.textContent = "Supabase no configurado. Revisa js/supabase-config.js y setup/supabase_schema.sql."; return; }
+      msg.textContent = "Cargando datos desde Supabase...";
+      try {
+        const res = await fetch(`${url}/rest/v1/student_progress?select=*&order=updated_at.desc`, { headers:{ apikey:key, Authorization:`Bearer ${key}` } });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        records = await res.json();
+        fillGroups();
+        render();
+        msg.textContent = `Datos actualizados: ${new Date().toLocaleString()}`;
+      } catch (err) {
+        msg.textContent = `No se pudo cargar Supabase: ${err.message}`;
+      }
+    }
+    function fillGroups() {
+      const select = document.getElementById("group");
+      const current = select.value;
+      const groups = [...new Set(records.map(r => r.grupo).filter(Boolean))].sort();
+      select.innerHTML = `<option value="">Todos</option>` + groups.map(g => `<option>${esc(g)}</option>`).join("");
+      select.value = current;
+    }
+    function aggregate() {
+      const map = new Map();
+      for (const r of records) {
+        const id = r.student_id || r.cc || r.student_name || "desconocido";
+        const item = map.get(id) || { id, name:r.student_name || "Anonimo", grupo:r.grupo || "", semanas:new Set(), xp:0, quiz:0, activities:0, updated:r.updated_at || r.created_at || "" };
+        item.name = r.student_name || item.name;
+        item.grupo = r.grupo || item.grupo;
+        item.semanas.add(Number(r.semana));
+        item.xp += Number(r.xp || 0);
+        item.quiz += Number(r.quiz_score || r.quiz_puntaje || 0);
+        if (r.activity_done || r.hti_done) item.activities += 1;
+        if ((r.updated_at || "") > item.updated) item.updated = r.updated_at;
+        map.set(id, item);
+      }
+      return [...map.values()].map(x => ({ ...x, semanas:[...x.semanas].filter(Boolean).sort((a,b)=>a-b) }));
+    }
+    function riskFor(x) {
+      if (x.semanas.length <= 2 || x.xp < 80) return ["Alto", "high"];
+      if (x.semanas.length <= 5 || x.xp < 220) return ["Medio", "warn"];
+      return ["Normal", "ok"];
+    }
+    function render() {
+      const q = document.getElementById("search").value.toLowerCase();
+      const g = document.getElementById("group").value;
+      let data = aggregate().filter(x => (!g || x.grupo === g) && (`${x.name} ${x.id} ${x.grupo}`.toLowerCase().includes(q)));
+      const risks = data.map(riskFor);
+      document.getElementById("mStudents").textContent = data.length;
+      document.getElementById("mRows").textContent = records.length;
+      document.getElementById("mXp").textContent = data.length ? Math.round(data.reduce((s,x)=>s+x.xp,0)/data.length) : 0;
+      document.getElementById("mRisk").textContent = risks.filter(r => r[1] !== "ok").length;
+      document.getElementById("rows").innerHTML = data.sort((a,b)=>a.name.localeCompare(b.name)).map(x => {
+        const [label, cls] = riskFor(x);
+        return `<tr><td><strong>${esc(x.name)}</strong><br><small>${esc(x.id)}</small></td><td>${esc(x.grupo || "-")}</td><td>${x.semanas.join(", ") || "-"}</td><td>${x.xp}</td><td>${x.quiz}</td><td>${x.activities}</td><td><span class="risk ${cls}">${label}</span></td><td>${x.updated ? new Date(x.updated).toLocaleString() : "-"}</td></tr>`;
+      }).join("");
+    }
+    function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
+  </script>
+</body>
+</html>

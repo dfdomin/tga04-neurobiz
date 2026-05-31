@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consolidador de notas · TGA04</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <script src="../js/supabase-config.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root { --primary:#1E2843; --accent:#2d3a5e; --gold:#FFDF2D; --green:#2e7d32; --light-bg:#FAFAFA; --text:#212121; --muted:#546e7a; --border:#DEDFE4; --radius:12px; }
+    body { font-family:'Open Sans', Arial, sans-serif; background:var(--light-bg); color:var(--text); line-height:1.55; }
+    header { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; padding:1.4rem 1.2rem; }
+    .wrap { max-width:1180px; margin:0 auto; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
+    h1 { font-size:clamp(1.5rem,4vw,2.3rem); }
+    .nav { display:flex; gap:.5rem; flex-wrap:wrap; }
+    a, button, input { font-family:inherit; }
+    .nav a, button { border:1px solid var(--border); border-radius:10px; padding:.55rem .85rem; background:#fff; color:var(--primary); font-weight:800; text-decoration:none; cursor:pointer; }
+    main { padding:1.2rem; }
+    .panel, .metric { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:1rem; box-shadow:0 2px 10px rgba(0,0,0,.04); }
+    .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1rem; margin-bottom:1rem; }
+    .metric span { color:var(--muted); font-size:.78rem; font-weight:800; text-transform:uppercase; }
+    .metric strong { display:block; font-size:1.8rem; color:var(--primary); }
+    .controls { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:.7rem; align-items:end; margin-bottom:.9rem; }
+    label { color:var(--muted); display:block; font-size:.78rem; font-weight:800; text-transform:uppercase; margin-bottom:.25rem; }
+    input { width:100%; border:1px solid var(--border); border-radius:10px; padding:.6rem .75rem; }
+    table { width:100%; border-collapse:collapse; font-size:.88rem; }
+    th { text-align:left; background:var(--primary); color:#fff; padding:.65rem .75rem; }
+    td { border-bottom:1px solid var(--border); padding:.6rem .75rem; }
+    tr:nth-child(even) td { background:#f8f9fb; }
+    .msg { color:var(--muted); font-size:.9rem; margin:.7rem 0; min-height:1.3rem; }
+    @media (max-width:760px) { table { min-width:760px; } .table-wrap { overflow-x:auto; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap top">
+      <div><h1>Consolidador de notas</h1><p>Formula formativa configurable por corte.</p></div>
+      <nav class="nav"><a href="../index.html">Inicio</a><a href="profesor.html">Docente</a></nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="summary">
+      <div class="metric"><span>Estudiantes</span><strong id="mStudents">0</strong></div>
+      <div class="metric"><span>Promedio formativo</span><strong id="mAvg">0.0</strong></div>
+      <div class="metric"><span>Registros fuente</span><strong id="mRows">0</strong></div>
+    </section>
+    <section class="panel">
+      <div class="controls">
+        <div><label for="expected">Semanas esperadas</label><input id="expected" type="number" min="1" value="13" oninput="render()"></div>
+        <div><label for="quizW">Peso quiz</label><input id="quizW" type="number" step=".05" value=".50" oninput="render()"></div>
+        <div><label for="actW">Peso actividad</label><input id="actW" type="number" step=".05" value=".30" oninput="render()"></div>
+        <div><label for="visitW">Peso visitas</label><input id="visitW" type="number" step=".05" value=".20" oninput="render()"></div>
+        <button onclick="loadData()">Cargar Supabase</button>
+        <button onclick="exportCsv()">Exportar CSV</button>
+      </div>
+      <p class="msg" id="msg"></p>
+      <div class="table-wrap"><table><thead><tr><th>Estudiante</th><th>ID</th><th>Grupo</th><th>Semanas</th><th>Quiz prom</th><th>Actividades</th><th>Nota formativa</th></tr></thead><tbody id="rows"></tbody></table></div>
+    </section>
+  </main>
+  <script>
+    let records = [], currentRows = [];
+    async function loadData() {
+      const msg = document.getElementById("msg");
+      const url = localStorage.getItem("tga04_supabase_url");
+      const key = localStorage.getItem("tga04_supabase_key");
+      if (!url || !key) { msg.textContent = "Supabase no configurado."; return; }
+      msg.textContent = "Cargando registros...";
+      try {
+        const res = await fetch(`${url}/rest/v1/student_progress?select=*`, { headers:{ apikey:key, Authorization:`Bearer ${key}` } });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        records = await res.json();
+        render();
+        msg.textContent = `Datos actualizados: ${new Date().toLocaleString()}`;
+      } catch(e) { msg.textContent = `Error: ${e.message}`; }
+    }
+    function aggregate() {
+      const map = new Map();
+      for (const r of records) {
+        const id = r.student_id || r.cc || r.student_name || "desconocido";
+        const item = map.get(id) || { id, name:r.student_name || "Anonimo", grupo:r.grupo || "", semanas:new Set(), quizSum:0, quizCount:0, acts:0 };
+        item.name = r.student_name || item.name;
+        item.grupo = r.grupo || item.grupo;
+        if (r.semana) item.semanas.add(Number(r.semana));
+        item.quizSum += Number(r.quiz_score || r.quiz_puntaje || 0);
+        item.quizCount += 1;
+        if (r.activity_done || r.hti_done) item.acts += 1;
+        map.set(id, item);
+      }
+      return [...map.values()];
+    }
+    function render() {
+      const expected = Math.max(Number(document.getElementById("expected").value || 13), 1);
+      const qw = Number(document.getElementById("quizW").value || .5);
+      const aw = Number(document.getElementById("actW").value || .3);
+      const vw = Number(document.getElementById("visitW").value || .2);
+      currentRows = aggregate().map(x => {
+        const quizAvg10 = x.quizCount ? Math.min(x.quizSum / x.quizCount, 10) : 0;
+        const nota = (quizAvg10 / 10 * 5) * qw + (Math.min(x.acts / expected, 1) * 5) * aw + (Math.min(x.semanas.size / expected, 1) * 5) * vw;
+        return { ...x, quizAvg10, nota };
+      }).sort((a,b)=>a.name.localeCompare(b.name));
+      document.getElementById("mStudents").textContent = currentRows.length;
+      document.getElementById("mRows").textContent = records.length;
+      document.getElementById("mAvg").textContent = currentRows.length ? (currentRows.reduce((s,x)=>s+x.nota,0)/currentRows.length).toFixed(1) : "0.0";
+      document.getElementById("rows").innerHTML = currentRows.map(x => `<tr><td>${esc(x.name)}</td><td>${esc(x.id)}</td><td>${esc(x.grupo)}</td><td>${x.semanas.size}</td><td>${x.quizAvg10.toFixed(1)}</td><td>${x.acts}</td><td><strong>${x.nota.toFixed(2)}</strong></td></tr>`).join("");
+    }
+    function exportCsv() {
+      const lines = [["student_name","student_id","grupo","semanas","quiz_prom_10","actividades","nota_formativa_5"]];
+      for (const x of currentRows) lines.push([x.name,x.id,x.grupo,x.semanas.size,x.quizAvg10.toFixed(1),x.acts,x.nota.toFixed(2)]);
+      const csv = lines.map(row => row.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type:"text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a"); a.href = url; a.download = "tga04-notas.csv"; a.click();
+      URL.revokeObjectURL(url);
+    }
+    function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
+  </script>
+</body>
+</html>

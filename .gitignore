@@ -8,6 +8,15 @@ Reporte_*.pdf
 *.tsv
 .env
 .env.*
+
+# Documentacion interna (no publica)
+docs/
+MEMORY.md
+NEXTSTEPS.md
+mejoraGamificacion.md
+TGA04_MicrocurriculoGamificado_RA2.docx
+
+# Python cache
 __pycache__/
 *.pyc
 .DS_Store

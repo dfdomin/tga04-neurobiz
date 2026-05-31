@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurar Supabase · TGA04</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root { --primary:#1E2843; --accent:#2d3a5e; --gold:#FFDF2D; --light-bg:#FAFAFA; --text:#212121; --muted:#546e7a; --border:#DEDFE4; --radius:12px; }
+    body { font-family:'Open Sans', Arial, sans-serif; background:var(--light-bg); color:var(--text); line-height:1.65; }
+    header { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; padding:2rem 1.2rem; }
+    .wrap { max-width:980px; margin:0 auto; }
+    h1 { font-size:clamp(1.7rem,4vw,3rem); line-height:1.1; }
+    header p { opacity:.85; margin-top:.5rem; }
+    main { padding:1.5rem 1.2rem 4rem; }
+    .step, .warn { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:1.2rem; margin-bottom:1rem; box-shadow:0 2px 10px rgba(0,0,0,.04); }
+    .step h2 { color:var(--primary); font-size:1.15rem; margin-bottom:.5rem; }
+    .step ol, .step ul { padding-left:1.4rem; }
+    .step li { margin:.35rem 0; }
+    code, pre { font-family:'Courier New', monospace; }
+    pre { background:#1E2843; color:#cdd6f4; border-radius:10px; padding:1rem; overflow:auto; margin:.8rem 0; }
+    a, button { color:var(--primary); font-weight:800; }
+    .btn { display:inline-block; background:var(--gold); border-radius:10px; padding:.65rem 1rem; text-decoration:none; margin-top:.5rem; }
+    .warn { border-left:5px solid var(--gold); }
+  </style>
+</head>
+<body>
+  <header><div class="wrap"><h1>Configurar Supabase</h1><p>Activa sincronización cloud para progreso, dashboards y notas de TGA04.</p></div></header>
+  <main class="wrap">
+    <section class="step">
+      <h2>1. Crear proyecto</h2>
+      <ol>
+        <li>Entra a <a href="https://supabase.com" target="_blank" rel="noopener">supabase.com</a>.</li>
+        <li>Crea un proyecto nuevo.</li>
+        <li>Abre Project Settings → API.</li>
+        <li>Copia Project URL y la clave <code>anon</code> / <code>publishable</code>.</li>
+      </ol>
+    </section>
+    <section class="step">
+      <h2>2. Editar configuracion</h2>
+      <p>Abre <code>js/supabase-config.js</code> y reemplaza estos valores:</p>
+      <pre><code>var SUPABASE_URL = "https://TU-PROYECTO.supabase.co";
+var SUPABASE_KEY = "TU_CLAVE_PUBLICA_ANON";</code></pre>
+      <p>La clave anon es publica por diseño, pero las politicas RLS siguen siendo obligatorias.</p>
+    </section>
+    <section class="step">
+      <h2>3. Ejecutar SQL</h2>
+      <ol>
+        <li>En Supabase abre SQL Editor.</li>
+        <li>Copia el contenido de <code>setup/supabase_schema.sql</code>.</li>
+        <li>Ejecuta el script una sola vez.</li>
+      </ol>
+      <a class="btn" href="supabase_schema.sql">Abrir schema SQL</a>
+    </section>
+    <section class="step">
+      <h2>4. Probar flujo</h2>
+      <ol>
+        <li>Abre una semana, por ejemplo <code>semana1/index.html</code>.</li>
+        <li>Completa el modal de bienvenida.</li>
+        <li>Haz clic en <strong>Guardar</strong>.</li>
+        <li>Abre <code>dashboard/profesor.html</code>, PIN <code>tga04</code>, y verifica el registro.</li>
+      </ol>
+    </section>
+    <section class="warn">
+      <strong>Privacidad:</strong> este proyecto usa una arquitectura estatica para clase. Evita publicar reportes con cedulas completas fuera del entorno academico y usa la base solo para datos necesarios del curso.
+    </section>
+  </main>
+</body>
+</html>

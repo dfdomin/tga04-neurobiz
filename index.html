@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TGA04 · Fundamentos de Computación para los Negocios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1E2843;
+      --accent: #2d3a5e;
+      --gold: #FFDF2D;
+      --green: #2e7d32;
+      --red: #c62828;
+      --light-bg: #FAFAFA;
+      --card-bg: #ffffff;
+      --text: #212121;
+      --muted: #546e7a;
+      --border: #DEDFE4;
+      --radius: 12px;
+    }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--light-bg); color: var(--text); line-height: 1.65; }
+    header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; padding: 2.4rem 1.2rem 2rem; }
+    .wrap { max-width: 1120px; margin: 0 auto; }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .brand { font-weight: 800; letter-spacing: .04em; text-transform: uppercase; font-size: .85rem; opacity: .9; }
+    .nav { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .nav a, .btn { display: inline-flex; align-items: center; gap: .45rem; text-decoration: none; border-radius: 10px; font-weight: 800; font-size: .86rem; border: 1px solid rgba(255,255,255,.3); padding: .55rem .9rem; color: #fff; }
+    .btn.gold { background: var(--gold); color: var(--primary); border-color: var(--gold); }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr); gap: 2rem; align-items: end; padding-top: 2.8rem; }
+    h1 { font-size: clamp(2rem, 5vw, 4.3rem); line-height: 1.04; letter-spacing: 0; max-width: 840px; }
+    .lead { margin-top: 1rem; max-width: 690px; color: rgba(255,255,255,.86); font-size: 1.05rem; }
+    .hero-actions { display: flex; gap: .7rem; margin-top: 1.4rem; flex-wrap: wrap; }
+    .panel { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); border-radius: var(--radius); padding: 1.1rem; }
+    .panel h2 { font-size: 1rem; color: var(--gold); margin-bottom: .7rem; }
+    .metric { display: flex; justify-content: space-between; gap: 1rem; padding: .45rem 0; border-bottom: 1px solid rgba(255,255,255,.12); font-size: .9rem; }
+    .metric:last-child { border-bottom: 0; }
+    main { padding: 2rem 1.2rem 4rem; }
+    .section-title { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1.5rem 0 1rem; }
+    .section-title h2 { color: var(--primary); font-size: 1.35rem; }
+    .section-title p { color: var(--muted); font-size: .9rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
+    .week, .tool, .status { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+    .week { display: grid; gap: .7rem; min-height: 180px; }
+    .week h3, .tool h3, .status h3 { color: var(--primary); font-size: 1rem; }
+    .week p, .tool p, .status p { color: var(--muted); font-size: .88rem; }
+    .tags { display: flex; gap: .35rem; flex-wrap: wrap; }
+    .tag { border: 1px solid var(--border); border-radius: 999px; padding: .18rem .55rem; font-size: .72rem; font-weight: 800; color: var(--accent); background: #fff; }
+    .week a, .tool a { align-self: end; color: var(--primary); font-weight: 800; text-decoration: none; border-top: 1px solid var(--border); padding-top: .7rem; }
+    .muted-link { color: var(--muted); text-decoration: none; font-weight: 700; }
+    .band { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; margin-top: 1rem; }
+    footer { border-top: 1px solid var(--border); padding: 1.6rem 1.2rem; color: var(--muted); font-size: .84rem; text-align: center; }
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: 1fr; padding-top: 2rem; }
+      .nav a { flex: 1; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="top">
+        <div class="brand">IUB · TGA04 · NeuroBiz S.A.S.</div>
+        <nav class="nav" aria-label="Navegación principal">
+          <a href="#semanas">Semanas</a>
+          <a href="dashboard/index.html">Mi progreso</a>
+          <a href="dashboard/profesor.html">Docente</a>
+          <a href="setup/CONFIGURAR_SUPABASE.html">Setup</a>
+        </nav>
+      </div>
+      <div class="hero">
+        <div>
+          <h1>Fundamentos de Computación para los Negocios</h1>
+          <p class="lead">Material gamificado para Tecnología en Gestión Administrativa: algoritmos, pseudocódigo, Python en la nube y toma de decisiones con indicadores de NeuroBiz.</p>
+          <div class="hero-actions">
+            <a class="btn gold" href="semana1/index.html">Iniciar semana 1</a>
+            <a class="btn" href="dashboard/index.html">Ver progreso</a>
+          </div>
+        </div>
+        <aside class="panel" aria-label="Resumen del curso">
+          <h2>Resumen operativo</h2>
+          <div class="metric"><span>Semanas de contenido</span><strong>13</strong></div>
+          <div class="metric"><span>Cortes</span><strong>3</strong></div>
+          <div class="metric"><span>Seguimiento</span><strong>Local + Supabase</strong></div>
+          <div class="metric"><span>Stack</span><strong>HTML, CSS, JS</strong></div>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section aria-labelledby="herramientas">
+      <div class="section-title">
+        <h2 id="herramientas">Herramientas</h2>
+        <p>Entradas principales para estudiantes y docente.</p>
+      </div>
+      <div class="grid">
+        <article class="tool">
+          <h3>Dashboard estudiante</h3>
+          <p>Resume XP, semanas visitadas y respuestas guardadas en este navegador.</p>
+          <a href="dashboard/index.html">Abrir dashboard</a>
+        </article>
+        <article class="tool">
+          <h3>Panel docente</h3>
+          <p>Consulta progreso sincronizado desde Supabase con PIN local del curso.</p>
+          <a href="dashboard/profesor.html">Abrir panel</a>
+        </article>
+        <article class="tool">
+          <h3>Notas</h3>
+          <p>Calcula nota formativa y exporta consolidado para revisión académica.</p>
+          <a href="dashboard/notas.html">Consolidar notas</a>
+        </article>
+        <article class="tool">
+          <h3>Configuración</h3>
+          <p>Guía para crear la base Supabase y publicar por GitHub Pages/Moodle.</p>
+          <a href="setup/CONFIGURAR_SUPABASE.html">Configurar Supabase</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="semanas" aria-labelledby="semanas-title">
+      <div class="section-title">
+        <h2 id="semanas-title">Ruta semanal</h2>
+        <p>Semanas 5 y 10 son parciales y no tienen material HTML.</p>
+      </div>
+      <div class="grid" id="weeks"></div>
+    </section>
+
+    <section class="band" aria-labelledby="publicacion">
+      <h2 id="publicacion" style="font-size:1.15rem;color:var(--primary);margin-bottom:.5rem">Publicación en Moodle</h2>
+      <p style="color:var(--muted);font-size:.92rem">Usa recursos tipo URL apuntando a cada carpeta de semana en GitHub Pages. Evita subir los HTML como archivos sueltos porque el seguimiento necesita rutas relativas y almacenamiento local consistente.</p>
+    </section>
+  </main>
+
+  <footer>
+    TGA04 · Fundamentos de Computación para los Negocios · Prof. Diego Domínguez Tapia · IUB 2026
+  </footer>
+
+  <script>
+    const weeks = [
+      [1, "Algoritmos y pensamiento computacional", "RA1", "Datos, información, diagramas"],
+      [2, "Variables, tipos y operadores", "RA1", "Indicadores y tasa de retención"],
+      [3, "Decisiones simples", "RA2", "SI-FSI y reglas de negocio"],
+      [4, "Clasificación de riesgo", "RA2", "SI-SINO, DD-FDD y fronteras"],
+      [6, "Estructura MIENTRAS", "RA2", "MQ-FMQ, centinelas y acumuladores"],
+      [7, "Estructura HACER-HASTA", "RA2", "Validación con mínimo una iteración"],
+      [8, "Estructura PARA", "RA2", "Conteo conocido y reportes periódicos"],
+      [9, "Integrador selectivas + repetitivas", "RA2", "Reporte mensual completo"],
+      [11, "Prueba de escritorio", "RA3", "Trazas, límites y evidencia"],
+      [12, "Python y colecciones", "RA4", "Listas, diccionarios y BI"],
+      [13, "Python con decisiones y ciclos", "RA4", "if/elif, for y while"],
+      [14, "Proyecto integrador Python", "RA4", "Sistema NeuroBiz funcional"],
+      [15, "Debugging", "RA5", "Corregir errores en producción"]
+    ];
+    document.getElementById("weeks").innerHTML = weeks.map(([n, title, ra, desc]) => `
+      <article class="week">
+        <div>
+          <div class="tags"><span class="tag">Semana ${n}</span><span class="tag">${ra}</span></div>
+          <h3>${title}</h3>
+          <p>${desc}</p>
+        </div>
+        <a href="semana${n}/index.html">Abrir material</a>
+      </article>
+    `).join("");
+  </script>
+</body>
+</html>
