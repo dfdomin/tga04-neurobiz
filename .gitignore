@@ -1,0 +1,13 @@
+# Backup de datos de estudiantes (privados)
+setup/backups/
+Reporte_Estudiantes-*.pdf
+Reporte_*.pdf
+*.xlsx
+*.xls
+*.csv
+*.tsv
+.env
+.env.*
+__pycache__/
+*.pyc
+.DS_Store
