@@ -59,7 +59,7 @@
   <main class="wrap">
     <section class="login" id="login">
       <label for="pin">PIN docente</label>
-      <input id="pin" type="password" autocomplete="current-password" placeholder="tga04">
+      <input id="pin" type="password" autocomplete="current-password" placeholder="Ingrese PIN">
       <button onclick="unlock()">Entrar</button>
       <p class="msg">PIN local: protege la vista en clase, no reemplaza seguridad de base de datos.</p>
     </section>
@@ -94,7 +94,7 @@
   <script>
     let records = [];
     function unlock() {
-      if (document.getElementById("pin").value.trim().toLowerCase() !== "tga04") return alert("PIN incorrecto");
+      if (document.getElementById("pin").value.trim() !== "sasadfgh2019") return alert("PIN incorrecto");
       document.getElementById("login").hidden = true;
       document.getElementById("app").hidden = false;
       loadData();
@@ -106,7 +106,8 @@
       if (!url || !key) { msg.textContent = "Supabase no configurado. Revisa js/supabase-config.js y setup/supabase_schema.sql."; return; }
       msg.textContent = "Cargando datos desde Supabase...";
       try {
-        const res = await fetch(`${url}/rest/v1/student_progress?select=*&order=updated_at.desc`, { headers:{ apikey:key, Authorization:`Bearer ${key}` } });
+        // Usar la vista resumen_docente (agregación server-side)
+        const res = await fetch(`${url}/rest/v1/resumen_docente?select=*`, { headers:{ apikey:key, Authorization:`Bearer ${key}` } });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         records = await res.json();
         fillGroups();
@@ -124,24 +125,23 @@
       select.value = current;
     }
     function aggregate() {
-      const map = new Map();
-      for (const r of records) {
-        const id = r.student_id || r.cc || r.student_name || "desconocido";
-        const item = map.get(id) || { id, name:r.student_name || "Anonimo", grupo:r.grupo || "", semanas:new Set(), xp:0, quiz:0, activities:0, updated:r.updated_at || r.created_at || "" };
-        item.name = r.student_name || item.name;
-        item.grupo = r.grupo || item.grupo;
-        item.semanas.add(Number(r.semana));
-        item.xp += Number(r.xp || 0);
-        item.quiz += Number(r.quiz_score || r.quiz_puntaje || 0);
-        if (r.activity_done || r.hti_done) item.activities += 1;
-        if ((r.updated_at || "") > item.updated) item.updated = r.updated_at;
-        map.set(id, item);
-      }
-      return [...map.values()].map(x => ({ ...x, semanas:[...x.semanas].filter(Boolean).sort((a,b)=>a-b) }));
+      // La vista resumen_docente ya entrega datos agregados.
+      // Solo mapeamos al formato que espera render().
+      return records.map(r => ({
+        id: r.student_id || "desconocido",
+        name: r.student_name || "Anónimo",
+        grupo: r.grupo || "",
+        horario: r.horario || "",
+        semanas_visitadas: r.semanas_visitadas || 0,
+        xp: r.xp_total || 0,
+        quiz: r.quiz_promedio || 0,
+        activities: r.actividades || 0,
+        updated: r.ultima_actualizacion || ""
+      }));
     }
     function riskFor(x) {
-      if (x.semanas.length <= 2 || x.xp < 80) return ["Alto", "high"];
-      if (x.semanas.length <= 5 || x.xp < 220) return ["Medio", "warn"];
+      if (x.semanas_visitadas <= 2 || x.xp < 80) return ["Alto", "high"];
+      if (x.semanas_visitadas <= 5 || x.xp < 220) return ["Medio", "warn"];
       return ["Normal", "ok"];
     }
     function render() {
@@ -155,7 +155,7 @@
       document.getElementById("mRisk").textContent = risks.filter(r => r[1] !== "ok").length;
       document.getElementById("rows").innerHTML = data.sort((a,b)=>a.name.localeCompare(b.name)).map(x => {
         const [label, cls] = riskFor(x);
-        return `<tr><td><strong>${esc(x.name)}</strong><br><small>${esc(x.id)}</small></td><td>${esc(x.grupo || "-")}</td><td>${x.semanas.join(", ") || "-"}</td><td>${x.xp}</td><td>${x.quiz}</td><td>${x.activities}</td><td><span class="risk ${cls}">${label}</span></td><td>${x.updated ? new Date(x.updated).toLocaleString() : "-"}</td></tr>`;
+        return `<tr><td><strong>${esc(x.name)}</strong><br><small>${esc(x.id)}</small></td><td>${esc(x.grupo || "-")}</td><td>${x.semanas_visitadas}</td><td>${x.xp}</td><td>${Number(x.quiz).toFixed(1)}</td><td>${x.activities}</td><td><span class="risk ${cls}">${label}</span></td><td>${x.updated ? new Date(x.updated).toLocaleString() : "-"}</td></tr>`;
       }).join("");
     }
     function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }

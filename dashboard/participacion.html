@@ -86,7 +86,7 @@
     <!-- PIN login -->
     <section class="login" id="login">
       <label for="pin">PIN docente</label>
-      <input id="pin" type="password" autocomplete="current-password" placeholder="tga04">
+      <input id="pin" type="password" autocomplete="current-password" placeholder="Ingrese PIN">
       <button onclick="unlock()">Entrar</button>
       <p class="msg">PIN local: protege la vista en clase.</p>
     </section>
@@ -230,7 +230,7 @@
     let importedData = null;
 
     function unlock() {
-      if (document.getElementById("pin").value.trim().toLowerCase() !== "tga04") return alert("PIN incorrecto");
+      if (document.getElementById("pin").value.trim() !== "sasadfgh2019") return alert("PIN incorrecto");
       document.getElementById("login").hidden = true;
       document.getElementById("app").hidden = false;
       document.getElementById("attDate").value = todayStr();

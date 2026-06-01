@@ -298,13 +298,13 @@ print(f&quot;Verde: {total_verde} | Amarillo: {total_amarillo} | Rojo: {total_ro
   <div class="dojo-panel"><h3>🏆 XP disponibles esta semana</h3><div class="dojo-items"><div class="dojo-item">📋 <span>Asistencia</span> <span class="pts">+10 XP</span></div><div class="dojo-item">🎮 <span>Quiz</span> <span class="pts">+25 XP</span></div><div class="dojo-item">🐍 <span>Misión Python</span> <span class="pts">+35 XP</span></div></div></div>
   
 <div class="activity">
-  <div class="activity-header presencial">⏱️ Bloque 1 — Control de decisiones (90 min)</div>
+  <div class="activity-header presencial">⏱️ Bloque 1 — Control de decisiones</div>
   <div class="activity-body"><ol><li>Traducir condiciones Cairó a <code>if/elif/else</code>.</li><li>Practicar <code>and</code>, <code>or</code> y <code>not</code> con ejemplos de negocio.</li><li>Verificar cómo <code>80</code> y <code>50</code> se clasifican correctamente.</li></ol></div>
 </div>
 
   
 <div class="activity">
-  <div class="activity-header presencial">⏱️ Bloque 2 — Procesar múltiples sesiones (120 min)</div>
+  <div class="activity-header presencial">⏱️ Bloque 2 — Procesar múltiples sesiones</div>
   <div class="activity-body"><ol><li>Usar <code>for in range()</code> y <code>enumerate()</code> para recorrer listas.</li><li>Contar verdes, amarillos y rojos.</li><li>Agregar un ciclo <code>while</code> para leer datos hasta que el usuario escriba -1.</li><li>Explorar <code>match/case</code> como versión nativa de DD-FDD.</li></ol></div>
 </div>
 
@@ -373,9 +373,33 @@ print(f&quot;Verde: {total_verde} | Amarillo: {total_amarillo} | Rojo: {total_ro
   <ul class="bib"><li><strong>Python Software Foundation.</strong> Documentación oficial sobre <code>if</code>, <code>while</code>, <code>for</code> y <code>match</code>. <a href="https://docs.python.org/3/tutorial/controlflow.html" target="_blank">Control Flow Tools</a>.</li><li><strong>Google Colaboratory.</strong> Entorno de práctica del curso. <a href="https://colab.research.google.com/" target="_blank">colab.research.google.com</a>.</li><li><strong>Cairó Battistutti, O. & Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em>. Alfaomega.</li><li><strong>Joyanes Aguilar, L.</strong> (2008). <em>Fundamentos de programación</em>. McGraw-Hill.</li><li><strong>Wing, J. M.</strong> (2006). “Computational Thinking”. <em>Communications of the ACM</em>, 49(3), 33–35.</li></ul>
 </section>
 
-</main>
+<div id="grade-panel" style="text-align:center; background:linear-gradient(135deg,#1E2843,#2d3a5e); color:#fff; border-radius:16px; padding:1.2rem 1.5rem; margin:0 0 2rem;">
+  <div style="font-size:.8rem; opacity:.65; text-transform:uppercase; letter-spacing:.08em; margin-bottom:.3rem;">📊 Nota acumulada</div>
+  <div style="font-size:2.4rem; font-weight:900; color:#FFDF2D; line-height:1;" id="liveGrade">0.0</div>
+  <div style="font-size:.9rem; opacity:.6;">de 5.0 posibles</div>
+  <div id="completion-extra" style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,.15);">
+    <div style="font-size:2rem; margin-bottom:.3rem;">🎉</div>
+    <p style="font-size:.9rem; opacity:.9; margin-bottom:.6rem;">¡Completaste el 100% de esta semana!</p>
+    <table style="margin:0 auto; font-size:.84rem; border-collapse:collapse;">
+      <tr>
+        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">🔢 XP acumulados:</td>
+        <td style="padding:.35rem .8rem; text-align:left; font-weight:700;" id="xpEarned">—</td>
+      </tr>
+      <tr>
+        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">⏱️ Equivalencia:</td>
+        <td style="padding:.35rem .8rem; text-align:left;">9 horas de trabajo</td>
+      </tr>
+      <tr>
+        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">📝 Nota final:</td>
+        <td style="padding:.35rem .8rem; text-align:left; font-weight:700; color:#FFDF2D;">5.0 / 5.0</td>
+      </tr>
+    </table>
+    <p style="font-size:.76rem; opacity:.5; margin-top:.5rem;">4h presenciales + 5h trabajo independiente</p>
+  </div>
+</div></main>
 <footer>TGA04 · IUB Colombia · Prof. Diego Domínguez Tapia · Semana 13 · Python para Reportes Ejecutivos: Listas y Funciones · Caso de estudio: NeuroBiz S.A.S.</footer>
 <script id="pt-js">
+function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
 const PT = (function() {
   const SEMANA = 13;
   const XP_MAX = 70;
@@ -487,7 +511,7 @@ const PT = (function() {
   }
   function exportCode() {
     save();
-    const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    const code = btoa(encodeURIComponent(JSON.stringify(state)));
     const ta = document.createElement('textarea');
     ta.value = code; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
     const a = document.createElement('a');
@@ -500,7 +524,7 @@ const PT = (function() {
     const code = prompt('Pega tu código de progreso:');
     if (!code) return;
     try {
-      Object.assign(state, JSON.parse(decodeURIComponent(escape(atob(code.trim())))));
+      Object.assign(state, JSON.parse(decodeURIComponent(atob(code.trim()))));
       save();
       msg('✅ Progreso restaurado.', 'lightgreen');
     } catch (e) {
@@ -736,5 +760,39 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
 <script>
 document.addEventListener('DOMContentLoaded', function(){});
 </script>
+<script>
+(function(){
+  var __done = false;
+  var __xpMax = 0;
+
+  // Extract XP_MAX from the page
+  var el = document.getElementById('xpCount');
+  if (el && el.parentNode) {
+    var txt = el.parentNode.textContent || '';
+    var m = txt.match(/\/(\d+)/);
+    if (m) __xpMax = parseInt(m[1], 10);
+  }
+
+  setInterval(function(){
+    var bar = document.getElementById('xpBar');
+    if (!bar) return;
+    var w = parseFloat(bar.style.width) || 0;
+    var grade = (w / 100) * 5;
+    var g = document.getElementById('liveGrade');
+    if (g) g.textContent = grade.toFixed(1);
+
+    if (w >= 100 && !__done) {
+      __done = true;
+      var extra = document.getElementById('completion-extra');
+      if (extra) extra.style.display = 'block';
+      var xpEl = document.getElementById('xpEarned');
+      if (xpEl && __xpMax > 0) {
+        xpEl.textContent = __xpMax + ' pts  (' + __xpMax + '/' + __xpMax + ')';
+      }
+    }
+  }, 800);
+})();
+</script>
+
 </body>
 </html>

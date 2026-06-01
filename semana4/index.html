@@ -455,7 +455,7 @@
 
 <!-- ══ ACTIVIDAD PRESENCIAL ══ -->
 <section id="actividad" class="card">
-  <h2>⚙️ Actividad Presencial (4 horas)</h2>
+  <h2>⚙️ Actividad Presencial</h2>
 
   <div class="dojo-panel">
     <h3>🏆 Puntos disponibles esta sesión</h3>
@@ -467,7 +467,7 @@
   </div>
 
   <div class="activity">
-    <div class="activity-header presencial">⏱️ Bloque 1 — Doble vs múltiple decisión (80 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Comprender</em></div>
+    <div class="activity-header presencial">⏱️ Bloque 1 — Doble vs múltiple decisión · <em style="font-weight:400;margin-left:.3rem">Bloom: Comprender</em></div>
     <div class="activity-body">
       <ol>
         <li>Comparar el semáforo de dos rutas con el semáforo completo de tres colores.</li>
@@ -478,7 +478,7 @@
   </div>
 
   <div class="activity">
-    <div class="activity-header presencial">⏱️ Bloque 2 — Casos de prueba (90 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Aplicar</em></div>
+    <div class="activity-header presencial">⏱️ Bloque 2 — Casos de prueba · <em style="font-weight:400;margin-left:.3rem">Bloom: Aplicar</em></div>
     <div class="activity-body">
       <ol>
         <li>Ejecutar manualmente ambos algoritmos con <code>tasa = 85</code>, <code>65</code>, <code>45</code> y <code>80</code>.</li>
@@ -489,7 +489,7 @@
   </div>
 
   <div class="activity">
-    <div class="activity-header presencial">⏱️ Bloque 3 — Misión NeuroBiz (70 min) · <em style="font-weight:400;margin-left:.3rem">Bloom: Analizar</em></div>
+    <div class="activity-header presencial">⏱️ Bloque 3 — Misión NeuroBiz · <em style="font-weight:400;margin-left:.3rem">Bloom: Analizar</em></div>
     <div class="activity-body">
       <p><strong>🎯 Misión:</strong> elegir la estructura adecuada para clasificar.</p>
       <ol>
@@ -503,11 +503,11 @@
 
 <!-- ══ HTI ══ -->
 <section id="hti" class="card">
-  <h2>🏠 HTI — Trabajo Independiente (5 horas)</h2>
+  <h2>🏠 HTI — Trabajo Independiente</h2>
   <p style="color:var(--muted);font-size:.88rem">Esta semana el reto es elegir bien la estructura, no solo escribirla.</p>
 
   <div class="activity">
-    <div class="activity-header hti-a">📚 HTI-A — Lectura de repaso (1.5 horas)</div>
+    <div class="activity-header hti-a">📚 HTI-A — Lectura de repaso</div>
     <div class="activity-body">
       <ol>
         <li>Revisa las tablas comparativas de SI-SINO-FSI y DD-FDD.</li>
@@ -517,7 +517,7 @@
   </div>
 
   <div class="activity">
-    <div class="activity-header hti-b">✏️ HTI-B — Diseño de clasificación de terapeutas (2 horas)</div>
+    <div class="activity-header hti-b">✏️ HTI-B — Diseño de clasificación de terapeutas</div>
     <div class="activity-body">
       <ol>
         <li>Diseña un algoritmo DD-FDD para clasificar terapeutas por número de sesiones:</li>
@@ -527,7 +527,7 @@
   </div>
 
   <div class="activity">
-    <div class="activity-header hti-b">🧠 HTI-C — Conversión y comparación (1.5 horas)</div>
+    <div class="activity-header hti-b">🧠 HTI-C — Conversión y comparación</div>
     <div class="activity-body">
       <ol>
         <li>Convierte el SI-SINO-FSI del material a DD-FDD.</li>
@@ -733,7 +733,30 @@ meses = <span class="fn">int</span>(<span class="fn">input</span>(<span class="s
 </section>
 
 
-    </main>
+    <div id="grade-panel" style="text-align:center; background:linear-gradient(135deg,#1E2843,#2d3a5e); color:#fff; border-radius:16px; padding:1.2rem 1.5rem; margin:0 0 2rem;">
+  <div style="font-size:.8rem; opacity:.65; text-transform:uppercase; letter-spacing:.08em; margin-bottom:.3rem;">📊 Nota acumulada</div>
+  <div style="font-size:2.4rem; font-weight:900; color:#FFDF2D; line-height:1;" id="liveGrade">0.0</div>
+  <div style="font-size:.9rem; opacity:.6;">de 5.0 posibles</div>
+  <div id="completion-extra" style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,.15);">
+    <div style="font-size:2rem; margin-bottom:.3rem;">🎉</div>
+    <p style="font-size:.9rem; opacity:.9; margin-bottom:.6rem;">¡Completaste el 100% de esta semana!</p>
+    <table style="margin:0 auto; font-size:.84rem; border-collapse:collapse;">
+      <tr>
+        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">🔢 XP acumulados:</td>
+        <td style="padding:.35rem .8rem; text-align:left; font-weight:700;" id="xpEarned">—</td>
+      </tr>
+      <tr>
+        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">⏱️ Equivalencia:</td>
+        <td style="padding:.35rem .8rem; text-align:left;">9 horas de trabajo</td>
+      </tr>
+      <tr>
+        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">📝 Nota final:</td>
+        <td style="padding:.35rem .8rem; text-align:left; font-weight:700; color:#FFDF2D;">5.0 / 5.0</td>
+      </tr>
+    </table>
+    <p style="font-size:.76rem; opacity:.5; margin-top:.5rem;">4h presenciales + 5h trabajo independiente</p>
+  </div>
+</div></main>
 
     <footer>
       TGA04 · Fundamentos de Computación para los Negocios · IUB 2026 · Semana 4: Condicional Doble y Anidada · Caso de estudio: NeuroBiz S.A.S. · Prof. Diego Domínguez Tapia
@@ -741,6 +764,7 @@ meses = <span class="fn">int</span>(<span class="fn">input</span>(<span class="s
 
     <!-- ══ PROGRESS TRACKER SCRIPT ══ -->
 <script id="pt-js">
+function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
 const PT = (function() {
   const SEMANA    = 4;
   const XP_MAX    = 90;
@@ -820,10 +844,10 @@ const PT = (function() {
 
   function exportCode() {
     save();
-    const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    const code = btoa(encodeURIComponent(JSON.stringify(state)));
     const ta = document.createElement("textarea");
     ta.value = code;
-    document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+    document.body.appendChild(ta); ta.select(); navigator.clipboard.writeText(code);
     document.body.removeChild(ta);
     const a = document.createElement("a");
     a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(code);
@@ -836,7 +860,7 @@ const PT = (function() {
     const code = prompt("Pega tu código de progreso:");
     if (!code) return;
     try {
-      Object.assign(state, JSON.parse(decodeURIComponent(escape(atob(code.trim())))));
+      Object.assign(state, JSON.parse(decodeURIComponent(atob(code.trim()))));
       save(); msg("✅ Progreso restaurado.", "lightgreen");
     } catch(e) { msg("❌ Código inválido.", "salmon"); }
   }
@@ -1038,8 +1062,8 @@ else PT.init();
       var metaEl = document.getElementById("pt-fc-meta");
       if (nameEl) nameEl.textContent = "✅ " + found.name;
       if (metaEl) metaEl.innerHTML =
-        (found.grupo   ? "📚 Grupo: <strong>" + found.grupo + "</strong>" : "") +
-        (found.horario ? " &nbsp;·&nbsp; ⏰ " + found.horario : "");
+        (found.grupo   ? "📚 Grupo: <strong>" + esc(found.grupo) + "</strong>" : "") +
+        (found.horario ? " &nbsp;·&nbsp; ⏰ " + esc(found.horario) : "");
       nameEl.dataset.cc = cc; nameEl.dataset.nombre = found.name;
       nameEl.dataset.grupo = found.grupo || ""; nameEl.dataset.horario = found.horario || "";
       showStep("pt-step2a");
@@ -1064,8 +1088,8 @@ else PT.init();
             var metaEl = document.getElementById("pt-fc-meta");
             if (nameEl) nameEl.textContent = "✅ " + r.name;
             if (metaEl) metaEl.innerHTML =
-              (r.grupo   ? "📚 Grupo: <strong>" + r.grupo + "</strong>" : "") +
-              (r.horario ? " &nbsp;·&nbsp; ⏰ " + r.horario : "");
+              (r.grupo   ? "📚 Grupo: <strong>" + esc(r.grupo) + "</strong>" : "") +
+              (r.horario ? " &nbsp;·&nbsp; ⏰ " + esc(r.horario) : "");
             nameEl.dataset.cc = cc; nameEl.dataset.nombre = r.name;
             nameEl.dataset.grupo = r.grupo || ""; nameEl.dataset.horario = r.horario || "";
             showStep("pt-step2a");
@@ -1128,6 +1152,40 @@ else PT.init();
   } else {
     if (shouldShowModal()) showModal();
   }
+})();
+</script>
+
+<script>
+(function(){
+  var __done = false;
+  var __xpMax = 0;
+
+  // Extract XP_MAX from the page
+  var el = document.getElementById('xpCount');
+  if (el && el.parentNode) {
+    var txt = el.parentNode.textContent || '';
+    var m = txt.match(/\/(\d+)/);
+    if (m) __xpMax = parseInt(m[1], 10);
+  }
+
+  setInterval(function(){
+    var bar = document.getElementById('xpBar');
+    if (!bar) return;
+    var w = parseFloat(bar.style.width) || 0;
+    var grade = (w / 100) * 5;
+    var g = document.getElementById('liveGrade');
+    if (g) g.textContent = grade.toFixed(1);
+
+    if (w >= 100 && !__done) {
+      __done = true;
+      var extra = document.getElementById('completion-extra');
+      if (extra) extra.style.display = 'block';
+      var xpEl = document.getElementById('xpEarned');
+      if (xpEl && __xpMax > 0) {
+        xpEl.textContent = __xpMax + ' pts  (' + __xpMax + '/' + __xpMax + ')';
+      }
+    }
+  }, 800);
 })();
 </script>
 

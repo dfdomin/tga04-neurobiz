@@ -81,6 +81,7 @@
       try { return JSON.parse(localStorage.getItem(`tga04_s${n}`) || "{}"); }
       catch(e) { return {}; }
     }
+    function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
     function rankFor(xp) {
       if (xp >= 650) return "CTO";
       if (xp >= 450) return "Arquitecto";

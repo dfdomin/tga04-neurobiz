@@ -290,13 +290,13 @@
   <div class="dojo-panel"><h3>🏆 XP disponibles esta semana</h3><div class="dojo-items"><div class="dojo-item">📋 <span>Asistencia</span> <span class="pts">+10 XP</span></div><div class="dojo-item">🎮 <span>Quiz</span> <span class="pts">+25 XP</span></div><div class="dojo-item">🧪 <span>Misión de trazado</span> <span class="pts">+30 XP</span></div></div></div>
   
 <div class="activity">
-  <div class="activity-header presencial">⏱️ Bloque 1 — Auditoría del algoritmo (90 min)</div>
+  <div class="activity-header presencial">⏱️ Bloque 1 — Auditoría del algoritmo</div>
   <div class="activity-body"><ol><li>Revisar la diferencia entre error sintáctico y error lógico.</li><li>Construir en grupo una tabla de trazado mínima: paso, variables, observación.</li><li>Analizar por qué un caso límite es indispensable cuando una condición usa <code>>=</code>.</li><li>Conectar la actividad con el SistemaAnalisisNeuroBiz trabajado en la semana 9.</li></ol></div>
 </div>
 
   
 <div class="activity">
-  <div class="activity-header presencial">⏱️ Bloque 2 — Misión NeuroBiz RA3 (120 min)</div>
+  <div class="activity-header presencial">⏱️ Bloque 2 — Misión NeuroBiz RA3</div>
   <div class="activity-body"><p><strong>Producto:</strong> evidencia de funcionamiento del algoritmo.</p><ol><li>Trazar los tres casos propuestos.</li><li>Comparar salidas esperadas vs. salidas obtenidas.</li><li>Identificar qué variable resume el comportamiento global del sistema (<code>suma</code> y <code>promedio</code>).</li><li>Redactar una conclusión ejecutiva: “El algoritmo clasifica correctamente los casos A y B, pero necesita validación adicional para el caso C”.</li></ol></div>
 </div>
 
@@ -505,9 +505,33 @@ sesiones_demo = [
   <ul class="bib"><li><strong>Cairó Battistutti, O. & Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em>. Alfaomega. Capítulos sobre trazabilidad y estructuras de control.</li><li><strong>Joyanes Aguilar, L.</strong> (2008). <em>Fundamentos de programación</em>. McGraw-Hill. Secciones de verificación y validación algorítmica.</li><li><strong>Pressman, R.</strong> (2010). <em>Software Engineering: A Practitioner's Approach</em>. McGraw-Hill. Base conceptual de validación lógica antes de entrega.</li><li><strong>ISTQB Glossary.</strong> Terminología de casos de prueba, valores límite y defectos lógicos.</li><li><strong>Wing, J. M.</strong> (2006). “Computational Thinking”. <em>Communications of the ACM</em>, 49(3), 33–35.</li></ul>
 </section>
 
-</main>
+<div id="grade-panel" style="text-align:center; background:linear-gradient(135deg,#1E2843,#2d3a5e); color:#fff; border-radius:16px; padding:1.2rem 1.5rem; margin:0 0 2rem;">
+  <div style="font-size:.8rem; opacity:.65; text-transform:uppercase; letter-spacing:.08em; margin-bottom:.3rem;">📊 Nota acumulada</div>
+  <div style="font-size:2.4rem; font-weight:900; color:#FFDF2D; line-height:1;" id="liveGrade">0.0</div>
+  <div style="font-size:.9rem; opacity:.6;">de 5.0 posibles</div>
+  <div id="completion-extra" style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,.15);">
+    <div style="font-size:2rem; margin-bottom:.3rem;">🎉</div>
+    <p style="font-size:.9rem; opacity:.9; margin-bottom:.6rem;">¡Completaste el 100% de esta semana!</p>
+    <table style="margin:0 auto; font-size:.84rem; border-collapse:collapse;">
+      <tr>
+        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">🔢 XP acumulados:</td>
+        <td style="padding:.35rem .8rem; text-align:left; font-weight:700;" id="xpEarned">—</td>
+      </tr>
+      <tr>
+        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">⏱️ Equivalencia:</td>
+        <td style="padding:.35rem .8rem; text-align:left;">9 horas de trabajo</td>
+      </tr>
+      <tr>
+        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">📝 Nota final:</td>
+        <td style="padding:.35rem .8rem; text-align:left; font-weight:700; color:#FFDF2D;">5.0 / 5.0</td>
+      </tr>
+    </table>
+    <p style="font-size:.76rem; opacity:.5; margin-top:.5rem;">4h presenciales + 5h trabajo independiente</p>
+  </div>
+</div></main>
 <footer>TGA04 · IUB Colombia · Prof. Diego Domínguez Tapia · Semana 11 · Pruebas de Escritorio y Trazabilidad de Algoritmos · Caso de estudio: NeuroBiz S.A.S.</footer>
 <script id="pt-js">
+function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
 const PT = (function() {
   const SEMANA = 11;
   const XP_MAX = 90;
@@ -619,7 +643,7 @@ const PT = (function() {
   }
   function exportCode() {
     save();
-    const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    const code = btoa(encodeURIComponent(JSON.stringify(state)));
     const ta = document.createElement('textarea');
     ta.value = code; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
     const a = document.createElement('a');
@@ -632,7 +656,7 @@ const PT = (function() {
     const code = prompt('Pega tu código de progreso:');
     if (!code) return;
     try {
-      Object.assign(state, JSON.parse(decodeURIComponent(escape(atob(code.trim())))));
+      Object.assign(state, JSON.parse(decodeURIComponent(atob(code.trim()))));
       save();
       msg('✅ Progreso restaurado.', 'lightgreen');
     } catch (e) {
@@ -870,5 +894,39 @@ const TRACE_CASES = {"A": {"title": "Caso A · Datos normales", "summary": "tasa
 function renderTraceCase(key, btn){ var data = TRACE_CASES[key]; if(!data) return; var sum = document.getElementById('traceSummary'); var body = document.getElementById('traceTableBody'); if(sum) sum.innerHTML = '<strong>' + data.title + '</strong><br>' + data.summary; if(body) body.innerHTML = data.rows.map(function(r){ return '<tr>' + r.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join(''); document.querySelectorAll('.trace-btn').forEach(function(b){ b.classList.remove('active'); }); if(btn) btn.classList.add('active'); }
 document.addEventListener('DOMContentLoaded', function(){ if(document.getElementById('traceTableBody')) renderTraceCase('A', document.querySelector('.trace-btn[data-case="A"]')); });
 </script>
+<script>
+(function(){
+  var __done = false;
+  var __xpMax = 0;
+
+  // Extract XP_MAX from the page
+  var el = document.getElementById('xpCount');
+  if (el && el.parentNode) {
+    var txt = el.parentNode.textContent || '';
+    var m = txt.match(/\/(\d+)/);
+    if (m) __xpMax = parseInt(m[1], 10);
+  }
+
+  setInterval(function(){
+    var bar = document.getElementById('xpBar');
+    if (!bar) return;
+    var w = parseFloat(bar.style.width) || 0;
+    var grade = (w / 100) * 5;
+    var g = document.getElementById('liveGrade');
+    if (g) g.textContent = grade.toFixed(1);
+
+    if (w >= 100 && !__done) {
+      __done = true;
+      var extra = document.getElementById('completion-extra');
+      if (extra) extra.style.display = 'block';
+      var xpEl = document.getElementById('xpEarned');
+      if (xpEl && __xpMax > 0) {
+        xpEl.textContent = __xpMax + ' pts  (' + __xpMax + '/' + __xpMax + ')';
+      }
+    }
+  }, 800);
+})();
+</script>
+
 </body>
 </html>
