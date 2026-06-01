@@ -305,9 +305,48 @@
     function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
 
     function init() {
+      // Si no hay estudiantes en localStorage, cargar desde Supabase
+      const students = getStudents();
+      if (!students.length) {
+        fetchStudentsFromSupabase().then(function(loaded) {
+          fillGroupSelect("liveGroup");
+          fillGroupSelect("attGroup");
+          renderLive();
+          if (loaded) renderConfig();
+        });
+        return;
+      }
       fillGroupSelect("liveGroup");
       fillGroupSelect("attGroup");
       renderLive();
+    }
+
+    async function fetchStudentsFromSupabase() {
+      const url = localStorage.getItem("tga04_supabase_url");
+      const key = localStorage.getItem("tga04_supabase_key");
+      if (!url || !key) return false;
+      try {
+        const res = await fetch(url + "/rest/v1/students?select=*&order=name", {
+          headers: { apikey: key, Authorization: "Bearer " + key }
+        });
+        if (!res.ok) return false;
+        const data = await res.json();
+        if (data && data.length) {
+          const students = data.map(function(s) {
+            return {
+              name: s.name,
+              cc: s.cc,
+              grupo: s.grupo || "",
+              horario: s.horario || ""
+            };
+          });
+          setStudents(students);
+          return true;
+        }
+      } catch(e) {
+        console.warn("fetchStudentsFromSupabase:", e.message);
+      }
+      return false;
     }
 
     function fillGroupSelect(id) {
