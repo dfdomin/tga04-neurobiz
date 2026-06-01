@@ -6,8 +6,8 @@
 
 (function () {
   // ── EDITA ESTOS DOS VALORES ────────────────────────────────
-  var SUPABASE_URL = ""; // Ejemplo: https://abcxyz.supabase.co
-  var SUPABASE_KEY = ""; // Clave anon/publishable publica de Supabase
+  var SUPABASE_URL = "https://aeuimhmiwhvqeeojlfvs.supabase.co"; // Ejemplo: https://abcxyz.supabase.co
+  var SUPABASE_KEY = "sb_publishable_L4AqPaDMZX42lDPNu2S2cQ_y53Cf4sP"; // Clave anon/publishable publica de Supabase
   // ──────────────────────────────────────────────────────────
 
   var COURSE_CODE  = "TGA04-2026-2"; // Identificador del curso (no cambiar)
