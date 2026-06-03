@@ -22,9 +22,51 @@ footer{text-align:center;padding:1.4rem;color:var(--muted);font-size:.82rem}
 #pt-widget{position:fixed;right:18px;bottom:18px;z-index:9999;background:linear-gradient(135deg,#1E2843,#31446f);color:#fff;border-radius:16px;padding:14px 16px;min-width:242px;max-width:290px;box-shadow:0 10px 30px rgba(0,0,0,.3)}#pt-widget.collapsed{transform:translateY(calc(100% - 42px))}#pt-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer}#pt-toggle{background:none;border:none;color:#fff;font-size:1.1rem}#pt-body{margin-top:9px}#pt-bar{height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden}#pt-bar>div{height:100%;width:0;background:linear-gradient(90deg,#FFDF2D,#fff176)}#pt-label{display:flex;justify-content:space-between;font-size:.75rem;margin-top:5px;opacity:.9}#pt-rank{font-size:.73rem;margin-top:6px}#pt-msg{font-size:.72rem;min-height:14px;text-align:center;margin-top:6px}#pt-btns{display:flex;gap:6px;margin-top:8px}.pt-btn{flex:1;border:none;border-radius:8px;padding:6px 8px;font-weight:800;font-size:.74rem;cursor:pointer}.pt-save{background:#43a047;color:#fff}
 #pt-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:10000}#pt-modal-box{background:linear-gradient(160deg,#1E2843,#24365b);color:#fff;border-radius:20px;padding:2rem 2rem 1.4rem;width:min(94vw,420px);box-shadow:0 20px 60px rgba(0,0,0,.5)}#pt-modal-box .sub{opacity:.75;font-size:.84rem;margin-bottom:1rem}#pt-modal-box label{display:block;font-size:.78rem;font-weight:800;margin-bottom:.28rem;text-transform:uppercase;opacity:.88}#pt-modal-box input{width:100%;padding:.65rem .85rem;border-radius:10px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff}#pt-modal-btn,#pt-modal-btn-search{border:none;border-radius:10px;padding:.7rem 1rem;font-weight:900;cursor:pointer}#pt-modal-btn{width:100%;background:#FFDF2D;color:#1E2843;margin-top:.35rem}#pt-modal-btn-search{background:rgba(255,255,255,.18);color:#fff;flex-shrink:0}.field{margin:.8rem 0}#pt-modal-error,#pt-modal-error2,#pt-modal-error3{color:#ff8a80;font-size:.8rem;min-height:1em;margin-top:.45rem}.pt-found-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,223,45,.4);border-radius:12px;padding:1rem}.pt-link-btn{background:none;border:none;color:rgba(255,255,255,.7);text-decoration:underline;display:block;margin:.5rem auto 0;cursor:pointer}
 @media(max-width:640px){header h1{font-size:1.4rem}main{padding:0 .7rem 5rem}.card{padding:1rem}#pt-widget{left:12px;right:12px;max-width:none;min-width:0}}
+
+.interactive-q{background:#fff;border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;margin:.7rem 0;transition:border-color .3s}
+.interactive-q.answered{border-color:#2e7d32;background:#f9fef9}
+.interactive-q.partial{border-color:#e6c800;background:#fffdf5}
+.interactive-q.wrong{border-color:#c62828;background:#fff5f5}
+.iq-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+.iq-num{background:var(--primary);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.76rem;flex-shrink:0}
+.iq-pts{font-size:.72rem;color:#e65100;font-weight:700;background:#fff8e1;border-radius:10px;padding:.1rem .5rem}
+.iq-pts.earned{background:#e8f5e9;color:#2e7d32}
+.iq-question{font-size:.88rem;font-weight:600;margin-bottom:.5rem;line-height:1.5}
+.iq-textarea{width:100%;min-height:65px;padding:.55rem .75rem;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.85rem;line-height:1.6;resize:vertical;transition:border-color .2s;background:var(--light-bg)}
+.iq-textarea:focus{outline:none;border-color:#1E2843;background:#fff;box-shadow:0 0 0 3px rgba(30,40,67,.1)}
+.iq-actions{margin-top:.45rem;display:flex;gap:.4rem}
+.iq-btn{background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:.35rem .9rem;font-size:.8rem;font-weight:600;cursor:pointer}
+.iq-btn:hover{background:#1557b0}.iq-btn:disabled{background:#9e9e9e;cursor:not-allowed}
+.iq-feedback{margin-top:.5rem;padding:.55rem .7rem;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}
+.iq-feedback.show{display:block}.iq-feedback.success{background:#e8f5e9;border:1px solid #a5d6a7;color:#1b5e20}
+.iq-feedback.partial{background:#fff8e1;border:1px solid #ffe082;color:#e65100}
+.iq-feedback.error{background:#ffebee;border:1px solid #ef9a9a;color:#b71c1c}
+.iq-keywords{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.35rem}
+.iq-kw{font-size:.68rem;background:#e3f2fd;color:#1565c0;border-radius:8px;padding:.1rem .45rem}
+.iq-kw.matched{background:#c8e6c9;color:#1b5e20;font-weight:600}
+.colab-cell{background:#fff;border:1px solid #dadce0;border-radius:10px;margin:.9rem 0;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.colab-cell.running{border-left:4px solid #FFDF2D}.colab-cell.success{border-left:4px solid #43a047}
+.colab-toolbar{display:flex;align-items:center;gap:.4rem;padding:.3rem .7rem;background:#f8f9fa;border-bottom:1px solid #dadce0;font-size:.74rem;color:#5f6368}
+.colab-run-btn{background:#1a73e8;color:#fff;border:none;border-radius:4px;padding:.25rem .8rem;font-size:.76rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.3rem}
+.colab-run-btn:hover{background:#1557b0}.colab-run-btn.running{background:#9e9e9e;cursor:wait}
+.colab-run-btn .spinner{display:none;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:cs .6s linear infinite}
+@keyframes cs{to{transform:rotate(360deg)}}.colab-run-btn.running .spinner{display:inline-block}.colab-run-btn.running .btn-label{display:none}
+.colab-lang-badge{font-size:.68rem;background:#e8eaed;color:#5f6368;border-radius:4px;padding:.12rem .45rem;font-weight:600;text-transform:uppercase}
+.colab-editor{padding:.7rem .9rem;font-family:ui-monospace,SFMono-Regular,monospace;font-size:.83rem;line-height:1.6;color:#1E2843;background:#fafafa;min-height:55px;max-height:380px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;outline:none;border:none}
+.colab-editor:focus{background:#fff;box-shadow:inset 0 0 0 2px #e8f0fe}
+.colab-output{display:none;background:#152033;color:#dbe6ff;font-family:ui-monospace,monospace;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;max-height:280px;overflow-y:auto;white-space:pre-wrap;border-top:1px solid #333}
+.colab-output.visible{display:block}.colab-output .out-info{color:#6a9955}.colab-output .out-input{color:#ce9178}.colab-output .out-error{color:#f44747}.colab-output .out-value{color:#4ec9b0}
+.lab-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:.9rem}
+.lab-tab{padding:.4rem .85rem;font-size:.82rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px}
+.lab-tab:hover{color:var(--primary)}.lab-tab.active{color:var(--primary);border-bottom-color:var(--accent)}
+.lab-panel{display:none}.lab-panel.active{display:block}
+.xp-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1E2843,#31446f);color:#fff;padding:.6rem 1.3rem;border-radius:20px;font-weight:700;font-size:.85rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);animation:xti .4s ease,xto .4s ease 2.5s forwards}
+@keyframes xti{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes xto{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-10px)}}
+.lab-challenge-done{display:inline-flex;align-items:center;gap:.25rem;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:10px;padding:.12rem .5rem;font-size:.7rem;font-weight:700}
 </style></head><body>
 <header><div class="chip">TGA04 · Semana 6</div><h1>Estructura Repetitiva MIENTRAS (MQ-FMQ)</h1><p>RA2 · CE4 · while / condición de entrada / centinelas / acumuladores</p><div class="xp-top"><div id="xpBar"></div></div><div>XP de sesión: <span id="xpCount">0</span> / 85 · Rango global: <span id="headerRank">Aprendiz</span></div></header>
-<nav><a href="#mision">🎯 Misión</a><a href="#teoria">📚 Teoría</a><a href="#pseudocodigo">📝 Pseudocódigo</a><a href="#actividad">⚙️ Actividad</a><a href="#hti">🏠 HTI</a><a href="#quiz">🎮 Quiz</a><a href="#bib">📖 Fuentes</a><a href="#colab">☁️ Colab</a></nav>
+<nav><a href="#mision">🎯 Misión</a><a href="#teoria">📚 Teoría</a><a href="#pseudocodigo">📝 Pseudocódigo</a><a href="#actividad">⚙️ Actividad</a><a href="#hti">🏠 HTI</a><a href="#lab">🧪 Lab</a><a href="#quiz">🎮 Quiz</a><a href="#bib">📖 Fuentes</a><a href="#colab">☁️ Colab</a></nav>
 <main>
 <div id="pt-widget"><div id="pt-header" onclick="ptToggle()"><strong>📊 Mi Progreso TGA04</strong><button id="pt-toggle">▲</button></div><div id="pt-body"><div id="pt-bar"><div></div></div><div id="pt-label"><span>Semana 6</span><span id="ptCount">0 XP</span></div><div id="pt-rank">Rango global: <strong id="ptRankName">Aprendiz</strong> · <span id="ptTotal">0</span> XP</div><div id="pt-btns"><button class="pt-btn pt-save" onclick="ptSyncCloud()">☁️ Guardar</button><button class="pt-btn" style="background:rgba(255,255,255,.15);color:#fff" onclick="ptExportCode()">📋</button><button class="pt-btn" style="background:rgba(255,255,255,.15);color:#fff" onclick="ptImportCode()">📥</button></div><div id="pt-msg"></div></div></div>
 <section class="card" id="mision"><h2>📋 Memorando NeuroBiz</h2><div class="memo"><strong>Contexto post-parcial C1.</strong> NeuroBiz tiene <strong>847 sesiones</strong> por analizar y nadie quiere calcular la retención manualmente. Esta semana aprenderás a decirle al computador: <strong>MIENTRAS haya sesiones sin analizar, sigue procesando</strong>.</div><div class="bloom">🧠 Comprender → Aplicar</div><div class="kpis"><div class="kpi"><div class="i">🧠</div><div class="n">Sesiones</div><div class="v">847</div></div><div class="kpi"><div class="i">🚦</div><div class="n">Condición</div><div class="v">ANTES</div></div><div class="kpi"><div class="i">🛑</div><div class="n">Centinela</div><div class="v">-1</div></div><div class="kpi"><div class="i">🏆</div><div class="n">XP máx.</div><div class="v">85</div></div></div><table><tbody><tr><td><strong>RA / CE</strong></td><td>RA2 · CE4</td></tr><tr><td><strong>Bloom</strong></td><td>Comprender → Aplicar</td></tr><tr><td><strong>Equivalencia Python</strong></td><td><code>while</code></td></tr><tr><td><strong>Relevancia</strong></td><td>MQ-FMQ <span class="badge vig">🟢 VIGENTE</span> · centinela <span class="badge vig">🟢 VIGENTE</span> · acumulador <span class="badge vig">🟢 VIGENTE</span></td></tr></tbody></table><div class="grid3"><div class="box"><strong>Meta</strong><br>Entender y aplicar un ciclo cuya condición se evalúa antes de entrar.</div><div class="box"><strong>Foco NeuroBiz</strong><br>Procesar listas, usar centinelas y evitar ciclos infinitos.</div><div class="box"><strong>Arquitectura</strong><br>Llave: <code>tga04_s6</code> · visita: <code>tga04_visited_s6</code></div></div></section>
@@ -40,51 +82,178 @@ La condición se evalúa <em>antes</em> de entrar: si es falsa desde el inicio, 
 <p>En MQ-FMQ la condición se prueba antes del cuerpo. Si es falsa desde el inicio, el ciclo puede ejecutarse cero veces.</p>
 <h3>Centinela, contador y acumulador</h3><table><thead><tr><th>Elemento</th><th>Función</th><th>Ejemplo</th></tr></thead><tbody><tr><td>Centinela</td><td>Marca fin de datos</td><td><code>-1</code></td></tr><tr><td>Contador</td><td>Cuenta iteraciones</td><td><code>registros ← registros + 1</code></td></tr><tr><td>Acumulador</td><td>Suma resultados</td><td><code>total ← total + sesiones</code></td></tr></tbody></table>
 <div class="info warn"><span>⚠️</span><div>Si la condición nunca se vuelve falsa, aparece un ciclo infinito. Siempre identifica qué variable cambia y cómo se alcanza la parada.</div></div></section>
-<section class="card" id="pseudocodigo"><h2>📝 Pseudocódigo y equivalencias</h2><div class="code"><div class="code-title">📝 MQ-FMQ básico</div><pre>ALGORITMO ContarSesionesNeuroBiz
+<section class="card" id="pseudocodigo"><h2>📝 Pseudocódigo — Ejecuta los bucles MQ-FMQ</h2>
+<p style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">💡 <strong>Celdas interactivas:</strong> haz clic en <strong>▶ Ejecutar</strong> para ver el ciclo en acción. El intérprete ahora soporta <strong>MQ-FMQ</strong> (while).</p>
+
+<h3>MQ-FMQ básico: contar sesiones</h3>
+<div class="colab-cell" id="cell-basico"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-basico')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+ALGORITMO ContarSesionesNeuroBiz
   VARIABLES
-    sesiones_asistidas: ENTERO
-    sesiones_fallidas: ENTERO
-    total: ENTERO
-    contador: ENTERO
-    continuar: LÓGICO
+    sesiones : ENTERO
+    total : ENTERO
+    contador : ENTERO
+    continuar : LOGICO
   INICIO
-    total ← 0
-    contador ← 0
-    continuar ← VERDADERO
-    MQ continuar = VERDADERO FQ
-      LEER sesiones_asistidas
-      LEER sesiones_fallidas
-      total ← total + sesiones_asistidas
-      contador ← contador + 1
-      ESCRIBIR &quot;Sesiones acumuladas: &quot;, total
-      SI contador &gt;= 5 ENTONCES
-        continuar ← FALSO
+    total = 0
+    contador = 0
+    continuar = 1
+    MQ continuar = 1 FQ
+      ESCRIBIR "Ingrese sesiones (0 para terminar):"
+      LEER sesiones
+      SI sesiones = 0 ENTONCES
+        continuar = 0
+      SINO
+        total = total + sesiones
+        contador = contador + 1
+        ESCRIBIR "Acumulado: " + total + " | Registro #" + contador
       FSI
     FMQ
-    ESCRIBIR &quot;Total de sesiones procesadas: &quot;, total
-    ESCRIBIR &quot;Registros analizados: &quot;, contador
-  FIN</pre></div><div class="code"><div class="code-title">📝 MQ-FMQ con centinela</div><pre>ALGORITMO ProcesarSesionesCentinela
+    ESCRIBIR "Total: " + total + " sesiones en " + contador + " registros"
+  FIN</div><div class="colab-output"><span class="out-info">🔍 El bucle continúa pidiendo sesiones hasta que ingreses 0...</span></div></div>
+
+<h3>MQ-FMQ con centinela (-1)</h3>
+<div class="colab-cell" id="cell-centinela"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-centinela')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+ALGORITMO ProcesarSesionesCentinela
   VARIABLES
-    sesiones: ENTERO
-    total_acumulado: ENTERO
-    registros: ENTERO
+    sesiones : ENTERO
+    total_acumulado : ENTERO
+    registros : ENTERO
   INICIO
-    total_acumulado ← 0
-    registros ← 0
+    total_acumulado = 0
+    registros = 0
+    ESCRIBIR "Ingrese sesiones (-1 para terminar):"
     LEER sesiones
-    MQ sesiones &lt;&gt; -1 FQ
-      total_acumulado ← total_acumulado + sesiones
-      registros ← registros + 1
+    MQ sesiones <> -1 FQ
+      total_acumulado = total_acumulado + sesiones
+      registros = registros + 1
+      ESCRIBIR "Sesion #" + registros + ": " + sesiones + " | Acumulado: " + total_acumulado
+      ESCRIBIR "Ingrese sesiones (-1 para terminar):"
       LEER sesiones
     FMQ
-    ESCRIBIR &quot;Total sesiones: &quot;, total_acumulado
-    ESCRIBIR &quot;Pacientes procesados: &quot;, registros
-    SI registros &gt; 0 ENTONCES
-      ESCRIBIR &quot;Promedio: &quot;, total_acumulado / registros
+    ESCRIBIR "=== RESULTADOS ==="
+    ESCRIBIR "Total sesiones: " + total_acumulado
+    ESCRIBIR "Pacientes procesados: " + registros
+    SI registros > 0 ENTONCES
+      ESCRIBIR "Promedio: " + (total_acumulado / registros)
     FSI
-  FIN</pre></div><div class="info cite"><span>🐍</span><div>En Python, MQ-FMQ equivale a <code>while</code>.</div></div></section>
-<section class="card" id="actividad"><h2>⚙️ Actividad presencial</h2><div class="dojo">Asistencia <strong>+10 XP</strong> · Quiz <strong>+25 XP</strong> · Misión <strong>+25 XP</strong></div><div class="activity"><div class="ah pres">Bloque 1 — Reactivación post-parcial</div><div class="ab"><ol><li>Comparar procesamiento manual vs. 847 sesiones automatizadas.</li><li>Simular en tablero condición, cuerpo y variable de parada.</li><li>Identificar qué línea cambia la condición.</li></ol></div></div><div class="activity"><div class="ah pres">Bloque 2 — Misión NeuroBiz</div><div class="ab"><ol><li>Leer sesiones de pacientes.</li><li>Acumular total y contar registros.</li><li>Detener con centinela o meta.</li><li>Calcular promedio final.</li></ol></div></div></section>
-<section class="card" id="hti"><h2>🏠 HTI — Trabajo independiente</h2><div class="activity"><div class="ah htia">HTI-A</div><div class="ab"><ol><li>Glosario: condición de entrada, centinela, contador, acumulador.</li><li>Buscar un proceso cotidiano que funcione con “mientras”.</li></ol></div></div><div class="activity"><div class="ah htib">HTI-B</div><div class="ab"><ol><li><strong>B:</strong> Escribe MQ-FMQ que lea terapias y cuente cuántas son <code>cognitiva</code>. Termina con <code>FIN</code>.</li><li><strong>C:</strong> Explica en 5 líneas por qué MQ-FMQ puede producir un ciclo infinito y cómo prevenirlo.</li></ol></div></div></section>
+  FIN</div><div class="colab-output"><span class="out-info">🔍 Ingresa valores como 80, 70, 60 y luego -1 para terminar. El centinela detiene el bucle.</span></div></div>
+
+<div class="info cite" style="margin-top:1rem"><span>🐍</span><div>En Python, MQ-FMQ equivale a <code>while</code>. La indentación reemplaza al FMQ.</div></div>
+</section>
+<section class="card" id="actividad"><h2>⚙️ Actividad presencial</h2><div class="dojo">Asistencia <strong>+10 XP</strong> · Quiz <strong>+25 XP</strong> · Misión <strong>+25 XP</strong></div><div class="activity"><div class="ah pres">Bloque 1 — Reactivación post-parcial</div><div class="ab"><ol><li>Comparar procesamiento manual vs. 847 sesiones automatizadas.</li><li>Simular en tablero condición, cuerpo y variable de parada.</li><li>Identificar qué línea cambia la condición.</li></ol></div></div><div class="activity"><div class="ah pres">Bloque 2 — Misión NeuroBiz</div><div class="ab">
+<p style="font-size:.84rem;color:var(--muted);margin-bottom:.7rem">💡 Responde cada pregunta y obtén retroalimentación inmediata. +4 XP por respuesta completa.</p>
+
+<div class="interactive-q" id="iq1"><div class="iq-header"><span class="iq-num">1</span><span class="iq-pts">+4 XP</span></div><p class="iq-question">Escribe un algoritmo <strong>MQ-FMQ</strong> que lea sesiones de pacientes una por una hasta que el usuario ingrese un centinela.</p><textarea class="iq-textarea" placeholder="ALGORITMO LeerSesiones
+VARIABLES
+  sesion : ENTERO
+INICIO
+  LEER sesion
+  MQ sesion <> -1 FQ
+    ...
+  FMQ
+FIN" minlength="30" id="iq1-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq1')">🔍 Verificar</button></div><div class="iq-feedback" id="iq1-fb"></div></div>
+
+<div class="interactive-q" id="iq2"><div class="iq-header"><span class="iq-num">2</span><span class="iq-pts">+4 XP</span></div><p class="iq-question">¿Cómo acumularías el total de sesiones y contarías los registros dentro del bucle? Escribe las líneas de acumulador y contador.</p><textarea class="iq-textarea" placeholder="total = total + sesion
+contador = contador + 1" minlength="15" id="iq2-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq2')">🔍 Verificar</button></div><div class="iq-feedback" id="iq2-fb"></div></div>
+
+<div class="interactive-q" id="iq3"><div class="iq-header"><span class="iq-num">3</span><span class="iq-pts">+4 XP</span></div><p class="iq-question">Explica qué es un <strong>centinela</strong> y cómo se usa para detener un bucle MQ-FMQ. Da un ejemplo concreto con datos de NeuroBiz.</p><textarea class="iq-textarea" placeholder="Un centinela es un valor especial que..." minlength="20" id="iq3-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq3')">🔍 Verificar</button></div><div class="iq-feedback" id="iq3-fb"></div></div>
+
+<div class="interactive-q" id="iq4"><div class="iq-header"><span class="iq-num">4</span><span class="iq-pts">+4 XP</span></div><p class="iq-question">Escribe la línea que calcula el <strong>promedio final</strong> después del FMQ. ¿Por qué debe ir después del bucle y no dentro?</p><textarea class="iq-textarea" placeholder="promedio = total / contador
+Debe ir después porque..." minlength="20" id="iq4-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq4')">🔍 Verificar</button></div><div class="iq-feedback" id="iq4-fb"></div></div>
+</div></div></section>
+<section class="card" id="hti"><h2>🏠 HTI — Trabajo independiente</h2><div class="activity"><div class="ah htia">HTI-A</div><div class="ab"><ol><li>Glosario: condición de entrada, centinela, contador, acumulador.</li><li>Buscar un proceso cotidiano que funcione con “mientras”.</li></ol></div></div><div class="activity"><div class="ah htib">HTI-B</div><div class="ab"><ol><div class="interactive-q" id="iq5" style="margin-top:.7rem"><div class="iq-header"><span class="iq-num">5</span><span class="iq-pts">+4 XP</span></div><p class="iq-question"><strong>HTI-B:</strong> Escribe un algoritmo MQ-FMQ que lea tipos de terapia y cuente cuántas son <code>"cognitiva"</code>. Usa FIN como centinela.</p><textarea class="iq-textarea" placeholder="ALGORITMO ContarCognitiva
+VARIABLES
+  terapia : CADENA
+  contador : ENTERO
+INICIO
+  contador = 0
+  ..." minlength="30" id="iq5-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq5')">🔍 Verificar</button></div><div class="iq-feedback" id="iq5-fb"></div></div><div class="interactive-q" id="iq6" style="margin-top:.7rem"><div class="iq-header"><span class="iq-num">6</span><span class="iq-pts">+4 XP</span></div><p class="iq-question"><strong>HTI-C:</strong> Explica en 5 líneas por qué MQ-FMQ puede producir un ciclo infinito y cómo prevenirlo. Da un ejemplo concreto.</p><textarea class="iq-textarea" placeholder="Un ciclo infinito ocurre cuando...
+Para prevenirlo se debe...
+Ejemplo: ..." minlength="30" id="iq6-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq6')">🔍 Verificar</button></div><div class="iq-feedback" id="iq6-fb"></div></div></ol></div></div></section>
+
+<section class="card" id="lab"><h2>🧪 Laboratorio Interactivo — Bucles MQ-FMQ</h2>
+<p style="color:var(--muted);font-size:.84rem;margin-bottom:.8rem">Practica con ciclos while. +5 XP por cada celda ejecutada.</p>
+<div class="lab-tabs"><button class="lab-tab active" onclick="CairoLab.stb('tab-contar')">🔢 Contar</button><button class="lab-tab" onclick="CairoLab.stb('tab-sumar')">📊 Acumular</button><button class="lab-tab" onclick="CairoLab.stb('tab-libre6')">✨ Libre</button></div>
+
+<div class="lab-panel active" id="tab-contar"><p style="font-size:.82rem;color:var(--muted);margin-bottom:.4rem"><strong>Contar terapias:</strong> bucle que cuenta cuántas terapias son de cada tipo.</p>
+<div class="colab-cell" id="cell-contar"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-contar')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+ALGORITMO ContarTiposTerapia
+  VARIABLES
+    terapia : CADENA
+    cont_cognitiva : ENTERO
+    cont_ocupacional : ENTERO
+    cont_fono : ENTERO
+    total : ENTERO
+  INICIO
+    cont_cognitiva = 0
+    cont_ocupacional = 0
+    cont_fono = 0
+    total = 0
+    ESCRIBIR "Ingrese tipo de terapia (FIN para terminar):"
+    LEER terapia
+    MQ terapia <> "FIN" FQ
+      total = total + 1
+      SI terapia = "cognitiva" ENTONCES
+        cont_cognitiva = cont_cognitiva + 1
+      SINO
+        SI terapia = "ocupacional" ENTONCES
+          cont_ocupacional = cont_ocupacional + 1
+        SINO
+          cont_fono = cont_fono + 1
+        FSI
+      FSI
+      ESCRIBIR "Ingrese tipo de terapia (FIN para terminar):"
+      LEER terapia
+    FMQ
+    ESCRIBIR "=== RESUMEN ==="
+    ESCRIBIR "Total procesadas: " + total
+    ESCRIBIR "Cognitiva: " + cont_cognitiva
+    ESCRIBIR "Ocupacional: " + cont_ocupacional
+    ESCRIBIR "Fonoaudiologia: " + cont_fono
+  FIN</div><div class="colab-output"><span class="out-info">🔍 Ingresa: cognitiva, ocupacional, cognitiva, fonoaudiologia, FIN...</span></div></div></div>
+
+<div class="lab-panel" id="tab-sumar"><p style="font-size:.82rem;color:var(--muted);margin-bottom:.4rem"><strong>Acumular sesiones:</strong> bucle que suma sesiones y calcula el promedio al final.</p>
+<div class="colab-cell" id="cell-sumar"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-sumar')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+ALGORITMO AcumularSesiones
+  VARIABLES
+    sesion : ENTERO
+    suma : ENTERO
+    contador : ENTERO
+    promedio : REAL
+  INICIO
+    suma = 0
+    contador = 0
+    ESCRIBIR "Ingrese sesiones (-1 para terminar):"
+    LEER sesion
+    MQ sesion <> -1 FQ
+      suma = suma + sesion
+      contador = contador + 1
+      ESCRIBIR "Acumulado: " + suma + " | Conteo: " + contador
+      LEER sesion
+    FMQ
+    ESCRIBIR "=== RESULTADO ==="
+    ESCRIBIR "Total acumulado: " + suma
+    ESCRIBIR "Registros: " + contador
+    SI contador > 0 ENTONCES
+      promedio = suma / contador
+      ESCRIBIR "Promedio: " + promedio
+    SINO
+      ESCRIBIR "No se ingresaron datos."
+    FSI
+  FIN</div><div class="colab-output"><span class="out-info">🔍 Ingresa: 80, 70, 60, -1. Suma=210, contador=3, promedio=70.</span></div></div></div>
+
+<div class="lab-panel" id="tab-libre6"><p style="font-size:.82rem;color:var(--muted);margin-bottom:.4rem"><strong>✨ Celda Libre:</strong> Crea tu propio bucle MQ-FMQ. Experimenta con condiciones, acumuladores y centinelas.</p>
+<div class="colab-cell" id="cell-libre6"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-libre6')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+ALGORITMO MiBucle
+  VARIABLES
+    { Declara tus variables }
+  INICIO
+    ESCRIBIR "Mi bucle MQ-FMQ"
+    { Escribe tu bucle aqui }
+  FIN</div><div class="colab-output"><span class="out-info">🔍 Escribe tu código y ejecuta...</span></div></div></div>
+
+<div style="text-align:center;margin-top:1.2rem;padding:.8rem;background:#e8f5e9;border-radius:10px;border:1px solid #a5d6a7"><p style="margin:0;font-size:.82rem">🎯 <strong>¿Completaste los ejercicios?</strong> Has aplicado bucles a procesamiento de datos real. +5 XP por celda.</p></div>
+</section>
 
 <section class="card" id="quiz"><h2>🎮 Quiz interactivo</h2><p style="color:var(--muted)">Haz clic en la respuesta correcta. Cada acierto suma 5 XP.</p><div class="quiz"><div class="quiz-q"><p>1. En MQ-FMQ, la condición se evalúa:</p><ol type="a"><li>Antes de ejecutar el cuerpo</li><li>Después</li><li>Durante</li><li>Solo la primera vez</li></ol><div class="quiz-answer">✅ a — Es una estructura de condición de entrada.</div></div><div class="quiz-q"><p>2. ¿Qué valor centinela usa el ejemplo?</p><ol type="a"><li>0</li><li>-1</li><li>999</li><li>FALSO</li></ol><div class="quiz-answer">✅ b — El ejemplo usa -1 para “fin de datos”.</div></div><div class="quiz-q"><p>3. Un ciclo infinito ocurre cuando:</p><ol type="a"><li>La condición nunca se vuelve FALSA</li><li>Se ejecuta 100 veces</li><li>El contador llega a 10</li><li>Se usa una variable REAL</li></ol><div class="quiz-answer">✅ a — El problema es lógico, no numérico.</div></div><div class="quiz-q"><p>4. MQ-FMQ en Python equivale a:</p><ol type="a"><li>while</li><li>for</li><li>do-while</li><li>if</li></ol><div class="quiz-answer">✅ a — La traducción natural es while.</div></div><div class="quiz-q"><p>5. ¿Qué estructura procesaría automáticamente las 847 sesiones?</p><ol type="a"><li>MQ-FMQ o HH-FHH</li><li>SI-SINO-FSI</li><li>DD-FDD</li><li>Solo funciones Python</li></ol><div class="quiz-answer">✅ a — Se necesita una estructura repetitiva.</div></div></div></section>
 <section class="card" id="bib"><h2>📖 Bibliografía</h2>
@@ -183,4 +352,107 @@ function ptSyncCloud(){PT.sync()} function ptExportCode(){PT.exportCode()} funct
 })();
 </script>
 
+
+<!-- ══ CAIRO INTERPRETER + MQ-FMQ + INTERACTIVE Q ══ -->
+<script>
+!function(){"use strict";
+var I=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;this.siStack=[];this.loopStack=[];this.maxIter=200;this.iterCount=0;};
+I.prototype.reset=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;this.siStack=[];this.loopStack=[];this.iterCount=0;};
+I.prototype.tok=function(l){l=l.replace(/\{[^}]*\}/g,'').trim();if(!l)return[];var t=[],re=/"([^"]*)"|(<>|>=|<=|\d+\.?\d*)|(ALGORITMO|VARIABLES|INICIO|ENTERO|REAL|CADENA|LOGICO|BOOLEANO|ESCRIBIR|ENTONCES|LEER|SINO|FSI|FDD|CASO|MQ|FMQ|FIN|OTRO|SI|DD|FQ|Y|O|NO)|([a-zA-Z_][a-zA-Z0-9_]*)|([+\-*\/=()<>!])|(:)/g,m;while((m=re.exec(l))!==null){if(m[1]!==undefined)t.push({ty:'S',v:m[1]});else if(m[2]!==undefined)t.push({ty:isNaN(m[2])?'O':'N',v:isNaN(m[2])?m[2]:parseFloat(m[2])});else if(m[3]!==undefined)t.push({ty:'K',v:m[3]});else if(m[4]!==undefined)t.push({ty:'I',v:m[4]});else if(m[5]!==undefined)t.push({ty:'O',v:m[5]});}return t;};
+I.prototype.gv=function(t){if(t.ty==='N')return t.v;if(t.ty==='S')return t.v;if(t.ty==='O')return t.v;if(t.ty==='I'){if(t.v in this.v){var v=this.v[t.v];if(typeof v==='string'){var n=parseFloat(v);return isNaN(n)?v:n;}return v;}return 0;}return t.v||0;};
+I.prototype.evalCond=function(t,i){var j=i,left=this.gv(t[j]);j++;while(j<t.length){var op=t[j];if(op.ty==='K'&&(op.v==='ENTONCES'||op.v==='FQ'||op.v==='SINO'||op.v==='FSI'))break;if(op.ty==='K'&&(op.v==='Y'||op.v==='O')){var ov=op.v;j++;var right=this.gv(t[j]);j++;if(ov==='Y')left=left&&right;else left=left||right;continue;}
+if(op.ty==='O'&&['>','<','>=','<=','=','<>'].indexOf(op.v)>=0){var oo=op.v;j++;var rr=this.gv(t[j]);j++;if(oo==='>')left=left>rr;else if(oo==='<')left=left<rr;else if(oo==='>=')left=left>=rr;else if(oo==='<=')left=left<=rr;else if(oo==='=')left=left==rr;else if(oo==='<>')left=left!=rr;continue;}
+if(op.ty==='K'&&op.v==='FQ')break;break;}
+return[left,j];};
+I.prototype.evalExpr=function(t,i){var j=i;if(j>=t.length)return[0,j];var l=this.gv(t[j]);j++;while(j<t.length){var o=t[j];if(o.ty!=='O'||['+','-','*','/','>','<','>=','<='].indexOf(o.v)===-1)break;var ov=o.v;j++;if(j>=t.length)break;var r=this.gv(t[j]);j++;if(ov==='+'){if(typeof l==='string'||typeof r==='string')l=String(l)+String(r);else l=l+r;}else if(ov==='-')l=l-r;else if(ov==='*')l=l*r;else if(ov==='/')l=r!==0?l/r:0;else if(ov==='>')l=l>r;else if(ov==='<')l=l<r;else if(ov==='>=')l=l>=r;else if(ov==='<=')l=l<=r;}return[l,j];};
+I.prototype.exe=function(l){var t=this.tok(l);if(t.length===0)return null;var f=t[0];
+
+// Check SI stack skipping
+if(this.siStack.length>0){var top=this.siStack[this.siStack.length-1];if(top.mode==='skipToSINO'||top.mode==='skipToFSI'){if(f.ty==='K'&&f.v==='SINO'){top.mode='execSINO';this.o.push({ty:'W',v:'[SINO: ejecutando bloque alterno]'});return null;}if(f.ty==='K'&&f.v==='FSI'){this.siStack.pop();this.o.push({ty:'W',v:'[FSI: fin del SI-SINO]'});return null;}if(this.skipLine())this.o.push({ty:'W',v:'...'});return null;}
+if(top.mode==='execSINO'){if(f.ty==='K'&&f.v==='FSI'){this.siStack.pop();this.o.push({ty:'W',v:'[FSI: fin del SI-SINO]'});return null;}}}
+
+// Check loop mode (searching for FMQ)
+if(this.loopStack.length>0&&this.loopStack[this.loopStack.length-1].mode==='searchFMQ'){if(f.ty==='K'&&f.v==='FMQ'){this.loopStack.pop();this.o.push({ty:'W',v:'[FMQ: fin del bucle]'});return null;}return null;}
+
+// ESCRIBIR
+if(f.ty==='K'&&f.v==='ESCRIBIR'){var r=this.evalExpr(t,1);this.o.push({ty:'W',v:String(r[0])});return null;}
+// LEER
+if(f.ty==='K'&&f.v==='LEER'){if(t.length<2||t[1].ty!=='I'){this.o.push({ty:'E',v:'Error: LEER necesita variable'});return null;}return{ty:'R',v:t[1].v};}
+// SI cond ENTONCES
+if(f.ty==='K'&&f.v==='SI'){var cr=this.evalCond(t,1);var cond=cr[0];this.o.push({ty:'W',v:'[SI: '+(cond?'VERDADERO → ENTONCES':'FALSO → salta a SINO')+']'});if(cond){this.siStack.push({mode:'execENTONCES',result:true});}else{this.siStack.push({mode:'skipToSINO',result:false});}return null;}
+// SINO
+if(f.ty==='K'&&f.v==='SINO'){if(this.siStack.length>0){var tp2=this.siStack[this.siStack.length-1];if(tp2.mode==='execENTONCES'){tp2.mode='skipToFSI';this.o.push({ty:'W',v:'[SINO: omitido]'});return null;}}return null;}
+// FSI
+if(f.ty==='K'&&f.v==='FSI'){if(this.siStack.length>0)this.siStack.pop();return null;}
+// MQ cond FQ
+if(f.ty==='K'&&f.v==='MQ'){var lcr=this.evalCond(t,1);var lcond=lcr[0];this.iterCount++;if(this.iterCount>this.maxIter){this.o.push({ty:'E',v:'LIMITE: Demasiadas iteraciones. ¿Bucle infinito? Reinicia la pagina.'});this.r=false;return null;}
+this.o.push({ty:'W',v:'[MQ: condicion '+(lcond?'VERDADERA → entra al bucle (#iter:'+this.iterCount+')':'FALSA → salta al FMQ')+']'});if(lcond){this.loopStack.push({mode:'execBody',startPc:this.p});}else{this.loopStack.push({mode:'searchFMQ'});}return null;}
+// FMQ
+if(f.ty==='K'&&f.v==='FMQ'){if(this.loopStack.length>0){var lp=this.loopStack[this.loopStack.length-1];if(lp.mode==='execBody'){this.o.push({ty:'W',v:'[FMQ: volviendo al MQ...]'});this.p=lp.startPc-1;this.loopStack.pop();return null;}}this.loopStack.pop();return null;}
+// Assignment
+if(f.ty==='I'&&t.length>=2&&t[1].ty==='O'&&t[1].v==='='){var vn=f.v;var vl=this.evalExpr(t,2);this.v[vn]=vl[0];return null;}
+if(f.ty==='K')return null;return null;};
+I.prototype.skipLine=function(){var l=this.l[this.p];if(!l)return false;var t=this.tok(l);if(t.length===0)return false;for(var i=0;i<t.length;i++){if(t[i].ty==='K'){var k=t[i].v;if(k==='SINO'||k==='FSI'||k==='FMQ')return false;}}return true;};
+I.prototype.parse=function(p){if(typeof p==='string'&&p.indexOf('<')!==-1){var d=document.createElement('div');d.innerHTML=p;p=d.textContent||d.innerText||'';}return p.split(String.fromCharCode(10)).map(function(l){return l.trim();}).filter(function(l){return l.length>0;});};
+I.prototype.run=function(p){this.reset();this.l=this.parse(p);this.r=true;return this.sa();};
+I.prototype.sa=function(){while(this.p<this.l.length&&this.r){var l=this.l[this.p];var r=this.exe(l);this.p++;if(r&&r.ty==='R'){this.a=true;this.iv=r.v;return{p:true,v:r.v,o:this.o.slice()};}}this.r=false;return{p:false,o:this.o.slice()};};
+I.prototype.pi=function(v){if(!this.a)return null;var n=parseFloat(v);this.v[this.iv]=isNaN(n)?v:n;this.a=false;this.iv=null;return this.sa();};
+
+var L={ip:new I(),cc:{},xa:{},ge:function(id){var c=document.getElementById(id);if(!c)return'';var e=c.querySelector('.colab-editor');return e?(e.textContent||e.innerText||''):'';},go:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-output'):null;},gb:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-run-btn'):null;},rc:function(id){var s=this,cl=document.getElementById(id),ou=s.go(id),bt=s.gb(id);if(!cl||!ou)return;cl.classList.add('running');cl.classList.remove('success','error');if(bt)bt.classList.add('running');ou.classList.add('visible');ou.innerHTML='<span class="out-info">Ejecutando...</span>';var pg=s.ge(id);var rs=s.ip.run(pg);
+function pr(r){var h='';if(r.o){for(var i=0;i<r.o.length;i++){var e=r.o[i];if(e.ty==='W')h+='<span class="out-value">'+s.es(e.v)+'</span>\n';else if(e.ty==='E')h+='<span class="out-error">'+s.es(e.v)+'</span>\n';}}
+function ct(r2){if(!r2||!r2.p){h+='<span class="out-info">Ejecucion completada.</span>\n';ou.innerHTML=h||'<span class="out-info">Sin salida.</span>';cl.classList.remove('running');cl.classList.add('success');if(bt)bt.classList.remove('running');s.cc[id]=true;s.ax(id);return;}
+var inp=prompt('[ENTRADA] '+r2.v+' = ?\n\nEscribe un valor:');if(inp===null){h+='<span class="out-error">Cancelado.</span>\n';ou.innerHTML=h;cl.classList.remove('running');cl.classList.add('error');if(bt)bt.classList.remove('running');return;}
+h+='<span class="out-input">'+s.es(r2.v)+' ← '+s.es(inp)+'</span>\n';ou.innerHTML=h+'<span class="out-info">Continuando...</span>';
+setTimeout(function(){var nr=s.ip.pi(inp);if(nr&&nr.o){var ol=r.o?r.o.length:0;var no=nr.o.slice(ol);for(var j=0;j<no.length;j++){var ne=no[j];if(ne.ty==='W')h+='<span class="out-value">'+s.es(ne.v)+'</span>\n';else if(ne.ty==='E')h+='<span class="out-error">'+s.es(ne.v)+'</span>\n';}}ct(nr);},150);}
+ct(r);}
+pr(rs);},ax:function(id){if(this.xa[id])return;this.xa[id]=true;var m={'cell-basico':{p:5,l:'MQ-FMQ basico'},'cell-centinela':{p:5,l:'MQ-FMQ centinela'},'cell-contar':{p:5,l:'Contar terapias'},'cell-sumar':{p:5,l:'Acumular sesiones'},'cell-libre6':{p:3,l:'Celda Libre'}};var a=m[id];if(a&&typeof PT!=='undefined'&&PT.addXP){PT.addXP(a.p,a.l);this.st('+'+a.p+' XP — '+a.l);}},stb:function(id){var ts=document.querySelectorAll('.lab-tab');for(var i=0;i<ts.length;i++)ts[i].classList.remove('active');var ps=document.querySelectorAll('.lab-panel');for(var j=0;j<ps.length;j++)ps[j].classList.remove('active');var bs=document.querySelectorAll('.lab-tab');for(var k=0;k<bs.length;k++){if(bs[k].getAttribute('onclick')&&bs[k].getAttribute('onclick').indexOf(id)!==-1)bs[k].classList.add('active');}var pn=document.getElementById(id);if(pn)pn.classList.add('active');},es:function(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;},st:function(m){var t=document.createElement('div');t.className='xp-toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);}};
+window.CairoLab=L;
+
+// ── INTERACTIVE Q (Semana 6: MQ-FMQ) ──
+var IQ=(function(){var a={},xa={};try{var s=JSON.parse(localStorage.getItem('tga04_s6_iq')||'{}');a=s.a||{};xa=s.xa||{};}catch(e){}function sv(){try{localStorage.setItem('tga04_s6_iq',JSON.stringify({a:a,xa:xa}));}catch(e){}}function nm(s){return s.toLowerCase().replace(/[áàäâ]/g,'a').replace(/[éèëê]/g,'e').replace(/[íìïî]/g,'i').replace(/[óòöô]/g,'o').replace(/[úùüû]/g,'u').replace(/[ñ]/g,'n').replace(/[^a-z0-9 ]/g,' ');}
+var rub={
+iq1:{kw:['MQ','FMQ','FQ','LEER','centinela','-1','MIENTRAS','sesion','bucle','ciclo','repetir','<>','condicion'],
+fb:{full:'¡Correcto! Estructura: <code>LEER sesion</code> → <code>MQ sesion <> -1 FQ</code> → procesar dentro → <code>LEER sesion</code> (actualizar dentro) → <code>FMQ</code>. La clave es leer el primer valor ANTES del bucle y actualizar DENTRO.',
+partial:'Buena estructura. Recuerda: leer el primer valor antes del MQ, luego dentro del bucle procesar y volver a LEER para actualizar la condición. El centinela (-1) se lee dos veces: una al inicio y otra al final de cada iteración.',
+wrong:'Estructura: <code>LEER sesion</code> → <code>MQ sesion <> -1 FQ</code> → procesar sesion → <code>LEER sesion</code> (¡importante! actualizar dentro) → <code>FMQ</code>. Sin el segundo LEER dentro del bucle, la condición nunca cambia = ciclo infinito.'}},
+iq2:{kw:['total','contador','acumular','suma','+','acumulador','sesion','incrementar','contar','registro'],
+fb:{full:'¡Correcto! <code>total = total + sesion</code> (acumulador) y <code>contador = contador + 1</code> (contador). El acumulador suma valores, el contador cuenta iteraciones. Ambos deben inicializarse en 0 antes del MQ.',
+partial:'Bien. Las líneas son: <code>total = total + sesion</code> para acumular la suma, y <code>contador = contador + 1</code> para contar cuántas sesiones se procesaron. Inicializa ambas en 0 antes del bucle.',
+wrong:'Acumulador: <code>total = total + sesion</code> (suma cada valor nuevo al total). Contador: <code>contador = contador + 1</code> (incrementa en 1 por cada iteración). Ambas variables deben declararse e inicializarse en 0 antes del MQ.'}},
+iq3:{kw:['centinela','-1','parada','señal','fin','detener','bucle','MQ','FMQ','valor','especial','terminar','condicion'],
+fb:{full:'¡Excelente! Un <strong>centinela</strong> es un valor especial (ej: -1) que indica el fin de los datos. En NeuroBiz, cuando el usuario ingresa -1, la condición <code>sesion <> -1</code> se vuelve falsa y el bucle MQ-FMQ termina.',
+partial:'Buena definición. El centinela es un valor que no puede ser un dato válido (ej: -1 para sesiones, ya que no hay sesiones negativas). Cuando el usuario ingresa ese valor, el bucle lo detecta y termina.',
+wrong:'Centinela = valor especial que marca el final de los datos. En el algoritmo: <code>MQ sesion <> -1 FQ</code>. Cuando el usuario ingresa -1, la condición es falsa → el bucle termina. El centinela NO se procesa como dato, solo como señal de parada.'}},
+iq4:{kw:['promedio','despues','FMQ','total','contador','dividir','/','bucle','final','resultado','completo'],
+fb:{full:'¡Correcto! <code>promedio = total / contador</code>. Debe ir después del FMQ porque necesitas el total y contador COMPLETOS. Si lo pones dentro del bucle, calcularías un promedio parcial en cada iteración.',
+partial:'Bien. La línea es <code>promedio = total / contador</code> y va después del FMQ. Solo cuando el bucle terminó tienes el total acumulado y el conteo final. Dentro del bucle los valores son parciales.',
+wrong:'<code>promedio = total / contador</code> después del FMQ. ¿Por qué después? Porque dentro del bucle, total y contador son valores parciales. El promedio solo tiene sentido cuando YA se procesaron TODOS los datos. Además, verifica que contador > 0 para evitar división por cero.'}},
+iq5:{kw:['MQ','FMQ','cognitiva','contador','FIN','CADENA','terapia','=','SI','ENTONCES','contar','LEER','bucle'],
+fb:{full:'¡Algoritmo completo! <code>MQ terapia <> "FIN" FQ</code> → <code>SI terapia = "cognitiva" ENTONCES contador = contador + 1 FSI</code> → <code>LEER terapia</code> dentro del bucle. El centinela es "FIN".',
+partial:'Buena estructura. Recuerda: el centinela es "FIN" (CADENA), la condición es <code>MQ terapia <> "FIN" FQ</code>, y necesitas un SI dentro para verificar si es "cognitiva" e incrementar el contador.',
+wrong:'Estructura: <code>contador = 0</code> → <code>LEER terapia</code> → <code>MQ terapia <> "FIN" FQ</code> → <code>SI terapia = "cognitiva" ENTONCES contador = contador + 1 FSI</code> → <code>LEER terapia</code> → <code>FMQ</code>. La condición usa <> que significa "distinto de".'}},
+iq6:{kw:['infinito','condicion','nunca','falsa','actualizar','variable','cambiar','detener','FMQ','MQ','iteracion','LEER','dentro'],
+fb:{full:'¡Excelente explicación! Ciclo infinito = la condición del MQ nunca se vuelve FALSA. Se previene: 1) identificando qué variable controla la condición, 2) asegurando que esa variable cambie dentro del bucle (ej: LEER un nuevo valor), 3) verificando que el cambio eventualmente haga falsa la condición.',
+partial:'Buena explicación. Ocurre cuando la condición del MQ siempre es VERDADERA. Para prevenirlo: asegúrate de que la variable de control se actualice dentro del bucle (ej: LEER un nuevo valor de sesión). Si olvidas el LEER dentro del bucle, la condición nunca cambia.',
+wrong:'Ciclo infinito: <code>MQ sesion <> -1 FQ</code> pero NUNCA vuelves a LEER sesion dentro del bucle → la condición siempre es verdadera → bucle infinito. Solución: siempre actualiza la variable de control dentro del bucle. Ej: <code>LEER sesion</code> al final de cada iteración.'}},
+iq7:{kw:['mientras','proceso','cotidiano','condicion','iteracion','termina','MQ','FMQ','ejemplo','diario','repetir'],
+fb:{full:'¡Buen ejemplo! Describiste un proceso con: condición clara (MIENTRAS...), cambio en cada iteración (lo que avanza el proceso), y condición de parada (cuándo termina). Así funcionan los bucles en la vida real y en programación.',
+partial:'Buen proceso. Asegúrate de identificar: 1) ¿cuál es la condición? (MIENTRAS haya...), 2) ¿qué cambia en cada iteración? (lo que hace avanzar), 3) ¿cómo termina? (cuándo la condición se vuelve falsa).',
+wrong:'Ejemplo: "MIENTRAS haya platos sucios, lavar un plato". Condición: haya platos sucios. Cambio: cada plato lavado reduce la pila. Termina cuando: no hay más platos sucios (condición falsa). En código: <code>MQ platos > 0 FQ ... platos = platos - 1 ... FMQ</code>.'}}
+};
+function ck(id){var r=rub[id];if(!r)return;var ta=document.getElementById(id+'-ta'),fb=document.getElementById(id+'-fb'),iq=document.getElementById(id),btn=iq?iq.querySelector('.iq-btn'):null;if(!ta||!fb||!iq)return;var ans=ta.value.trim();if(ans.length<15){fb.className='iq-feedback error show';fb.innerHTML='Escribe una respuesta mas completa.';iq.className='interactive-q wrong';return;}
+var w=nm(ans).split(/\s+/),mt=[];
+for(var i=0;i<r.kw.length;i++){var kw=r.kw[i],kn=nm(kw),fd=false;for(var j=0;j<w.length;j++){if(w[j]===kn||(w[j].length>=4&&w[j].indexOf(kn)>=0)||(w[j].length>=4&&kn.indexOf(w[j])>=0)){fd=true;break;}}if(fd)mt.push(kw);}
+var ratio=mt.length/r.kw.length,fc,ft;
+if(ratio>=0.20){fc='success';ft=r.fb.full;iq.className='interactive-q answered';}else if(ratio>=0.08){fc='partial';ft=r.fb.partial;iq.className='interactive-q partial';}else{fc='error';ft=r.fb.wrong;iq.className='interactive-q wrong';}
+fb.className='iq-feedback '+fc+' show';fb.innerHTML=ft;
+var kh='<div class="iq-keywords">';for(var k=0;k<mt.length;k++)kh+='<span class="iq-kw matched">✓ '+mt[k]+'</span>';kh+='</div>';fb.innerHTML+=kh;
+if(!xa[id]&&ratio>=0.08){xa[id]=true;a[id]=ratio>=0.20?'full':'partial';if(typeof PT!=='undefined'&&PT.addXP){var pts=ratio>=0.20?4:2,lb='Pregunta '+id.replace('iq','')+(ratio>=0.20?' (completa)':' (parcial)');PT.addXP(pts,lb);var pe=iq.querySelector('.iq-pts');if(pe){pe.textContent='+'+pts+' XP';pe.classList.add('earned');}if(typeof CairoLab!=='undefined'&&CairoLab.st)CairoLab.st('+'+pts+' XP — '+lb);}}else if(xa[id]){var pe2=iq.querySelector('.iq-pts');if(pe2&&a[id]){var pp=a[id]==='full'?4:2;pe2.textContent='+'+pp+' XP';pe2.classList.add('earned');}}
+if(btn)btn.disabled=true;a[id]=a[id]||(ratio>=0.20?'full':'partial');sv();}
+function rst(){for(var id in a){if(!a.hasOwnProperty(id))continue;var iq=document.getElementById(id),pe=iq?iq.querySelector('.iq-pts'):null;if(pe){pe.textContent='+'+(a[id]==='full'?4:2)+' XP';pe.classList.add('earned');}var btn=iq?iq.querySelector('.iq-btn'):null;if(btn)btn.disabled=true;if(iq)iq.className='interactive-q '+(a[id]==='full'?'answered':'partial');}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rst);else rst();
+return{check:ck};})();
+window.InteractiveQ=IQ;
+}();
+</script>
 </body></html>
