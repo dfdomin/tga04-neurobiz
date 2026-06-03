@@ -119,7 +119,51 @@
       .card { padding: 1.2rem; }
       main { padding: 0 .8rem 3rem; }
     }
-  </style>
+  
+    .interactive-q{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;margin:.8rem 0;transition:border-color .3s}
+    .interactive-q.answered{border-color:#43a047;background:#f9fef9}
+    .interactive-q.partial{border-color:#e6c800;background:#fffdf5}
+    .interactive-q.wrong{border-color:#c62828;background:#fff5f5}
+    .iq-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
+    .iq-num{background:var(--primary);color:#fff;border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0}
+    .iq-pts{font-size:.75rem;color:var(--gold);font-weight:700;background:#fff9c4;border-radius:10px;padding:.1rem .6rem}
+    .iq-pts.earned{background:#e8f5e9;color:#2e7d32}
+    .iq-question{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.6rem;line-height:1.5}
+    .iq-textarea{width:100%;min-height:70px;padding:.6rem .8rem;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;line-height:1.6;resize:vertical;transition:border-color .2s;background:var(--light-bg)}
+    .iq-textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(45,58,94,.1)}
+    .iq-actions{margin-top:.5rem;display:flex;gap:.5rem;align-items:center}
+    .iq-btn{background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .15s}
+    .iq-btn:hover{background:#1557b0} .iq-btn:disabled{background:#9e9e9e;cursor:not-allowed}
+    .iq-feedback{margin-top:.6rem;padding:.6rem .8rem;border-radius:8px;font-size:.84rem;line-height:1.6;display:none}
+    .iq-feedback.show{display:block} .iq-feedback.success{background:#e8f5e9;border:1px solid #a5d6a7;color:#1b5e20}
+    .iq-feedback.partial{background:#fff8e1;border:1px solid #ffe082;color:#e65100}
+    .iq-feedback.error{background:#ffebee;border:1px solid #ef9a9a;color:#b71c1c}
+    .iq-keywords{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem}
+    .iq-kw{font-size:.7rem;background:#e3f2fd;color:#1565c0;border-radius:8px;padding:.1rem .5rem}
+    .iq-kw.matched{background:#c8e6c9;color:#1b5e20;font-weight:600}
+    .colab-cell{background:#fff;border:1px solid #dadce0;border-radius:8px;margin:1rem 0;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08);transition:box-shadow .2s,border-left .3s}
+    .colab-cell:hover{box-shadow:0 2px 6px rgba(0,0,0,.12)} .colab-cell.running{border-left:4px solid #FFDF2D} .colab-cell.success{border-left:4px solid #43a047} .colab-cell.error{border-left:4px solid #c62828}
+    .colab-toolbar{display:flex;align-items:center;gap:.5rem;padding:.35rem .8rem;background:#f8f9fa;border-bottom:1px solid #dadce0;font-size:.78rem;color:#5f6368}
+    .colab-run-btn{background:#1a73e8;color:#fff;border:none;border-radius:4px;padding:.3rem .9rem;font-size:.78rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.35rem;transition:background .15s,transform .1s}
+    .colab-run-btn:hover{background:#1557b0} .colab-run-btn:active{transform:scale(.96)} .colab-run-btn.running{background:#9e9e9e;cursor:wait}
+    .colab-run-btn .spinner{display:none;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:colab-spin .6s linear infinite}
+    @keyframes colab-spin{to{transform:rotate(360deg)}} .colab-run-btn.running .spinner{display:inline-block} .colab-run-btn.running .btn-label{display:none}
+    .colab-lang-badge{font-size:.7rem;background:#e8eaed;color:#5f6368;border-radius:4px;padding:.15rem .5rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+    .colab-cell-label{font-size:.75rem;color:#5f6368;font-weight:600;margin-left:auto}
+    .colab-editor{padding:.8rem 1rem;font-family:'Courier New','Fira Code','Consolas',monospace;font-size:.85rem;line-height:1.65;color:#1E2843;background:#fafafa;min-height:60px;max-height:400px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;outline:none;border:none;caret-color:#1a73e8}
+    .colab-editor:focus{background:#fff;box-shadow:inset 0 0 0 2px #e8f0fe} .colab-editor .kw{color:#7c3aed;font-weight:700} .colab-editor .fn{color:#2563eb} .colab-editor .str{color:#059669} .colab-editor .cm{color:#9ca3af;font-style:italic} .colab-editor .num{color:#d97706}
+    .colab-output{display:none;background:#1e1e1e;color:#d4d4d4;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.6;padding:.8rem 1rem;max-height:300px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;border-top:1px solid #333}
+    .colab-output.visible{display:block} .colab-output .out-info{color:#6a9955} .colab-output .out-input{color:#ce9178} .colab-output .out-error{color:#f44747} .colab-output .out-value{color:#4ec9b0}
+    .lab-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:1rem}
+    .lab-tab{padding:.5rem 1rem;font-size:.85rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s}
+    .lab-tab:hover{color:var(--primary)} .lab-tab.active{color:var(--primary);border-bottom-color:var(--gold)}
+    .lab-panel{display:none} .lab-panel.active{display:block}
+    .xp-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1E2843,#2d3a5e);color:#fff;padding:.7rem 1.5rem;border-radius:20px;font-weight:700;font-size:.9rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);animation:xpToastIn .4s ease,xpToastOut .4s ease 2.5s forwards}
+    @keyframes xpToastIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    @keyframes xpToastOut{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-10px)}}
+    .lab-challenge-done{display:inline-flex;align-items:center;gap:.3rem;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:12px;padding:.15rem .6rem;font-size:.75rem;font-weight:700}
+    .step-indicator{display:flex;align-items:center;gap:.3rem;margin:.5rem 0 1rem;font-size:.8rem;color:var(--muted);flex-wrap:wrap}
+</style>
 
   <style id="pt-css">
   #pt-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg,#1E2843,#2d3a5e); color: #fff; border-radius: 16px; padding: 14px 18px; min-width: 240px; max-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,.35); font-family: 'Open Sans', Arial, sans-serif; font-size: .85rem; transition: transform .3s; }
@@ -185,8 +229,8 @@
   <a href="#pseudocodigo">📝 Pseudocódigo</a>
   <a href="#actividad">⚙️ Actividad</a>
   <a href="#hti">🏠 HTI</a>
+  <a href="#lab">🧪 Lab</a>
   <a href="#quiz">🎮 Quiz</a>
-  <a href="#colab">☁️ Colab</a>
   <a href="#bib">📖 Fuentes</a>
 </nav>
 
@@ -368,91 +412,57 @@
 <!-- ══ PSEUDOCÓDIGO ══ -->
 <section id="pseudocodigo" class="card">
   <h2>📝 Pseudocódigo — Clasificación de Riesgo</h2>
+  <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">💡 <strong>Celdas interactivas:</strong> ejecuta cada algoritmo con diferentes valores para ver cómo cambia la clasificación. El intérprete ahora soporta <strong>SI-SINO-FSI</strong> y <strong>DD-FDD</strong>.</p>
 
-  <div class="code-wrap">
-    <div class="code-title">📝 Pseudocódigo — ClasificarPacienteSimple</div>
-    <pre>
+  <h3>SI-SINO-FSI: Clasificación simple (2 caminos)</h3>
+  <div class="colab-cell" id="cell-simple">
+    <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-simple')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span><span class="colab-cell-label">ClasificarPacienteSimple</span></div>
+    <div class="colab-editor" contenteditable="true" spellcheck="false">
 <span class="kw">ALGORITMO</span> ClasificarPacienteSimple
-  <span class="kw">VARIABLES</span>
-    tasa_retencion: <span class="kw">REAL</span>
-    clasificacion: <span class="kw">CADENA</span>
-  <span class="kw">INICIO</span>
-    <span class="fn">LEER</span> tasa_retencion
-    <span class="kw">SI</span> tasa_retencion &gt;= <span class="num">80.0</span> <span class="kw">ENTONCES</span>
-      clasificacion <span class="kw">←</span> <span class="str">"VERDE: Buen progreso"</span>
-    <span class="kw">SINO</span>
-      clasificacion <span class="kw">←</span> <span class="str">"ATENCIÓN: Revisar plan terapéutico"</span>
-    <span class="kw">FSI</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"Estado del paciente: "</span>, clasificacion
-  <span class="kw">FIN</span>
-    </pre>
+<span class="kw">VARIABLES</span>
+  tasa_retencion : <span class="kw">REAL</span>
+  clasificacion  : <span class="kw">CADENA</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== NEUROBIZ — CLASIFICACION DE PACIENTE ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la tasa de retencion (%):"</span>
+  <span class="fn">LEER</span> tasa_retencion
+  <span class="kw">SI</span> tasa_retencion >= <span class="num">80.0</span> <span class="kw">ENTONCES</span>
+    clasificacion = <span class="str">"VERDE: Buen progreso"</span>
+  <span class="kw">SINO</span>
+    clasificacion = <span class="str">"ATENCION: Revisar plan terapeutico"</span>
+  <span class="kw">FSI</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Estado del paciente: "</span> + clasificacion
+<span class="kw">FIN</span>
+    </div>
+    <div class="colab-output"><span class="out-info">🔍 Prueba con 85 (VERDE) y con 65 (ATENCIÓN). Observa cómo SINO es el camino alterno...</span></div>
   </div>
 
-  <div class="code-wrap">
-    <div class="code-title">📝 Pseudocódigo — ClasificarRiesgoNeuroBiz</div>
-    <pre>
+  <h3 style="margin-top:1.5rem">DD-FDD: Clasificación múltiple (3+ caminos)</h3>
+  <div class="colab-cell" id="cell-dd">
+    <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-dd')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span><span class="colab-cell-label">ClasificarRiesgoNeuroBiz</span></div>
+    <div class="colab-editor" contenteditable="true" spellcheck="false">
 <span class="kw">ALGORITMO</span> ClasificarRiesgoNeuroBiz
-  <span class="kw">VARIABLES</span>
-    tasa_retencion: <span class="kw">REAL</span>
-  <span class="kw">INICIO</span>
-    <span class="fn">LEER</span> tasa_retencion
-    <span class="kw">DD</span> tasa_retencion
-      <span class="kw">CASO</span> &gt;= <span class="num">80.0</span>: <span class="fn">ESCRIBIR</span> <span class="str">"🟢 VERDE — Retención excelente"</span>
-      <span class="kw">CASO</span> &gt;= <span class="num">50.0</span>: <span class="fn">ESCRIBIR</span> <span class="str">"🟡 AMARILLO — Retención en riesgo"</span>
-      <span class="kw">CASO</span> OTRO:   <span class="fn">ESCRIBIR</span> <span class="str">"🔴 ROJO — Intervención urgente"</span>
-    <span class="kw">FDD</span>
-  <span class="kw">FIN</span>
-    </pre>
+<span class="kw">VARIABLES</span>
+  tasa_retencion : <span class="kw">REAL</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== NEUROBIZ — CLASIFICACION DE RIESGO ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la tasa de retencion (%):"</span>
+  <span class="fn">LEER</span> tasa_retencion
+  <span class="kw">DD</span> tasa_retencion
+    <span class="kw">CASO</span> >= <span class="num">80.0</span> : <span class="fn">ESCRIBIR</span> <span class="str">"🟢 VERDE — Retencion excelente"</span>
+    <span class="kw">CASO</span> >= <span class="num">50.0</span> : <span class="fn">ESCRIBIR</span> <span class="str">"🟡 AMARILLO — Retencion en riesgo"</span>
+    <span class="kw">CASO</span> OTRO  : <span class="fn">ESCRIBIR</span> <span class="str">"🔴 ROJO — Intervencion urgente"</span>
+  <span class="kw">FDD</span>
+<span class="kw">FIN</span>
+    </div>
+    <div class="colab-output"><span class="out-info">🔍 Prueba con 85 (🟢), 65 (🟡), 45 (🔴), 80 (🟢 frontera), 50 (🟡 frontera)...</span></div>
   </div>
 
-  <h3>Comparación rápida de estructuras</h3>
-  <table>
-    <thead><tr><th>Estructura</th><th>Número de caminos</th><th>Ventaja</th><th>Riesgo</th></tr></thead>
-    <tbody>
-      <tr><td>SI-SINO-FSI</td><td>2</td><td>Muy legible cuando solo hay dos salidas</td><td>Se queda corto si hay 3 o más categorías</td></tr>
-      <tr><td>DD-FDD</td><td>N</td><td>Ordena múltiples casos de clasificación</td><td>Debe cuidarse que los casos no se solapen</td></tr>
-      <tr><td>SI anidado</td><td>Variable</td><td>Permite refinar una decisión dentro de otra</td><td>Se vuelve difícil de seguir si crece demasiado</td></tr>
-    </tbody>
-  </table>
+  <h3 style="margin-top:1.5rem">Comparación rápida</h3>
+  <table><thead><tr><th>Estructura</th><th>Caminos</th><th>Ventaja</th><th>Riesgo</th></tr></thead><tbody><tr><td>SI-SINO-FSI</td><td>2</td><td>Muy legible con dos salidas</td><td>Se queda corto con 3+ categorías</td></tr><tr><td>DD-FDD</td><td>N</td><td>Ordena múltiples casos</td><td>Cuidar que no se solapen</td></tr><tr><td>SI anidado</td><td>Variable</td><td>Refina decisión dentro de otra</td><td>Difícil de seguir si crece</td></tr></tbody></table>
 
-  <div class="info-box brain">
-    <span class="icon">🐍</span>
-    <p><strong>Preview de Python:</strong> la notación Cairó DD-FDD se traducirá más adelante a
-    <code>if/elif/else</code> o <code>match/case</code>. Aprender a elegir la estructura correcta es más importante que memorizar una palabra reservada.</p>
-  </div>
-
-  <h3>Batería mínima de pruebas</h3>
-  <table>
-    <thead><tr><th>Caso</th><th>Entrada</th><th>Salida esperada</th><th>Qué valida</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td><code>85</code></td><td>🟢 VERDE</td><td>Camino superior</td></tr>
-      <tr><td>2</td><td><code>65</code></td><td>🟡 AMARILLO</td><td>Categoría intermedia</td></tr>
-      <tr><td>3</td><td><code>45</code></td><td>🔴 ROJO</td><td>Caso OTRO</td></tr>
-      <tr><td>4</td><td><code>80</code></td><td>🟢 VERDE</td><td>Frontera incluida correctamente</td></tr>
-      <tr><td>5</td><td><code>50</code></td><td>🟡 AMARILLO</td><td>Inicio exacto del rango medio</td></tr>
-    </tbody>
-  </table>
-
-  <div class="info-box warn">
-    <span class="icon">📏</span>
-    <p><strong>Regla de frontera:</strong> antes de dar por bueno un DD-FDD, prueba exactamente los valores límite. Si <code>80</code> y <code>50</code> no están claros, la clasificación del negocio será inconsistente.</p>
-  </div>
-
-  <ul>
-    <li><strong>85</strong> valida el caso verde.</li>
-    <li><strong>65</strong> valida el caso amarillo.</li>
-    <li><strong>45</strong> valida el caso rojo.</li>
-    <li><strong>80 y 50</strong> validan fronteras.</li>
-  </ul>
-
-  <p><em>Elegir bien la estructura también es una decisión de diseño:</em> claridad primero, complejidad después.</p>
-  <p>
-    Cuando el estudiante justifica por qué escogió SI-SINO, DD-FDD o anidación,
-    ya está pensando como analista y no solo como copiador de sintaxis.
-  </p>
-  <p>Ese criterio será clave cuando el curso pase a Python.</p>
+  <div class="info-box brain" style="margin-top:1rem"><span class="icon">🐍</span><p><strong>Preview Python:</strong> SI-SINO-FSI → <code>if/else</code>. DD-FDD → <code>if/elif/else</code> o <code>match/case</code>. Elegir la estructura correcta es más importante que memorizar sintaxis.</p></div>
 </section>
-
 <!-- ══ ACTIVIDAD PRESENCIAL ══ -->
 <section id="actividad" class="card">
   <h2>⚙️ Actividad Presencial</h2>
@@ -492,11 +502,36 @@
     <div class="activity-header presencial">⏱️ Bloque 3 — Misión NeuroBiz · <em style="font-weight:400;margin-left:.3rem">Bloom: Analizar</em></div>
     <div class="activity-body">
       <p><strong>🎯 Misión:</strong> elegir la estructura adecuada para clasificar.</p>
-      <ol>
-        <li>Diseña un DD-FDD que clasifique terapeutas por número de sesiones: <code>&lt;10</code>, <code>10-20</code>, <code>&gt;20</code>.</li>
-        <li>Convierte el algoritmo SI-SINO-FSI del material a una versión DD-FDD.</li>
-        <li>Escribe dos frases comparando cuál formato te parece más legible y por qué.</li>
-      </ol>
+
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">💡 <strong>Responde cada pregunta</strong> y obtén retroalimentación inmediata. +4 XP por respuesta completa.</p>
+
+      <div class="interactive-q" id="iq1">
+        <div class="iq-header"><span class="iq-num">1</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Diseña un <strong>DD-FDD</strong> que clasifique terapeutas por número de sesiones: &lt;10 (sobrecarga baja), 10-20 (óptimo), &gt;20 (alerta sobrecarga).</p>
+        <textarea class="iq-textarea" placeholder="DD sesiones_semana
+  CASO < 10 : ...
+  CASO <= 20 : ...
+  CASO OTRO : ...
+FDD" minlength="30" id="iq1-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq1')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq1-fb"></div>
+      </div>
+
+      <div class="interactive-q" id="iq2">
+        <div class="iq-header"><span class="iq-num">2</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Convierte el algoritmo <strong>SI-SINO-FSI</strong> del material (ClasificarPacienteSimple) a una versión <strong>DD-FDD</strong> equivalente.</p>
+        <textarea class="iq-textarea" placeholder="Escribe la versión DD-FDD del algoritmo..." minlength="30" id="iq2-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq2')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq2-fb"></div>
+      </div>
+
+      <div class="interactive-q" id="iq3">
+        <div class="iq-header"><span class="iq-num">3</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Escribe dos frases comparando: ¿cuál formato te parece más legible (SI-SINO-FSI vs DD-FDD) y en qué contexto usarías cada uno?</p>
+        <textarea class="iq-textarea" placeholder="Frase 1: Prefiero... porque... | Frase 2: Usaría X cuando... y Y cuando..." minlength="30" id="iq3-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq3')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq3-fb"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -511,7 +546,14 @@
     <div class="activity-body">
       <ol>
         <li>Revisa las tablas comparativas de SI-SINO-FSI y DD-FDD.</li>
-        <li>Anota un ejemplo de dos caminos y otro de tres caminos en contexto empresarial.</li>
+        
+      <div class="interactive-q" id="iq4" style="margin-top:.8rem">
+        <div class="iq-header"><span class="iq-num">4</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Anota un ejemplo empresarial de <strong>dos caminos</strong> (SI-SINO) y otro de <strong>tres caminos</strong> (DD-FDD).</p>
+        <textarea class="iq-textarea" placeholder="Ejemplo 2 caminos: ... | Ejemplo 3 caminos: ..." minlength="20" id="iq4-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq4')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq4-fb"></div>
+      </div>
       </ol>
     </div>
   </div>
@@ -519,22 +561,118 @@
   <div class="activity">
     <div class="activity-header hti-b">✏️ HTI-B — Diseño de clasificación de terapeutas</div>
     <div class="activity-body">
-      <ol>
-        <li>Diseña un algoritmo DD-FDD para clasificar terapeutas por número de sesiones:</li>
-        <li><code>&lt;10</code> = sobrecarga baja, <code>10-20</code> = óptimo, <code>&gt;20</code> = alerta sobrecarga.</li>
-      </ol>
+
+      <div class="interactive-q" id="iq5" style="margin-top:.8rem">
+        <div class="iq-header"><span class="iq-num">5</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Diseña un algoritmo <strong>DD-FDD</strong> completo para clasificar terapeutas: &lt;10 = sobrecarga baja, 10-20 = óptimo, &gt;20 = alerta sobrecarga.</p>
+        <textarea class="iq-textarea" placeholder="ALGORITMO ClasificarTerapeuta
+VARIABLES
+  ...
+INICIO
+  ...
+  DD ...
+    CASO ...
+  FDD
+FIN" minlength="40" id="iq5-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq5')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq5-fb"></div>
+      </div>
     </div>
   </div>
 
   <div class="activity">
     <div class="activity-header hti-b">🧠 HTI-C — Conversión y comparación</div>
     <div class="activity-body">
-      <ol>
-        <li>Convierte el SI-SINO-FSI del material a DD-FDD.</li>
-        <li>Compara cuál es más legible y en qué contexto usarías cada uno.</li>
-      </ol>
+
+      <div class="interactive-q" id="iq6" style="margin-top:.8rem">
+        <div class="iq-header"><span class="iq-num">6</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Convierte el SI-SINO-FSI del material a DD-FDD y explica: ¿cuál es más legible y en qué contexto usarías cada uno?</p>
+        <textarea class="iq-textarea" placeholder="Conversión: ... | Comparación: prefiero X porque... usaría Y cuando..." minlength="30" id="iq6-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq6')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq6-fb"></div>
+      </div>
     </div>
   </div>
+</section>
+
+<!-- ══ LABORATORIO INTERACTIVO ══ -->
+<section id="lab" class="card">
+  <h2>🧪 Laboratorio Interactivo — SI-SINO-FSI y DD-FDD</h2>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Practica con las tres estructuras de decisión. +5 XP por cada celda ejecutada.</p>
+  <div class="lab-tabs">
+    <button class="lab-tab active" onclick="CairoLab.stb('tab-sino')">🔀 SI-SINO</button>
+    <button class="lab-tab" onclick="CairoLab.stb('tab-dd')">📊 DD-FDD</button>
+    <button class="lab-tab" onclick="CairoLab.stb('tab-libre4')">✨ Celda Libre</button>
+  </div>
+
+  <div class="lab-panel active" id="tab-sino">
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>Terapeutas:</strong> clasifica en dos categorías usando SI-SINO-FSI.</p>
+    <div class="colab-cell" id="cell-terapeuta">
+      <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-terapeuta')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div>
+      <div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> ClasificarTerapeuta
+<span class="kw">VARIABLES</span>
+  sesiones_semana : <span class="kw">ENTERO</span>
+  nivel           : <span class="kw">CADENA</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== CLASIFICACION DE TERAPEUTA ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Sesiones atendidas esta semana:"</span>
+  <span class="fn">LEER</span> sesiones_semana
+  <span class="kw">SI</span> sesiones_semana >= <span class="num">15</span> <span class="kw">ENTONCES</span>
+    nivel = <span class="str">"ALTO RENDIMIENTO"</span>
+  <span class="kw">SINO</span>
+    nivel = <span class="str">"CARGA NORMAL"</span>
+  <span class="kw">FSI</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Clasificacion: "</span> + nivel
+<span class="kw">FIN</span>
+      </div>
+      <div class="colab-output"><span class="out-info">🔍 Prueba con 18 (ALTO RENDIMIENTO) y con 10 (CARGA NORMAL)...</span></div>
+    </div>
+    <div class="step-indicator"><span id="sino-badge" style="font-size:.75rem"></span></div>
+  </div>
+
+  <div class="lab-panel" id="tab-dd">
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>Clasificación de riesgo:</strong> tres niveles con DD-FDD. Prueba los valores frontera.</p>
+    <div class="colab-cell" id="cell-riesgo">
+      <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-riesgo')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div>
+      <div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> ClasificarRiesgoTerapeuta
+<span class="kw">VARIABLES</span>
+  sesiones_semana : <span class="kw">ENTERO</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== CLASIFICACION DE RIESGO ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Sesiones atendidas esta semana:"</span>
+  <span class="fn">LEER</span> sesiones_semana
+  <span class="kw">DD</span> sesiones_semana
+    <span class="kw">CASO</span> < <span class="num">10</span>  : <span class="fn">ESCRIBIR</span> <span class="str">"🟢 BAJO — Carga normal"</span>
+    <span class="kw">CASO</span> <= <span class="num">20</span> : <span class="fn">ESCRIBIR</span> <span class="str">"🟡 MEDIO — Carga optima"</span>
+    <span class="kw">CASO</span> OTRO  : <span class="fn">ESCRIBIR</span> <span class="str">"🔴 ALTO — Posible sobrecarga"</span>
+  <span class="kw">FDD</span>
+<span class="kw">FIN</span>
+      </div>
+      <div class="colab-output"><span class="out-info">🔍 Prueba con 5 (🟢), 15 (🟡), 25 (🔴), y los valores frontera 10 y 20...</span></div>
+    </div>
+    <div class="step-indicator"><span id="dd-badge" style="font-size:.75rem"></span></div>
+  </div>
+
+  <div class="lab-panel" id="tab-libre4">
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>✨ Celda Libre:</strong> Experimenta con SI-SINO, DD-FDD, condiciones anidadas y combinaciones.</p>
+    <div class="colab-cell" id="cell-libre4">
+      <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-libre4')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div>
+      <div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> MiClasificador
+<span class="kw">VARIABLES</span>
+  <span class="cm">{ Declara tus variables }</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Mi clasificador personalizado"</span>
+  <span class="cm">{ Prueba SI-SINO, DD-FDD o anidados }</span>
+<span class="kw">FIN</span>
+      </div>
+      <div class="colab-output"><span class="out-info">🔍 Escribe tu código y ejecuta...</span></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:#e8f5e9;border-radius:12px;border:1px solid #a5d6a7"><p style="margin:0;font-size:.85rem">🎯 <strong>¿Completaste los ejercicios?</strong> Has aplicado decisiones condicionales a clasificación empresarial real. +5 XP por celda.</p></div>
 </section>
 
 <!-- ══ QUIZ ══ -->
@@ -1189,5 +1327,137 @@ else PT.init();
 })();
 </script>
 
+
+<!-- ══ CAIRO INTERPRETER + SI-SINO-FSI + DD-FDD + INTERACTIVE Q ══ -->
+<script>
+!function(){"use strict";
+// ── INTERPRETER WITH SI-SINO-FSI AND DD-FDD ──
+var I=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;
+this.siStack=[];this.ddMode=null;this.ddVar=null;this.ddMatched=false;};
+I.prototype.reset=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;this.siStack=[];this.ddMode=null;this.ddVar=null;this.ddMatched=false;};
+I.prototype.skipLine=function(){var l=this.l[this.p];if(!l)return false;
+var t=this.tok(l);if(t.length===0)return false;
+// Check if this line is a structural keyword we care about
+for(var i=0;i<t.length;i++){if(t[i].ty==='K'){
+var k=t[i].v;
+if(this.ddMode==='skipCases'&&(k==='CASO'||k==='FDD'))return false;
+if(k==='SINO'||k==='FSI'||k==='FDD')return false;}}
+return true;};
+I.prototype.tok=function(l){l=l.replace(/\{[^}]*\}/g,'').trim();if(!l)return[];var t=[],re=/"([^"]*)"|(\d+\.?\d*)|(ALGORITMO|VARIABLES|INICIO|ENTERO|REAL|CADENA|LOGICO|BOOLEANO|ESCRIBIR|ENTONCES|LEER|SINO|FSI|FDD|CASO|FIN|OTRO|SI|DD|Y|O|NO)|([a-zA-Z_][a-zA-Z0-9_]*)|(>=|<=|<>|[+\-*\/=()<>!])|(:)/g,m;while((m=re.exec(l))!==null){if(m[1]!==undefined)t.push({ty:'S',v:m[1]});else if(m[2]!==undefined)t.push({ty:'N',v:parseFloat(m[2])});else if(m[3]!==undefined)t.push({ty:'K',v:m[3]});else if(m[4]!==undefined)t.push({ty:'I',v:m[4]});else if(m[5]!==undefined)t.push({ty:'O',v:m[5]});}return t;};
+I.prototype.gv=function(t){if(t.ty==='N')return t.v;if(t.ty==='S')return t.v;if(t.ty==='I'){if(t.v in this.v){var v=this.v[t.v];if(typeof v==='string'){var n=parseFloat(v);return isNaN(n)?v:n;}return v;}return 0;}return t.v||0;};
+I.prototype.evalCond=function(t,i){var j=i,left=this.gv(t[j]);j++;while(j<t.length){var op=t[j];if(op.ty==='K'&&(op.v==='ENTONCES'||op.v==='SINO'||op.v==='FSI'))break;if(op.ty==='K'&&(op.v==='Y'||op.v==='O')){var ov=op.v;j++;var right=this.gv(t[j]);j++;if(ov==='Y')left=left&&right;else left=left||right;continue;}
+if(op.ty==='O'&&['>','<','>=','<=','='].indexOf(op.v)>=0){var oo=op.v;j++;var rr=this.gv(t[j]);j++;if(oo==='>')left=left>rr;else if(oo==='<')left=left<rr;else if(oo==='>=')left=left>=rr;else if(oo==='<=')left=left<=rr;else if(oo==='=')left=left==rr;continue;}
+if(op.ty==='K'&&op.v==='ENTONCES')break;break;}
+return[left,j];};
+I.prototype.evalExpr=function(t,i){var j=i;if(j>=t.length)return[0,j];var l=this.gv(t[j]);j++;while(j<t.length){var o=t[j];if(o.ty!=='O'||['+','-','*','/','>','<','>=','<='].indexOf(o.v)===-1)break;var ov=o.v;j++;if(j>=t.length)break;var r=this.gv(t[j]);j++;if(ov==='+'){if(typeof l==='string'||typeof r==='string')l=String(l)+String(r);else l=l+r;}else if(ov==='-')l=l-r;else if(ov==='*')l=l*r;else if(ov==='/')l=r!==0?l/r:0;else if(ov==='>')l=l>r;else if(ov==='<')l=l<r;else if(ov==='>=')l=l>=r;else if(ov==='<=')l=l<=r;}return[l,j];};
+I.prototype.exe=function(l){var t=this.tok(l);if(t.length===0)return null;
+var f=t[0];
+
+// Check if we're in SI skipping mode
+if(this.siStack.length>0){var top=this.siStack[this.siStack.length-1];if(top.mode==='skipToSINO'||top.mode==='skipToFSI'){
+// Check if this line is SINO or FSI
+if(f.ty==='K'&&f.v==='SINO'){top.mode='execSINO';this.o.push({ty:'W',v:'[SINO: ejecutando bloque alterno]'});return null;}
+if(f.ty==='K'&&f.v==='FSI'){this.siStack.pop();this.o.push({ty:'W',v:'[FSI: fin del SI-SINO]'});return null;}
+// Skip this line
+if(this.skipLine())this.o.push({ty:'W',v:'... (omitido)'});
+return null;}
+if(top.mode==='execSINO'){if(f.ty==='K'&&f.v==='FSI'){this.siStack.pop();this.o.push({ty:'W',v:'[FSI: fin del SI-SINO]'});return null;}
+// Execute the SINO block normally — fall through to normal execution below
+}}
+
+// Check if we're in DD mode
+if(this.ddMode==='evaluating'){if(f.ty==='K'&&f.v==='FDD'){this.ddMode=null;this.o.push({ty:'W',v:'[FDD: fin de decision multiple]'});return null;}}
+if(this.ddMode==='skipCases'){if(f.ty==='K'&&f.v==='FDD'){this.ddMode=null;this.o.push({ty:'W',v:'[FDD: fin de decision multiple]'});return null;}if(f.ty==='K'&&f.v==='CASO'){this.ddMode='evaluating';return this.exe(l);}return null;}
+
+// ESCRIBIR
+if(f.ty==='K'&&f.v==='ESCRIBIR'){var r=this.evalExpr(t,1);this.o.push({ty:'W',v:String(r[0])});return null;}
+// LEER
+if(f.ty==='K'&&f.v==='LEER'){if(t.length<2||t[1].ty!=='I'){this.o.push({ty:'E',v:'Error: LEER necesita variable'});return null;}return{ty:'R',v:t[1].v};}
+// SI cond ENTONCES
+if(f.ty==='K'&&f.v==='SI'){var cr=this.evalCond(t,1);var cond=cr[0];this.o.push({ty:'W',v:'[SI condicion: '+(cond?'VERDADERA → ejecuta ENTONCES':'FALSA → salta a SINO')+']'});
+if(cond){this.siStack.push({mode:'execENTONCES',result:true});}else{this.siStack.push({mode:'skipToSINO',result:false});}return null;}
+// SINO (standalone, when execENTONCES)
+if(f.ty==='K'&&f.v==='SINO'){if(this.siStack.length>0){var tp2=this.siStack[this.siStack.length-1];if(tp2.mode==='execENTONCES'){tp2.mode='skipToFSI';this.o.push({ty:'W',v:'[SINO: omitido (SI era VERDADERO)]'});return null;}}this.o.push({ty:'W',v:'[SINO]'});return null;}
+// FSI
+if(f.ty==='K'&&f.v==='FSI'){if(this.siStack.length>0)this.siStack.pop();return null;}
+// DD variable
+if(f.ty==='K'&&f.v==='DD'){if(t.length<2||t[1].ty!=='I'){this.o.push({ty:'E',v:'Error: DD necesita variable'});return null;}var dv=t[1].v;var dval=this.v[dv]!==undefined?this.v[dv]:0;this.ddVar=dval;this.ddMode='evaluating';this.ddMatched=false;this.o.push({ty:'W',v:'[DD: evaluando '+dv+' = '+dval+']'});return null;}
+// CASO cond : instruccion
+if(f.ty==='K'&&f.v==='CASO'){if(this.ddMode!=='evaluating'){this.o.push({ty:'E',v:'Error: CASO fuera de DD'});return null;}
+// Check for OTRO
+if(t.length>=2&&t[1].ty==='K'&&t[1].v==='OTRO'){if(!this.ddMatched){this.ddMatched=true;this.o.push({ty:'W',v:'[CASO OTRO: ejecutando]'});var oi=2;while(oi<t.length&&!(t[oi].ty==='O'&&t[oi].v===':'))oi++;oi++;if(oi<t.length){var act2=this.l[this.p].split(':')[1];if(act2){var at2=this.tok(act2);for(var ai2=0;ai2<at2.length;ai2++){if(at2[ai2].ty==='S')this.o.push({ty:'W',v:at2[ai2].v});else if(at2[ai2].ty==='K'&&at2[ai2].v==='ESCRIBIR'){ai2++;if(ai2<at2.length)this.o.push({ty:'W',v:String(this.gv(at2[ai2]))});}}}}this.ddMode='skipCases';return null;}else{this.ddMode='skipCases';return null;}}
+// Parse condition
+var csi=1;var cop=null,cval=null;
+if(csi<t.length&&t[csi].ty==='O'){cop=t[csi].v;csi++;if(csi<t.length)cval=this.gv(t[csi]);}
+var match=false;if(cop&&cval!==null){if(cop==='>')match=this.ddVar>cval;else if(cop==='<')match=this.ddVar<cval;else if(cop==='>=')match=this.ddVar>=cval;else if(cop==='<=')match=this.ddVar<=cval;else if(cop==='=')match=this.ddVar==cval;}
+if(match&&!this.ddMatched){this.ddMatched=true;this.o.push({ty:'W',v:'[CASO '+cop+' '+cval+': coincide → ejecutando]'});var mi=2;if(cval!==null)mi=3;while(mi<t.length&&!(t[mi].ty==='O'&&t[mi].v===':'))mi++;mi++;if(mi<t.length){var act=this.l[this.p].split(':')[1];if(act){var at=this.tok(act);for(var ai=0;ai<at.length;ai++){if(at[ai].ty==='S')this.o.push({ty:'W',v:at[ai].v});else if(at[ai].ty==='K'&&at[ai].v==='ESCRIBIR'){ai++;if(ai<at.length)this.o.push({ty:'W',v:String(this.gv(at[ai]))});}}}}this.ddMode='skipCases';return null;}else{this.o.push({ty:'W',v:'[CASO '+(cop||'')+' '+(cval||'')+': no coincide]'});this.ddMode='skipCases';return null;}}
+// FDD
+if(f.ty==='K'&&f.v==='FDD'){this.ddMode=null;return null;}
+// Assignment
+if(f.ty==='I'&&t.length>=2&&t[1].ty==='O'&&t[1].v==='='){var vn=f.v;var vl=this.evalExpr(t,2);this.v[vn]=vl[0];return null;}
+if(f.ty==='K')return null;return null;};
+I.prototype.parse=function(p){if(typeof p==='string'&&p.indexOf('<')!==-1){var d=document.createElement('div');d.innerHTML=p;p=d.textContent||d.innerText||'';}return p.split(String.fromCharCode(10)).map(function(l){return l.trim();}).filter(function(l){return l.length>0;});};
+I.prototype.run=function(p){this.reset();this.l=this.parse(p);this.r=true;return this.sa();};
+I.prototype.sa=function(){while(this.p<this.l.length&&this.r){var l=this.l[this.p];var r=this.exe(l);this.p++;if(r&&r.ty==='R'){this.a=true;this.iv=r.v;return{p:true,v:r.v,o:this.o.slice()};}}this.r=false;return{p:false,o:this.o.slice()};};
+I.prototype.pi=function(v){if(!this.a)return null;var n=parseFloat(v);this.v[this.iv]=isNaN(n)?v:n;this.a=false;this.iv=null;return this.sa();};
+
+var L={ip:new I(),cc:{},xa:{},ge:function(id){var c=document.getElementById(id);if(!c)return'';var e=c.querySelector('.colab-editor');return e?(e.textContent||e.innerText||''):'';},go:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-output'):null;},gb:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-run-btn'):null;},rc:function(id){var s=this,cl=document.getElementById(id),ou=s.go(id),bt=s.gb(id);if(!cl||!ou)return;cl.classList.add('running');cl.classList.remove('success','error');if(bt)bt.classList.add('running');ou.classList.add('visible');ou.innerHTML='<span class="out-info">Ejecutando...</span>';var pg=s.ge(id);var rs=s.ip.run(pg);
+function pr(r){var h='';if(r.o){for(var i=0;i<r.o.length;i++){var e=r.o[i];if(e.ty==='W')h+='<span class="out-value">'+s.es(e.v)+'</span>\n';else if(e.ty==='E')h+='<span class="out-error">'+s.es(e.v)+'</span>\n';}}
+function ct(r2){if(!r2||!r2.p){h+='<span class="out-info">Ejecucion completada.</span>\n';ou.innerHTML=h||'<span class="out-info">Sin salida.</span>';cl.classList.remove('running');cl.classList.add('success');if(bt)bt.classList.remove('running');s.cc[id]=true;s.ax(id);s.ub();s.sp();return;}
+var inp=prompt('[ENTRADA] '+r2.v+' = ?\n\nEscribe un valor:');if(inp===null){h+='<span class="out-error">Cancelado.</span>\n';ou.innerHTML=h;cl.classList.remove('running');cl.classList.add('error');if(bt)bt.classList.remove('running');return;}
+h+='<span class="out-input">'+s.es(r2.v)+' ← '+s.es(inp)+'</span>\n';ou.innerHTML=h+'<span class="out-info">Continuando...</span>';
+setTimeout(function(){var nr=s.ip.pi(inp);if(nr&&nr.o){var ol=r.o?r.o.length:0;var no=nr.o.slice(ol);for(var j=0;j<no.length;j++){var ne=no[j];if(ne.ty==='W')h+='<span class="out-value">'+s.es(ne.v)+'</span>\n';else if(ne.ty==='E')h+='<span class="out-error">'+s.es(ne.v)+'</span>\n';}}ct(nr);},150);}
+ct(r);}
+pr(rs);},ax:function(id){if(this.xa[id])return;this.xa[id]=true;var m={'cell-simple':{p:5,l:'SI-SINO-FSI simple'},'cell-dd':{p:5,l:'DD-FDD multiple'},'cell-terapeuta':{p:5,l:'Clasificar terapeuta'},'cell-riesgo':{p:5,l:'Clasificar riesgo'},'cell-libre4':{p:3,l:'Celda Libre'}};var a=m[id];if(a&&typeof PT!=='undefined'&&PT.addXP){PT.addXP(a.p,a.l);this.st('+'+a.p+' XP — '+a.l);}},ub:function(){var b={'sino-badge':this.cc['cell-terapeuta'],'dd-badge':this.cc['cell-riesgo']};for(var id in b){if(!b.hasOwnProperty(id))continue;var el=document.getElementById(id);if(el&&b[id])el.innerHTML='<span class="lab-challenge-done">Completado</span>';}},sp:function(){if(typeof PT==='undefined')return;if(this.cc['cell-terapeuta']&&this.cc['cell-riesgo']&&!this._lm){this._lm=true;PT.save();}},stb:function(id){var ts=document.querySelectorAll('.lab-tab');for(var i=0;i<ts.length;i++)ts[i].classList.remove('active');var ps=document.querySelectorAll('.lab-panel');for(var j=0;j<ps.length;j++)ps[j].classList.remove('active');var bs=document.querySelectorAll('.lab-tab');for(var k=0;k<bs.length;k++){if(bs[k].getAttribute('onclick')&&bs[k].getAttribute('onclick').indexOf(id)!==-1)bs[k].classList.add('active');}var pn=document.getElementById(id);if(pn)pn.classList.add('active');},es:function(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;},st:function(m){var t=document.createElement('div');t.className='xp-toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);}};
+window.CairoLab=L;
+
+// ── INTERACTIVE Q (Semana 4) ──
+var IQ=(function(){
+var a={},xa={};
+try{var s=JSON.parse(localStorage.getItem('tga04_s4_iq')||'{}');a=s.a||{};xa=s.xa||{};}catch(e){}
+function sv(){try{localStorage.setItem('tga04_s4_iq',JSON.stringify({a:a,xa:xa}));}catch(e){}}
+function nm(s){return s.toLowerCase().replace(/[áàäâ]/g,'a').replace(/[éèëê]/g,'e').replace(/[íìïî]/g,'i').replace(/[óòöô]/g,'o').replace(/[úùüû]/g,'u').replace(/[ñ]/g,'n').replace(/[^a-z0-9 ]/g,' ');}
+var rub={
+iq1:{kw:['DD','FDD','CASO','OTRO','sesiones','10','20','sobrecarga','baja','optimo','alerta','<','>','<=','clasificar','terapeuta'],
+fb:{full:'¡Excelente! Estructura correcta: <code>DD sesiones_semana</code> → <code>CASO < 10: "sobrecarga baja"</code> → <code>CASO <= 20: "óptimo"</code> → <code>CASO OTRO: "alerta sobrecarga"</code> → <code>FDD</code>. Tres caminos claramente diferenciados.',
+partial:'¡Buena dirección! La estructura DD-FDD necesita: declarar la variable, usar <code>DD variable</code>, definir cada <code>CASO condicion: accion</code>, incluir <code>CASO OTRO:</code> para el caso >20, y cerrar con <code>FDD</code>.',
+wrong:'Estructura DD-FDD: <code>DD sesiones_semana</code> → <code>CASO < 10: ESCRIBIR "Baja"</code> → <code>CASO <= 20: ESCRIBIR "Optimo"</code> → <code>CASO OTRO: ESCRIBIR "Alerta"</code> → <code>FDD</code>. Recuerda incluir siempre el CASO OTRO como respaldo.'}},
+iq2:{kw:['DD','FDD','CASO','OTRO','tasa','80','SINO','SI','convertir','>=','clasificar','VERDE','ATENCION','dos','caminos'],
+fb:{full:'¡Correcto! Convertiste SI-SINO-FSI a DD-FDD: <code>DD tasa_retencion</code> → <code>CASO >= 80: ESCRIBIR "VERDE"</code> → <code>CASO OTRO: ESCRIBIR "ATENCION"</code> → <code>FDD</code>. Misma lógica, estructura diferente.',
+partial:'Cerca. La conversión es: <code>DD tasa_retencion</code> → <code>CASO >= 80.0: ESCRIBIR "VERDE: Buen progreso"</code> → <code>CASO OTRO: ESCRIBIR "ATENCION: Revisar plan"</code> → <code>FDD</code>. Solo necesitas dos casos porque el original tiene dos caminos.',
+wrong:'Para convertir SI-SINO a DD-FDD: <code>DD tasa_retencion</code> → <code>CASO >= 80.0: clasificacion = "VERDE"</code> → <code>CASO OTRO: clasificacion = "ATENCION"</code> → <code>FDD</code>. El CASO OTRO reemplaza al SINO cuando solo hay dos caminos.'}},
+iq3:{kw:['legible','claro','prefiero','contexto','SI-SINO','DD-FDD','dos','tres','camino','categoria','simple','complejo','comparar','ventaja','estructura'],
+fb:{full:'¡Excelente análisis! SI-SINO-FSI es más legible para decisiones binarias (2 caminos) porque es explícito. DD-FDD escala mejor con 3+ categorías porque evita anidar muchos SI. La elección depende del número de caminos que necesitas.',
+partial:'Buena reflexión. En general: SI-SINO-FSI para 2 opciones (más simple de leer), DD-FDD para 3+ opciones (más ordenado). La legibilidad depende del contexto: pocas ramas = SI-SINO, muchas ramas = DD-FDD.',
+wrong:'Piensa en esto: SI-SINO-FSI es ideal cuando solo hay 2 resultados posibles (ej: aprobado/rechazado). DD-FDD es mejor cuando hay 3 o más (ej: verde/amarillo/rojo). ¿En qué casos usarías cada uno? Fundamenta tu elección.'}},
+iq4:{kw:['ejemplo','empresarial','dos','tres','caminos','SI-SINO','DD-FDD','decisión','descuento','nivel','clasificar','categoria'],
+fb:{full:'¡Buenos ejemplos! 2 caminos (SI-SINO): "SI compra > $1M ENTONCES descuento 10% SINO sin descuento FSI". 3 caminos (DD-FDD): clasificar cliente como oro/plata/bronce según gasto anual. Bien diferenciados.',
+partial:'Buen intento. 2 caminos: "SI el empleado tiene más de 5 años ENTONCES bono SINO no bono". 3 caminos: "DD puntaje → CASO >=90: excelente, CASO >=70: bueno, CASO OTRO: mejorar". Asegúrate de que el de 3 caminos use estructura DD-FDD.',
+wrong:'Ejemplo 2 caminos: "SI factura > $10M ENTONCES VIP SINO regular". Ejemplo 3 caminos: clasificar proveedores como A/B/C según puntaje de calidad. El primero usa SI-SINO, el segundo DD-FDD.'}},
+iq5:{kw:['DD','FDD','CASO','OTRO','ALGORITMO','VARIABLES','INICIO','FIN','10','20','sesiones','sobrecarga','baja','optimo','alerta','<','<='],
+fb:{full:'¡Algoritmo completo! <code>DD sesiones_semana</code> → <code>CASO < 10: ESCRIBIR "Baja"</code> → <code>CASO <= 20: ESCRIBIR "Optimo"</code> → <code>CASO OTRO: ESCRIBIR "Alerta"</code> → <code>FDD</code>. Tres rangos bien definidos con fronteras claras.',
+partial:'Buena estructura. Verifica: ¿incluiste <code>CASO OTRO</code> para el rango >20? ¿Usaste <code><= 20</code> para que 20 quede en óptimo? Las fronteras son críticas en DD-FDD.',
+wrong:'Estructura: <code>DD sesiones_semana</code> → <code>CASO < 10: ESCRIBIR "Sobrecarga baja"</code> → <code>CASO <= 20: ESCRIBIR "Optimo"</code> → <code>CASO OTRO: ESCRIBIR "Alerta sobrecarga"</code> → <code>FDD</code>. No olvides declarar la variable y usar LEER.'}},
+iq6:{kw:['convertir','DD','FDD','SI-SINO','legible','contexto','comparar','prefiero','estructura','camino','decisión','CASO','OTRO'],
+fb:{full:'¡Correcto! Conversión: <code>DD tasa_retencion → CASO >=80: "VERDE" → CASO OTRO: "ATENCION" → FDD</code>. SI-SINO es más legible para 2 opciones porque el SINO es explícito. DD-FDD es preferible cuando hay 3+ categorías o se prevé que crezcan.',
+partial:'Buena conversión. La clave: SI-SINO-FSI gana en claridad para decisiones binarias (es más directo). DD-FDD gana en escalabilidad (agregar un tercer caso no rompe la estructura). ¿En tu contexto de NeuroBiz, cuál prefieres?',
+wrong:'Conversión: reemplaza <code>SI cond ENTONCES ... SINO ... FSI</code> por <code>DD variable → CASO cond: ... → CASO OTRO: ... → FDD</code>. La legibilidad: SI-SINO es más natural para 2 opciones; DD-FDD escala mejor. Justifica tu preferencia.'}}
+};
+function ck(id){var r=rub[id];if(!r)return;var ta=document.getElementById(id+'-ta'),fb=document.getElementById(id+'-fb'),iq=document.getElementById(id),btn=iq?iq.querySelector('.iq-btn'):null;if(!ta||!fb||!iq)return;var ans=ta.value.trim();if(ans.length<15){fb.className='iq-feedback error show';fb.innerHTML='Escribe una respuesta mas completa.';iq.className='interactive-q wrong';return;}
+var w=nm(ans).split(/\s+/),mt=[];
+for(var i=0;i<r.kw.length;i++){var kw=r.kw[i],kn=nm(kw),fd=false;for(var j=0;j<w.length;j++){if(w[j]===kn||(w[j].length>=4&&w[j].indexOf(kn)>=0)||(w[j].length>=4&&kn.indexOf(w[j])>=0)){fd=true;break;}}if(fd)mt.push(kw);}
+var ratio=mt.length/r.kw.length,fc,ft;
+if(ratio>=0.20){fc='success';ft=r.fb.full;iq.className='interactive-q answered';}else if(ratio>=0.08){fc='partial';ft=r.fb.partial;iq.className='interactive-q partial';}else{fc='error';ft=r.fb.wrong;iq.className='interactive-q wrong';}
+fb.className='iq-feedback '+fc+' show';fb.innerHTML=ft;
+var kh='<div class="iq-keywords">';for(var k=0;k<mt.length;k++)kh+='<span class="iq-kw matched">✓ '+mt[k]+'</span>';kh+='</div>';fb.innerHTML+=kh;
+if(!xa[id]&&ratio>=0.08){xa[id]=true;a[id]=ratio>=0.20?'full':'partial';if(typeof PT!=='undefined'&&PT.addXP){var pts=ratio>=0.20?4:2,lb='Pregunta '+id.replace('iq','')+(ratio>=0.20?' (completa)':' (parcial)');PT.addXP(pts,lb);var pe=iq.querySelector('.iq-pts');if(pe){pe.textContent='+'+pts+' XP';pe.classList.add('earned');}if(typeof CairoLab!=='undefined'&&CairoLab.st)CairoLab.st('+'+pts+' XP — '+lb);}}else if(xa[id]){var pe2=iq.querySelector('.iq-pts');if(pe2&&a[id]){var pp=a[id]==='full'?4:2;pe2.textContent='+'+pp+' XP';pe2.classList.add('earned');}}
+if(btn)btn.disabled=true;a[id]=a[id]||(ratio>=0.20?'full':'partial');sv();}
+function rst(){for(var id in a){if(!a.hasOwnProperty(id))continue;var iq=document.getElementById(id),pe=iq?iq.querySelector('.iq-pts'):null;if(pe){pe.textContent='+'+(a[id]==='full'?4:2)+' XP';pe.classList.add('earned');}var btn=iq?iq.querySelector('.iq-btn'):null;if(btn)btn.disabled=true;if(iq)iq.className='interactive-q '+(a[id]==='full'?'answered':'partial');}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rst);else rst();
+return{check:ck};
+})();
+window.InteractiveQ=IQ;
+}();
+</script>
 </body>
 </html>
