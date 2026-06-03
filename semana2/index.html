@@ -119,7 +119,54 @@
       .card { padding: 1.2rem; }
       main { padding: 0 .8rem 3rem; }
     }
-  </style>
+  
+    .interactive-q{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;margin:.8rem 0;transition:border-color .3s}
+    .interactive-q.answered{border-color:#43a047;background:#f9fef9}
+    .interactive-q.partial{border-color:#e6c800;background:#fffdf5}
+    .interactive-q.wrong{border-color:#c62828;background:#fff5f5}
+    .iq-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
+    .iq-num{background:var(--primary);color:#fff;border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0}
+    .iq-pts{font-size:.75rem;color:var(--gold);font-weight:700;background:#fff9c4;border-radius:10px;padding:.1rem .6rem}
+    .iq-pts.earned{background:#e8f5e9;color:#2e7d32}
+    .iq-question{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.6rem;line-height:1.5}
+    .iq-textarea{width:100%;min-height:70px;padding:.6rem .8rem;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;line-height:1.6;resize:vertical;transition:border-color .2s;background:var(--light-bg)}
+    .iq-textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(45,58,94,.1)}
+    .iq-actions{margin-top:.5rem;display:flex;gap:.5rem;align-items:center}
+    .iq-btn{background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .15s}
+    .iq-btn:hover{background:#1557b0}
+    .iq-btn:disabled{background:#9e9e9e;cursor:not-allowed}
+    .iq-feedback{margin-top:.6rem;padding:.6rem .8rem;border-radius:8px;font-size:.84rem;line-height:1.6;display:none}
+    .iq-feedback.show{display:block}
+    .iq-feedback.success{background:#e8f5e9;border:1px solid #a5d6a7;color:#1b5e20}
+    .iq-feedback.partial{background:#fff8e1;border:1px solid #ffe082;color:#e65100}
+    .iq-feedback.error{background:#ffebee;border:1px solid #ef9a9a;color:#b71c1c}
+    .iq-keywords{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem}
+    .iq-kw{font-size:.7rem;background:#e3f2fd;color:#1565c0;border-radius:8px;padding:.1rem .5rem}
+    .iq-kw.matched{background:#c8e6c9;color:#1b5e20;font-weight:600}
+    .iq-kw.missed{background:#ffcdd2;color:#b71c1c;text-decoration:line-through}
+    .colab-cell{background:#fff;border:1px solid #dadce0;border-radius:8px;margin:1rem 0;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08);transition:box-shadow .2s,border-left .3s}
+    .colab-cell:hover{box-shadow:0 2px 6px rgba(0,0,0,.12)} .colab-cell.running{border-left:4px solid #FFDF2D;box-shadow:0 0 0 2px rgba(255,223,45,.3)} .colab-cell.success{border-left:4px solid #43a047} .colab-cell.error{border-left:4px solid #c62828}
+    .colab-toolbar{display:flex;align-items:center;gap:.5rem;padding:.35rem .8rem;background:#f8f9fa;border-bottom:1px solid #dadce0;font-size:.78rem;color:#5f6368}
+    .colab-run-btn{background:#1a73e8;color:#fff;border:none;border-radius:4px;padding:.3rem .9rem;font-size:.78rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.35rem;transition:background .15s,transform .1s}
+    .colab-run-btn:hover{background:#1557b0} .colab-run-btn:active{transform:scale(.96)} .colab-run-btn.running{background:#9e9e9e;cursor:wait}
+    .colab-run-btn .spinner{display:none;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:colab-spin .6s linear infinite}
+    @keyframes colab-spin{to{transform:rotate(360deg)}} .colab-run-btn.running .spinner{display:inline-block} .colab-run-btn.running .btn-label{display:none}
+    .colab-lang-badge{font-size:.7rem;background:#e8eaed;color:#5f6368;border-radius:4px;padding:.15rem .5rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+    .colab-cell-label{font-size:.75rem;color:#5f6368;font-weight:600;margin-left:auto}
+    .colab-editor{padding:.8rem 1rem;font-family:'Courier New','Fira Code','Consolas',monospace;font-size:.85rem;line-height:1.65;color:#1E2843;background:#fafafa;min-height:60px;max-height:400px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;outline:none;border:none;caret-color:#1a73e8}
+    .colab-editor:focus{background:#fff;box-shadow:inset 0 0 0 2px #e8f0fe} .colab-editor .kw{color:#7c3aed;font-weight:700} .colab-editor .fn{color:#2563eb} .colab-editor .str{color:#059669} .colab-editor .cm{color:#9ca3af;font-style:italic} .colab-editor .num{color:#d97706}
+    .colab-output{display:none;background:#1e1e1e;color:#d4d4d4;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.6;padding:.8rem 1rem;max-height:300px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;border-top:1px solid #333}
+    .colab-output.visible{display:block} .colab-output .out-info{color:#6a9955} .colab-output .out-input{color:#ce9178} .colab-output .out-error{color:#f44747} .colab-output .out-value{color:#4ec9b0}
+    .lab-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:1rem}
+    .lab-tab{padding:.5rem 1rem;font-size:.85rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s}
+    .lab-tab:hover{color:var(--primary)} .lab-tab.active{color:var(--primary);border-bottom-color:var(--gold)}
+    .lab-panel{display:none} .lab-panel.active{display:block}
+    .xp-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1E2843,#2d3a5e);color:#fff;padding:.7rem 1.5rem;border-radius:20px;font-weight:700;font-size:.9rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);animation:xpToastIn .4s ease,xpToastOut .4s ease 2.5s forwards}
+    @keyframes xpToastIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    @keyframes xpToastOut{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-10px)}}
+    .lab-challenge-done{display:inline-flex;align-items:center;gap:.3rem;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:12px;padding:.15rem .6rem;font-size:.75rem;font-weight:700}
+    .step-indicator{display:flex;align-items:center;gap:.3rem;margin:.5rem 0 1rem;font-size:.8rem;color:var(--muted);flex-wrap:wrap}
+</style>
 
   <style id="pt-css">
   #pt-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg,#1E2843,#2d3a5e); color: #fff; border-radius: 16px; padding: 14px 18px; min-width: 240px; max-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,.35); font-family: 'Open Sans', Arial, sans-serif; font-size: .85rem; transition: transform .3s; }
@@ -185,6 +232,7 @@
   <a href="#pseudocodigo">📝 Pseudocódigo</a>
   <a href="#actividad">⚙️ Actividad</a>
   <a href="#hti">🏠 HTI</a>
+  <a href="#lab">🧪 Lab</a>
   <a href="#quiz">🎮 Quiz</a>
   <a href="#bib">📖 Fuentes</a>
 </nav>
@@ -416,62 +464,87 @@
 <!-- ══ PSEUDOCÓDIGO ══ -->
 <section id="pseudocodigo" class="card">
   <h2>📝 Pseudocódigo — Variables y Operaciones en NeuroBiz</h2>
+  <p>El siguiente algoritmo formaliza los indicadores de NeuroBiz. <strong>¡Ejecútalo!</strong> — ingresa los datos y observa cómo se calculan los KPIs.</p>
+  <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">💡 <strong>Celda interactiva:</strong> haz clic en <strong>▶ Ejecutar</strong>, edita el código y vuelve a ejecutar. ¡Como en Google Colab!</p>
 
-  <p>
-    El siguiente algoritmo formaliza los indicadores de NeuroBiz usando los tipos de dato del curso.
-    Léelo de arriba hacia abajo y verifica dónde se declara, se calcula y se imprime cada valor.
-  </p>
-
-  <div class="code-wrap">
-    <div class="code-title">📝 Pseudocódigo — CalcularKPIsNeuroBiz</div>
-    <pre>
+  <div class="colab-cell" id="cell-kpi">
+    <div class="colab-toolbar">
+      <button class="colab-run-btn" onclick="CairoLab.rc('cell-kpi')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button>
+      <span class="colab-lang-badge">Cairó</span><span class="colab-cell-label">CalcularKPIsNeuroBiz</span>
+    </div>
+    <div class="colab-editor" contenteditable="true" spellcheck="false">
 <span class="kw">ALGORITMO</span> CalcularKPIsNeuroBiz
-  <span class="kw">VARIABLES</span>
-    sesiones_asistidas: <span class="kw">ENTERO</span>
-    sesiones_fallidas: <span class="kw">ENTERO</span>
-    total_sesiones: <span class="kw">ENTERO</span>
-    tasa_retencion: <span class="kw">REAL</span>
-    nombre_terapeuta: <span class="kw">CADENA</span>
-    es_activo: <span class="kw">LÓGICO</span>
-  <span class="kw">INICIO</span>
-    <span class="fn">LEER</span> sesiones_asistidas
-    <span class="fn">LEER</span> sesiones_fallidas
-    <span class="fn">LEER</span> nombre_terapeuta
-    total_sesiones <span class="kw">←</span> sesiones_asistidas + sesiones_fallidas
-    tasa_retencion <span class="kw">←</span> (sesiones_asistidas / total_sesiones) * <span class="num">100</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"Terapeuta: "</span>, nombre_terapeuta
-    <span class="fn">ESCRIBIR</span> <span class="str">"Tasa retención: "</span>, tasa_retencion, <span class="str">"%"</span>
-    es_activo <span class="kw">←</span> sesiones_asistidas &gt; <span class="num">0</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"Terapeuta activo: "</span>, es_activo
-  <span class="kw">FIN</span>
-    </pre>
+<span class="kw">VARIABLES</span>
+  sesiones_asistidas : <span class="kw">ENTERO</span>
+  sesiones_fallidas  : <span class="kw">ENTERO</span>
+  total_sesiones     : <span class="kw">ENTERO</span>
+  tasa_retencion     : <span class="kw">REAL</span>
+  nombre_terapeuta   : <span class="kw">CADENA</span>
+  es_activo          : <span class="kw">LOGICO</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== NEUROBIZ S.A.S. — CALCULO DE KPIs ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Cuantas sesiones asistidas tuvo el terapeuta?"</span>
+  <span class="fn">LEER</span> sesiones_asistidas
+  <span class="fn">ESCRIBIR</span> <span class="str">"Cuantas sesiones fallidas?"</span>
+  <span class="fn">LEER</span> sesiones_fallidas
+  <span class="fn">ESCRIBIR</span> <span class="str">"Nombre del terapeuta:"</span>
+  <span class="fn">LEER</span> nombre_terapeuta
+  total_sesiones = sesiones_asistidas + sesiones_fallidas
+  tasa_retencion = (sesiones_asistidas / total_sesiones) * <span class="num">100</span>
+  es_activo = sesiones_asistidas > <span class="num">0</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Terapeuta: "</span> + nombre_terapeuta
+  <span class="fn">ESCRIBIR</span> <span class="str">"Tasa de retencion: "</span> + tasa_retencion + <span class="str">"%"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Terapeuta activo: "</span> + es_activo
+<span class="kw">FIN</span>
+    </div>
+    <div class="colab-output"><span class="out-info">🔍 Ejecuta para calcular los KPIs de un terapeuta...</span></div>
   </div>
 
-  <h3>Despiece del algoritmo</h3>
+  <h3 style="margin-top:1.5rem">Despiece del algoritmo</h3>
   <table>
     <thead><tr><th>Línea</th><th>Qué ocurre</th><th>Concepto de la semana</th></tr></thead>
     <tbody>
       <tr><td><code>VARIABLES</code></td><td>Se crean los cajones con nombre y tipo.</td><td>Declaración tipada</td></tr>
       <tr><td><code>LEER</code></td><td>Se reciben datos del usuario o del sistema.</td><td>Entrada</td></tr>
-      <tr><td><code>←</code></td><td>Se asigna un resultado a una variable.</td><td>Asignación</td></tr>
+      <tr><td><code>=</code></td><td>Se asigna un resultado a una variable.</td><td>Asignación</td></tr>
       <tr><td><code>+</code>, <code>/</code>, <code>*</code></td><td>Se construye la fórmula del KPI.</td><td>Operadores aritméticos</td></tr>
       <tr><td><code>&gt;</code></td><td>Se evalúa si el terapeuta tuvo actividad.</td><td>Operador relacional</td></tr>
       <tr><td><code>ESCRIBIR</code></td><td>Se muestran resultados legibles.</td><td>Salida</td></tr>
     </tbody>
   </table>
 
-  <div class="code-wrap">
-    <div class="code-title">📐 Mini laboratorio — Expresiones compuestas</div>
-    <pre>
-<span class="cm">{ Ejemplos para practicar en clase }</span>
-meta_retencion       <span class="kw">←</span> <span class="num">80.0</span>
-diferencia_meta      <span class="kw">←</span> meta_retencion - tasa_retencion
-cumple_objetivo      <span class="kw">←</span> tasa_retencion &gt;= meta_retencion
-auditado_correcto    <span class="kw">←</span> (sesiones_asistidas + sesiones_fallidas) &gt; <span class="num">0</span> Y nombre_terapeuta &lt;&gt; <span class="str">""</span>
-    </pre>
-  </div>
-</section>
+  <h3>🧪 Mini laboratorio — Expresiones compuestas</h3>
+  <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem">Practica escribiendo expresiones con operadores. Edita y ejecuta para ver los resultados.</p>
 
+  <div class="colab-cell" id="cell-expr">
+    <div class="colab-toolbar">
+      <button class="colab-run-btn" onclick="CairoLab.rc('cell-expr')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button>
+      <span class="colab-lang-badge">Cairó</span><span class="colab-cell-label">Expresiones compuestas</span>
+    </div>
+    <div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> ExpresionesCompuestas
+<span class="kw">VARIABLES</span>
+  tasa_retencion     : <span class="kw">REAL</span>
+  meta_retencion     : <span class="kw">REAL</span>
+  diferencia_meta    : <span class="kw">REAL</span>
+  cumple_objetivo    : <span class="kw">LOGICO</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== MINI LABORATORIO DE EXPRESIONES ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Tasa de retencion actual (%):"</span>
+  <span class="fn">LEER</span> tasa_retencion
+  meta_retencion = <span class="num">80.0</span>
+  diferencia_meta = meta_retencion - tasa_retencion
+  cumple_objetivo = tasa_retencion >= meta_retencion
+  <span class="fn">ESCRIBIR</span> <span class="str">"Meta: "</span> + meta_retencion + <span class="str">"%"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Diferencia con la meta: "</span> + diferencia_meta + <span class="str">" puntos"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Cumple objetivo: "</span> + cumple_objetivo
+<span class="kw">FIN</span>
+    </div>
+    <div class="colab-output"><span class="out-info">🔍 Ingresa la tasa de retención actual (ej: 78.5) para ver si cumple la meta del 80%...</span></div>
+  </div>
+
+  <div class="info-box tip" style="margin-top:1.5rem"><span class="icon">🧪</span><p><strong>Prueba a editar:</strong> cambia la meta a 85, agrega una variable <code>sesiones_objetivo</code>, o crea una expresión con <code>Y</code> para validar múltiples condiciones.</p></div>
+</section>
 <!-- ══ ACTIVIDAD PRESENCIAL ══ -->
 <section id="actividad" class="card">
   <h2>⚙️ Actividad Presencial</h2>
@@ -513,12 +586,40 @@ auditado_correcto    <span class="kw">←</span> (sesiones_asistidas + sesiones_
     <div class="activity-header presencial">⏱️ Bloque 3 — Misión NeuroBiz · <em style="font-weight:400;margin-left:.3rem">Bloom: Comprender</em></div>
     <div class="activity-body">
       <p><strong>🎯 Misión:</strong> formalizar las variables del sistema terapéutico.</p>
-      <ol>
-        <li>Declarar las 6 variables del pseudocódigo con el tipo correcto.</li>
-        <li>Escribir la fórmula formal de <code>tasa_retencion</code>.</li>
-        <li>Crear una expresión lógica para definir <code>es_activo</code>.</li>
-        <li>Explicar por escrito por qué <code>tasa_retencion</code> es <strong>REAL</strong> y no <strong>ENTERO</strong>.</li>
-      </ol>
+
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">💡 <strong>Responde cada pregunta</strong> y haz clic en <strong>Verificar</strong> para obtener retroalimentación inmediata. +4 XP por respuesta completa.</p>
+
+      <div class="interactive-q" id="iq1">
+        <div class="iq-header"><span class="iq-num">1</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Declara las 6 variables del pseudocódigo <code>CalcularKPIsNeuroBiz</code> con el tipo de dato correcto para cada una.</p>
+        <textarea class="iq-textarea" placeholder="Escribe las 6 variables y su tipo: nombre_variable : TIPO..." minlength="20" id="iq1-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq1')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq1-fb"></div>
+      </div>
+
+      <div class="interactive-q" id="iq2">
+        <div class="iq-header"><span class="iq-num">2</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Escribe la fórmula formal de <code>tasa_retencion</code> usando notación Cairó (con ← para asignación).</p>
+        <textarea class="iq-textarea" placeholder="Escribe la fórmula completa aquí..." minlength="15" id="iq2-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq2')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq2-fb"></div>
+      </div>
+
+      <div class="interactive-q" id="iq3">
+        <div class="iq-header"><span class="iq-num">3</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Crea una expresión lógica para definir <code>es_activo</code> (debe ser VERDADERO si el terapeuta tuvo al menos una sesión asistida).</p>
+        <textarea class="iq-textarea" placeholder="Escribe la expresión lógica aquí..." minlength="15" id="iq3-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq3')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq3-fb"></div>
+      </div>
+
+      <div class="interactive-q" id="iq4">
+        <div class="iq-header"><span class="iq-num">4</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Explica por qué <code>tasa_retencion</code> debe ser tipo <strong>REAL</strong> y no <strong>ENTERO</strong>.</p>
+        <textarea class="iq-textarea" placeholder="Explica la diferencia entre REAL y ENTERO en este contexto..." minlength="30" id="iq4-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq4')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq4-fb"></div>
+      </div>
       <div class="info-box tip">
         <span class="icon">💡</span>
         <p><strong>Entregable:</strong> hoja o archivo con la tabla de variables + pseudocódigo formalizado.
@@ -558,13 +659,135 @@ auditado_correcto    <span class="kw">←</span> (sesiones_asistidas + sesiones_
   <div class="activity">
     <div class="activity-header hti-b">🧠 HTI-C — Reflexión corta</div>
     <div class="activity-body">
-      <ol>
-        <li>Responde: <strong>¿Cuál es la diferencia entre ENTERO y REAL?</strong></li>
-        <li>Da un ejemplo de cada uno con datos de NeuroBiz.</li>
-        <li>Explica por qué elegir mal el tipo afecta un sistema de información empresarial.</li>
-      </ol>
+
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">💡 <strong>Responde en los recuadros</strong> y obtén retroalimentación inmediata. +4 XP por respuesta completa, +2 XP por respuesta parcial.</p>
+
+      <div class="interactive-q" id="iq5">
+        <div class="iq-header"><span class="iq-num">5</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">¿Cuál es la diferencia entre <strong>ENTERO</strong> y <strong>REAL</strong>?</p>
+        <textarea class="iq-textarea" placeholder="Explica la diferencia fundamental entre estos dos tipos..." minlength="20" id="iq5-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq5')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq5-fb"></div>
+      </div>
+
+      <div class="interactive-q" id="iq6">
+        <div class="iq-header"><span class="iq-num">6</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Da un ejemplo de <strong>ENTERO</strong> y uno de <strong>REAL</strong> con datos reales del caso NeuroBiz.</p>
+        <textarea class="iq-textarea" placeholder="Ejemplo ENTERO: ... Ejemplo REAL: ..." minlength="20" id="iq6-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq6')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq6-fb"></div>
+      </div>
+
+      <div class="interactive-q" id="iq7">
+        <div class="iq-header"><span class="iq-num">7</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Explica por qué elegir mal el tipo de dato afecta un sistema de información empresarial como el de NeuroBiz.</p>
+        <textarea class="iq-textarea" placeholder="Explica las consecuencias de confundir tipos de datos en un sistema real..." minlength="30" id="iq7-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq7')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq7-fb"></div>
+      </div>
     </div>
   </div>
+</section>
+
+<!-- ══ LABORATORIO INTERACTIVO ══ -->
+<section id="lab" class="card">
+  <h2>🧪 Laboratorio Interactivo — Variables y Operadores</h2>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Practica declarando variables y escribiendo expresiones con operadores. Cada celda es <strong>editable</strong> y <strong>ejecutable</strong>. +5 XP por cada ejecución.</p>
+  <div class="lab-tabs">
+    <button class="lab-tab active" onclick="CairoLab.stb('tab-vars')">📝 Variables</button>
+    <button class="lab-tab" onclick="CairoLab.stb('tab-ops')">🔢 Operadores</button>
+    <button class="lab-tab" onclick="CairoLab.stb('tab-libre2')">✨ Celda Libre</button>
+  </div>
+
+  <div class="lab-panel active" id="tab-vars">
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>HTI-B:</strong> Declara 5 variables para una clínica terapéutica ficticia con sus tipos correctos. Incluye ENTERO, REAL, CADENA y LÓGICO.</p>
+    <div class="colab-cell" id="cell-vars">
+      <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-vars')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div>
+      <div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> ClinicaFicticia
+<span class="kw">VARIABLES</span>
+  total_pacientes    : <span class="kw">ENTERO</span>
+  tasa_ocupacion     : <span class="kw">REAL</span>
+  nombre_clinica     : <span class="kw">CADENA</span>
+  tiene_convenio     : <span class="kw">LOGICO</span>
+  sesiones_mensuales : <span class="kw">ENTERO</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== CLINICA FICTICIA ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Nombre de la clinica:"</span>
+  <span class="fn">LEER</span> nombre_clinica
+  <span class="fn">ESCRIBIR</span> <span class="str">"Total pacientes atendidos:"</span>
+  <span class="fn">LEER</span> total_pacientes
+  <span class="fn">ESCRIBIR</span> <span class="str">"Tasa de ocupacion (%):"</span>
+  <span class="fn">LEER</span> tasa_ocupacion
+  <span class="fn">ESCRIBIR</span> <span class="str">"Tiene convenio con EPS? (1=Si / 0=No):"</span>
+  <span class="fn">LEER</span> tiene_convenio
+  <span class="fn">ESCRIBIR</span> <span class="str">"Sesiones mensuales:"</span>
+  <span class="fn">LEER</span> sesiones_mensuales
+  <span class="fn">ESCRIBIR</span> <span class="str">"RESUMEN DE LA CLINICA"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Clinica: "</span> + nombre_clinica
+  <span class="fn">ESCRIBIR</span> <span class="str">"Pacientes: "</span> + total_pacientes
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ocupacion: "</span> + tasa_ocupacion + <span class="str">"%"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Convenio EPS: "</span> + tiene_convenio
+  <span class="fn">ESCRIBIR</span> <span class="str">"Sesiones/mes: "</span> + sesiones_mensuales
+<span class="kw">FIN</span>
+      </div>
+      <div class="colab-output"><span class="out-info">🔍 Ingresa los datos de tu clínica ficticia...</span></div>
+    </div>
+    <div class="step-indicator"><span id="vars-badge" style="font-size:.75rem"></span></div>
+  </div>
+
+  <div class="lab-panel" id="tab-ops">
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>Operadores:</strong> Practica operadores aritméticos, relacionales y lógicos con datos de NeuroBiz.</p>
+    <div class="colab-cell" id="cell-ops">
+      <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-ops')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div>
+      <div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> OperadoresNeuroBiz
+<span class="kw">VARIABLES</span>
+  a : <span class="kw">ENTERO</span>
+  b : <span class="kw">ENTERO</span>
+  suma : <span class="kw">ENTERO</span>
+  division : <span class="kw">REAL</span>
+  es_mayor : <span class="kw">LOGICO</span>
+  ambas_condiciones : <span class="kw">LOGICO</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== OPERADORES EN NEUROBIZ ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese primer numero:"</span>
+  <span class="fn">LEER</span> a
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese segundo numero:"</span>
+  <span class="fn">LEER</span> b
+  suma = a + b
+  division = a / b
+  es_mayor = a > b
+  ambas_condiciones = (a > <span class="num">0</span>) Y (b > <span class="num">0</span>)
+  <span class="fn">ESCRIBIR</span> <span class="str">"Suma: "</span> + suma
+  <span class="fn">ESCRIBIR</span> <span class="str">"Division: "</span> + division
+  <span class="fn">ESCRIBIR</span> <span class="str">"a > b: "</span> + es_mayor
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ambos positivos: "</span> + ambas_condiciones
+<span class="kw">FIN</span>
+      </div>
+      <div class="colab-output"><span class="out-info">🔍 Ingresa dos números para ver operadores en acción...</span></div>
+    </div>
+    <div class="step-indicator"><span id="ops-badge" style="font-size:.75rem"></span></div>
+  </div>
+
+  <div class="lab-panel" id="tab-libre2">
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>✨ Celda Libre:</strong> Crea tu propio algoritmo con variables de diferentes tipos y operadores.</p>
+    <div class="colab-cell" id="cell-libre2">
+      <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-libre2')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div>
+      <div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> MiAlgoritmoSemana2
+<span class="kw">VARIABLES</span>
+  <span class="cm">{ Declara tus variables con sus tipos }</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Mi algoritmo de la Semana 2"</span>
+  <span class="cm">{ Escribe tus instrucciones aqui }</span>
+<span class="kw">FIN</span>
+      </div>
+      <div class="colab-output"><span class="out-info">🔍 Escribe tu código y ejecuta...</span></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:#e8f5e9;border-radius:12px;border:1px solid #a5d6a7"><p style="margin:0;font-size:.85rem">🎯 <strong>¿Completaste los ejercicios?</strong> Has aplicado variables tipadas y operadores a problemas reales. +5 XP por cada celda ejecutada.</p></div>
 </section>
 
 <!-- ══ QUIZ ══ -->
@@ -1101,5 +1324,85 @@ else PT.init();
 })();
 </script>
 
+
+<!-- ══ CAIRO INTERPRETER + COLAB ENGINE + INTERACTIVE Q ══ -->
+<script>
+!function(){"use strict";
+// ── CAIRO INTERPRETER ──
+var I=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;};
+I.prototype.reset=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;};
+I.prototype.tok=function(l){l=l.replace(/\{[^}]*\}/g,'').trim();if(!l)return[];var t=[],re=/"([^"]*)"|(\d+\.?\d*)|(ALGORITMO|FIN|VARIABLES|INICIO|LEER|ESCRIBIR|CADENA|ENTERO|REAL|BOOLEANO|LOGICO)|([a-zA-Z_][a-zA-Z0-9_]*)|([+\-*\/=()<>])|(Y|O|NO)/g,m;while((m=re.exec(l))!==null){if(m[1]!==undefined)t.push({ty:'S',v:m[1]});else if(m[2]!==undefined)t.push({ty:'N',v:parseFloat(m[2])});else if(m[3]!==undefined)t.push({ty:'K',v:m[3]});else if(m[4]!==undefined)t.push({ty:'I',v:m[4]});else if(m[5]!==undefined)t.push({ty:'O',v:m[5]});else if(m[6]!==undefined)t.push({ty:'L',v:m[6]});}return t;};
+I.prototype.gv=function(t){if(t.ty==='N')return t.v;if(t.ty==='S')return t.v;if(t.ty==='I'){if(t.v in this.v){var v=this.v[t.v];if(typeof v==='string'){var n=parseFloat(v);return isNaN(n)?v:n;}return v;}return 0;}return t.v||0;};
+I.prototype.eval=function(t,i){var j=i;if(j>=t.length)return[0,j];var l=this.gv(t[j]);j++;while(j<t.length){var o=t[j];if(o.ty!=='O'||['+','-','*','/','>','<','>=','<='].indexOf(o.v)===-1)break;var ov=o.v;j++;if(j>=t.length)break;var r=this.gv(t[j]);j++;if(ov==='+'){if(typeof l==='string'||typeof r==='string')l=String(l)+String(r);else l=l+r;}else if(ov==='-')l=l-r;else if(ov==='*')l=l*r;else if(ov==='/')l=r!==0?l/r:0;else if(ov==='>')l=l>r;else if(ov==='<')l=l<r;else if(ov==='>=')l=l>=r;else if(ov==='<=')l=l<=r;}return[l,j];};
+I.prototype.exe=function(l){var t=this.tok(l);if(t.length===0)return null;var f=t[0];if(f.ty==='K'&&f.v==='ESCRIBIR'){var r=this.eval(t,1);this.o.push({ty:'W',v:String(r[0])});return null;}if(f.ty==='K'&&f.v==='LEER'){if(t.length<2||t[1].ty!=='I'){this.o.push({ty:'E',v:'Error: LEER necesita variable'});return null;}return{ty:'R',v:t[1].v};}if(f.ty==='I'&&t.length>=2&&t[1].ty==='O'&&t[1].v==='='){var vn=f.v;var vl=this.eval(t,2);this.v[vn]=vl[0];return null;}if(f.ty==='K')return null;return null;};
+I.prototype.parse=function(p){if(typeof p==='string'&&p.indexOf('<')!==-1){var d=document.createElement('div');d.innerHTML=p;p=d.textContent||d.innerText||'';}return p.split(String.fromCharCode(10)).map(function(l){return l.trim();}).filter(function(l){return l.length>0;});};
+I.prototype.run=function(p){this.reset();this.l=this.parse(p);this.r=true;return this.sa();};
+I.prototype.sa=function(){while(this.p<this.l.length&&this.r){var l=this.l[this.p];var r=this.exe(l);this.p++;if(r&&r.ty==='R'){this.a=true;this.iv=r.v;return{p:true,v:r.v,o:this.o.slice()};}}this.r=false;return{p:false,o:this.o.slice()};};
+I.prototype.pi=function(v){if(!this.a)return null;var n=parseFloat(v);this.v[this.iv]=isNaN(n)?v:n;this.a=false;this.iv=null;return this.sa();};
+
+var L={ip:new I(),cc:{},xa:{},ge:function(id){var c=document.getElementById(id);if(!c)return'';var e=c.querySelector('.colab-editor');return e?(e.textContent||e.innerText||''):'';},go:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-output'):null;},gb:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-run-btn'):null;},rc:function(id){var s=this,cl=document.getElementById(id),ou=s.go(id),bt=s.gb(id);if(!cl||!ou)return;cl.classList.add('running');cl.classList.remove('success','error');if(bt)bt.classList.add('running');ou.classList.add('visible');ou.innerHTML='<span class="out-info">Ejecutando...</span>';var pg=s.ge(id);var rs=s.ip.run(pg);
+function pr(r){var h='';if(r.o){for(var i=0;i<r.o.length;i++){var e=r.o[i];if(e.ty==='W')h+='<span class="out-value">'+s.es(e.v)+'</span>\n';else if(e.ty==='E')h+='<span class="out-error">'+s.es(e.v)+'</span>\n';}}
+function ct(r2){if(!r2||!r2.p){h+='<span class="out-info">Ejecucion completada.</span>\n';ou.innerHTML=h||'<span class="out-info">Sin salida.</span>';cl.classList.remove('running');cl.classList.add('success');if(bt)bt.classList.remove('running');s.cc[id]=true;s.ax(id);s.ub();s.sp();return;}
+var inp=prompt('[ENTRADA] '+r2.v+' = ?\n\nEscribe un valor:');if(inp===null){h+='<span class="out-error">Cancelado.</span>\n';ou.innerHTML=h;cl.classList.remove('running');cl.classList.add('error');if(bt)bt.classList.remove('running');return;}
+h+='<span class="out-input">'+s.es(r2.v)+' ← '+s.es(inp)+'</span>\n';ou.innerHTML=h+'<span class="out-info">Continuando...</span>';
+setTimeout(function(){var nr=s.ip.pi(inp);if(nr&&nr.o){var ol=r.o?r.o.length:0;var no=nr.o.slice(ol);for(var j=0;j<no.length;j++){var ne=no[j];if(ne.ty==='W')h+='<span class="out-value">'+s.es(ne.v)+'</span>\n';else if(ne.ty==='E')h+='<span class="out-error">'+s.es(ne.v)+'</span>\n';}}ct(nr);},150);}
+ct(r);}
+pr(rs);},ax:function(id){if(this.xa[id])return;this.xa[id]=true;var m={'cell-kpi':{p:5,l:'KPIs NeuroBiz'},'cell-expr':{p:5,l:'Expresiones compuestas'},'cell-vars':{p:5,l:'Variables clinica'},'cell-ops':{p:5,l:'Operadores'},'cell-libre2':{p:3,l:'Celda Libre'}};var a=m[id];if(a&&typeof PT!=='undefined'&&PT.addXP){PT.addXP(a.p,a.l);this.st('+'+a.p+' XP — '+a.l);}},ub:function(){var b={'vars-badge':this.cc['cell-vars'],'ops-badge':this.cc['cell-ops']};for(var id in b){if(!b.hasOwnProperty(id))continue;var el=document.getElementById(id);if(el&&b[id])el.innerHTML='<span class="lab-challenge-done">Completado</span>';}},sp:function(){if(typeof PT==='undefined')return;if(this.cc['cell-vars']&&this.cc['cell-ops']&&!this._lm){this._lm=true;PT.save();}},stb:function(id){var ts=document.querySelectorAll('.lab-tab');for(var i=0;i<ts.length;i++)ts[i].classList.remove('active');var ps=document.querySelectorAll('.lab-panel');for(var j=0;j<ps.length;j++)ps[j].classList.remove('active');var bs=document.querySelectorAll('.lab-tab');for(var k=0;k<bs.length;k++){if(bs[k].getAttribute('onclick')&&bs[k].getAttribute('onclick').indexOf(id)!==-1)bs[k].classList.add('active');}var pn=document.getElementById(id);if(pn)pn.classList.add('active');},es:function(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;},st:function(m){var t=document.createElement('div');t.className='xp-toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);}};
+window.CairoLab=L;
+
+// ── INTERACTIVE Q ENGINE ──
+var IQ=(function(){
+var a={},xa={};
+try{var s=JSON.parse(localStorage.getItem('tga04_s2_iq')||'{}');a=s.a||{};xa=s.xa||{};}catch(e){}
+function sv(){try{localStorage.setItem('tga04_s2_iq',JSON.stringify({a:a,xa:xa}));}catch(e){}}
+function nm(s){return s.toLowerCase().replace(/[áàäâ]/g,'a').replace(/[éèëê]/g,'e').replace(/[íìïî]/g,'i').replace(/[óòöô]/g,'o').replace(/[úùüû]/g,'u').replace(/[ñ]/g,'n').replace(/[^a-z0-9 ]/g,' ');}
+var rub={
+iq1:{kw:['sesiones_asistidas','ENTERO','sesiones_fallidas','ENTERO','total_sesiones','ENTERO','tasa_retencion','REAL','nombre_terapeuta','CADENA','es_activo','LOGICO','declarar','variable','tipo','6'],
+fb:{full:'¡Excelente! Declaraste correctamente las 6 variables con sus tipos. <code>sesiones_asistidas:ENTERO</code>, <code>sesiones_fallidas:ENTERO</code>, <code>total_sesiones:ENTERO</code>, <code>tasa_retencion:REAL</code>, <code>nombre_terapeuta:CADENA</code>, <code>es_activo:LOGICO</code>.',
+partial:'¡Bien! Te faltaron algunas variables o tipos. Las 6 son: <code>sesiones_asistidas:ENTERO</code>, <code>sesiones_fallidas:ENTERO</code>, <code>total_sesiones:ENTERO</code>, <code>tasa_retencion:REAL</code>, <code>nombre_terapeuta:CADENA</code>, <code>es_activo:LOGICO</code>.',
+wrong:'Revisa el pseudocódigo de CalcularKPIsNeuroBiz. Identifica cada variable en la sección VARIABLES y asígnale su tipo según el dato que guarda: ¿es un conteo? ENTERO. ¿Un porcentaje con decimal? REAL. ¿Texto? CADENA. ¿Verdadero/Falso? LÓGICO.'}},
+iq2:{kw:['tasa_retencion','asistidas','total','100','dividir','multiplicar','formula','asignacion','REAL','porcentaje','sesiones'],
+fb:{full:'¡Correcto! La fórmula es: <code>tasa_retencion ← (sesiones_asistidas / total_sesiones) * 100</code>. Usa división REAL (no DIV) porque necesitas los decimales para el porcentaje.',
+partial:'Te acercaste. La fórmula completa es <code>tasa_retencion ← (sesiones_asistidas / total_sesiones) * 100</code>. Primero divides las asistidas entre el total (obtienes un decimal como 0.78), luego multiplicas por 100 para el porcentaje.',
+wrong:'La fórmula se construye en 3 pasos: 1) suma las sesiones para obtener <code>total_sesiones</code>, 2) divide <code>sesiones_asistidas / total_sesiones</code>, 3) multiplica por 100. En notación Cairó: <code>tasa_retencion ← (sesiones_asistidas / total_sesiones) * 100</code>.'}},
+iq3:{kw:['es_activo','>','0','mayor','sesiones_asistidas','relacional','LOGICO','VERDADERO','FALSO','condicion','comparar'],
+fb:{full:'¡Perfecto! La expresión es <code>es_activo ← sesiones_asistidas > 0</code>. Si el terapeuta tuvo al menos 1 sesión, <code>es_activo</code> será VERDADERO. El operador > produce un valor LÓGICO.',
+partial:'Cerca. La expresión es <code>es_activo ← sesiones_asistidas > 0</code>. Usas el operador relacional > para comparar. Si sesiones_asistidas es mayor que 0, el resultado es VERDADERO.',
+wrong:'Piensa: ¿cómo sabes si un terapeuta está activo? Si tuvo al menos 1 sesión asistida. En pseudocódigo: <code>es_activo ← sesiones_asistidas > 0</code>. El operador > devuelve VERDADERO o FALSO (tipo LÓGICO).'}},
+iq4:{kw:['REAL','ENTERO','decimal','porcentaje','precisión','división','pérdida','redondear','truncar','0.78','78','exactitud','negocio','error'],
+fb:{full:'¡Excelente! <code>tasa_retencion</code> es REAL porque la división produce decimales (ej: 847/959 = 0.883...). Si fuera ENTERO, perderías los decimales y el porcentaje sería 0% u 88% en lugar de 88.3%. En un sistema de negocio, esa pérdida de precisión puede llevar a decisiones equivocadas.',
+partial:'Buena dirección. Es REAL porque la división <code>asistidas/total</code> produce un número con decimales (ej: 0.883). ENTERO trunca los decimales y pierdes precisión. En un KPI empresarial, perder decimales significa tomar decisiones con datos incorrectos.',
+wrong:'Piensa en la división: 847 ÷ 959 = 0.883... Si usas ENTERO, el resultado sería 0 (porque trunca los decimales). Si multiplicas por 100 después, obtienes 0%. Necesitas REAL para preservar los decimales y obtener el 88.3% correcto. En sistemas empresariales, esto evita errores de millones de pesos.'}},
+iq5:{kw:['ENTERO','REAL','decimal','entero','sin','con','diferencia','preciso','truncar','redondear','conteo','medida'],
+fb:{full:'¡Correcto! ENTERO guarda números sin parte decimal (conteos: 847 sesiones, 112 fallidas). REAL guarda números con decimales (porcentajes: 78.5%, promedios: 6.4). La diferencia es que ENTERO trunca los decimales y REAL los conserva.',
+partial:'Cerca. ENTERO = números sin decimales (sirve para contar: 847 pacientes). REAL = números con decimales (sirve para medir: 78.5%). Si usas ENTERO donde necesitas REAL, pierdes precisión.',
+wrong:'ENTERO: sin decimales → para contar cosas (3 terapeutas, 847 sesiones). REAL: con decimales → para medir cosas (78.5%, 6.4 puntos). Es como la diferencia entre "tengo 3 manzanas" (ENTERO) y "pesan 2.5 kilos" (REAL).'}},
+iq6:{kw:['sesiones','847','tasa','78','paciente','total','asistidas','fallidas','ENTERO','REAL','NeuroBiz','ejemplo','porcentaje'],
+fb:{full:'¡Buenos ejemplos! ENTERO: <code>sesiones_asistidas = 847</code> (conteo de sesiones, sin decimales). REAL: <code>tasa_retencion = 78.5</code> (porcentaje calculado, con decimales). Ambos son datos reales del caso NeuroBiz.',
+partial:'Buen intento. Un ejemplo claro de ENTERO en NeuroBiz: <code>sesiones_asistidas = 847</code> (es un conteo, no puede tener decimales). De REAL: <code>tasa_retencion = 78.5</code> (es un porcentaje calculado, necesita decimales).',
+wrong:'Ejemplos del caso: ENTERO → <code>sesiones_asistidas = 847</code> (conteo de sesiones). REAL → <code>tasa_retencion = 78.5</code> (porcentaje con decimal). ENTERO para contar, REAL para medir. Revisa los KPIs en el Memorando de NeuroBiz.'}},
+iq7:{kw:['error','cálculo','precisión','decisión','pérdida','dinero','calidad','dato','truncar','sistema','información','negocio','impacto','millones','Gartner'],
+fb:{full:'¡Excelente análisis! Elegir mal el tipo causa: 1) Pérdida de precisión (ENTERO trunca decimales → tasa 0% en vez de 78.5%), 2) Decisiones equivocadas basadas en datos incorrectos, 3) Costos financieros (Gartner estima US$12.9M/año por mala calidad de datos), 4) Errores en cadena en reportes y dashboards.',
+partial:'Buen razonamiento. Consecuencias principales: los cálculos dan resultados incorrectos (ej: tasa de retención 0% en vez de 78%), las decisiones de negocio se toman con datos falsos, y los errores se propagan a todos los reportes del sistema.',
+wrong:'Imagina que <code>tasa_retencion</code> fuera ENTERO: 847÷959 = 0.88 → ENTERO trunca a 0 → 0×100 = 0%. La dirección pensaría que nadie vuelve a terapia. Consecuencias: despidos innecesarios, cierre de sedes, pérdidas millonarias. Gartner: la mala calidad de datos cuesta US$12.9M al año.'}}
+};
+
+function ck(id){var r=rub[id];if(!r)return;var ta=document.getElementById(id+'-ta'),fb=document.getElementById(id+'-fb'),iq=document.getElementById(id),btn=iq?iq.querySelector('.iq-btn'):null;if(!ta||!fb||!iq)return;var ans=ta.value.trim();if(ans.length<15){fb.className='iq-feedback error show';fb.innerHTML='⚠️ Escribe una respuesta más completa.';iq.className='interactive-q wrong';return;}
+var w=nm(ans).split(/\s+/),mt=[],ms=[];
+for(var i=0;i<r.kw.length;i++){var kw=r.kw[i],kn=nm(kw),fd=false;for(var j=0;j<w.length;j++){if(w[j]===kn||(w[j].length>=4&&w[j].indexOf(kn)>=0)||(w[j].length>=4&&kn.indexOf(w[j])>=0)){fd=true;break;}}if(fd)mt.push(kw);else ms.push(kw);}
+var ratio=mt.length/r.kw.length,fc,ft;
+if(ratio>=0.20){fc='success';ft=r.fb.full;iq.className='interactive-q answered';}else if(ratio>=0.08){fc='partial';ft=r.fb.partial;iq.className='interactive-q partial';}else{fc='error';ft=r.fb.wrong;iq.className='interactive-q wrong';}
+fb.className='iq-feedback '+fc+' show';fb.innerHTML=ft;
+var kh='<div class="iq-keywords">';for(var k=0;k<mt.length;k++)kh+='<span class="iq-kw matched">✓ '+mt[k]+'</span>';kh+='</div>';fb.innerHTML+=kh;
+if(!xa[id]&&ratio>=0.08){xa[id]=true;a[id]=ratio>=0.20?'full':'partial';if(typeof PT!=='undefined'&&PT.addXP){var pts=ratio>=0.20?4:2,lb='Pregunta '+id.replace('iq','')+(ratio>=0.20?' (completa)':' (parcial)');PT.addXP(pts,lb);var pe=iq.querySelector('.iq-pts');if(pe){pe.textContent='+'+pts+' XP';pe.classList.add('earned');}if(typeof CairoLab!=='undefined'&&CairoLab.st)CairoLab.st('+'+pts+' XP — '+lb);}}else if(xa[id]){var pe2=iq.querySelector('.iq-pts');if(pe2&&a[id]){var pp=a[id]==='full'?4:2;pe2.textContent='+'+pp+' XP';pe2.classList.add('earned');}}
+if(btn)btn.disabled=true;a[id]=a[id]||(ratio>=0.20?'full':'partial');sv();}
+
+function rst(){for(var id in a){if(!a.hasOwnProperty(id))continue;var iq=document.getElementById(id),pe=iq?iq.querySelector('.iq-pts'):null;if(pe){pe.textContent='+'+(a[id]==='full'?4:2)+' XP';pe.classList.add('earned');}var btn=iq?iq.querySelector('.iq-btn'):null;if(btn)btn.disabled=true;if(iq)iq.className='interactive-q '+(a[id]==='full'?'answered':'partial');}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rst);else rst();
+return{check:ck};
+})();
+window.InteractiveQ=IQ;
+}();
+</script>
 </body>
 </html>
