@@ -153,6 +153,31 @@
     @keyframes xpToastOut{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-10px)}}
     .lab-challenge-done{display:inline-flex;align-items:center;gap:.3rem;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:12px;padding:.15rem .6rem;font-size:.75rem;font-weight:700}
     .step-indicator{display:flex;align-items:center;gap:.3rem;margin:.5rem 0 1rem;font-size:.8rem;color:var(--muted);flex-wrap:wrap}
+
+    .interactive-q{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;margin:.8rem 0;transition:border-color .3s}
+    .interactive-q.answered{border-color:#43a047;background:#f9fef9}
+    .interactive-q.partial{border-color:#e6c800;background:#fffdf5}
+    .interactive-q.wrong{border-color:#c62828;background:#fff5f5}
+    .iq-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
+    .iq-num{background:var(--primary);color:#fff;border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0}
+    .iq-pts{font-size:.75rem;color:var(--gold);font-weight:700;background:#fff9c4;border-radius:10px;padding:.1rem .6rem}
+    .iq-pts.earned{background:#e8f5e9;color:#2e7d32}
+    .iq-question{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.6rem;line-height:1.5}
+    .iq-textarea{width:100%;min-height:70px;padding:.6rem .8rem;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;line-height:1.6;resize:vertical;transition:border-color .2s;background:var(--light-bg)}
+    .iq-textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(45,58,94,.1)}
+    .iq-actions{margin-top:.5rem;display:flex;gap:.5rem;align-items:center}
+    .iq-btn{background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .15s}
+    .iq-btn:hover{background:#1557b0}
+    .iq-btn:disabled{background:#9e9e9e;cursor:not-allowed}
+    .iq-feedback{margin-top:.6rem;padding:.6rem .8rem;border-radius:8px;font-size:.84rem;line-height:1.6;display:none}
+    .iq-feedback.show{display:block}
+    .iq-feedback.success{background:#e8f5e9;border:1px solid #a5d6a7;color:#1b5e20}
+    .iq-feedback.partial{background:#fff8e1;border:1px solid #ffe082;color:#e65100}
+    .iq-feedback.error{background:#ffebee;border:1px solid #ef9a9a;color:#b71c1c}
+    .iq-keywords{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem}
+    .iq-kw{font-size:.7rem;background:#e3f2fd;color:#1565c0;border-radius:8px;padding:.1rem .5rem}
+    .iq-kw.matched{background:#c8e6c9;color:#1b5e20;font-weight:600}
+    .iq-kw.missed{background:#ffcdd2;color:#b71c1c;text-decoration:line-through}
 </style>
 
   <style id="pt-css">
@@ -481,16 +506,55 @@ fecha        paciente         tipo_terapia   sesion
         </pre>
       </div>
       <div class="data-playground" id="data-playground"><h4>🧪 Laboratorio de Datos — Explora los registros de NeuroBiz</h4><p style="font-size:.8rem;color:var(--muted);margin-bottom:.6rem">Filtra y analiza los datos tú mismo. Así es como un sistema de información convierte <strong>datos</strong> en <strong>información</strong>.</p><div class="data-filter-row"><select id="dp-filter-terapia" onchange="DataPlayground.fl()"><option value="todas">Todas las terapias</option><option value="cognitiva">Cognitiva</option><option value="ocupacional">Ocupacional</option><option value="fonoaudiología">Fonoaudiología</option></select> <select id="dp-filter-estado" onchange="DataPlayground.fl()"><option value="todos">Todos los estados</option><option value="asistida">Asistida</option><option value="fallida">Fallida</option></select> <button onclick="DataPlayground.rs2()">Restablecer</button></div><div id="dp-table-container"></div><div class="data-stats" id="dp-stats"></div></div>
-      <ol>
-        <li>¿Cuáles de estos elementos son <em>datos</em>? ¿Cuál sería la <em>información</em> derivada?</li>
-        <li>¿Qué preguntas de negocio puede responder este conjunto de datos?</li>
-        <li>¿Qué pasos (algoritmo en lenguaje natural) se necesitan para calcular la tasa de retención?</li>
-      </ol>
-      <p style="margin-top:.8rem"><strong>Parte B — Propiedades de los algoritmos:</strong></p>
-      <ol>
-        <li>En grupos de 3, describir en lenguaje natural el proceso de incorporación de un empleado nuevo. Luego verificar: ¿es finito, preciso, efectivo?</li>
-        <li>Comparar con el proceso de admisión de un paciente en NeuroBiz.</li>
-      </ol>
+
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">💡 <strong>Responde cada pregunta</strong> y haz clic en <strong>Verificar</strong> para obtener retroalimentación inmediata. Cada respuesta correcta o bien argumentada te da <strong>+4 XP</strong>.</p>
+
+      <!-- Q1 -->
+      <div class="interactive-q" id="iq1">
+        <div class="iq-header"><span class="iq-num">1</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">¿Cuáles de estos elementos son <em>datos</em>? ¿Cuál sería la <em>información</em> derivada?</p>
+        <textarea class="iq-textarea" placeholder="Escribe tu respuesta aquí... (mínimo 20 caracteres)" minlength="20" id="iq1-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq1')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq1-fb"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="interactive-q" id="iq2">
+        <div class="iq-header"><span class="iq-num">2</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">¿Qué preguntas de negocio puede responder este conjunto de datos?</p>
+        <textarea class="iq-textarea" placeholder="Escribe tu respuesta aquí... (mínimo 20 caracteres)" minlength="20" id="iq2-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq2')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq2-fb"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="interactive-q" id="iq3">
+        <div class="iq-header"><span class="iq-num">3</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">¿Qué pasos (algoritmo en lenguaje natural) se necesitan para calcular la tasa de retención?</p>
+        <textarea class="iq-textarea" placeholder="Describe los pasos uno por uno... (mínimo 20 caracteres)" minlength="20" id="iq3-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq3')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq3-fb"></div>
+      </div>
+
+      <p style="margin-top:1.5rem"><strong>Parte B — Propiedades de los algoritmos:</strong></p>
+
+      <!-- Q4 -->
+      <div class="interactive-q" id="iq4">
+        <div class="iq-header"><span class="iq-num">4</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Describe en lenguaje natural el proceso de incorporación de un empleado nuevo. Luego verifica: ¿es finito, preciso, efectivo?</p>
+        <textarea class="iq-textarea" placeholder="Escribe el proceso paso a paso y analiza sus propiedades... (mínimo 30 caracteres)" minlength="30" id="iq4-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq4')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq4-fb"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="interactive-q" id="iq5">
+        <div class="iq-header"><span class="iq-num">5</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Compara el proceso de admisión de un paciente en NeuroBiz con el de incorporación de un empleado. ¿En qué se parecen sus algoritmos?</p>
+        <textarea class="iq-textarea" placeholder="Compara ambos procesos... (mínimo 30 caracteres)" minlength="30" id="iq5-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq5')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq5-fb"></div>
+      </div>
     </div>
   </div>
 
@@ -1234,6 +1298,197 @@ var DP={fl:function(){var ts=document.getElementById('dp-filter-terapia'),es=doc
 window.DataPlayground=DP;
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){DP.init();});else DP.init();
 }();
+</script>
+
+<script>
+var InteractiveQ = (function() {
+  var answered = {};
+  var xpAwarded = {};
+
+  // Load previous state from localStorage
+  try {
+    var saved = JSON.parse(localStorage.getItem('tga04_iq_answers') || '{}');
+    answered = saved.answered || {};
+    xpAwarded = saved.xpAwarded || {};
+  } catch(e) {}
+
+  function save() {
+    try { localStorage.setItem('tga04_iq_answers', JSON.stringify({answered:answered, xpAwarded:xpAwarded})); } catch(e) {}
+  }
+
+  // Keyword-based checking for open-ended questions
+  var rubrics = {
+    iq1: {
+      keywords: ['dato', 'información', 'fecha', 'paciente', 'terapia', 'sesión', '847', '112', 'asistida', 'fallida', 'crudo', 'contexto', 'procesado', 'tasa', 'retención', '78', 'porcentaje', 'indicador', 'negocio', 'registro'],
+      feedback: {
+        full: '¡Excelente! Identificaste correctamente que los <strong>datos</strong> son los registros crudos (fecha, paciente, terapia, sesión) y la <strong>información</strong> derivada es un indicador procesado como la tasa de retención (78%). <br><br>💡 <em>Un dato es un hecho sin contexto. La información es el dato procesado que responde una pregunta de negocio.</em>',
+        partial: '¡Bien! Vas por buen camino. Recuerda: los <strong>datos</strong> son los valores crudos de la tabla (fecha, nombre, terapia, estado). La <strong>información</strong> es lo que obtienes al procesarlos: por ejemplo, la tasa de retención del 78%. Intenta mencionar ambos conceptos con ejemplos concretos de la tabla.',
+        wrong: 'Revisa la sección de <strong>Marco Teórico → Dato vs. Información</strong>. Los <strong>datos</strong> son los valores individuales de la tabla (nombres, fechas, estados). La <strong>información</strong> es lo que obtienes al procesarlos para responder una pregunta (ej: "la tasa de retención es 78%"). Inténtalo de nuevo.'
+      }
+    },
+    iq2: {
+      keywords: ['tasa', 'retención', 'terapia', 'demandada', 'frecuente', 'paciente', 'asistencia', 'fallida', 'mensual', 'sede', 'comparar', 'indicador', 'rendimiento', 'desempeño', 'estadística', 'patrón', 'tendencia', 'negocio', 'decisión'],
+      feedback: {
+        full: '¡Muy bien! Identificaste preguntas de negocio clave: tasa de retención, terapia más demandada, frecuencia de pacientes, comparación entre sedes. <br><br>💡 <em>Un conjunto de datos permite responder múltiples preguntas de negocio si se procesa adecuadamente.</em>',
+        partial: '¡Buena dirección! Algunas preguntas de negocio que estos datos pueden responder: ¿cuál es la tasa de retención? ¿qué terapia tiene más demanda? ¿hay pacientes que faltan con frecuencia? ¿qué sede tiene mejor desempeño? Intenta mencionar al menos 2 preguntas concretas.',
+        wrong: 'Piensa en qué querría saber la dirección de NeuroBiz: ¿qué porcentaje de sesiones son exitosas? ¿qué terapia es la más solicitada? ¿hay patrones de inasistencia? Las preguntas de negocio convierten los datos en decisiones. Revisa el ejemplo de los KPIs en la sección del Memorando.'
+      }
+    },
+    iq3: {
+      keywords: ['contar', 'asistidas', 'fallidas', 'total', 'sumar', 'dividir', 'multiplicar', '100', 'porcentaje', 'paso', 'leer', 'escribir', 'variable', 'fórmula', 'cálculo', 'sesiones'],
+      feedback: {
+        full: '¡Perfecto! Describiste el algoritmo correctamente: 1) Contar sesiones asistidas, 2) Contar sesiones fallidas, 3) Sumar para obtener el total, 4) Dividir asistidas entre total, 5) Multiplicar por 100. <br><br>💡 <em>Este es un algoritmo finito, preciso y efectivo — las 3 propiedades que definen un algoritmo.</em>',
+        partial: '¡Vas bien! El algoritmo necesita estos pasos: contar las sesiones asistidas, contar las fallidas, sumarlas para el total, dividir (asistidas ÷ total) y multiplicar por 100 para obtener el porcentaje. Intenta describir los pasos en orden, uno por uno.',
+        wrong: 'Piensa en los pasos necesarios: ¿cómo calcularías la tasa de retención con lápiz y papel? 1) Cuenta las sesiones asistidas, 2) Cuenta las fallidas, 3) Súmalas, 4) Divide asistidas entre el total, 5) Multiplica por 100. Describe cada paso en orden.'
+      }
+    },
+    iq4: {
+      keywords: ['paso', 'empleado', 'incorporación', 'contratar', 'documento', 'credencial', 'puesto', 'inducción', 'finito', 'preciso', 'efectivo', 'algoritmo', 'proceso', 'secuencia', 'termina', 'claro', 'sin', 'ambigüedad'],
+      feedback: {
+        full: '¡Excelente! Describiste un proceso secuencial claro y verificaste las 3 propiedades: es <strong>finito</strong> (tiene fin), <strong>preciso</strong> (cada paso es claro) y <strong>efectivo</strong> (cada paso es realizable). <br><br>💡 <em>Un SOP empresarial es un algoritmo de negocio: cumple las mismas 3 propiedades que un algoritmo computacional.</em>',
+        partial: '¡Buen proceso! Ahora verifica las 3 propiedades: ¿Es <strong>finito</strong>? (¿termina en algún momento?) ¿Es <strong>preciso</strong>? (¿cada paso es claro sin ambigüedad?) ¿Es <strong>efectivo</strong>? (¿cada paso se puede ejecutar?). Menciona explícitamente cada propiedad en tu respuesta.',
+        wrong: 'Describe el proceso paso a paso: entregar credencial → asignar puesto → instalar equipo → iniciar inducción. Luego verifica: ¿termina? (finito ✓), ¿cada paso es claro? (preciso ✓), ¿se puede ejecutar? (efectivo ✓). Revisa la tabla de propiedades en Marco Teórico.'
+      }
+    },
+    iq5: {
+      keywords: ['similar', 'algoritmo', 'secuencia', 'pasos', 'leer', 'escribir', 'registrar', 'verificar', 'asignar', 'confirmar', 'estructura', 'patrón', 'entrada', 'salida', 'proceso', 'compara'],
+      feedback: {
+        full: '¡Excelente comparación! Ambos procesos comparten una <strong>estructura algorítmica</strong>: tienen entrada de datos (LEER), procesamiento (verificar/asignar) y salida (ESCRIBIR/confirmar). Son secuencias finitas, precisas y efectivas. <br><br>💡 <em>Reconocer patrones algorítmicos en procesos de negocio es la base del pensamiento computacional aplicado a la gestión.</em>',
+        partial: '¡Buena observación! Ambos procesos siguen un patrón similar: entrada de información → procesamiento → salida/confirmación. En Cairó: LEER datos → procesar → ESCRIBIR resultado. Intenta identificar qué partes de cada proceso corresponden a LEER y cuáles a ESCRIBIR.',
+        wrong: 'Piensa en la estructura de ambos algoritmos: en la admisión, LEES datos del paciente y ESCRIBES una confirmación. En la incorporación, LEES datos del empleado, procesas (asignas puesto, instalas equipo) y ESCRIBES/confirmas la incorporación. Ambos siguen el patrón: entrada → proceso → salida.'
+      }
+    }
+  };
+
+  function normalize(s) {
+    return s.toLowerCase()
+      .replace(/[áàäâ]/g,'a').replace(/[éèëê]/g,'e').replace(/[íìïî]/g,'i')
+      .replace(/[óòöô]/g,'o').replace(/[úùüû]/g,'u')
+      .replace(/[ñ]/g,'n')
+      .replace(/[^a-z0-9 ]/g,' ');
+  }
+
+  function check(id) {
+    var rubric = rubrics[id];
+    if (!rubric) return;
+
+    var ta = document.getElementById(id + '-ta');
+    var fb = document.getElementById(id + '-fb');
+    var iq = document.getElementById(id);
+    var btn = iq ? iq.querySelector('.iq-btn') : null;
+
+    if (!ta || !fb || !iq) return;
+
+    var answer = ta.value.trim();
+    if (answer.length < 20) {
+      fb.className = 'iq-feedback error show';
+      fb.innerHTML = '⚠️ Escribe una respuesta más completa (mínimo 20 caracteres).';
+      iq.className = 'interactive-q wrong';
+      return;
+    }
+
+    var words = normalize(answer).split(/\s+/);
+    var matched = [];
+    var missed = [];
+
+    for (var i = 0; i < rubric.keywords.length; i++) {
+      var kw = rubric.keywords[i];
+      var kwNorm = normalize(kw);
+      var found = false;
+      for (var j = 0; j < words.length; j++) {
+        if (words[j] === kwNorm || (words[j].length >= 4 && words[j].indexOf(kwNorm) >= 0) || (words[j].length >= 4 && kwNorm.indexOf(words[j]) >= 0)) {
+          found = true;
+          break;
+        }
+      }
+      if (found) matched.push(kw);
+      else missed.push(kw);
+    }
+
+    var ratio = matched.length / rubric.keywords.length;
+    var fbClass, fbText;
+
+    if (ratio >= 0.20) {
+      fbClass = 'success';
+      fbText = rubric.feedback.full;
+      iq.className = 'interactive-q answered';
+    } else if (ratio >= 0.08) {
+      fbClass = 'partial';
+      fbText = rubric.feedback.partial;
+      iq.className = 'interactive-q partial';
+    } else {
+      fbClass = 'error';
+      fbText = rubric.feedback.wrong;
+      iq.className = 'interactive-q wrong';
+    }
+
+    fb.className = 'iq-feedback ' + fbClass + ' show';
+    fb.innerHTML = fbText;
+
+    // Show keyword matches
+    var kwHtml = '<div class="iq-keywords">';
+    for (var k = 0; k < matched.length; k++) {
+      kwHtml += '<span class="iq-kw matched">✓ ' + matched[k] + '</span>';
+    }
+    kwHtml += '</div>';
+    fb.innerHTML += kwHtml;
+
+    // Award XP (once per question)
+    if (!xpAwarded[id] && ratio >= 0.08) {
+      xpAwarded[id] = true;
+      answered[id] = ratio >= 0.20 ? 'full' : 'partial';
+      if (typeof PT !== 'undefined' && PT.addXP) {
+        var pts = ratio >= 0.20 ? 4 : 2;
+        var label = 'Pregunta ' + id.replace('iq','') + (ratio >= 0.20 ? ' (completa)' : ' (parcial)');
+        PT.addXP(pts, label);
+        // Show XP badge
+        var ptsEl = iq.querySelector('.iq-pts');
+        if (ptsEl) { ptsEl.textContent = '+' + pts + ' XP'; ptsEl.classList.add('earned'); }
+        // Toast
+        if (typeof CairoLab !== 'undefined' && CairoLab.st) {
+          CairoLab.st('✨ +' + pts + ' XP — ' + label);
+        }
+      }
+    } else if (xpAwarded[id]) {
+      // Already answered - restore state
+      var ptsEl2 = iq.querySelector('.iq-pts');
+      if (ptsEl2 && answered[id]) {
+        var prevPts = answered[id] === 'full' ? 4 : 2;
+        ptsEl2.textContent = '+' + prevPts + ' XP';
+        ptsEl2.classList.add('earned');
+      }
+    }
+
+    if (btn) btn.disabled = true;
+    answered[id] = answered[id] || (ratio >= 0.20 ? 'full' : 'partial');
+    save();
+  }
+
+  // Restore previous state on load
+  function restore() {
+    for (var id in answered) {
+      if (!answered.hasOwnProperty(id)) continue;
+      var iq = document.getElementById(id);
+      var ptsEl = iq ? iq.querySelector('.iq-pts') : null;
+      if (ptsEl) {
+        var pts = answered[id] === 'full' ? 4 : 2;
+        ptsEl.textContent = '+' + pts + ' XP';
+        ptsEl.classList.add('earned');
+      }
+      var btn = iq ? iq.querySelector('.iq-btn') : null;
+      if (btn) btn.disabled = true;
+      if (iq) iq.className = 'interactive-q ' + (answered[id] === 'full' ? 'answered' : 'partial');
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', restore);
+  } else {
+    restore();
+  }
+
+  return { check: check };
+})();
 </script>
 </body>
 </html>
