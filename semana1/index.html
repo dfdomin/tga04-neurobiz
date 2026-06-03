@@ -119,7 +119,41 @@
       .card { padding: 1.2rem; }
       main { padding: 0 .8rem 3rem; }
     }
-  </style>
+  
+    .colab-cell{background:#fff;border:1px solid #dadce0;border-radius:8px;margin:1rem 0;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08);transition:box-shadow .2s,border-left .3s}
+    .colab-cell:hover{box-shadow:0 2px 6px rgba(0,0,0,.12)} .colab-cell.running{border-left:4px solid #FFDF2D;box-shadow:0 0 0 2px rgba(255,223,45,.3)} .colab-cell.success{border-left:4px solid #43a047} .colab-cell.error{border-left:4px solid #c62828}
+    .colab-toolbar{display:flex;align-items:center;gap:.5rem;padding:.35rem .8rem;background:#f8f9fa;border-bottom:1px solid #dadce0;font-size:.78rem;color:#5f6368}
+    .colab-run-btn{background:#1a73e8;color:#fff;border:none;border-radius:4px;padding:.3rem .9rem;font-size:.78rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.35rem;transition:background .15s,transform .1s}
+    .colab-run-btn:hover{background:#1557b0} .colab-run-btn:active{transform:scale(.96)} .colab-run-btn.running{background:#9e9e9e;cursor:wait}
+    .colab-run-btn .spinner{display:none;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:colab-spin .6s linear infinite}
+    @keyframes colab-spin{to{transform:rotate(360deg)}} .colab-run-btn.running .spinner{display:inline-block} .colab-run-btn.running .btn-label{display:none}
+    .colab-lang-badge{font-size:.7rem;background:#e8eaed;color:#5f6368;border-radius:4px;padding:.15rem .5rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+    .colab-cell-label{font-size:.75rem;color:#5f6368;font-weight:600;margin-left:auto}
+    .colab-editor{padding:.8rem 1rem;font-family:'Courier New','Fira Code','Consolas',monospace;font-size:.85rem;line-height:1.65;color:#1E2843;background:#fafafa;min-height:60px;max-height:400px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;outline:none;border:none;caret-color:#1a73e8}
+    .colab-editor:focus{background:#fff;box-shadow:inset 0 0 0 2px #e8f0fe} .colab-editor .kw{color:#7c3aed;font-weight:700} .colab-editor .fn{color:#2563eb} .colab-editor .str{color:#059669} .colab-editor .cm{color:#9ca3af;font-style:italic} .colab-editor .num{color:#d97706}
+    .colab-output{display:none;background:#1e1e1e;color:#d4d4d4;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.6;padding:.8rem 1rem;max-height:300px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;border-top:1px solid #333}
+    .colab-output.visible{display:block} .colab-output .out-info{color:#6a9955} .colab-output .out-input{color:#ce9178} .colab-output .out-error{color:#f44747} .colab-output .out-value{color:#4ec9b0}
+    .data-playground{background:#fff;border:1px solid #dadce0;border-radius:8px;padding:1rem 1.2rem;margin:1rem 0}
+    .data-playground h4{font-size:.95rem;color:var(--primary);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+    .data-table-mini{width:100%;border-collapse:collapse;font-size:.82rem;margin:.5rem 0}
+    .data-table-mini th{background:#1E2843;color:#fff;padding:.4rem .6rem;text-align:left;font-size:.78rem}
+    .data-table-mini td{padding:.3rem .6rem;border-bottom:1px solid #eee} .data-table-mini tr:hover td{background:#f5f5f5}
+    .data-filter-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.5rem 0}
+    .data-filter-row select,.data-filter-row button{padding:.35rem .7rem;border:1px solid #dadce0;border-radius:6px;font-size:.8rem;font-family:inherit}
+    .data-filter-row button{background:#1a73e8;color:#fff;border:none;cursor:pointer;font-weight:600} .data-filter-row button:hover{background:#1557b0}
+    .data-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin-top:.8rem}
+    .data-stat-card{background:#f8f9fa;border:1px solid #dadce0;border-radius:8px;padding:.6rem .8rem;text-align:center}
+    .data-stat-card .stat-val{font-size:1.3rem;font-weight:800;color:var(--primary)} .data-stat-card .stat-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase}
+    .lab-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:1rem}
+    .lab-tab{padding:.5rem 1rem;font-size:.85rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s}
+    .lab-tab:hover{color:var(--primary)} .lab-tab.active{color:var(--primary);border-bottom-color:var(--gold)}
+    .lab-panel{display:none} .lab-panel.active{display:block}
+    .xp-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1E2843,#2d3a5e);color:#fff;padding:.7rem 1.5rem;border-radius:20px;font-weight:700;font-size:.9rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);animation:xpToastIn .4s ease,xpToastOut .4s ease 2.5s forwards}
+    @keyframes xpToastIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    @keyframes xpToastOut{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-10px)}}
+    .lab-challenge-done{display:inline-flex;align-items:center;gap:.3rem;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:12px;padding:.15rem .6rem;font-size:.75rem;font-weight:700}
+    .step-indicator{display:flex;align-items:center;gap:.3rem;margin:.5rem 0 1rem;font-size:.8rem;color:var(--muted);flex-wrap:wrap}
+</style>
 
   <style id="pt-css">
   #pt-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg,#1E2843,#2d3a5e); color: #fff; border-radius: 16px; padding: 14px 18px; min-width: 240px; max-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,.35); font-family: 'Open Sans', Arial, sans-serif; font-size: .85rem; transition: transform .3s; }
@@ -185,6 +219,7 @@
   <a href="#pseudocodigo">📝 Pseudocódigo</a>
   <a href="#actividad">⚙️ Actividad</a>
   <a href="#hti">🏠 HTI</a>
+  <a href="#lab">🧪 Lab</a>
   <a href="#quiz">🎮 Quiz</a>
   <a href="#bib">📖 Fuentes</a>
 </nav>
@@ -373,16 +408,10 @@
 <!-- ══ PSEUDOCÓDIGO ══ -->
 <section id="pseudocodigo" class="card">
   <h2>📝 Pseudocódigo — La Notación del Curso</h2>
-
-  <p>El pseudocódigo que usaremos sigue la notación de <strong>Cairó Battistutti & Guardati</strong>
-  (Alfaomega), el libro de referencia del módulo. Es independiente del lenguaje de programación
-  y se puede escribir en papel y lápiz, en tu cuaderno, o directamente en
-  <strong>Google Colab</strong> (<a href="https://colab.research.google.com/" target="_blank" rel="noopener">colab.research.google.com</a>) desde el primer día.</p>
-
-  <h3>Estructura básica de un algoritmo</h3>
-  <div class="code-wrap">
-    <div class="code-title">📝 Notación Cairó — Estructura mínima</div>
-    <pre>
+  <p>El pseudocódigo que usaremos sigue la notación de <strong>Cairó Battistutti &amp; Guardati</strong> (Alfaomega), el libro de referencia del módulo. Es independiente del lenguaje de programación y se puede escribir en papel y lápiz, en tu cuaderno, o directamente en <strong>Google Colab</strong> (<a href="https://colab.research.google.com/" target="_blank" rel="noopener">colab.research.google.com</a>) desde el primer día.</p>
+  <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">💡 <strong>Las celdas de abajo son interactivas:</strong> haz clic en <strong>▶ Ejecutar</strong> para ver el algoritmo en acción. ¡Como en Google Colab!</p>
+  <h3>Estructura básica</h3>
+  <div class="colab-cell" id="cell-estructura"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-estructura')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span><span class="colab-cell-label">Celda 1</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
 <span class="kw">ALGORITMO</span> NombreDelAlgoritmo
 <span class="kw">VARIABLES</span>
   <span class="cm">{ Declarar aquí cada variable: nombre : TIPO }</span>
@@ -390,14 +419,14 @@
   <span class="cm">{ Instrucciones aquí }</span>
   <span class="fn">LEER</span>  nombre_variable         <span class="cm">{ Entrada de datos }</span>
   <span class="fn">ESCRIBIR</span> expresion_o_mensaje  <span class="cm">{ Salida de datos }</span>
-<span class="kw">FIN</span>
-    </pre>
-  </div>
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Haz clic en Ejecutar...</span></div></div>
 
-  <h3>Primer pseudocódigo: Proceso de admisión NeuroBiz</h3>
-  <div class="code-wrap">
-    <div class="code-title">📝 Pseudocódigo — Admisión de paciente (lenguaje natural → algoritmo)</div>
-    <pre>
+  <div class="info-box cite" style="margin-top:1.2rem"><span class="icon">🏛️</span><p><strong>MIT 18.S191:</strong> <em>"Before you write a single line of code, write the algorithm in plain language. If you can't explain it to a human, a computer won't understand it either."</em> — MIT.</p></div>
+
+  <h3 style="margin-top:1.5rem">Primer pseudocódigo: Proceso de admisión NeuroBiz</h3>
+  <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>¡Ejecútalo!</strong> — te pedirá los datos del paciente.</p>
+
+  <div class="colab-cell" id="cell-admision"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-admision')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span><span class="colab-cell-label">Celda 2 — Admisión NeuroBiz</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
 <span class="kw">ALGORITMO</span> AdmisionPaciente
 <span class="kw">VARIABLES</span>
   nombre_paciente   : <span class="kw">CADENA</span>
@@ -405,37 +434,23 @@
   numero_documento  : <span class="kw">ENTERO</span>
   tipo_terapia      : <span class="kw">CADENA</span>
 <span class="kw">INICIO</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"=== SISTEMA DE ADMISIÓN NEUROBIZ S.A.S. ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== SISTEMA DE ADMISION NEUROBIZ S.A.S. ==="</span>
   <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese el nombre del paciente:"</span>
   <span class="fn">LEER</span>     nombre_paciente
   <span class="fn">ESCRIBIR</span> <span class="str">"Tipo de documento (CC/TI/CE):"</span>
   <span class="fn">LEER</span>     tipo_documento
-  <span class="fn">ESCRIBIR</span> <span class="str">"Número de documento:"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Numero de documento:"</span>
   <span class="fn">LEER</span>     numero_documento
-  <span class="fn">ESCRIBIR</span> <span class="str">"Tipo de terapia (cognitiva/ocupacional/fonoaudiología):"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Tipo de terapia (cognitiva/ocupacional/fonoaudiologia):"</span>
   <span class="fn">LEER</span>     tipo_terapia
-  <span class="fn">ESCRIBIR</span> <span class="str">"Paciente registrado: "</span> + nombre_paciente
+  <span class="fn">ESCRIBIR</span> <span class="str">"PACIENTE REGISTRADO: "</span> + nombre_paciente
   <span class="fn">ESCRIBIR</span> <span class="str">"Terapia asignada: "</span> + tipo_terapia
-<span class="kw">FIN</span>
-    </pre>
-  </div>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Documento: "</span> + tipo_documento + <span class="str">" "</span> + numero_documento
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Haz clic en Ejecutar — el algoritmo te pedirá los datos...</span></div></div>
 
-  <div class="info-box cite">
-    <span class="icon">🏛️</span>
-    <p><strong>MIT 18.S191:</strong> <em>"Before you write a single line of code, write the algorithm
-    in plain language. If you can't explain it to a human, a computer won't understand it either."</em>
-    — Computational Thinking course, MIT.</p>
-  </div>
-
-  <div class="info-box tip">
-    <span class="icon">📱</span>
-    <p><strong>¿Tienes celular o tablet? Úsalo desde hoy.</strong><br>
-    <a href="https://colab.research.google.com/" target="_blank" rel="noopener"><strong>Google Colab</strong></a> funciona en el navegador — sin instalación, sin computador propio.
-    Si prefieres trabajar con <strong>papel y lápiz</strong>, también es completamente válido; ambas opciones son bienvenidas.
-    Pronto tendremos computadores en el aula, pero nunca son una barrera para aprender.</p>
-  </div>
+  <div class="info-box tip" style="margin-top:1.5rem"><span class="icon">🧪</span><p><strong>Prueba a editar el algoritmo:</strong> Haz clic dentro del código, modifica los mensajes o agrega variables, luego vuelve a ejecutar.</p></div>
+  <div class="info-box tip"><span class="icon">📱</span><p><strong>¿Celular o tablet?</strong> <a href="https://colab.research.google.com/" target="_blank" rel="noopener"><strong>Google Colab</strong></a> funciona en el navegador — sin instalación. Papel y lápiz también es válido.</p></div>
 </section>
-
 <!-- ══ ACTIVIDAD PRESENCIAL ══ -->
 <section id="actividad" class="card">
   <h2>⚙️ Actividad Presencial</h2>
@@ -465,6 +480,7 @@ fecha        paciente         tipo_terapia   sesion
 ...          (112 registros más)
         </pre>
       </div>
+      <div class="data-playground" id="data-playground"><h4>🧪 Laboratorio de Datos — Explora los registros de NeuroBiz</h4><p style="font-size:.8rem;color:var(--muted);margin-bottom:.6rem">Filtra y analiza los datos tú mismo. Así es como un sistema de información convierte <strong>datos</strong> en <strong>información</strong>.</p><div class="data-filter-row"><select id="dp-filter-terapia" onchange="DataPlayground.fl()"><option value="todas">Todas las terapias</option><option value="cognitiva">Cognitiva</option><option value="ocupacional">Ocupacional</option><option value="fonoaudiología">Fonoaudiología</option></select> <select id="dp-filter-estado" onchange="DataPlayground.fl()"><option value="todos">Todos los estados</option><option value="asistida">Asistida</option><option value="fallida">Fallida</option></select> <button onclick="DataPlayground.rs2()">Restablecer</button></div><div id="dp-table-container"></div><div class="data-stats" id="dp-stats"></div></div>
       <ol>
         <li>¿Cuáles de estos elementos son <em>datos</em>? ¿Cuál sería la <em>información</em> derivada?</li>
         <li>¿Qué preguntas de negocio puede responder este conjunto de datos?</li>
@@ -553,6 +569,81 @@ fecha        paciente         tipo_terapia   sesion
       </div>
     </div>
   </div>
+</section>
+
+<!-- ══ LABORATORIO INTERACTIVO ══ -->
+<section id="lab" class="card">
+  <h2>🧪 Laboratorio Interactivo — Estilo Google Colab</h2>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Practica escribiendo y ejecutando pseudocódigo como en Google Colab. Cada celda es <strong>editable</strong> y <strong>ejecutable</strong>.</p>
+  <div class="lab-tabs"><button class="lab-tab active" onclick="CairoLab.stb('tab-ej1')">📝 Ej. 1: Promedio</button><button class="lab-tab" onclick="CairoLab.stb('tab-ej2')">📝 Ej. 2: Retención</button><button class="lab-tab" onclick="CairoLab.stb('tab-ej3')">📝 Ej. 3: Sucursal</button><button class="lab-tab" onclick="CairoLab.stb('tab-libre')">✨ Celda Libre</button></div>
+  <div class="lab-panel active" id="tab-ej1"><p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>HTI-B Ejercicio 1:</strong> Calcula el promedio de 5 calificaciones.</p><div class="colab-cell" id="cell-ej1"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-ej1')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> PromedioCalificaciones
+<span class="kw">VARIABLES</span>
+  nota1 : <span class="kw">REAL</span>
+  nota2 : <span class="kw">REAL</span>
+  nota3 : <span class="kw">REAL</span>
+  nota4 : <span class="kw">REAL</span>
+  nota5 : <span class="kw">REAL</span>
+  promedio : <span class="kw">REAL</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== CALCULADORA DE PROMEDIO ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la nota 1:"</span>
+  <span class="fn">LEER</span> nota1
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la nota 2:"</span>
+  <span class="fn">LEER</span> nota2
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la nota 3:"</span>
+  <span class="fn">LEER</span> nota3
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la nota 4:"</span>
+  <span class="fn">LEER</span> nota4
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la nota 5:"</span>
+  <span class="fn">LEER</span> nota5
+  promedio = (nota1 + nota2 + nota3 + nota4 + nota5) / <span class="num">5</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"El promedio es: "</span> + promedio
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Ejecuta para calcular tu promedio...</span></div></div><div class="step-indicator"><span id="ej1-badge" style="font-size:.75rem"></span></div></div>
+  <div class="lab-panel" id="tab-ej2"><p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>HTI-B Reto:</strong> Calcula la tasa de retención de NeuroBiz (847 asistidas, 112 fallidas).</p><div class="colab-cell" id="cell-ej2"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-ej2')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> TasaRetencionNeuroBiz
+<span class="kw">VARIABLES</span>
+  sesiones_asistidas : <span class="kw">ENTERO</span>
+  sesiones_fallidas  : <span class="kw">ENTERO</span>
+  total_sesiones     : <span class="kw">ENTERO</span>
+  tasa_retencion     : <span class="kw">REAL</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== NEUROBIZ S.A.S. — TASA DE RETENCION ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Cuantas sesiones fueron asistidas?"</span>
+  <span class="fn">LEER</span> sesiones_asistidas
+  <span class="fn">ESCRIBIR</span> <span class="str">"Cuantas sesiones fueron fallidas?"</span>
+  <span class="fn">LEER</span> sesiones_fallidas
+  total_sesiones = sesiones_asistidas + sesiones_fallidas
+  tasa_retencion = (sesiones_asistidas / total_sesiones) * <span class="num">100</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Total de sesiones: "</span> + total_sesiones
+  <span class="fn">ESCRIBIR</span> <span class="str">"Tasa de retencion: "</span> + tasa_retencion + <span class="str">"%"</span>
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Ingresa 847 asistidas y 112 fallidas...</span></div></div><div class="step-indicator"><span id="ej2-badge" style="font-size:.75rem"></span></div></div>
+  <div class="lab-panel" id="tab-ej3"><p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>HTI-B Ejercicio 2:</strong> Proceso de apertura de sucursal NeuroBiz.</p><div class="colab-cell" id="cell-ej3"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-ej3')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> AperturaSucursal
+<span class="kw">VARIABLES</span>
+  ciudad : <span class="kw">CADENA</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== APERTURA DE NUEVA SUCURSAL NEUROBIZ ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"En que ciudad se abrira la sucursal?"</span>
+  <span class="fn">LEER</span> ciudad
+  <span class="fn">ESCRIBIR</span> <span class="str">"Paso 1: Verificando local disponible en "</span> + ciudad
+  <span class="fn">ESCRIBIR</span> <span class="str">"  >> Local verificado: apto"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Paso 2: Contratando terapeutas"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"  >> 4 terapeutas contratados"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Paso 3: Instalando sistema NeuroBiz"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"  >> Sistema configurado"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Paso 4: SUCURSAL ABIERTA en "</span> + ciudad
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== PROCESO COMPLETADO ==="</span>
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Ejecuta para ver el proceso...</span></div></div><div class="step-indicator"><span id="ej3-badge" style="font-size:.75rem"></span></div></div>
+  <div class="lab-panel" id="tab-libre"><p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>✨ Celda Libre:</strong> Escribe tu propio algoritmo.</p><div class="colab-cell" id="cell-libre"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-libre')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> MiAlgoritmo
+<span class="kw">VARIABLES</span>
+  <span class="cm">{ Declara tus variables aqui }</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Hola! Este es mi primer algoritmo."</span>
+  <span class="cm">{ Escribe tu codigo aqui }</span>
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Escribe tu código y ejecuta...</span></div></div></div>
+  <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:#e8f5e9;border-radius:12px;border:1px solid #a5d6a7"><p style="margin:0;font-size:.85rem">🎯 <strong>¿Completaste los 3 ejercicios?</strong> ¡Has aplicado pensamiento algorítmico a NeuroBiz! +5 XP por cada ejecución.</p></div>
 </section>
 
 <!-- ══ QUIZ ══ -->
@@ -1114,5 +1205,35 @@ else PT.init();
 })();
 </script>
 
+
+<!-- ══ CAIRO PSEUDOCODE INTERPRETER ══ -->
+<script>
+!function(){"use strict";
+var I=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;};
+I.prototype.reset=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;};
+I.prototype.tok=function(l){l=l.replace(/\{[^}]*\}/g,'').trim();if(!l)return[];var t=[],re=/"([^"]*)"|(\d+\.?\d*)|(ALGORITMO|FIN|VARIABLES|INICIO|LEER|ESCRIBIR|CADENA|ENTERO|REAL|BOOLEANO)|([a-zA-Z_][a-zA-Z0-9_]*)|([+\-*\/=()])/g,m;while((m=re.exec(l))!==null){if(m[1]!==undefined)t.push({ty:'S',v:m[1]});else if(m[2]!==undefined)t.push({ty:'N',v:parseFloat(m[2])});else if(m[3]!==undefined)t.push({ty:'K',v:m[3]});else if(m[4]!==undefined)t.push({ty:'I',v:m[4]});else if(m[5]!==undefined)t.push({ty:'O',v:m[5]});}return t;};
+I.prototype.gv=function(t){if(t.ty==='N')return t.v;if(t.ty==='S')return t.v;if(t.ty==='I'){if(t.v in this.v){var v=this.v[t.v];if(typeof v==='string'){var n=parseFloat(v);return isNaN(n)?v:n;}return v;}return 0;}return t.v||0;};
+I.prototype.eval=function(t,i){var j=i;if(j>=t.length)return[0,j];var l=this.gv(t[j]);j++;while(j<t.length){var o=t[j];if(o.ty!=='O'||['+','-','*','/'].indexOf(o.v)===-1)break;var ov=o.v;j++;if(j>=t.length)break;var r=this.gv(t[j]);j++;if(ov==='+'){if(typeof l==='string'||typeof r==='string')l=String(l)+String(r);else l=l+r;}else if(ov==='-')l=l-r;else if(ov==='*')l=l*r;else if(ov==='/')l=r!==0?l/r:0;}return[l,j];};
+I.prototype.exe=function(l){var t=this.tok(l);if(t.length===0)return null;var f=t[0];if(f.ty==='K'&&f.v==='ESCRIBIR'){var r=this.eval(t,1);this.o.push({ty:'W',v:String(r[0])});return null;}if(f.ty==='K'&&f.v==='LEER'){if(t.length<2||t[1].ty!=='I'){this.o.push({ty:'E',v:'Error: LEER necesita variable'});return null;}return{ty:'R',v:t[1].v};}if(f.ty==='I'&&t.length>=2&&t[1].ty==='O'&&t[1].v==='='){var vn=f.v;var vl=this.eval(t,2);this.v[vn]=vl[0];return null;}if(f.ty==='K')return null;return null;};
+I.prototype.parse=function(p){if(typeof p==='string'&&p.indexOf('<')!==-1){var d=document.createElement('div');d.innerHTML=p;p=d.textContent||d.innerText||'';}return p.split(String.fromCharCode(10)).map(function(l){return l.trim();}).filter(function(l){return l.length>0;});};
+I.prototype.run=function(p){this.reset();this.l=this.parse(p);this.r=true;return this.sa();};
+I.prototype.sa=function(){while(this.p<this.l.length&&this.r){var l=this.l[this.p];var r=this.exe(l);this.p++;if(r&&r.ty==='R'){this.a=true;this.iv=r.v;return{p:true,v:r.v,o:this.o.slice()};}}this.r=false;return{p:false,o:this.o.slice()};};
+I.prototype.pi=function(v){if(!this.a)return null;var n=parseFloat(v);this.v[this.iv]=isNaN(n)?v:n;this.a=false;this.iv=null;return this.sa();};
+
+var L={ip:new I(),cc:{},xa:{},ge:function(id){var c=document.getElementById(id);if(!c)return'';var e=c.querySelector('.colab-editor');return e?(e.textContent||e.innerText||''):'';},go:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-output'):null;},gb:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-run-btn'):null;},rc:function(id){var s=this,cl=document.getElementById(id),ou=s.go(id),bt=s.gb(id);if(!cl||!ou)return;cl.classList.add('running');cl.classList.remove('success','error');if(bt)bt.classList.add('running');ou.classList.add('visible');ou.innerHTML='<span class="out-info">Ejecutando...</span>';var pg=s.ge(id);var rs=s.ip.run(pg);
+function pr(r){var h='';if(r.o){for(var i=0;i<r.o.length;i++){var e=r.o[i];if(e.ty==='W')h+='<span class="out-value">'+s.es(e.v)+'</span>\n';else if(e.ty==='E')h+='<span class="out-error">'+s.es(e.v)+'</span>\n';}}
+function ct(r2){if(!r2||!r2.p){h+='<span class="out-info">Ejecucion completada.</span>\n';ou.innerHTML=h||'<span class="out-info">Sin salida.</span>';cl.classList.remove('running');cl.classList.add('success');if(bt)bt.classList.remove('running');s.cc[id]=true;s.ax(id);s.ub();s.sp();return;}
+var inp=prompt('[ENTRADA] '+r2.v+' = ?\n\nEscribe un valor:');if(inp===null){h+='<span class="out-error">Cancelado.</span>\n';ou.innerHTML=h;cl.classList.remove('running');cl.classList.add('error');if(bt)bt.classList.remove('running');return;}
+h+='<span class="out-input">'+s.es(r2.v)+' ← '+s.es(inp)+'</span>\n';ou.innerHTML=h+'<span class="out-info">Continuando...</span>';
+setTimeout(function(){var nr=s.ip.pi(inp);if(nr&&nr.o){var ol=r.o?r.o.length:0;var no=nr.o.slice(ol);for(var j=0;j<no.length;j++){var ne=no[j];if(ne.ty==='W')h+='<span class="out-value">'+s.es(ne.v)+'</span>\n';else if(ne.ty==='E')h+='<span class="out-error">'+s.es(ne.v)+'</span>\n';}}ct(nr);},150);}
+ct(r);}
+pr(rs);},ax:function(id){if(this.xa[id])return;this.xa[id]=true;var m={'cell-admision':{p:5,l:'Admision NeuroBiz'},'cell-estructura':{p:2,l:'Plantilla Cairo'},'cell-ej1':{p:5,l:'Ej. 1: Promedio'},'cell-ej2':{p:5,l:'Ej. 2: Retencion'},'cell-ej3':{p:5,l:'Ej. 3: Sucursal'},'cell-libre':{p:3,l:'Celda Libre'}};var a=m[id];if(a&&typeof PT!=='undefined'&&PT.addXP){PT.addXP(a.p,a.l);this.st('+'+a.p+' XP — '+a.l);}},ub:function(){var b={'ej1-badge':this.cc['cell-ej1'],'ej2-badge':this.cc['cell-ej2'],'ej3-badge':this.cc['cell-ej3']};for(var id in b){if(!b.hasOwnProperty(id))continue;var el=document.getElementById(id);if(el&&b[id])el.innerHTML='<span class="lab-challenge-done">Completado</span>';}},sp:function(){if(typeof PT==='undefined')return;if(this.cc['cell-ej1']&&this.cc['cell-ej2']&&this.cc['cell-ej3']&&!this._lm){this._lm=true;PT.save();}},stb:function(id){var ts=document.querySelectorAll('.lab-tab');for(var i=0;i<ts.length;i++)ts[i].classList.remove('active');var ps=document.querySelectorAll('.lab-panel');for(var j=0;j<ps.length;j++)ps[j].classList.remove('active');var bs=document.querySelectorAll('.lab-tab');for(var k=0;k<bs.length;k++){if(bs[k].getAttribute('onclick')&&bs[k].getAttribute('onclick').indexOf(id)!==-1)bs[k].classList.add('active');}var pn=document.getElementById(id);if(pn)pn.classList.add('active');},es:function(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;},st:function(m){var t=document.createElement('div');t.className='xp-toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);}};
+window.CairoLab=L;
+var ND=[{f:'2026-01-05',p:'Ana Garcia',t:'cognitiva',e:'asistida'},{f:'2026-01-05',p:'Luis Martin',t:'ocupacional',e:'fallida'},{f:'2026-01-06',p:'Carmen Ruiz',t:'cognitiva',e:'asistida'},{f:'2026-01-07',p:'Pedro Sosa',t:'fonoaudiologia',e:'asistida'},{f:'2026-01-08',p:'Maria Lopez',t:'cognitiva',e:'asistida'},{f:'2026-01-08',p:'Jorge Diaz',t:'ocupacional',e:'fallida'},{f:'2026-01-09',p:'Sofia Rios',t:'fonoaudiologia',e:'asistida'},{f:'2026-01-10',p:'Carlos Pena',t:'cognitiva',e:'asistida'},{f:'2026-01-10',p:'Elena Mora',t:'ocupacional',e:'fallida'},{f:'2026-01-12',p:'Diego Ruiz',t:'cognitiva',e:'asistida'},{f:'2026-01-12',p:'Laura Gil',t:'fonoaudiologia',e:'asistida'},{f:'2026-01-13',p:'Andres Paz',t:'cognitiva',e:'fallida'},{f:'2026-01-14',p:'Valeria Sol',t:'ocupacional',e:'asistida'},{f:'2026-01-15',p:'Mateo Rey',t:'cognitiva',e:'asistida'},{f:'2026-01-15',p:'Diana Flor',t:'fonoaudiologia',e:'fallida'}];
+var DP={fl:function(){var ts=document.getElementById('dp-filter-terapia'),es=document.getElementById('dp-filter-estado'),t=ts?ts.value:'todas',e=es?es.value:'todos',f=ND.slice();if(t!=='todas')f=f.filter(function(r){return r.t===t;});if(e!=='todos')f=f.filter(function(r){return r.e===e;});this.rt(f);this.rs(f);},rs2:function(){var ts=document.getElementById('dp-filter-terapia'),es=document.getElementById('dp-filter-estado');if(ts)ts.value='todas';if(es)es.value='todos';this.fl();},rt:function(d){var c=document.getElementById('dp-table-container');if(!c)return;if(d.length===0){c.innerHTML='<p style="color:var(--muted);font-size:.82rem;text-align:center;padding:1rem">Sin resultados.</p>';return;}var h='<table class="data-table-mini"><thead><tr><th>Fecha</th><th>Paciente</th><th>Terapia</th><th>Estado</th></tr></thead><tbody>';for(var i=0;i<d.length;i++){var r=d[i],ec=r.e==='asistida'?'color:#2e7d32':'color:#c62828';h+='<tr><td>'+r.f+'</td><td>'+r.p+'</td><td>'+r.t+'</td><td style="font-weight:700;'+ec+'">'+(r.e==='asistida'?'✓ ':'✗ ')+r.e+'</td></tr>';}h+='</tbody></table><p style="font-size:.75rem;color:var(--muted);margin-top:.3rem">'+d.length+' de '+ND.length+' registros</p>';c.innerHTML=h;},rs:function(d){var c=document.getElementById('dp-stats');if(!c)return;var t=d.length,a=d.filter(function(r){return r.e==='asistida';}).length,f=d.filter(function(r){return r.e==='fallida';}).length,rt=t>0?((a/t)*100).toFixed(1):'0.0';c.innerHTML='<div class="data-stat-card"><div class="stat-val">'+t+'</div><div class="stat-lbl">Total</div></div><div class="data-stat-card"><div class="stat-val" style="color:#2e7d32">'+a+'</div><div class="stat-lbl">Asistidas</div></div><div class="data-stat-card"><div class="stat-val" style="color:#c62828">'+f+'</div><div class="stat-lbl">Fallidas</div></div><div class="data-stat-card"><div class="stat-val" style="color:#2563eb">'+rt+'%</div><div class="stat-lbl">Retencion</div></div>';},init:function(){this.fl();}};
+window.DataPlayground=DP;
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){DP.init();});else DP.init();
+}();
+</script>
 </body>
 </html>
