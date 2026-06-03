@@ -22,9 +22,51 @@ footer{text-align:center;padding:1.4rem;color:var(--muted);font-size:.82rem}
 #pt-widget{position:fixed;right:18px;bottom:18px;z-index:9999;background:linear-gradient(135deg,#1E2843,#31446f);color:#fff;border-radius:16px;padding:14px 16px;min-width:242px;max-width:290px;box-shadow:0 10px 30px rgba(0,0,0,.3)}#pt-widget.collapsed{transform:translateY(calc(100% - 42px))}#pt-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer}#pt-toggle{background:none;border:none;color:#fff;font-size:1.1rem}#pt-body{margin-top:9px}#pt-bar{height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden}#pt-bar>div{height:100%;width:0;background:linear-gradient(90deg,#FFDF2D,#fff176)}#pt-label{display:flex;justify-content:space-between;font-size:.75rem;margin-top:5px;opacity:.9}#pt-rank{font-size:.73rem;margin-top:6px}#pt-msg{font-size:.72rem;min-height:14px;text-align:center;margin-top:6px}#pt-btns{display:flex;gap:6px;margin-top:8px}.pt-btn{flex:1;border:none;border-radius:8px;padding:6px 8px;font-weight:800;font-size:.74rem;cursor:pointer}.pt-save{background:#43a047;color:#fff}
 #pt-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:10000}#pt-modal-box{background:linear-gradient(160deg,#1E2843,#24365b);color:#fff;border-radius:20px;padding:2rem 2rem 1.4rem;width:min(94vw,420px);box-shadow:0 20px 60px rgba(0,0,0,.5)}#pt-modal-box .sub{opacity:.75;font-size:.84rem;margin-bottom:1rem}#pt-modal-box label{display:block;font-size:.78rem;font-weight:800;margin-bottom:.28rem;text-transform:uppercase;opacity:.88}#pt-modal-box input{width:100%;padding:.65rem .85rem;border-radius:10px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff}#pt-modal-btn,#pt-modal-btn-search{border:none;border-radius:10px;padding:.7rem 1rem;font-weight:900;cursor:pointer}#pt-modal-btn{width:100%;background:#FFDF2D;color:#1E2843;margin-top:.35rem}#pt-modal-btn-search{background:rgba(255,255,255,.18);color:#fff;flex-shrink:0}.field{margin:.8rem 0}#pt-modal-error,#pt-modal-error2,#pt-modal-error3{color:#ff8a80;font-size:.8rem;min-height:1em;margin-top:.45rem}.pt-found-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,223,45,.4);border-radius:12px;padding:1rem}.pt-link-btn{background:none;border:none;color:rgba(255,255,255,.7);text-decoration:underline;display:block;margin:.5rem auto 0;cursor:pointer}
 @media(max-width:640px){header h1{font-size:1.4rem}main{padding:0 .7rem 5rem}.card{padding:1rem}#pt-widget{left:12px;right:12px;max-width:none;min-width:0}}
+
+.interactive-q{background:#fff;border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;margin:.7rem 0;transition:border-color .3s}
+.interactive-q.answered{border-color:#2e7d32;background:#f9fef9}
+.interactive-q.partial{border-color:#e6c800;background:#fffdf5}
+.interactive-q.wrong{border-color:#c62828;background:#fff5f5}
+.iq-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+.iq-num{background:var(--primary);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.76rem;flex-shrink:0}
+.iq-pts{font-size:.72rem;color:#e65100;font-weight:700;background:#fff8e1;border-radius:10px;padding:.1rem .5rem}
+.iq-pts.earned{background:#e8f5e9;color:#2e7d32}
+.iq-question{font-size:.88rem;font-weight:600;margin-bottom:.5rem;line-height:1.5}
+.iq-textarea{width:100%;min-height:65px;padding:.55rem .75rem;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.85rem;line-height:1.6;resize:vertical;transition:border-color .2s;background:var(--light-bg)}
+.iq-textarea:focus{outline:none;border-color:#1E2843;background:#fff;box-shadow:0 0 0 3px rgba(30,40,67,.1)}
+.iq-actions{margin-top:.45rem;display:flex;gap:.4rem}
+.iq-btn{background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:.35rem .9rem;font-size:.8rem;font-weight:600;cursor:pointer}
+.iq-btn:hover{background:#1557b0}.iq-btn:disabled{background:#9e9e9e;cursor:not-allowed}
+.iq-feedback{margin-top:.5rem;padding:.55rem .7rem;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}
+.iq-feedback.show{display:block}.iq-feedback.success{background:#e8f5e9;border:1px solid #a5d6a7;color:#1b5e20}
+.iq-feedback.partial{background:#fff8e1;border:1px solid #ffe082;color:#e65100}
+.iq-feedback.error{background:#ffebee;border:1px solid #ef9a9a;color:#b71c1c}
+.iq-keywords{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.35rem}
+.iq-kw{font-size:.68rem;background:#e3f2fd;color:#1565c0;border-radius:8px;padding:.1rem .45rem}
+.iq-kw.matched{background:#c8e6c9;color:#1b5e20;font-weight:600}
+.colab-cell{background:#fff;border:1px solid #dadce0;border-radius:10px;margin:.9rem 0;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.colab-cell.running{border-left:4px solid #FFDF2D}.colab-cell.success{border-left:4px solid #43a047}
+.colab-toolbar{display:flex;align-items:center;gap:.4rem;padding:.3rem .7rem;background:#f8f9fa;border-bottom:1px solid #dadce0;font-size:.74rem;color:#5f6368}
+.colab-run-btn{background:#1a73e8;color:#fff;border:none;border-radius:4px;padding:.25rem .8rem;font-size:.76rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.3rem}
+.colab-run-btn:hover{background:#1557b0}.colab-run-btn.running{background:#9e9e9e;cursor:wait}
+.colab-run-btn .spinner{display:none;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:cs .6s linear infinite}
+@keyframes cs{to{transform:rotate(360deg)}}.colab-run-btn.running .spinner{display:inline-block}.colab-run-btn.running .btn-label{display:none}
+.colab-lang-badge{font-size:.68rem;background:#e8eaed;color:#5f6368;border-radius:4px;padding:.12rem .45rem;font-weight:600;text-transform:uppercase}
+.colab-editor{padding:.7rem .9rem;font-family:ui-monospace,SFMono-Regular,monospace;font-size:.83rem;line-height:1.6;color:#1E2843;background:#fafafa;min-height:55px;max-height:380px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;outline:none;border:none}
+.colab-editor:focus{background:#fff;box-shadow:inset 0 0 0 2px #e8f0fe}
+.colab-output{display:none;background:#152033;color:#dbe6ff;font-family:ui-monospace,monospace;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;max-height:280px;overflow-y:auto;white-space:pre-wrap;border-top:1px solid #333}
+.colab-output.visible{display:block}.colab-output .out-info{color:#6a9955}.colab-output .out-input{color:#ce9178}.colab-output .out-error{color:#f44747}.colab-output .out-value{color:#4ec9b0}
+.lab-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:.9rem}
+.lab-tab{padding:.4rem .85rem;font-size:.82rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px}
+.lab-tab:hover{color:var(--primary)}.lab-tab.active{color:var(--primary);border-bottom-color:var(--accent)}
+.lab-panel{display:none}.lab-panel.active{display:block}
+.xp-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1E2843,#31446f);color:#fff;padding:.6rem 1.3rem;border-radius:20px;font-weight:700;font-size:.85rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);animation:xti .4s ease,xto .4s ease 2.5s forwards}
+@keyframes xti{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes xto{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-10px)}}
+.lab-challenge-done{display:inline-flex;align-items:center;gap:.25rem;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:10px;padding:.12rem .5rem;font-size:.7rem;font-weight:700}
 </style></head><body>
 <header><div class="chip">TGA04 · Semana 7</div><h1>Estructura Repetitiva HACER-MIENTRAS (HH-FHH)</h1><p>RA2 · CE4 · validación de entradas · menús interactivos · do-while lógico</p><div class="xp-top"><div id="xpBar"></div></div><div>XP de sesión: <span id="xpCount">0</span> / 85 · Rango global: <span id="headerRank">Aprendiz</span></div></header>
-<nav><a href="#mision">🎯 Misión</a><a href="#teoria">📚 Teoría</a><a href="#pseudocodigo">📝 Pseudocódigo</a><a href="#actividad">⚙️ Actividad</a><a href="#hti">🏠 HTI</a><a href="#quiz">🎮 Quiz</a><a href="#bib">📖 Fuentes</a><a href="#colab">☁️ Colab</a></nav>
+<nav><a href="#mision">🎯 Misión</a><a href="#teoria">📚 Teoría</a><a href="#pseudocodigo">📝 Pseudocódigo</a><a href="#actividad">⚙️ Actividad</a><a href="#hti">🏠 HTI</a><a href="#lab">🧪 Lab</a><a href="#quiz">🎮 Quiz</a><a href="#bib">📖 Fuentes</a><a href="#colab">☁️ Colab</a></nav>
 <main>
 <div id="pt-widget"><div id="pt-header" onclick="ptToggle()"><strong>📊 Mi Progreso TGA04</strong><button id="pt-toggle">▲</button></div><div id="pt-body"><div id="pt-bar"><div></div></div><div id="pt-label"><span>Semana 7</span><span id="ptCount">0 XP</span></div><div id="pt-rank">Rango global: <strong id="ptRankName">Aprendiz</strong> · <span id="ptTotal">0</span> XP</div><div id="pt-btns"><button class="pt-btn pt-save" onclick="ptSyncCloud()">☁️ Guardar</button><button class="pt-btn" style="background:rgba(255,255,255,.15);color:#fff" onclick="ptExportCode()">📋</button><button class="pt-btn" style="background:rgba(255,255,255,.15);color:#fff" onclick="ptImportCode()">📥</button></div><div id="pt-msg"></div></div></div>
 <section class="card" id="mision"><h2>📋 Memorando NeuroBiz</h2><div class="memo"><strong>NeuroBiz debe validar la cédula del paciente.</strong> El sistema debe pedir el dato y <strong>repetir hasta que sea válido</strong>. Esta semana estudiarás HH-FHH: el cuerpo se ejecuta al menos una vez y luego se pregunta si debe repetirse.</div><div class="bloom">🧠 Aplicar → Analizar</div><div class="kpis"><div class="kpi"><div class="i">1️⃣</div><div class="n">Ejecución mínima</div><div class="v">1 vez</div></div><div class="kpi"><div class="i">🪪</div><div class="n">Dato foco</div><div class="v">Cédula</div></div><div class="kpi"><div class="i">🚪</div><div class="n">Salida menú</div><div class="v">0</div></div><div class="kpi"><div class="i">🏆</div><div class="n">XP máx.</div><div class="v">85</div></div></div><table><tbody><tr><td><strong>RA / CE</strong></td><td>RA2 · CE4</td></tr><tr><td><strong>Bloom</strong></td><td>Aplicar → Analizar</td></tr><tr><td><strong>Equivalencia Python</strong></td><td><code>while True: ... break</code></td></tr><tr><td><strong>Relevancia</strong></td><td>HH-FHH <span class="badge evo">🟡 EVOLUCIONADO</span> · validación <span class="badge vig">🟢 VIGENTE</span></td></tr></tbody></table><div class="grid3"><div class="box"><strong>Meta</strong><br>Aplicar ciclos donde primero se intenta y después se decide si se repite.</div><div class="box"><strong>Foco NeuroBiz</strong><br>Validación de entradas, formularios y menús con opción de salida.</div><div class="box"><strong>Arquitectura</strong><br>Llave: <code>tga04_s7</code> · visita: <code>tga04_visited_s7</code></div></div></section>
@@ -34,49 +76,169 @@ footer{text-align:center;padding:1.4rem;color:var(--muted);font-size:.82rem}
 <h3>Comparación con MQ-FMQ</h3><table><thead><tr><th>Estructura</th><th>Pregunta</th><th>Ejemplo</th></tr></thead><tbody><tr><td>MQ-FMQ</td><td>¿Debo entrar?</td><td>Procesar tickets mientras existan</td></tr><tr><td>HH-FHH</td><td>¿Debo repetir después de intentar?</td><td>Validar cédula</td></tr></tbody></table>
 <div class="info brain"><span>🐍</span><div>Python no tiene do-while nativo; la lógica se implementa con <code>while True</code> y <code>break</code>.</div></div>
 <div class="info warn"><span>⚠️</span><div>Si no diseñas una salida clara, el menú se queda atrapado en un bucle.</div></div></section>
-<section class="card" id="pseudocodigo"><h2>📝 Pseudocódigo y equivalencias</h2><div class="code"><div class="code-title">📝 HH-FHH — Validar cédula</div><pre>ALGORITMO ValidarCedulaNeuroBiz
+<section class="card" id="pseudocodigo"><h2>📝 Pseudocódigo — Ejecuta los bucles HH-FHH</h2>
+<p style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">💡 <strong>Celdas interactivas:</strong> HH-FHH ejecuta el cuerpo <strong>al menos una vez</strong> y luego pregunta si repetir. Ideal para validación de entradas y menús.</p>
+
+<h3>HH-FHH: Validar cédula</h3>
+<div class="colab-cell" id="cell-cedula"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-cedula')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+ALGORITMO ValidarCedulaNeuroBiz
   VARIABLES
-    cedula: ENTERO
-    intentos: ENTERO
+    cedula : ENTERO
   INICIO
-    intentos ← 0
     HH
-      ESCRIBIR &quot;Ingrese número de cédula del paciente:&quot;
+      ESCRIBIR "Ingrese numero de cedula (mayor a 0):"
       LEER cedula
-      intentos ← intentos + 1
-      SI cedula &lt;= 0 ENTONCES
-        ESCRIBIR &quot;⚠️ Cédula inválida. Intente de nuevo.&quot;
+      SI cedula > 0 ENTONCES
+        ESCRIBIR "Cedula " + cedula + " registrada correctamente."
+      SINO
+        ESCRIBIR "Error: la cedula debe ser un numero positivo."
       FSI
-    FHH MIENTRAS cedula &lt;= 0
-    ESCRIBIR &quot;✅ Cédula registrada: &quot;, cedula
-    ESCRIBIR &quot;Intentos requeridos: &quot;, intentos
-  FIN</pre></div><div class="code"><div class="code-title">📝 HH-FHH — Menú clásico</div><pre>ALGORITMO MenuNeuroBiz
+    FHH MIENTRAS cedula <= 0
+    ESCRIBIR "Validacion completada."
+  FIN</div><div class="colab-output"><span class="out-info">🔍 El bucle se repite hasta que ingreses una cédula válida (> 0).</span></div></div>
+
+<h3>HH-FHH: Menú interactivo NeuroBiz</h3>
+<div class="colab-cell" id="cell-menu"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-menu')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+ALGORITMO MenuNeuroBiz
   VARIABLES
-    opcion: ENTERO
+    opcion : ENTERO
   INICIO
     HH
-      ESCRIBIR &quot;=== SISTEMA NEUROBIZ ===&quot;
-      ESCRIBIR &quot;1. Registrar sesión&quot;
-      ESCRIBIR &quot;2. Ver estadísticas&quot;
-      ESCRIBIR &quot;3. Generar reporte&quot;
-      ESCRIBIR &quot;0. Salir&quot;
+      ESCRIBIR "=== SISTEMA NEUROBIZ ==="
+      ESCRIBIR "1. Registrar sesion"
+      ESCRIBIR "2. Ver estadisticas"
+      ESCRIBIR "3. Generar reporte"
+      ESCRIBIR "0. Salir"
       LEER opcion
-      DD opcion
-        CASO 1: ESCRIBIR &quot;Registrando sesión...&quot;
-        CASO 2: ESCRIBIR &quot;Calculando estadísticas...&quot;
-        CASO 3: ESCRIBIR &quot;Generando reporte...&quot;
-        CASO 0: ESCRIBIR &quot;Hasta luego.&quot;
-        CASO OTRO: ESCRIBIR &quot;Opción inválida&quot;
-      FDD
-    FHH MIENTRAS opcion &lt;&gt; 0
-  FIN</pre></div><div class="code"><div class="code-title">🐍 Equivalente en Python</div><pre>while True:
-    cedula = int(input(&quot;Ingrese cédula: &quot;))
-    if cedula &gt; 0:
-        break
-    print(&quot;Cédula inválida&quot;)
-print(f&quot;Cédula registrada: {cedula}&quot;)</pre></div></section>
-<section class="card" id="actividad"><h2>⚙️ Actividad presencial</h2><div class="dojo">Asistencia <strong>+10 XP</strong> · Quiz <strong>+25 XP</strong> · Misión <strong>+25 XP</strong></div><div class="activity"><div class="ah pres">Bloque 1 — Validación</div><div class="ab"><ol><li>Comparar datos válidos e inválidos.</li><li>Explicar por qué el sistema debe preguntar al menos una vez.</li><li>Resolver el mismo caso con MQ y HH para ver la diferencia.</li></ol></div></div><div class="activity"><div class="ah pres">Bloque 2 — Menús</div><div class="ab"><ol><li>Diseñar un menú de admisión con opción 0.</li><li>Agregar validación de cédula o duración de sesión.</li><li>Justificar la condición de salida.</li></ol></div></div></section>
-<section class="card" id="hti"><h2>🏠 HTI — Trabajo independiente</h2><div class="activity"><div class="ah htia">HTI-A</div><div class="ab"><ol><li>Tabla comparativa MQ-FMQ vs HH-FHH.</li><li>Identifica una app real que valide datos.</li></ol></div></div><div class="activity"><div class="ah htib">HTI-B</div><div class="ab"><ol><li><strong>B:</strong> Diseña HH-FHH para validar que la duración de una sesión esté entre 30 y 90 minutos.</li><li><strong>C:</strong> Compara MQ-FMQ y HH-FHH con 3 ejemplos de NeuroBiz para cada uno.</li></ol></div></div></section>
+      SI opcion = 1 ENTONCES
+        ESCRIBIR ">> Registrando sesion..."
+      SINO
+        SI opcion = 2 ENTONCES
+          ESCRIBIR ">> Calculando estadisticas..."
+        SINO
+          SI opcion = 3 ENTONCES
+            ESCRIBIR ">> Generando reporte..."
+          SINO
+            SI opcion = 0 ENTONCES
+              ESCRIBIR ">> Hasta luego."
+            SINO
+              ESCRIBIR ">> Opcion invalida."
+            FSI
+          FSI
+        FSI
+      FSI
+    FHH MIENTRAS opcion <> 0
+  FIN</div><div class="colab-output"><span class="out-info">🔍 El menú se muestra al menos una vez. Ingresa 0 para salir.</span></div></div>
+
+<div class="info tip" style="margin-top:1rem"><span>🐍</span><div>En Python: <code>while True: ... if cond: break</code>. El break hace las veces de FHH.</div></div>
+</section>
+<section class="card" id="actividad"><h2>⚙️ Actividad presencial</h2><div class="dojo">Asistencia <strong>+10 XP</strong> · Quiz <strong>+25 XP</strong> · Misión <strong>+25 XP</strong></div><div class="activity"><div class="ah pres">Bloque 1 — Validación</div><div class="ab"><ol><li>Comparar datos válidos e inválidos.</li><li>Explicar por qué el sistema debe preguntar al menos una vez.</li><li>Resolver el mismo caso con MQ y HH para ver la diferencia.</li></ol></div></div><div class="activity"><div class="ah pres">Bloque 2 — Misión NeuroBiz</div><div class="ab">
+<p style="font-size:.84rem;color:var(--muted);margin-bottom:.7rem">💡 Responde cada pregunta. +4 XP por respuesta completa.</p>
+
+<div class="interactive-q" id="iq1"><div class="iq-header"><span class="iq-num">1</span><span class="iq-pts">+4 XP</span></div><p class="iq-question">Diseña un <strong>HH-FHH</strong> para un menú de admisión de pacientes en NeuroBiz con opción 0 para salir. Incluye al menos 3 opciones.</p><textarea class="iq-textarea" placeholder="ALGORITMO MenuAdmision
+VARIABLES
+  opcion : ENTERO
+INICIO
+  HH
+    ESCRIBIR "1. Nuevo paciente"
+    ...
+  FHH MIENTRAS opcion <> 0
+FIN" minlength="30" id="iq1-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq1')">🔍 Verificar</button></div><div class="iq-feedback" id="iq1-fb"></div></div>
+
+<div class="interactive-q" id="iq2"><div class="iq-header"><span class="iq-num">2</span><span class="iq-pts">+4 XP</span></div><p class="iq-question">Agrega una validación con HH-FHH dentro del menú: que la cédula del paciente sea un número positivo antes de continuar.</p><textarea class="iq-textarea" placeholder="SI opcion = 1 ENTONCES
+  HH
+    LEER cedula
+  FHH MIENTRAS cedula <= 0
+FSI" minlength="20" id="iq2-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq2')">🔍 Verificar</button></div><div class="iq-feedback" id="iq2-fb"></div></div>
+
+<div class="interactive-q" id="iq3"><div class="iq-header"><span class="iq-num">3</span><span class="iq-pts">+4 XP</span></div><p class="iq-question">Justifica: ¿por qué la condición de salida del menú es <code>opcion <> 0</code>? ¿Qué pasaría si usaras <code>opcion = 0</code> como condición?</p><textarea class="iq-textarea" placeholder="La condicion opcion <> 0 significa...
+Si usara opcion = 0 entonces..." minlength="20" id="iq3-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq3')">🔍 Verificar</button></div><div class="iq-feedback" id="iq3-fb"></div></div>
+</div></div></section>
+<section class="card" id="hti"><h2>🏠 HTI — Trabajo independiente</h2><div class="activity"><div class="ah htia">HTI-A</div><div class="ab"><ol><li>Tabla comparativa MQ-FMQ vs HH-FHH.</li><div class="interactive-q" id="iq6" style="margin-top:.7rem"><div class="iq-header"><span class="iq-num">6</span><span class="iq-pts">+4 XP</span></div><p class="iq-question"><strong>HTI-A:</strong> Identifica una app o sitio web real que valide datos del usuario (ej: formulario de registro). Explica cómo usaría HH-FHH para esa validación.</p><textarea class="iq-textarea" placeholder="App: ...
+Validación: ...
+Cómo usaría HH-FHH: ..." minlength="20" id="iq6-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq6')">🔍 Verificar</button></div><div class="iq-feedback" id="iq6-fb"></div></div></ol></div></div><div class="activity"><div class="ah htib">HTI-B</div><div class="ab"><ol><div class="interactive-q" id="iq4" style="margin-top:.7rem"><div class="iq-header"><span class="iq-num">4</span><span class="iq-pts">+4 XP</span></div><p class="iq-question"><strong>HTI-B:</strong> Diseña un algoritmo HH-FHH que valide que la duración de una sesión esté entre 30 y 90 minutos. Repite hasta que el valor sea válido.</p><textarea class="iq-textarea" placeholder="ALGORITMO ValidarDuracion
+VARIABLES
+  duracion : ENTERO
+INICIO
+  HH
+    LEER duracion
+  FHH MIENTRAS duracion < 30 O duracion > 90
+FIN" minlength="30" id="iq4-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq4')">🔍 Verificar</button></div><div class="iq-feedback" id="iq4-fb"></div></div><div class="interactive-q" id="iq5" style="margin-top:.7rem"><div class="iq-header"><span class="iq-num">5</span><span class="iq-pts">+4 XP</span></div><p class="iq-question"><strong>HTI-C:</strong> Compara MQ-FMQ y HH-FHH. Da 3 ejemplos de NeuroBiz donde usarías cada uno. ¿Cuál es la diferencia clave?</p><textarea class="iq-textarea" placeholder="MQ-FMQ se usa cuando... Ejemplos: 1) ... 2) ... 3) ...
+HH-FHH se usa cuando... Ejemplos: 1) ... 2) ... 3) ...
+Diferencia clave: ..." minlength="30" id="iq5-ta"></textarea><div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq5')">🔍 Verificar</button></div><div class="iq-feedback" id="iq5-fb"></div></div></ol></div></div></section>
+
+<section class="card" id="lab"><h2>🧪 Laboratorio Interactivo — Bucles HH-FHH</h2>
+<p style="color:var(--muted);font-size:.84rem;margin-bottom:.8rem">Practica con ciclos que ejecutan al menos una vez. +5 XP por celda.</p>
+<div class="lab-tabs"><button class="lab-tab active" onclick="CairoLab.stb('tab-validar')">🛡️ Validar</button><button class="lab-tab" onclick="CairoLab.stb('tab-menu2')">📋 Menú</button><button class="lab-tab" onclick="CairoLab.stb('tab-libre7')">✨ Libre</button></div>
+
+<div class="lab-panel active" id="tab-validar"><p style="font-size:.82rem;color:var(--muted);margin-bottom:.4rem"><strong>Validar duración:</strong> HH-FHH que pide la duración de una sesión hasta que esté entre 30 y 90 minutos.</p>
+<div class="colab-cell" id="cell-validar"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-validar')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+ALGORITMO ValidarDuracionSesion
+  VARIABLES
+    duracion : ENTERO
+  INICIO
+    HH
+      ESCRIBIR "Ingrese duracion de la sesion (30-90 minutos):"
+      LEER duracion
+      SI duracion >= 30 Y duracion <= 90 ENTONCES
+        ESCRIBIR "Duracion valida: " + duracion + " minutos"
+      SINO
+        ESCRIBIR "Error: la duracion debe estar entre 30 y 90 minutos."
+      FSI
+    FHH MIENTRAS duracion < 30 O duracion > 90
+    ESCRIBIR "Sesion registrada correctamente."
+  FIN</div><div class="colab-output"><span class="out-info">🔍 Prueba con 45 (válido), 15 (inválido → repite), 120 (inválido → repite)...</span></div></div></div>
+
+<div class="lab-panel" id="tab-menu2"><p style="font-size:.82rem;color:var(--muted);margin-bottom:.4rem"><strong>Menú de admisión:</strong> HH-FHH con opciones de registro de pacientes.</p>
+<div class="colab-cell" id="cell-admision"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-admision')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+ALGORITMO MenuAdmisionNeuroBiz
+  VARIABLES
+    opcion : ENTERO
+    paciente : CADENA
+  INICIO
+    HH
+      ESCRIBIR "=== ADMISION NEUROBIZ ==="
+      ESCRIBIR "1. Registrar nuevo paciente"
+      ESCRIBIR "2. Buscar paciente"
+      ESCRIBIR "3. Ver lista de espera"
+      ESCRIBIR "0. Salir"
+      LEER opcion
+      SI opcion = 1 ENTONCES
+        ESCRIBIR "Ingrese nombre del paciente:"
+        LEER paciente
+        ESCRIBIR "Paciente " + paciente + " registrado."
+      SINO
+        SI opcion = 2 ENTONCES
+          ESCRIBIR "Funcion de busqueda no disponible aun."
+        SINO
+          SI opcion = 3 ENTONCES
+            ESCRIBIR "Lista de espera: 5 pacientes."
+          SINO
+            SI opcion = 0 ENTONCES
+              ESCRIBIR "Saliendo del sistema..."
+            SINO
+              ESCRIBIR "Opcion no valida."
+            FSI
+          FSI
+        FSI
+      FSI
+    FHH MIENTRAS opcion <> 0
+  FIN</div><div class="colab-output"><span class="out-info">🔍 Navega por el menú. Ingresa 0 para salir.</span></div></div></div>
+
+<div class="lab-panel" id="tab-libre7"><p style="font-size:.82rem;color:var(--muted);margin-bottom:.4rem"><strong>✨ Celda Libre:</strong> Crea tu propio bucle HH-FHH. Ideal para validaciones y menús.</p>
+<div class="colab-cell" id="cell-libre7"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-libre7')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+ALGORITMO MiHHFHH
+  VARIABLES
+    { Declara tus variables }
+  INICIO
+    HH
+      ESCRIBIR "Mi bucle HH-FHH"
+      { Escribe tu codigo aqui }
+    FHH MIENTRAS { condicion }
+  FIN</div><div class="colab-output"><span class="out-info">🔍 Escribe tu código y ejecuta...</span></div></div></div>
+
+<div style="text-align:center;margin-top:1.2rem;padding:.8rem;background:#e8f5e9;border-radius:10px;border:1px solid #a5d6a7"><p style="margin:0;font-size:.82rem">🎯 <strong>¿Completaste los ejercicios?</strong> Has aplicado HH-FHH a validación y menús reales. +5 XP por celda.</p></div>
+</section>
 
 <section class="card" id="quiz"><h2>🎮 Quiz interactivo</h2><p style="color:var(--muted)">Haz clic en la respuesta correcta. Cada acierto suma 5 XP.</p><div class="quiz"><div class="quiz-q"><p>1. En HH-FHH, el cuerpo se ejecuta:</p><ol type="a"><li>Al menos una vez</li><li>Cero o más veces</li><li>Exactamente una vez</li><li>Solo si la condición es verdadera</li></ol><div class="quiz-answer">✅ a — Se evalúa al final.</div></div><div class="quiz-q"><p>2. Python implementa HH-FHH con:</p><ol type="a"><li>for in range()</li><li>while True: ... break</li><li>while False</li><li>with</li></ol><div class="quiz-answer">✅ b — Ese patrón conserva la lógica.</div></div><div class="quiz-q"><p>3. ¿Cuál estructura es ideal para validar entrada del usuario?</p><ol type="a"><li>HH-FHH</li><li>MQ-FMQ</li><li>SI-FSI</li><li>DD-FDD</li></ol><div class="quiz-answer">✅ a — La validación ocurre al menos una vez.</div></div><div class="quiz-q"><p>4. HH-FHH tiene relevancia 🟡 porque:</p><ol type="a"><li>La lógica existe aunque cambie la sintaxis</li><li>Ya no se usa</li><li>Solo Java lo tiene</li><li>Es idéntico a MQ-FMQ</li></ol><div class="quiz-answer">✅ a — El patrón sigue vivo en todos los lenguajes.</div></div><div class="quiz-q"><p>5. En el menú NeuroBiz, el ciclo termina cuando:</p><ol type="a"><li>opcion = 0</li><li>opcion = 1</li><li>contador = 10</li><li>sesiones > 847</li></ol><div class="quiz-answer">✅ a — La salida explícita es 0.</div></div></div></section>
 <section class="card" id="bib"><h2>📖 Bibliografía</h2>
@@ -185,4 +347,106 @@ function ptSyncCloud(){PT.sync()} function ptExportCode(){PT.exportCode()} funct
 })();
 </script>
 
+
+<!-- ══ CAIRO INTERPRETER + MQ-FMQ + HH-FHH + INTERACTIVE Q ══ -->
+<script>
+!function(){"use strict";
+var I=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;this.siStack=[];this.loopStack=[];this.maxIter=200;this.iterCount=0;};
+I.prototype.reset=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;this.siStack=[];this.loopStack=[];this.iterCount=0;};
+I.prototype.tok=function(l){l=l.replace(/\{[^}]*\}/g,'').trim();if(!l)return[];var t=[],re=/"([^"]*)"|(<>|>=|<=|\d+\.?\d*)|(ALGORITMO|VARIABLES|INICIO|ENTERO|REAL|CADENA|LOGICO|BOOLEANO|ESCRIBIR|ENTONCES|LEER|SINO|FSI|FDD|CASO|MQ|FMQ|HH|FHH|MIENTRAS|FIN|OTRO|SI|DD|FQ|Y|O|NO)|([a-zA-Z_][a-zA-Z0-9_]*)|([+\-*\/=()<>!])|(:)/g,m;while((m=re.exec(l))!==null){if(m[1]!==undefined)t.push({ty:'S',v:m[1]});else if(m[2]!==undefined)t.push({ty:isNaN(m[2])?'O':'N',v:isNaN(m[2])?m[2]:parseFloat(m[2])});else if(m[3]!==undefined)t.push({ty:'K',v:m[3]});else if(m[4]!==undefined)t.push({ty:'I',v:m[4]});else if(m[5]!==undefined)t.push({ty:'O',v:m[5]});}return t;};
+I.prototype.gv=function(t){if(t.ty==='N')return t.v;if(t.ty==='S')return t.v;if(t.ty==='O')return t.v;if(t.ty==='I'){if(t.v in this.v){var v=this.v[t.v];if(typeof v==='string'){var n=parseFloat(v);return isNaN(n)?v:n;}return v;}return 0;}return t.v||0;};
+I.prototype.evalCond=function(t,i){var j=i,left=this.gv(t[j]);j++;while(j<t.length){var op=t[j];if(op.ty==='K'&&(op.v==='ENTONCES'||op.v==='FQ'||op.v==='SINO'||op.v==='FSI'||op.v==='MIENTRAS'))break;if(op.ty==='K'&&(op.v==='Y'||op.v==='O')){var ov=op.v;j++;var right=this.gv(t[j]);j++;if(ov==='Y')left=left&&right;else left=left||right;continue;}
+if(op.ty==='O'&&['>','<','>=','<=','=','<>'].indexOf(op.v)>=0){var oo=op.v;j++;var rr=this.gv(t[j]);j++;if(oo==='>')left=left>rr;else if(oo==='<')left=left<rr;else if(oo==='>=')left=left>=rr;else if(oo==='<=')left=left<=rr;else if(oo==='=')left=left==rr;else if(oo==='<>')left=left!=rr;continue;}
+break;}
+return[left,j];};
+I.prototype.evalExpr=function(t,i){var j=i;if(j>=t.length)return[0,j];var l=this.gv(t[j]);j++;while(j<t.length){var o=t[j];if(o.ty!=='O'||['+','-','*','/','>','<','>=','<='].indexOf(o.v)===-1)break;var ov=o.v;j++;if(j>=t.length)break;var r=this.gv(t[j]);j++;if(ov==='+'){if(typeof l==='string'||typeof r==='string')l=String(l)+String(r);else l=l+r;}else if(ov==='-')l=l-r;else if(ov==='*')l=l*r;else if(ov==='/')l=r!==0?l/r:0;else if(ov==='>')l=l>r;else if(ov==='<')l=l<r;else if(ov==='>=')l=l>=r;else if(ov==='<=')l=l<=r;}return[l,j];};
+I.prototype.exe=function(l){var t=this.tok(l);if(t.length===0)return null;var f=t[0];
+
+// SI stack skipping
+if(this.siStack.length>0){var top=this.siStack[this.siStack.length-1];if(top.mode==='skipToSINO'||top.mode==='skipToFSI'){if(f.ty==='K'&&f.v==='SINO'){top.mode='execSINO';this.o.push({ty:'W',v:'[SINO: ejecutando bloque alterno]'});return null;}if(f.ty==='K'&&f.v==='FSI'){this.siStack.pop();this.o.push({ty:'W',v:'[FSI: fin]'});return null;}if(this.skipLine())this.o.push({ty:'W',v:'...'});return null;}
+if(top.mode==='execSINO'){if(f.ty==='K'&&f.v==='FSI'){this.siStack.pop();this.o.push({ty:'W',v:'[FSI: fin]'});return null;}}}
+
+// Loop stack: searchFMQ / searchFHH
+if(this.loopStack.length>0){var lp=this.loopStack[this.loopStack.length-1];if(lp.mode==='searchFMQ'||lp.mode==='searchFHH'){var endK=lp.mode==='searchFMQ'?'FMQ':'FHH';if(f.ty==='K'&&f.v===endK){this.loopStack.pop();this.o.push({ty:'W',v:'['+endK+': fin del bucle]'});return null;}return null;}}
+
+// ESCRIBIR
+if(f.ty==='K'&&f.v==='ESCRIBIR'){var r=this.evalExpr(t,1);this.o.push({ty:'W',v:String(r[0])});return null;}
+// LEER
+if(f.ty==='K'&&f.v==='LEER'){if(t.length<2||t[1].ty!=='I'){this.o.push({ty:'E',v:'Error: LEER necesita variable'});return null;}return{ty:'R',v:t[1].v};}
+// SI cond ENTONCES
+if(f.ty==='K'&&f.v==='SI'){var cr=this.evalCond(t,1);var cond=cr[0];this.o.push({ty:'W',v:'[SI: '+(cond?'VERDADERO → ENTONCES':'FALSO → salta')+']'});if(cond){this.siStack.push({mode:'execENTONCES',result:true});}else{this.siStack.push({mode:'skipToSINO',result:false});}return null;}
+// SINO
+if(f.ty==='K'&&f.v==='SINO'){if(this.siStack.length>0){var tp2=this.siStack[this.siStack.length-1];if(tp2.mode==='execENTONCES'){tp2.mode='skipToFSI';this.o.push({ty:'W',v:'[SINO: omitido]'});}}return null;}
+// FSI
+if(f.ty==='K'&&f.v==='FSI'){if(this.siStack.length>0)this.siStack.pop();return null;}
+// MQ cond FQ — while (condition first)
+if(f.ty==='K'&&f.v==='MQ'){var lcr=this.evalCond(t,1);var lcond=lcr[0];this.iterCount++;if(this.iterCount>this.maxIter){this.o.push({ty:'E',v:'LIMITE: Demasiadas iteraciones. Reinicia.'});this.r=false;return null;}this.o.push({ty:'W',v:'[MQ: '+(lcond?'VERDADERO → entra (#iter:'+this.iterCount+')':'FALSO → salta')+']'});if(this.loopStack.length>0&&this.loopStack[this.loopStack.length-1].startPc===this.p)this.loopStack.pop();if(lcond){this.loopStack.push({mode:'execBody',startPc:this.p});}else{this.loopStack.push({mode:'searchFMQ'});}return null;}
+// FMQ
+if(f.ty==='K'&&f.v==='FMQ'){if(this.loopStack.length>0){var lp2=this.loopStack[this.loopStack.length-1];if(lp2.mode==='execBody'){this.o.push({ty:'W',v:'[FMQ: volviendo al MQ...]'});this.p=lp2.startPc-1;this.loopStack.pop();return null;}}this.loopStack.pop();return null;}
+// HH — do-while (body first)
+if(f.ty==='K'&&f.v==='HH'){this.o.push({ty:'W',v:'[HH: inicia bucle (cuerpo se ejecuta al menos 1 vez)]'});this.loopStack.push({mode:'execHH',startPc:this.p});return null;}
+// FHH MIENTRAS cond
+if(f.ty==='K'&&f.v==='FHH'){if(this.loopStack.length>0){var lp3=this.loopStack[this.loopStack.length-1];if(lp3.mode==='execHH'){var hsi=1;if(t.length>1&&t[1].ty==='K'&&t[1].v==='MIENTRAS')hsi=2;var hcr=this.evalCond(t,hsi);var hcond=hcr[0];this.iterCount++;if(this.iterCount>this.maxIter){this.o.push({ty:'E',v:'LIMITE: Demasiadas iteraciones.'});this.r=false;return null;}this.o.push({ty:'W',v:'[FHH: condicion '+(hcond?'VERDADERA → repetir bucle':'FALSA → salir del bucle')+']'});this.loopStack.pop();if(hcond){this.p=lp3.startPc-1;}return null;}}this.loopStack.pop();return null;}
+// Assignment
+if(f.ty==='I'&&t.length>=2&&t[1].ty==='O'&&t[1].v==='='){var vn=f.v;var vl=this.evalExpr(t,2);this.v[vn]=vl[0];return null;}
+if(f.ty==='K')return null;return null;};
+I.prototype.skipLine=function(){var l=this.l[this.p];if(!l)return false;var t=this.tok(l);if(t.length===0)return false;for(var i=0;i<t.length;i++){if(t[i].ty==='K'){var k=t[i].v;if(k==='SINO'||k==='FSI'||k==='FMQ'||k==='FHH')return false;}}return true;};
+I.prototype.parse=function(p){if(typeof p==='string'&&p.indexOf('<')!==-1){var d=document.createElement('div');d.innerHTML=p;p=d.textContent||d.innerText||'';}return p.split(String.fromCharCode(10)).map(function(l){return l.trim();}).filter(function(l){return l.length>0;});};
+I.prototype.run=function(p){this.reset();this.l=this.parse(p);this.r=true;return this.sa();};
+I.prototype.sa=function(){while(this.p<this.l.length&&this.r){var l=this.l[this.p];var r=this.exe(l);this.p++;if(r&&r.ty==='R'){this.a=true;this.iv=r.v;return{p:true,v:r.v,o:this.o.slice()};}}this.r=false;return{p:false,o:this.o.slice()};};
+I.prototype.pi=function(v){if(!this.a)return null;var n=parseFloat(v);this.v[this.iv]=isNaN(n)?v:n;this.a=false;this.iv=null;return this.sa();};
+
+var L={ip:new I(),cc:{},xa:{},ge:function(id){var c=document.getElementById(id);if(!c)return'';var e=c.querySelector('.colab-editor');return e?(e.textContent||e.innerText||''):'';},go:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-output'):null;},gb:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-run-btn'):null;},rc:function(id){var s=this,cl=document.getElementById(id),ou=s.go(id),bt=s.gb(id);if(!cl||!ou)return;cl.classList.add('running');cl.classList.remove('success','error');if(bt)bt.classList.add('running');ou.classList.add('visible');ou.innerHTML='<span class="out-info">Ejecutando...</span>';var pg=s.ge(id);var rs=s.ip.run(pg);
+function pr(r){var h='';if(r.o){for(var i=0;i<r.o.length;i++){var e=r.o[i];if(e.ty==='W')h+='<span class="out-value">'+s.es(e.v)+'</span>\n';else if(e.ty==='E')h+='<span class="out-error">'+s.es(e.v)+'</span>\n';}}
+function ct(r2){if(!r2||!r2.p){h+='<span class="out-info">Ejecucion completada.</span>\n';ou.innerHTML=h||'<span class="out-info">Sin salida.</span>';cl.classList.remove('running');cl.classList.add('success');if(bt)bt.classList.remove('running');s.cc[id]=true;s.ax(id);return;}
+var inp=prompt('[ENTRADA] '+r2.v+' = ?\n\nEscribe un valor:');if(inp===null){h+='<span class="out-error">Cancelado.</span>\n';ou.innerHTML=h;cl.classList.remove('running');cl.classList.add('error');if(bt)bt.classList.remove('running');return;}
+h+='<span class="out-input">'+s.es(r2.v)+' ← '+s.es(inp)+'</span>\n';ou.innerHTML=h+'<span class="out-info">Continuando...</span>';
+setTimeout(function(){var nr=s.ip.pi(inp);if(nr&&nr.o){var ol=r.o?r.o.length:0;var no=nr.o.slice(ol);for(var j=0;j<no.length;j++){var ne=no[j];if(ne.ty==='W')h+='<span class="out-value">'+s.es(ne.v)+'</span>\n';else if(ne.ty==='E')h+='<span class="out-error">'+s.es(ne.v)+'</span>\n';}}ct(nr);},150);}
+ct(r);}
+pr(rs);},ax:function(id){if(this.xa[id])return;this.xa[id]=true;var m={'cell-cedula':{p:5,l:'Validar cedula'},'cell-menu':{p:5,l:'Menu NeuroBiz'},'cell-validar':{p:5,l:'Validar duracion'},'cell-admision':{p:5,l:'Menu admision'},'cell-libre7':{p:3,l:'Celda Libre'}};var a=m[id];if(a&&typeof PT!=='undefined'&&PT.addXP){PT.addXP(a.p,a.l);this.st('+'+a.p+' XP — '+a.l);}},stb:function(id){var ts=document.querySelectorAll('.lab-tab');for(var i=0;i<ts.length;i++)ts[i].classList.remove('active');var ps=document.querySelectorAll('.lab-panel');for(var j=0;j<ps.length;j++)ps[j].classList.remove('active');var bs=document.querySelectorAll('.lab-tab');for(var k=0;k<bs.length;k++){if(bs[k].getAttribute('onclick')&&bs[k].getAttribute('onclick').indexOf(id)!==-1)bs[k].classList.add('active');}var pn=document.getElementById(id);if(pn)pn.classList.add('active');},es:function(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;},st:function(m){var t=document.createElement('div');t.className='xp-toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);}};
+window.CairoLab=L;
+
+// ── INTERACTIVE Q (Semana 7: HH-FHH) ──
+var IQ=(function(){var a={},xa={};try{var s=JSON.parse(localStorage.getItem('tga04_s7_iq')||'{}');a=s.a||{};xa=s.xa||{};}catch(e){}function sv(){try{localStorage.setItem('tga04_s7_iq',JSON.stringify({a:a,xa:xa}));}catch(e){}}function nm(s){return s.toLowerCase().replace(/[áàäâ]/g,'a').replace(/[éèëê]/g,'e').replace(/[íìïî]/g,'i').replace(/[óòöô]/g,'o').replace(/[úùüû]/g,'u').replace(/[ñ]/g,'n').replace(/[^a-z0-9 ]/g,' ');}
+var rub={
+iq1:{kw:['HH','FHH','MIENTRAS','opcion','0','<>','menu','ESCRIBIR','LEER','ENTONCES','FIN','admision','salir','ALGORITMO'],
+fb:{full:'¡Excelente! Estructura: <code>HH</code> → mostrar menú → <code>LEER opcion</code> → procesar opción → <code>FHH MIENTRAS opcion <> 0</code>. El cuerpo se ejecuta al menos una vez, y la condición se evalúa al final.',
+partial:'Buena estructura. Recuerda: <code>HH</code> inicia el bucle, <code>FHH MIENTRAS opcion <> 0</code> lo cierra. La condición <> 0 significa "mientras NO sea 0, repite". Usa SI anidados para cada opción del menú.',
+wrong:'Estructura: <code>HH</code> → mostrar opciones → <code>LEER opcion</code> → procesar con SI → <code>FHH MIENTRAS opcion <> 0</code>. La clave: el cuerpo se ejecuta al menos 1 vez ANTES de preguntar si repetir.'}},
+iq2:{kw:['HH','FHH','cedula','>','0','validar','positivo','LEER','MIENTRAS','<=','numero','ENTONCES'],
+fb:{full:'¡Correcto! Validación con HH-FHH: <code>HH</code> → <code>LEER cedula</code> → verificar → <code>FHH MIENTRAS cedula <= 0</code>. El bucle se repite hasta que la cédula sea un número positivo.',
+partial:'Bien. La validación es: <code>HH ... LEER cedula ... FHH MIENTRAS cedula <= 0</code>. Mientras la cédula sea 0 o negativa, el bucle sigue pidiendo el dato. Ideal para formularios.',
+wrong:'<code>HH</code> → <code>LEER cedula</code> → <code>SI cedula > 0 ENTONCES</code> mensaje éxito <code>SINO</code> mensaje error <code>FSI</code> → <code>FHH MIENTRAS cedula <= 0</code>. Así validas que el dato sea correcto antes de continuar.'}},
+iq3:{kw:['<>','0','distinto','salir','falso','verdadero','condicion','salida','MIENTRAS','repetir','continuar','opcion'],
+fb:{full:'¡Excelente! <code>opcion <> 0</code> significa "mientras la opción sea DISTINTA de 0, repite". Si usaras <code>opcion = 0</code>, el bucle solo se repetiría cuando el usuario ELIGE salir, lo cual es ilógico: saldría cuando eliges 0 y se quedaría atrapado con cualquier otra opción.',
+partial:'Buena explicación. <code><></code> es "distinto de". <code>FHH MIENTRAS opcion <> 0</code> = "repite mientras NO hayan elegido salir". Si usaras <code>= 0</code>, el bucle se comportaría al revés.',
+wrong:'<code>opcion <> 0</code> = "opción distinta de 0" → el bucle REPITE mientras NO elijan salir. Con <code>opcion = 0</code> sería: "repite solo cuando elijan salir" → se quedaría atrapado para siempre con cualquier opción ≠ 0.'}},
+iq4:{kw:['HH','FHH','duracion','30','90','validar','MIENTRAS','O','<','>','ENTONCES','entre','minutos'],
+fb:{full:'¡Correcto! <code>HH</code> → <code>LEER duracion</code> → verificar → <code>FHH MIENTRAS duracion < 30 O duracion > 90</code>. Usas O porque cualquiera de las dos condiciones (muy corta O muy larga) debe hacer que se repita.',
+partial:'Buena estructura. La condición es <code>duracion < 30 O duracion > 90</code>. Se repite si la duración es menor a 30 O mayor a 90. Si está en el rango, el bucle termina.',
+wrong:'<code>HH</code> → <code>LEER duracion</code> → verificar con SI → <code>FHH MIENTRAS duracion < 30 O duracion > 90</code>. O significa que si CUALQUIERA de las dos condiciones se cumple, el bucle repite. La duración válida es 30-90.'}},
+iq5:{kw:['MQ','FMQ','HH','FHH','comparar','condicion','antes','despues','cuerpo','ejecuta','validacion','menu','procesar','ejemplo','diferencia'],
+fb:{full:'¡Excelente comparación! <strong>MQ-FMQ</strong>: condición ANTES del cuerpo, puede ejecutarse 0 veces. Usos: procesar lista de sesiones, leer archivos, contar mientras haya datos. <strong>HH-FHH</strong>: condición DESPUÉS del cuerpo, se ejecuta ≥1 vez. Usos: validar entrada, menús, formularios.',
+partial:'Buena comparación. MQ-FMQ (condición primero): para cuando PODRÍA no haber nada que procesar. HH-FHH (cuerpo primero): para cuando SIEMPRE necesitas interactuar al menos una vez antes de decidir.',
+wrong:'MQ-FMQ: "¿debo entrar?" → puede ejecutarse 0 veces (ej: procesar sesiones mientras haya). HH-FHH: "¿debo repetir?" → se ejecuta ≥1 vez (ej: validar cédula, mostrar menú). La diferencia es CUÁNDO se evalúa la condición.'}},
+iq6:{kw:['app','validar','formulario','registro','HH','FHH','dato','usuario','repitir','correcto','error','web','sitio'],
+fb:{full:'¡Buen ejemplo! Identificaste una app real y explicaste cómo HH-FHH valida los datos: muestra el formulario, el usuario ingresa datos, y si son inválidos repite hasta que sean correctos. Es exactamente el patrón HH-FHH.',
+partial:'Buen ejemplo. La mayoría de formularios web usan este patrón: muestran el campo, validan al enviar, y si hay error vuelven a mostrar el formulario con un mensaje. Eso es HH-FHH en la práctica.',
+wrong:'Ejemplos: formulario de registro (repite hasta que el email sea válido), login (repite hasta que la contraseña cumpla requisitos), búsqueda (repite hasta que haya resultados). Todos siguen el patrón: intentar → evaluar → repetir si falla.'}}
+};
+function ck(id){var r=rub[id];if(!r)return;var ta=document.getElementById(id+'-ta'),fb=document.getElementById(id+'-fb'),iq=document.getElementById(id),btn=iq?iq.querySelector('.iq-btn'):null;if(!ta||!fb||!iq)return;var ans=ta.value.trim();if(ans.length<15){fb.className='iq-feedback error show';fb.innerHTML='Escribe una respuesta mas completa.';iq.className='interactive-q wrong';return;}
+var w=nm(ans).split(/\s+/),mt=[];
+for(var i=0;i<r.kw.length;i++){var kw=r.kw[i],kn=nm(kw),fd=false;for(var j=0;j<w.length;j++){if(w[j]===kn||(w[j].length>=4&&w[j].indexOf(kn)>=0)||(w[j].length>=4&&kn.indexOf(w[j])>=0)){fd=true;break;}}if(fd)mt.push(kw);}
+var ratio=mt.length/r.kw.length,fc,ft;
+if(ratio>=0.20){fc='success';ft=r.fb.full;iq.className='interactive-q answered';}else if(ratio>=0.08){fc='partial';ft=r.fb.partial;iq.className='interactive-q partial';}else{fc='error';ft=r.fb.wrong;iq.className='interactive-q wrong';}
+fb.className='iq-feedback '+fc+' show';fb.innerHTML=ft;
+var kh='<div class="iq-keywords">';for(var k=0;k<mt.length;k++)kh+='<span class="iq-kw matched">✓ '+mt[k]+'</span>';kh+='</div>';fb.innerHTML+=kh;
+if(!xa[id]&&ratio>=0.08){xa[id]=true;a[id]=ratio>=0.20?'full':'partial';if(typeof PT!=='undefined'&&PT.addXP){var pts=ratio>=0.20?4:2,lb='Pregunta '+id.replace('iq','')+(ratio>=0.20?' (completa)':' (parcial)');PT.addXP(pts,lb);var pe=iq.querySelector('.iq-pts');if(pe){pe.textContent='+'+pts+' XP';pe.classList.add('earned');}if(typeof CairoLab!=='undefined'&&CairoLab.st)CairoLab.st('+'+pts+' XP — '+lb);}}else if(xa[id]){var pe2=iq.querySelector('.iq-pts');if(pe2&&a[id]){var pp=a[id]==='full'?4:2;pe2.textContent='+'+pp+' XP';pe2.classList.add('earned');}}
+if(btn)btn.disabled=true;a[id]=a[id]||(ratio>=0.20?'full':'partial');sv();}
+function rst(){for(var id in a){if(!a.hasOwnProperty(id))continue;var iq=document.getElementById(id),pe=iq?iq.querySelector('.iq-pts'):null;if(pe){pe.textContent='+'+(a[id]==='full'?4:2)+' XP';pe.classList.add('earned');}var btn=iq?iq.querySelector('.iq-btn'):null;if(btn)btn.disabled=true;if(iq)iq.className='interactive-q '+(a[id]==='full'?'answered':'partial');}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rst);else rst();
+return{check:ck};})();
+window.InteractiveQ=IQ;
+}();
+</script>
 </body></html>
