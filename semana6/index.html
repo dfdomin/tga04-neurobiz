@@ -267,7 +267,7 @@ ALGORITMO MiBucle
 </section>
 <section class="card" id="colab"><h2>☁️ Python en Google Colab — Semana 6</h2><p>Traducimos MQ-FMQ a Python. Abre <a href="https://colab.research.google.com/" target="_blank" rel="noopener"><strong>Google Colab</strong></a> y escribe este algoritmo real.</p>
 <div class="info tip"><span>🐍</span><div>El pseudocódigo <code>MQ condición FMQ</code> se convierte en <code>while condición:</code> en Python. El cuerpo va indentado 4 espacios. No necesitas FMQ — Python sabe dónde termina por la indentación.</div></div>
-<div class="code"><div class="code-title">🐍 Python — Procesar sesiones con centinela</div><pre>total = 0
+<div class="colab-cell pyodide-cell" id="cell-python"><div class="colab-toolbar"><button class="colab-run-btn pyodide-run" data-for="cell-python" onclick="PyCell.run('cell-python')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Python 3</span><span class="pyodide-status" style="margin-left:auto;font-size:.68rem;color:#5f6368;display:none"></span></div><div class="colab-editor" contenteditable="true" spellcheck="false">total = 0
 contador = 0
 sesion = int(input("Ingresa tasa de sesión (%) o -1 para terminar: "))
 
@@ -276,13 +276,12 @@ while sesion != -1:
     contador += 1
     sesion = int(input("Ingresa tasa de sesión (%) o -1 para terminar: "))
 
-if contador &gt; 0:
+if contador > 0:
     promedio = total / contador
     print(f"Sesiones procesadas: {contador}")
     print(f"Promedio de tasa: {promedio:.1f}%")
 else:
-    print("No se procesaron sesiones.")</pre></div>
-<div class="info warn"><span>⚠️</span><div><strong>Ciclo infinito:</strong> Si olvidás actualizar la variable dentro del while (pedir la siguiente sesión), el programa nunca termina. Presiona el botón ⏹ de Colab para detenerlo.</div></div>
+    print("No se procesaron sesiones.")</div><div class="colab-output"></div></div><div class="info warn"><span>⚠️</span><div><strong>Ciclo infinito:</strong> Si olvidás actualizar la variable dentro del while (pedir la siguiente sesión), el programa nunca termina. Presiona el botón ⏹ de Colab para detenerlo.</div></div></div>
 <h3>🎯 Actividad Colab (+25 XP)</h3><h3>🧪 Verifica tu Colab — 5 preguntas · 5 XP cada una</h3><p style="color:var(--muted);font-size:.87rem">Ejecuta el código con los valores indicados. Solo puedes responder correctamente si corriste el código en Colab.</p><div class="quiz-q"><p><strong>C1.</strong> Ejecuta ingresando: 80, 70, 60 y luego -1. ¿Cuántas sesiones procesa el código?</p><ol type="a"><li>4</li><li>3</li><li>2</li><li>0</li></ol><div class="quiz-answer">✅ b — El centinela -1 no se cuenta. Se procesaron 80, 70 y 60 → 3 sesiones.</div></div><div class="quiz-q"><p><strong>C2.</strong> Con esos mismos datos (80, 70, 60, -1), ¿cuál es el promedio que imprime?</p><ol type="a"><li>52.5%</li><li>70.0%</li><li>75.0%</li><li>210.0%</li></ol><div class="quiz-answer">✅ b — (80+70+60)/3 = 70.0%.</div></div><div class="quiz-q"><p><strong>C3.</strong> Ejecuta ingresando solo -1 directamente. ¿Qué imprime?</p><ol type="a"><li>Promedio de tasa: 0.0%</li><li>Sesiones procesadas: 0</li><li>No se procesaron sesiones.</li><li>Error: división por cero</li></ol><div class="quiz-answer">✅ c — contador=0, el if falla → entra al else → "No se procesaron sesiones."</div></div><div class="quiz-q"><p><strong>C4.</strong> Ejecuta ingresando solo 90 y luego -1. ¿Cuánto vale el contador?</p><ol type="a"><li>1</li><li>2</li><li>0</li><li>-1</li></ol><div class="quiz-answer">✅ a — Solo se procesó una sesión (90), contador = 1.</div></div><div class="quiz-q"><p><strong>C5.</strong> ¿Qué valor actúa como centinela (señal de parada) en este código?</p><ol type="a"><li>0</li><li>999</li><li>FALSO</li><li>-1</li></ol><div class="quiz-answer">✅ d — La condición es <code>while sesion != -1</code>, por lo que -1 es el centinela.</div></div>
 </section>
 <div id="grade-panel" style="text-align:center; background:linear-gradient(135deg,#1E2843,#2d3a5e); color:#fff; border-radius:16px; padding:1.2rem 1.5rem; margin:0 0 2rem;">
@@ -454,5 +453,53 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 return{check:ck};})();
 window.InteractiveQ=IQ;
 }();
+<!-- ══ PYODIDE RUNTIME ══ -->
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script>
+var PyCell=(function(){
+  var py=null,loading=null,cells={};
+  function getEditor(id){var c=document.getElementById(id);return c?c.querySelector('.colab-editor'):null}
+  function getOutput(id){var c=document.getElementById(id);return c?c.querySelector('.colab-output'):null}
+  function getBtn(id){var c=document.getElementById(id);return c?c.querySelector('.pyodide-run'):null}
+  function getStatus(id){var c=document.getElementById(id);return c?c.querySelector('.pyodide-status'):null}
+  function initPy(){if(py)return Promise.resolve();if(loading)return loading;loading=new Promise(function(res,rej){if(typeof loadPyodide==='undefined'){res();return}loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'}).then(function(p){py=p;res();}).catch(function(e){console.warn('Pyodide failed to load:',e);res();});});return loading;}
+  function showOutput(id,lines,isError){var ou=getOutput(id);if(!ou)return;ou.classList.add('visible');var h='';for(var i=0;i<lines.length;i++){var l=lines[i];if(isError)h+='<span class="out-error">'+escHtml(l)+'</span>\n';else h+='<span class="out-value">'+escHtml(l)+'</span>\n';}ou.innerHTML=h;}
+  function escHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  function setStatus(id,msg,color){var st=getStatus(id);if(st){st.textContent=msg;st.style.color=color||'#5f6368';st.style.display=msg?'inline':'none';}}
+  function markCell(id,cls){var c=document.getElementById(id);if(c)c.classList.add(cls);var bt=getBtn(id);if(bt)bt.classList.remove('running');}
+  function run(id){
+    var ed=getEditor(id),ou=getOutput(id),bt=getBtn(id);
+    if(!ed||!ou)return;
+    var code=ed.textContent||ed.innerText||'';
+    if(!code.trim()){ou.classList.add('visible');ou.innerHTML='<span class="out-info">Escribe algo para ejecutar.</span>';return;}
+    if(bt)bt.classList.add('running');
+    ou.classList.add('visible');ou.innerHTML='<span class="out-info">Iniciando Python...</span>';
+    setStatus(id,'Cargando...','#e65100');
+    initPy().then(function(){
+      setStatus(id,'Ejecutando...','#e65100');
+      try{
+        var outputs=[];
+        py.setStdout({batch:1,onbatch:function(d){outputs=outputs.concat(d.stdout.split('\n').filter(function(l){return l.length>0;}));}});
+        py.setStdin({oninput:function(){return prompt('Ingresa un valor:');}});
+        var result=py.runSync(code,{globals:py.globals.get('__builtins__')});
+        showOutput(id,outputs,false);
+        setStatus(id,'✓ Listo','#2e7d32');
+        markCell(id,'success');
+      }catch(e){
+        var errMsg=e.message||String(e);
+        var lines=errMsg.split('\n').filter(function(l){return l.length>0;});
+        showOutput(id,lines,true);
+        setStatus(id,'✗ Error','#c62828');
+        markCell(id,'success');
+      }
+    }).catch(function(e){
+      showOutput(id,[e.message||'Error al cargar Pyodide'],true);
+      setStatus(id,'✗ Error','#c62828');
+      if(bt)bt.classList.remove('running');
+    });
+  }
+  return{run:run,init:initPy};
+})();
+window.addEventListener('load',function(){PyCell.init();});
 </script>
 </body></html>

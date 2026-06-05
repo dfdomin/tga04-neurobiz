@@ -4,6 +4,7 @@
 <title>Semana 8 — Estructura Repetitiva PARA (PARA-FPARA) | TGA04</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
 <script src="../js/supabase-config.js"></script>
 <style>
 :root{--primary:#1E2843;--accent:#FFDF2D;--light-bg:#FAFAFA;--border:#d8dde8;--text:#1f2937;--muted:#546e7a;--green:#1b5e20;--warning:#e65100}
@@ -22,6 +23,7 @@ footer{text-align:center;padding:1.4rem;color:var(--muted);font-size:.82rem}
 #pt-widget{position:fixed;right:18px;bottom:18px;z-index:9999;background:linear-gradient(135deg,#1E2843,#31446f);color:#fff;border-radius:16px;padding:14px 16px;min-width:242px;max-width:290px;box-shadow:0 10px 30px rgba(0,0,0,.3)}#pt-widget.collapsed{transform:translateY(calc(100% - 42px))}#pt-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer}#pt-toggle{background:none;border:none;color:#fff;font-size:1.1rem}#pt-body{margin-top:9px}#pt-bar{height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden}#pt-bar>div{height:100%;width:0;background:linear-gradient(90deg,#FFDF2D,#fff176)}#pt-label{display:flex;justify-content:space-between;font-size:.75rem;margin-top:5px;opacity:.9}#pt-rank{font-size:.73rem;margin-top:6px}#pt-msg{font-size:.72rem;min-height:14px;text-align:center;margin-top:6px}#pt-btns{display:flex;gap:6px;margin-top:8px}.pt-btn{flex:1;border:none;border-radius:8px;padding:6px 8px;font-weight:800;font-size:.74rem;cursor:pointer}.pt-save{background:#43a047;color:#fff}
 #pt-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:10000}#pt-modal-box{background:linear-gradient(160deg,#1E2843,#24365b);color:#fff;border-radius:20px;padding:2rem 2rem 1.4rem;width:min(94vw,420px);box-shadow:0 20px 60px rgba(0,0,0,.5)}#pt-modal-box .sub{opacity:.75;font-size:.84rem;margin-bottom:1rem}#pt-modal-box label{display:block;font-size:.78rem;font-weight:800;margin-bottom:.28rem;text-transform:uppercase;opacity:.88}#pt-modal-box input{width:100%;padding:.65rem .85rem;border-radius:10px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff}#pt-modal-btn,#pt-modal-btn-search{border:none;border-radius:10px;padding:.7rem 1rem;font-weight:900;cursor:pointer}#pt-modal-btn{width:100%;background:#FFDF2D;color:#1E2843;margin-top:.35rem}#pt-modal-btn-search{background:rgba(255,255,255,.18);color:#fff;flex-shrink:0}.field{margin:.8rem 0}#pt-modal-error,#pt-modal-error2,#pt-modal-error3{color:#ff8a80;font-size:.8rem;min-height:1em;margin-top:.45rem}.pt-found-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,223,45,.4);border-radius:12px;padding:1rem}.pt-link-btn{background:none;border:none;color:rgba(255,255,255,.7);text-decoration:underline;display:block;margin:.5rem auto 0;cursor:pointer}
 @media(max-width:640px){header h1{font-size:1.4rem}main{padding:0 .7rem 5rem}.card{padding:1rem}#pt-widget{left:12px;right:12px;max-width:none;min-width:0}}
+.colab-cell{margin:1rem 0;border-radius:12px;overflow:hidden;border:1.5px solid var(--border)}.colab-cell pre{background:#152033;border-radius:0;margin:0;padding:1rem 1.1rem;color:#dbe6ff}.run-btn{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:var(--primary);color:#fff;border:none;border-radius:0;cursor:pointer;font-size:.82rem;font-weight:700;width:100%;text-align:left;transition:background .2s}.run-btn:hover{background:#2d3a5e}.run-btn.run{background:#1b5e20}.run-btn .run-icon{font-size:1rem}.cell-output{background:#0d1826;padding:.75rem 1rem;font-family:ui-monospace,SFMono-Regular,monospace;font-size:.84rem;color:#b6f0b6;min-height:2.4rem;white-space:pre-wrap;display:none}.cell-output.error{color:#ff8a80}
 </style></head><body>
 <header><div class="chip">TGA04 · Semana 8</div><h1>Estructura Repetitiva PARA (PARA-FPARA)</h1><p>RA2 · CE4 · iteraciones conocidas · paso positivo y negativo · reportes</p><div class="xp-top"><div id="xpBar"></div></div><div>XP de sesión: <span id="xpCount">0</span> / 90 · Rango global: <span id="headerRank">Aprendiz</span></div></header>
 <nav><a href="#mision">🎯 Misión</a><a href="#teoria">📚 Teoría</a><a href="#pseudocodigo">📝 Pseudocódigo</a><a href="#actividad">⚙️ Actividad</a><a href="#hti">🏠 HTI</a><a href="#quiz">🎮 Quiz</a><a href="#bib">📖 Fuentes</a><a href="#colab">☁️ Colab</a></nav>
@@ -59,14 +61,17 @@ footer{text-align:center;padding:1.4rem;color:var(--muted);font-size:.82rem}
     PARA nivel ← 10 HASTA 100 CON PASO 10 FPA
       meta ← nivel * 8.5
       ESCRIBIR &quot;Nivel &quot;, nivel, &quot;% → Meta: &quot;, meta, &quot; sesiones/mes&quot;
-    FPA
-  FIN</pre></div><div class="code"><div class="code-title">🐍 Equivalente Python</div><pre>total_anual = 0
-for mes in range(1, 13):
-    sesiones_mes = float(input(f&quot;Sesiones mes {mes}: &quot;))
-    total_anual += sesiones_mes
-promedio = total_anual / 12
-print(f&quot;Total: {total_anual} | Promedio: {promedio:.1f}&quot;)</pre></div></section>
-<section class="card" id="actividad"><h2>⚙️ Actividad presencial</h2><div class="dojo">Asistencia <strong>+10 XP</strong> · Quiz <strong>+25 XP</strong> · Misión <strong>+30 XP</strong></div><div class="activity"><div class="ah pres">Bloque 1 — Elegir bien la estructura</div><div class="ab"><ol><li>Resolver tres casos y decidir MQ, HH o PARA.</li><li>Usar calendario 2026 para visualizar 12 iteraciones.</li><li>Explicar inicio, fin y paso.</li></ol></div></div><div class="activity"><div class="ah pres">Bloque 2 — Reporte anual</div><div class="ab"><ol><li>Construir reporte de 12 meses.</li><li>Agregar tabla con <code>CON PASO 10</code>.</li><li>Discutir cuenta regresiva con <code>CON PASO -1</code>.</li></ol></div></div></section>
+    <div class="code-title">🐍 Equivalente Python</div>
+    <div class="colab-cell" id="py-cell-1">
+    <button class="run-btn" onclick="runCell(this,'py-cell-1',`total_anual = 0\nfor mes in range(1, 13):\n    sesiones_mes = float(input(f'Sesiones mes {mes}: '))\n    total_anual += sesiones_mes\npromedio = total_anual / 12\nprint(f'Total: {total_anual} | Promedio: {promedio:.1f}')`,[500])"><span class="run-icon">▶</span> Ejecutar en el navegador</button>
+    <div class="cell-output" id="py-cell-1-output"></div>
+    <pre>total_anual = 0
+    for mes in range(1, 13):
+        sesiones_mes = float(input(f"Sesiones mes {mes}: "))
+        total_anual += sesiones_mes
+    promedio = total_anual / 12
+    print(f"Total: {total_anual} | Promedio: {promedio:.1f}")</pre>
+    </div></div></section>
 <section class="card" id="hti"><h2>🏠 HTI — Trabajo independiente</h2><div class="activity"><div class="ah htia">HTI-A</div><div class="ab"><ol><li>Transforma un ejemplo de MQ a PARA solo si el conteo es conocido.</li><li>Practica secuencias con paso positivo y negativo.</li></ol></div></div><div class="activity"><div class="ah htib">HTI-B</div><div class="ab"><ol><li><strong>B:</strong> Escribe PARA-FPARA para la meta semanal de un terapeuta en 52 semanas.</li><li><strong>C:</strong> Explica cuándo elegirías PARA sobre MQ con 3 ejemplos de NeuroBiz para cada uno.</li></ol></div></div></section>
 
 <section class="card" id="quiz"><h2>🎮 Quiz interactivo</h2><p style="color:var(--muted)">Haz clic en la respuesta correcta. Cada acierto suma 5 XP.</p><div class="quiz"><div class="quiz-q"><p>1. PARA-FPARA es ideal cuando:</p><ol type="a"><li>Se conoce el número exacto de iteraciones</li><li>La condición es dinámica</li><li>El usuario decide cuándo parar</li><li>Se valida entrada</li></ol><div class="quiz-answer">✅ a — PARA se usa cuando el conteo ya está fijado.</div></div><div class="quiz-q"><p>2. PARA mes ← 1 HASTA 12 FPA ejecuta el cuerpo:</p><ol type="a"><li>12 veces</li><li>11</li><li>13</li><li>1</li></ol><div class="quiz-answer">✅ a — Recorre del 1 al 12 inclusive.</div></div><div class="quiz-q"><p>3. PARA-FPARA en Python equivale a:</p><ol type="a"><li>for in range()</li><li>while True</li><li>do-while</li><li>if</li></ol><div class="quiz-answer">✅ a — range expresa un ciclo contado.</div></div><div class="quiz-q"><p>4. ¿Qué estructura usa NeuroBiz para el reporte de 12 meses?</p><ol type="a"><li>PARA-FPARA</li><li>HH-FHH</li><li>SI-SINO</li><li>DD-FDD</li></ol><div class="quiz-answer">✅ a — El número de iteraciones es conocido.</div></div><div class="quiz-q"><p>5. CON PASO -1 significa:</p><ol type="a"><li>Cuenta regresiva</li><li>Error de sintaxis</li><li>Multiplica</li><li>Solo funciona en Java</li></ol><div class="quiz-answer">✅ a — El contador va descendiendo.</div></div></div></section>
@@ -80,8 +85,11 @@ print(f&quot;Total: {total_anual} | Promedio: {promedio:.1f}&quot;)</pre></div><
 </ul>
 </section>
 <section class="card" id="colab"><h2>☁️ Python en Google Colab — Semana 8</h2><p>PARA-FPARA se convierte en <code>for variable in range()</code>. Abre <a href="https://colab.research.google.com/" target="_blank" rel="noopener"><strong>Google Colab</strong></a> y genera el reporte anual real.</p>
-<div class="info tip"><span>🐍</span><div><code>PARA mes ← 1 HASTA 12 FPA</code> → <code>for mes in range(1, 13):</code><br>El +1 en Python es porque range() <strong>excluye</strong> el límite superior. <code>range(1,13)</code> genera: 1, 2, 3, ..., 12.</div></div>
-<div class="code"><div class="code-title">🐍 Python — Reporte mensual NeuroBiz 2026</div><pre>total_anual = 0
+<div class="code-title">🐍 Python — Reporte mensual NeuroBiz 2026</div>
+<div class="colab-cell" id="py-cell-2">
+<button class="run-btn" onclick="runCell(this,'py-cell-2',`total_anual = 0\nfor mes in range(1, 13):\n    ingresos = float(input(f'Ingresos mes {mes}: $'))\n    total_anual += ingresos\n    print(f'  Mes {mes:02d}: ${ingresos:>12,.0f}')\npromedio = total_anual / 12\nprint(f\"\\n{'─'*35}\")\nprint(f'Total anual:     ${total_anual:>12,.0f}')\nprint(f'Promedio mensual:${promedio:>12,.0f}')`,[1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000])"><span class="run-icon">▶</span> Ejecutar en el navegador</button>
+<div class="cell-output" id="py-cell-2-output"></div>
+<pre>total_anual = 0
 
 for mes in range(1, 13):
     ingresos = float(input(f"Ingresos mes {mes}: $"))
@@ -91,15 +99,27 @@ for mes in range(1, 13):
 promedio = total_anual / 12
 print(f"\n{'─'*35}")
 print(f"Total anual:     ${total_anual:>12,.0f}")
-print(f"Promedio mensual:${promedio:>12,.0f}")</pre></div>
-<div class="code"><div class="code-title">🐍 Python — Tabla con PASO (equivale a CON PASO 10)</div><pre>print("Niveles de rendimiento — Terapeutas NeuroBiz")
-print(f"{'Nivel':&lt;10} {'Meta sesiones':&gt;15}")
+print(f"Promedio mensual:${promedio:>12,.0f}")</pre>
+<div class="code-title">🐍 Python — Tabla con PASO (equivale a CON PASO 10)</div>
+<div class="colab-cell" id="py-cell-3">
+<button class="run-btn" onclick="runCell(this,'py-cell-3',`print('Niveles de rendimiento — Terapeutas NeuroBiz')\nprint(f\"{'Nivel':<10} {'Meta sesiones':>15}\")\nprint('─' * 27)\nfor nivel in range(10, 101, 10):\n    print(f'{nivel:<10} {nivel * 5:>15} sesiones')`,[])"><span class="run-icon">▶</span> Ejecutar en el navegador</button>
+<div class="cell-output" id="py-cell-3-output"></div>
+<pre>print("Niveles de rendimiento — Terapeutas NeuroBiz")
+print(f"{'Nivel':<10} {'Meta sesiones':>15}")
 print("─" * 27)
 
 for nivel in range(10, 101, 10):
-    print(f"{nivel:&lt;10} {nivel * 5:&gt;15} sesiones")</pre></div>
+    print(f"{nivel:<10} {nivel * 5:>15} sesiones")</pre>
+</div></div>
 <div class="info warn"><span>⚠️</span><div><strong>range() con paso negativo:</strong> Para contar hacia atrás: <code>range(12, 0, -1)</code> genera 12, 11, 10, ..., 1. Útil para cuentas regresivas de proyectos.</div></div>
-<h3>🎯 Actividad Colab (+25 XP)</h3><h3>🧪 Verifica tu Colab — 5 preguntas · 5 XP cada una</h3><p style="color:var(--muted);font-size:.87rem">Ejecuta el código con los valores indicados. Solo puedes responder correctamente si corriste el código en Colab.</p><div class="quiz-q"><p><strong>C1.</strong> ¿Cuántos meses le solicita datos el código al ejecutarse?</p><ol type="a"><li>10</li><li>11</li><li>12</li><li>13</li></ol><div class="quiz-answer">✅ c — <code>range(1, 13)</code> genera los enteros del 1 al 12 inclusive → 12 meses.</div></div><div class="quiz-q"><p><strong>C2.</strong> <code>range(1, 13)</code> genera números del 1 al ___</p><ol type="a"><li>13</li><li>12</li><li>11</li><li>14</li></ol><div class="quiz-answer">✅ b — En Python <code>range(inicio, fin)</code> llega hasta fin-1. range(1,13) → 1, 2, ..., 12.</div></div><div class="quiz-q"><p><strong>C3.</strong> Ingresa $1000 para todos los meses. ¿Cuál es el total anual?</p><ol type="a"><li>$1,000</li><li>$6,000</li><li>$12,000</li><li>$120,000</li></ol><div class="quiz-answer">✅ c — 1000 × 12 = 12,000. El código imprime Total anual: $12,000.</div></div><div class="quiz-q"><p><strong>C4.</strong> Con $1000 para todos los meses, ¿cuál es el promedio mensual?</p><ol type="a"><li>$1,000</li><li>$500</li><li>$2,000</li><li>$12,000</li></ol><div class="quiz-answer">✅ a — 12,000 / 12 = 1,000. El promedio iguala el valor ingresado.</div></div><div class="quiz-q"><p><strong>C5.</strong> ¿Cómo muestra el código el mes 3 en pantalla?</p><ol type="a"><li>Mes 3:</li><li>Mes 03:</li><li>mes_3:</li><li>Mes número 3:</li></ol><div class="quiz-answer">✅ b — El formato <code>{mes:02d}</code> añade un cero a la izquierda para números menores a 10 → "Mes 03:".</div></div>
+<h3>🎯 Actividad Colab (+25 XP)</h3>
+<h3>🧪 Verifica tu Colab — 5 preguntas · 5 XP cada una</h3>
+<p style="color:var(--muted);font-size:.87rem">Ejecuta el código con los valores indicados. Solo puedes responder correctamente si corriste el código en Colab.</p>
+<div class="quiz-q"><p><strong>C1.</strong> ¿Cuántos meses le solicita datos el código al ejecutarse?</p><ol type="a"><li>10</li><li>11</li><li>12</li><li>13</li></ol><div class="quiz-answer">✅ c — <code>range(1, 13)</code> genera los enteros del 1 al 12 inclusive → 12 meses.</div></div>
+<div class="quiz-q"><p><strong>C2.</strong> <code>range(1, 13)</code> genera números del 1 al ___</p><ol type="a"><li>13</li><li>12</li><li>11</li><li>14</li></ol><div class="quiz-answer">✅ b — En Python <code>range(inicio, fin)</code> llega hasta fin-1. range(1,13) → 1, 2, ..., 12.</div></div>
+<div class="quiz-q"><p><strong>C3.</strong> Ingresa $1000 para todos los meses. ¿Cuál es el total anual?</p><ol type="a"><li>$1,000</li><li>$6,000</li><li>$12,000</li><li>$120,000</li></ol><div class="quiz-answer">✅ c — 1000 × 12 = 12,000. El código imprime Total anual: $12,000.</div></div>
+<div class="quiz-q"><p><strong>C4.</strong> Con $1000 para todos los meses, ¿cuál es el promedio mensual?</p><ol type="a"><li>$1,000</li><li>$500</li><li>$2,000</li><li>$12,000</li></ol><div class="quiz-answer">✅ a — 12,000 / 12 = 1,000. El promedio iguala el valor ingresado.</div></div>
+<div class="quiz-q"><p><strong>C5.</strong> ¿Cómo muestra el código el mes 3 en pantalla?</p><ol type="a"><li>Mes 3:</li><li>Mes 03:</li><li>mes_3:</li><li>Mes número 3:</li></ol><div class="quiz-answer">✅ b — El formato <code>{mes:02d}</code> añade un cero a la izquierda para números menores a 10 → "Mes 03:".</div></div>
 </section>
 <div id="grade-panel" style="text-align:center; background:linear-gradient(135deg,#1E2843,#2d3a5e); color:#fff; border-radius:16px; padding:1.2rem 1.5rem; margin:0 0 2rem;">
   <div style="font-size:.8rem; opacity:.65; text-transform:uppercase; letter-spacing:.08em; margin-bottom:.3rem;">📊 Nota acumulada</div>

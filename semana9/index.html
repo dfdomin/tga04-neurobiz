@@ -5,6 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="../js/supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 <style>
 :root{--primary:#1E2843;--accent:#FFDF2D;--light-bg:#FAFAFA;--border:#d8dde8;--text:#1f2937;--muted:#546e7a;--green:#1b5e20;--warning:#e65100}
 *{box-sizing:border-box}body{margin:0;font-family:'Open Sans',sans-serif;background:var(--light-bg);color:var(--text);line-height:1.65}
@@ -22,6 +23,7 @@ footer{text-align:center;padding:1.4rem;color:var(--muted);font-size:.82rem}
 #pt-widget{position:fixed;right:18px;bottom:18px;z-index:9999;background:linear-gradient(135deg,#1E2843,#31446f);color:#fff;border-radius:16px;padding:14px 16px;min-width:242px;max-width:290px;box-shadow:0 10px 30px rgba(0,0,0,.3)}#pt-widget.collapsed{transform:translateY(calc(100% - 42px))}#pt-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer}#pt-toggle{background:none;border:none;color:#fff;font-size:1.1rem}#pt-body{margin-top:9px}#pt-bar{height:10px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden}#pt-bar>div{height:100%;width:0;background:linear-gradient(90deg,#FFDF2D,#fff176)}#pt-label{display:flex;justify-content:space-between;font-size:.75rem;margin-top:5px;opacity:.9}#pt-rank{font-size:.73rem;margin-top:6px}#pt-msg{font-size:.72rem;min-height:14px;text-align:center;margin-top:6px}#pt-btns{display:flex;gap:6px;margin-top:8px}.pt-btn{flex:1;border:none;border-radius:8px;padding:6px 8px;font-weight:800;font-size:.74rem;cursor:pointer}.pt-save{background:#43a047;color:#fff}
 #pt-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:10000}#pt-modal-box{background:linear-gradient(160deg,#1E2843,#24365b);color:#fff;border-radius:20px;padding:2rem 2rem 1.4rem;width:min(94vw,420px);box-shadow:0 20px 60px rgba(0,0,0,.5)}#pt-modal-box .sub{opacity:.75;font-size:.84rem;margin-bottom:1rem}#pt-modal-box label{display:block;font-size:.78rem;font-weight:800;margin-bottom:.28rem;text-transform:uppercase;opacity:.88}#pt-modal-box input{width:100%;padding:.65rem .85rem;border-radius:10px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff}#pt-modal-btn,#pt-modal-btn-search{border:none;border-radius:10px;padding:.7rem 1rem;font-weight:900;cursor:pointer}#pt-modal-btn{width:100%;background:#FFDF2D;color:#1E2843;margin-top:.35rem}#pt-modal-btn-search{background:rgba(255,255,255,.18);color:#fff;flex-shrink:0}.field{margin:.8rem 0}#pt-modal-error,#pt-modal-error2,#pt-modal-error3{color:#ff8a80;font-size:.8rem;min-height:1em;margin-top:.45rem}.pt-found-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,223,45,.4);border-radius:12px;padding:1rem}.pt-link-btn{background:none;border:none;color:rgba(255,255,255,.7);text-decoration:underline;display:block;margin:.5rem auto 0;cursor:pointer}
 @media(max-width:640px){header h1{font-size:1.4rem}main{padding:0 .7rem 5rem}.card{padding:1rem}#pt-widget{left:12px;right:12px;max-width:none;min-width:0}}
+.colab-cell{border:2px solid #24365b;border-radius:14px;overflow:hidden;margin:1rem 0;background:#152033}.colab-runbar{display:flex;align-items:center;gap:.5rem;padding:.45rem .8rem;background:#1E2843}.colab-run-btn{background:#FFDF2D;color:#1E2843;border:none;border-radius:8px;padding:.3rem .85rem;font-weight:800;font-size:.8rem;cursor:pointer}.colab-run-btn:hover{background:#ffe97a}.colab-run-btn:disabled{opacity:.45;cursor:not-allowed}.colab-run-btn.running{background:#546e7a;color:#fff}.colab-label{color:rgba(255,255,255,.55);font-size:.76rem;font-family:monospace}.colab-output{margin:0;padding:.8rem 1rem;overflow:auto;white-space:pre-wrap;color:#dbe6ff;font-family:ui-monospace,SFMono-Regular,monospace;font-size:.87rem;min-height:60px;max-height:320px;background:#0d1824}.colab-output:empty{min-height:60px}.colab-output .err{color:#ff6b6b}.colab-output .ok{color:#69db7c}.colab-presets{margin:.6rem .8rem 0;font-size:.78rem;color:rgba(255,255,255,.5)}.colab-presets span{margin-right:.5rem}
 </style></head><body>
 <header><div class="chip">TGA04 · Semana 9</div><h1>Algoritmos Complejos: Combinando Estructuras</h1><p>RA2 · CE3 + CE4 · integrador · preparación para Parcial C2</p><div class="xp-top"><div id="xpBar"></div></div><div>XP de sesión: <span id="xpCount">0</span> / 95 · Rango global: <span id="headerRank">Aprendiz</span></div></header>
 <nav><a href="#mision">🎯 Misión</a><a href="#teoria">📚 Teoría</a><a href="#pseudocodigo">📝 Pseudocódigo</a><a href="#actividad">⚙️ Actividad</a><a href="#hti">🏠 HTI</a><a href="#repaso">🧭 Repaso</a><a href="#quiz">🎮 Quiz</a><a href="#colab">☁️ Colab</a><a href="#bib">📖 Fuentes</a></nav>
@@ -87,7 +89,7 @@ footer{text-align:center;padding:1.4rem;color:var(--muted);font-size:.82rem}
 y crea tu notebook de integración.</p>
 <div class="info tip"><span>🐍</span><div>Combinas <code>if/elif/else</code> + <code>for range()</code> + acumuladores. Es exactamente el mismo algoritmo del pseudocódigo, en lenguaje Python.</div></div>
 <div class="code"><div class="code-title">🐍 Python — Sistema de Análisis NeuroBiz (INTEGRADOR)</div><pre>
-n = int(input("¿Cuántas sesiones analizar? "))
+n = int(input("¿Cuántas sesiones analizar? ")
 total_verde = total_amarillo = total_rojo = 0
 acumulado_tasa = 0.0
 
@@ -96,10 +98,10 @@ for i in range(1, n + 1):
     tasa = float(input("  Tasa de asistencia (%): "))
     acumulado_tasa += tasa
 
-    if tasa &gt;= 80:
+    if tasa >= 80:
         total_verde += 1
         print("  → Verde ✅")
-    elif tasa &gt;= 60:
+    elif tasa >= 60:
         total_amarillo += 1
         print("  → Amarillo ⚠️")
     else:
@@ -111,10 +113,47 @@ print("RESUMEN EJECUTIVO NeuroBiz")
 print(f"  Sesiones analizadas: {n}")
 print(f"  Verde  (≥80%): {total_verde}")
 print(f"  Amarillo(≥60%): {total_amarillo}")
-print(f"  Rojo   (&lt;60%): {total_rojo}")
-if n &gt; 0:
-    print(f"  Promedio tasa: {acumulado_tasa/n:.1f}%")</pre></div>
-<h3>🎯 Actividad Colab (+25 XP)</h3>
+print(f"  Rojo   (<60%): {total_rojo}")
+if n > 0:
+    print(f"  Promedio tasa: {acumulado_tasa/n:.1f}%")
+</pre></div>
+<div class="colab-cell">
+<div class="colab-runbar">
+<button class="colab-run-btn" id="runBtn9" onclick="runColab9()">▶ Ejecutar</button>
+<span class="colab-label">SistemaAnalisisNeuroBiz · Pyodide</span>
+</div>
+<div class="colab-presets">💡 Presiona ▶ para ejecutar directamente — no necesitas Google Colab</div>
+<pre id="colabSrc9" style="display:none">
+n = int(input("¿Cuántas sesiones analizar? "))
+total_verde = total_amarillo = total_rojo = 0
+acumulado_tasa = 0.0
+
+for i in range(1, n + 1):
+    print(f"\n--- Sesión {i} ---")
+    tasa = float(input("  Tasa de asistencia (%): "))
+    acumulado_tasa += tasa
+
+    if tasa >= 80:
+        total_verde += 1
+        print("  → Verde ✅")
+    elif tasa >= 60:
+        total_amarillo += 1
+        print("  → Amarillo ⚠️")
+    else:
+        total_rojo += 1
+        print("  → Rojo 🔴")
+
+print(f"\n{'='*40}")
+print("RESUMEN EJECUTIVO NeuroBiz")
+print(f"  Sesiones analizadas: {n}")
+print(f"  Verde  (≥80%): {total_verde}")
+print(f"  Amarillo(≥60%): {total_amarillo}")
+print(f"  Rojo   (<60%): {total_rojo}")
+if n > 0:
+    print(f"  Promedio tasa: {acumulado_tasa/n:.1f}%")
+</pre>
+<pre id="colabOut9" class="colab-output"></pre>
+</div>
 <h3>🧪 Verifica tu Colab — 5 preguntas · 5 XP cada una</h3><p style="color:var(--muted);font-size:.87rem">Ejecuta el código con los valores indicados. Solo puedes responder correctamente si corriste el código en Colab.</p><div class="quiz-q"><p><strong>C1.</strong> Ejecuta con n=3 y tasas: 85, 65, 45. ¿Cuántos verdes muestra el resumen ejecutivo?</p><ol type="a"><li>1</li><li>2</li><li>3</li><li>0</li></ol><div class="quiz-answer">✅ a — Solo 85% ≥ 80 → Verde. 65% es Amarillo y 45% es Rojo.</div></div><div class="quiz-q"><p><strong>C2.</strong> Con los mismos datos (n=3, tasas 85/65/45), ¿cuántos rojos muestra el resumen?</p><ol type="a"><li>0</li><li>1</li><li>2</li><li>3</li></ol><div class="quiz-answer">✅ b — Solo 45% es &lt; 60 → Rojo. Los otros dos no son rojos.</div></div><div class="quiz-q"><p><strong>C3.</strong> Ejecuta con n=2 y tasas: 80, 60. ¿Cuál es el promedio que imprime?</p><ol type="a"><li>80.0%</li><li>60.0%</li><li>70.0%</li><li>140.0%</li></ol><div class="quiz-answer">✅ c — (80 + 60) / 2 = 70.0%.</div></div><div class="quiz-q"><p><strong>C4.</strong> Ingresa tasa = 60. ¿En qué categoría cae?</p><ol type="a"><li>Verde (≥80%)</li><li>Amarillo (≥60%)</li><li>Rojo (&lt;60%)</li><li>No se clasifica</li></ol><div class="quiz-answer">✅ b — 60 no cumple ≥80, pero sí cumple ≥60 → Amarillo ⚠️. La frontera es inclusiva.</div></div><div class="quiz-q"><p><strong>C5.</strong> Ejecuta con n=1 y tasa = 79. ¿Qué categoría aparece?</p><ol type="a"><li>Verde (79 está cerca de 80)</li><li>Amarillo</li><li>Rojo</li><li>El código da error con n=1</li></ol><div class="quiz-answer">✅ b — 79 &lt; 80 (no Verde). 79 ≥ 60 → Amarillo ⚠️.</div></div>
 </section>
 <section class="card" id="bib"><h2>📖 Bibliografía</h2>
@@ -163,15 +202,12 @@ function ptSyncCloud(){PT.sync()} function ptExportCode(){PT.exportCode()} funct
 (function(){
   var __done = false;
   var __xpMax = 0;
-
-  // Extract XP_MAX from the page
   var el = document.getElementById('xpCount');
   if (el && el.parentNode) {
     var txt = el.parentNode.textContent || '';
     var m = txt.match(/\/(\d+)/);
     if (m) __xpMax = parseInt(m[1], 10);
   }
-
   setInterval(function(){
     var bar = document.getElementById('xpBar');
     if (!bar) return;
@@ -179,7 +215,6 @@ function ptSyncCloud(){PT.sync()} function ptExportCode(){PT.exportCode()} funct
     var grade = (w / 100) * 5;
     var g = document.getElementById('liveGrade');
     if (g) g.textContent = grade.toFixed(1);
-
     if (w >= 100 && !__done) {
       __done = true;
       var extra = document.getElementById('completion-extra');
@@ -192,5 +227,48 @@ function ptSyncCloud(){PT.sync()} function ptExportCode(){PT.exportCode()} funct
   }, 800);
 })();
 </script>
-
+<script>
+var pyodide9 = null;
+function pyodideReady9(){return pyodide9&&pyodide9.isReady===1}
+async function runColab9(){
+  var btn=document.getElementById('runBtn9');
+  var out=document.getElementById('colabOut9');
+  if(!btn||!out)return;
+  if(!pyodideReady9()){
+    btn.textContent='⏳ Cargando…';
+    btn.classList.add('running');
+    btn.disabled=true;
+    try{
+      pyodide9=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'});
+    }catch(e){
+      out.innerHTML='<span class="err">Error cargando Pyodide: '+e.message+'</span>';
+      btn.textContent='▶ Ejecutar';
+      btn.classList.remove('running');
+      btn.disabled=false;
+      return;
+    }
+  }
+  btn.textContent='⏳ Ejecutando…';
+  btn.classList.add('running');
+  btn.disabled=true;
+  out.textContent='';
+  var src=document.getElementById('colabSrc9');
+  if(!src){btn.textContent='▶ Ejecutar';btn.classList.remove('running');btn.disabled=false;return;}
+  var code=src.textContent||'';
+  // patch input() to show prompt
+  var patchCode='import sys\\nclass _InputHook:\\n    def readline(self):\\n        return ""\\nimport code as _code\\n_old_input=input\\ndef _pyinput(prompt=""):\\n    sys.stdout.write(str(prompt));sys.stdout.flush()\\n    return _old_input()\\nimport builtins\\nbuiltins.input=_pyinput\\n';
+  try{
+    await pyodide9.runPythonAsync(patchCode+code);
+    btn.textContent='▶ Ejecutar';
+    btn.classList.remove('running');
+    btn.disabled=false;
+  }catch(e){
+    var err=e.message||String(e);
+    out.innerHTML='<span class="err">Error: '+err.replace(/</g,"&lt;").replace(/>/g,"&gt;")+'</span>';
+    btn.textContent='▶ Ejecutar';
+    btn.classList.remove('running');
+    btn.disabled=false;
+  }
+}
+</script>
 </body></html>

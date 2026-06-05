@@ -64,7 +64,21 @@ footer{text-align:center;padding:1.4rem;color:var(--muted);font-size:.82rem}
 @keyframes xti{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 @keyframes xto{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-10px)}}
 .lab-challenge-done{display:inline-flex;align-items:center;gap:.25rem;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:10px;padding:.12rem .5rem;font-size:.7rem;font-weight:700}
-</style></head><body>
+.py-cell{background:#fff;border:1px solid #dadce0;border-radius:10px;margin:.9rem 0;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.py-cell.running{border-left:4px solid #FFDF2D}.py-cell.success{border-left:4px solid #43a047}
+.py-toolbar{display:flex;align-items:center;gap:.4rem;padding:.3rem .7rem;background:#f8f9fa;border-bottom:1px solid #dadce0;font-size:.74rem;color:#5f6368}
+.py-run-btn{background:#357ae8;color:#fff;border:none;border-radius:4px;padding:.25rem .8rem;font-size:.76rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.3rem}
+.py-run-btn:hover{background:#1557b0}.py-run-btn.running{background:#9e9e9e;cursor:wait}
+.py-run-btn .spinner{display:none;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:cs .6s linear infinite}
+@keyframes cs{to{transform:rotate(360deg)}}.py-run-btn.running .spinner{display:inline-block}.py-run-btn.running .btn-label{display:none}
+.py-lang-badge{font-size:.68rem;background:#e8eaed;color:#5f6368;border-radius:4px;padding:.12rem .45rem;font-weight:600;text-transform:uppercase}
+.py-status{font-size:.72rem;padding:.1rem .5rem;border-radius:8px}.py-status.idle{color:#5f6368}.py-status.loading{background:#fff8e1;color:#e65100}.py-status.ready{background:#e8f5e9;color:#1b5e20}.py-status.error{background:#ffebee;color:#c62828}
+.py-editor{padding:.7rem .9rem;font-family:ui-monospace,SFMono-Regular,monospace;font-size:.83rem;line-height:1.6;color:#1E2843;background:#fafafa;min-height:55px;max-height:380px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;outline:none;border:none}
+.py-editor:focus{background:#fff;box-shadow:inset 0 0 0 2px #e8f0fe}
+.py-output{display:none;background:#152033;color:#dbe6ff;font-family:ui-monospace,monospace;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;max-height:280px;overflow-y:auto;white-space:pre-wrap;border-top:1px solid #333}
+.py-output.visible{display:block}.py-output .out-info{color:#6a9955}.py-output .out-input{color:#ce9178}.py-output .out-error{color:#f44747}.py-output .out-value{color:#4ec9b0}
+</style><script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+</head><body>
 <header><div class="chip">TGA04 · Semana 7</div><h1>Estructura Repetitiva HACER-MIENTRAS (HH-FHH)</h1><p>RA2 · CE4 · validación de entradas · menús interactivos · do-while lógico</p><div class="xp-top"><div id="xpBar"></div></div><div>XP de sesión: <span id="xpCount">0</span> / 85 · Rango global: <span id="headerRank">Aprendiz</span></div></header>
 <nav><a href="#mision">🎯 Misión</a><a href="#teoria">📚 Teoría</a><a href="#pseudocodigo">📝 Pseudocódigo</a><a href="#actividad">⚙️ Actividad</a><a href="#hti">🏠 HTI</a><a href="#lab">🧪 Lab</a><a href="#quiz">🎮 Quiz</a><a href="#bib">📖 Fuentes</a><a href="#colab">☁️ Colab</a></nav>
 <main>
@@ -252,14 +266,18 @@ ALGORITMO MiHHFHH
 </section>
 <section class="card" id="colab"><h2>☁️ Python en Google Colab — Semana 7</h2><p>HH-FHH no tiene equivalente directo en Python, pero el patrón <code>while True: ... break</code> logra exactamente lo mismo. Abre <a href="https://colab.research.google.com/" target="_blank" rel="noopener"><strong>Google Colab</strong></a>.</p>
 <div class="info tip"><span>🐍</span><div><code>while True:</code> crea un ciclo que no tiene condición de entrada — siempre empieza. El <code>break</code> al final hace las veces de FHH: cuando la condición se cumple, el ciclo se detiene.</div></div>
-<div class="code"><div class="code-title">🐍 Python — Validar cédula del paciente</div><pre>while True:
+<div class="py-cell" id="py-validar-cedula"><div class="py-toolbar"><button class="py-run-btn" id="btn-py-validar-cedula" onclick="PyLab.run('py-validar-cedula')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="py-lang-badge">Python</span><span class="py-status idle" id="status-py-validar-cedula">Listo</span></div><div class="py-editor" contenteditable="true" spellcheck="false" id="code-py-validar-cedula"># HH-FHH → Python: validar cédula del paciente
+# El cuerpo se ejecuta al menos una vez
+while True:
     cedula = int(input("Ingrese número de cédula: "))
-    if cedula &gt; 0:
+    if cedula > 0:
         print(f"Cédula {cedula} registrada correctamente.")
         break
     else:
-        print("Error: la cédula debe ser un número positivo. Intente de nuevo.")</pre></div>
-<div class="code"><div class="code-title">🐍 Python — Menú de atención NeuroBiz</div><pre>while True:
+        print("Error: la cédula debe ser un número positivo. Intente de nuevo.")</div><div class="py-output" id="output-py-validar-cedula"></div></div>
+<div class="py-cell" id="py-menu-neurobiz"><div class="py-toolbar"><button class="py-run-btn" id="btn-py-menu-neurobiz" onclick="PyLab.run('py-menu-neurobiz')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="py-lang-badge">Python</span><span class="py-status idle" id="status-py-menu-neurobiz">Listo</span></div><div class="py-editor" contenteditable="true" spellcheck="false" id="code-py-menu-neurobiz"># HH-FHH → Python: menú de atención NeuroBiz
+# El menú se muestra al menos una vez (do-while lógico)
+while True:
     print("\n=== NeuroBiz — Menú de Atención ===")
     print("1. Nueva sesión")
     print("2. Consultar paciente")
@@ -277,7 +295,7 @@ ALGORITMO MiHHFHH
         print("Hasta luego.")
         break
     else:
-        print("Opción inválida. Intente de nuevo.")</pre></div>
+        print("Opción inválida. Intente de nuevo.")</div><div class="py-output" id="output-py-menu-neurobiz"></div></div>
 <h3>🎯 Actividad Colab (+25 XP)</h3><h3>🧪 Verifica tu Colab — 5 preguntas · 5 XP cada una</h3><p style="color:var(--muted);font-size:.87rem">Ejecuta el código con los valores indicados. Solo puedes responder correctamente si corriste el código en Colab.</p><div class="quiz-q"><p><strong>C1.</strong> Ejecuta e ingresa primero -5, luego 12345. ¿Cuántas veces aparece el mensaje de error?</p><ol type="a"><li>1</li><li>2</li><li>0</li><li>Infinitas</li></ol><div class="quiz-answer">✅ a — -5 no es &gt; 0, muestra el error una vez. Luego 12345 es válido y hace break.</div></div><div class="quiz-q"><p><strong>C2.</strong> Ejecuta e ingresa 0 como cédula. ¿El código lo acepta como válido?</p><ol type="a"><li>Sí, 0 es válido</li><li>No, muestra mensaje de error</li><li>Genera un ZeroDivisionError</li><li>Se cierra el programa</li></ol><div class="quiz-answer">✅ b — La condición es <code>if cedula &gt; 0</code>. El 0 NO es mayor que 0 → muestra error y pide de nuevo.</div></div><div class="quiz-q"><p><strong>C3.</strong> Ejecuta e ingresa directamente 1. ¿Qué imprime el código?</p><ol type="a"><li>Cédula 1 registrada correctamente.</li><li>Error: la cédula debe ser un número positivo. Intente de nuevo.</li><li>Ingrese número de cédula:</li><li>break</li></ol><div class="quiz-answer">✅ a — 1 &gt; 0 → imprime "Cédula 1 registrada correctamente." y sale con break.</div></div><div class="quiz-q"><p><strong>C4.</strong> ¿Qué instrucción Python rompe el ciclo <code>while True</code> cuando la cédula es válida?</p><ol type="a"><li>stop</li><li>break</li><li>exit</li><li>return</li></ol><div class="quiz-answer">✅ b — <code>break</code> interrumpe cualquier ciclo en Python, incluyendo <code>while True</code>.</div></div><div class="quiz-q"><p><strong>C5.</strong> Ejecuta ingresando: -1, -2, 500 (en ese orden). ¿Cuántas veces se ejecuta el cuerpo del while?</p><ol type="a"><li>2</li><li>3</li><li>1</li><li>0</li></ol><div class="quiz-answer">✅ b — El cuerpo se ejecuta para -1 (error), -2 (error) y 500 (válido, break). Total: 3 veces.</div></div>
 </section>
 <div id="grade-panel" style="text-align:center; background:linear-gradient(135deg,#1E2843,#2d3a5e); color:#fff; border-radius:16px; padding:1.2rem 1.5rem; margin:0 0 2rem;">
@@ -449,4 +467,29 @@ return{check:ck};})();
 window.InteractiveQ=IQ;
 }();
 </script>
-</body></html>
+<script>
+var PyLab=(function(){
+var py=null,loading=false,ready=false;
+function loadPy(){if(loading||ready)return;loading=true;var s=document.getElementById('status-py-validar-cedula');if(s){s.className='py-status loading';s.textContent='Cargando Pyodide...';}
+if(window.loadPyodide){window.loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.24.1/'}).then(function(p){py=p;ready=true;loading=false;var ss=document.querySelectorAll('.py-status');for(var i=0;i<ss.length;i++){ss[i].className='py-status ready';ss[i].textContent='Python listo';}}).catch(function(){loading=false;var ss=document.querySelectorAll('.py-status');for(var i=0;i<ss.length;i++){ss[i].className='py-status error';ss[i].textContent='Error Pyodide';}});}else{loading=false;var ss=document.querySelectorAll('.py-status');for(var i=0;i<ss.length;i++){ss[i].className='py-status error';ss[i].textContent='Error Pyodide';}}}
+function setStatus(id,cls,txt){var s=document.getElementById('status-'+id);if(s){s.className='py-status '+cls;s.textContent=txt;}}
+function run(id){
+  if(!ready&&!loading){loadPy();setStatus(id,'loading','Cargando Pyodide...');return;}
+  if(loading){setStatus(id,'loading','Cargando...');return;}
+  var cell=document.getElementById(id),btn=document.getElementById('btn-'+id),out=document.getElementById('output-'+id);
+  if(!cell||!out)return;
+  var code=document.getElementById('code-'+id);if(!code)return;
+  var c=code.textContent||code.innerText||'';
+  cell.classList.remove('success');cell.classList.add('running');if(btn)btn.classList.add('running');
+  out.classList.add('visible');out.innerHTML='<span class="out-info">Ejecutando...</span>';
+  var lines=c.split('\n'),filtered=[],inMulti=false;
+  for(var i=0;i<lines.length;i++){var l=lines[i];if(l.trim().startsWith('#'))continue;if(l.trim().match(/^"""$/)||l.trim().match(/^'''$/)){inMulti=!inMulti;continue;}if(inMulti||l.trim()==='')continue;filtered.push(l);}
+  var finalCode=filtered.join('\n');
+  py.runPythonAsync(finalCode).then(function(r){var h='';try{if(r!==undefined&&r!==null&&r!==''){try{h='<span class="out-value">'+String(r)+'</span>';}catch(e){h='';}}else{h='';}}catch(e){h='';}
+  out.innerHTML=h||'<span class="out-info">Ejecutado sin errores.</span>';cell.classList.remove('running');cell.classList.add('success');if(btn)btn.classList.remove('running');}).catch(function(e){var em=''+e;if(em.indexOf('SyntaxError')!==-1)em='SyntaxError: '+em.split('SyntaxError:')[1];else if(em.indexOf('NameError')!==-1)em='NameError: '+em.split('NameError:')[1];else if(em.indexOf('ZeroDivisionError')!==-1)em='ZeroDivisionError';else if(em.indexOf('IndentationError')!==-1)em='IndentationError';out.innerHTML='<span class="out-error">'+em+'</span>';cell.classList.remove('running');cell.classList.add('success');if(btn)btn.classList.remove('running');});}
+return{run:run,load:loadPy};
+})();
+window.addEventListener('load',function(){setTimeout(PyLab.load,1000);});
+</script>
+</body>
+</html>

@@ -207,7 +207,133 @@
   .pt-step { transition: opacity .2s; }
   .pt-link-btn { background: none; border: none; color: rgba(255,255,255,.6); font-size: .8rem; cursor: pointer; text-decoration: underline; padding: .3rem 0 0; display: block; text-align: center; width: 100%; }
   .pt-link-btn:hover { color: #fff; }
-  </style>
+  
+    /* ══════════════════════════════════════════
+       PYTHON REFERENCE CELLS (Pyodide)
+    ══════════════════════════════════════════ */
+    .py-section { margin: 1.5rem 0; }
+    .py-section h3 {
+      color: var(--primary);
+      font-size: 1.05rem;
+      margin-bottom: .8rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .py-status {
+      background: #fff8e1;
+      border: 1px solid #e6c800;
+      border-radius: 8px;
+      padding: .5rem 1rem;
+      margin-bottom: 1rem;
+      font-size: .85rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      color: #5d4037;
+    }
+    .py-status.ready { background: #e8f5e9; border-color: #43a047; color: var(--green); }
+    .py-cell {
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      transition: box-shadow .3s;
+    }
+    .py-cell:hover { box-shadow: 0 4px 16px rgba(0,0,0,.25); }
+    .py-cell-header {
+      display: flex;
+      align-items: center;
+      padding: .45rem .8rem;
+      background: #16162a;
+      border-bottom: 1px solid #2a2a4a;
+    }
+    .py-cell-idx {
+      color: #6c7086;
+      font-family: 'Courier New', monospace;
+      font-size: .75rem;
+      font-weight: 700;
+      min-width: 50px;
+    }
+    .py-run-btn {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: .2rem .65rem;
+      font-size: .72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+      transition: background .2s;
+    }
+    .py-run-btn:hover { background: #388e3c; }
+    .py-run-btn:disabled { background: #555; cursor: not-allowed; }
+    .py-cell-body {
+      padding: .7rem 1rem .7rem 3.2rem;
+      position: relative;
+    }
+    .py-cell-body::before {
+      content: 'In [ ]:';
+      position: absolute;
+      left: .8rem;
+      top: .75rem;
+      color: #6c7086;
+      font-family: 'Courier New', monospace;
+      font-size: .78rem;
+    }
+    .py-cell-body.ran::before { content: 'In [*]:'; color: #89b4fa; }
+    .py-cell textarea {
+      width: 100%;
+      min-height: 70px;
+      background: transparent;
+      border: none;
+      color: #cdd6f4;
+      font-family: 'Courier New', monospace;
+      font-size: .85rem;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      padding: 0;
+    }
+    .py-output {
+      display: none;
+      background: #0d0d1a;
+      color: #d4d4d4;
+      font-family: 'Courier New', monospace;
+      font-size: .82rem;
+      line-height: 1.6;
+      padding: .7rem 1rem;
+      max-height: 250px;
+      overflow-y: auto;
+      border-top: 1px solid #2a2a4a;
+    }
+    .py-output.visible { display: block; }
+    .py-output .py-err { color: #f48771; }
+    .py-ref-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      background: #e8f0fe;
+      color: #1a73e8;
+      border-radius: 6px;
+      padding: .1rem .55rem;
+      font-size: .72rem;
+      font-weight: 700;
+    }
+    .py-ref-note {
+      font-size: .8rem;
+      color: var(--muted);
+      background: var(--light-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .6rem 1rem;
+      margin-bottom: 1rem;
+    }
+</style>
 
   <script src="../js/supabase-config.js"></script>
 </head>
@@ -699,6 +825,119 @@ VARIABLES
 
   <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:#e8f5e9;border-radius:12px;border:1px solid #a5d6a7"><p style="margin:0;font-size:.85rem">🎯 <strong>¿Completaste los ejercicios?</strong> Has aplicado condiciones SI-FSI a problemas reales de negocio. +5 XP por cada celda ejecutada.</p></div>
 </section>
+<!-- ══ PYTHON REFERENCE SECTION — SEMANA 3 ══ -->
+<div class="py-section">
+  <h3>🐍 Python de Referencia — Semana 3</h3>
+  <div class="py-ref-note">
+    📌 <strong>Referencia:</strong> Estructuras de control <strong>SI-SINO-SI</strong> traducidas a <strong>if-elif-else</strong> en Python.
+    <span class="py-ref-badge">🐍 Python · Pyodide · No evaluado</span>
+  </div>
+  <div id="py-status" class="py-status">
+    ⏳ Iniciando motor Python (Pyodide)...
+  </div>
+  
+      <!-- Cell 1 -->
+      <div class="py-cell" id="py-cell-1">
+        <div class="py-cell-header">
+          <span class="py-cell-idx">[1]</span>
+          <button class="py-run-btn" onclick="runPyCell(1)" id="py-run-1">
+            ▶ Run
+          </button>
+        </div>
+        <div class="py-cell-body" id="py-body-1">
+          <textarea id="py-code-1" rows="6" spellcheck="false"># ── if / elif / else en Python ──
+# SI condición ENTONCES ... SINO ... FSI
+# se convierte en:
+# if condición:
+#     ...
+# elif otra_condición:
+#     ...
+# else:
+#     ...
+# Nota: Python usa indentación de 4 espacios
+
+calificacion = 78
+
+if calificacion &gt;= 90:
+    print(f"{calificacion} → Excelente")
+elif calificacion &gt;= 75:
+    print(f"{calificacion} → Bueno")
+elif calificacion &gt;= 60:
+    print(f"{calificacion} → Aceptable")
+else:
+    print(f"{calificacion} → Necesita mejora")
+
+# Operadores lógicos en condiciones
+edad = 34
+es_activo = True
+
+if edad &gt;= 18 and es_activo:
+    print("Adulto activo: puede ser atendido")
+else:
+    print("No cumple requisitos de atención")</textarea>
+        </div>
+        <div class="py-output" id="py-out-1"><pre></pre></div>
+      </div>
+      <!-- Cell 2 -->
+      <div class="py-cell" id="py-cell-2">
+        <div class="py-cell-header">
+          <span class="py-cell-idx">[2]</span>
+          <button class="py-run-btn" onclick="runPyCell(2)" id="py-run-2">
+            ▶ Run
+          </button>
+        </div>
+        <div class="py-cell-body" id="py-body-2">
+          <textarea id="py-code-2" rows="6" spellcheck="false"># ── Descuento progresivo (equivalente al ejercicio HTI) ──
+monto_compra = 250000
+
+if monto_compra &gt;= 500000:
+    descuento = 0.25
+    print(f"25% de descuento (compras ≥ $500.000)")
+elif monto_compra &gt;= 200000:
+    descuento = 0.15
+    print(f"15% de descuento (compras ≥ $200.000)")
+elif monto_compra &gt;= 100000:
+    descuento = 0.10
+    print(f"10% de descuento (compras ≥ $100.000)")
+else:
+    descuento = 0
+    print("Sin descuento (compras &lt; $100.000)")
+
+monto_final = monto_compra * (1 - descuento)
+print(f"\nMonto original: ${monto_compra:,.0f}")
+print(f"Descuento:     ${monto_compra * descuento:,.0f}")
+print(f"Monto final:   ${monto_final:,.0f}")</textarea>
+        </div>
+        <div class="py-output" id="py-out-2"><pre></pre></div>
+      </div>
+      <!-- Cell 3 -->
+      <div class="py-cell" id="py-cell-3">
+        <div class="py-cell-header">
+          <span class="py-cell-idx">[3]</span>
+          <button class="py-run-btn" onclick="runPyCell(3)" id="py-run-3">
+            ▶ Run
+          </button>
+        </div>
+        <div class="py-cell-body" id="py-body-3">
+          <textarea id="py-code-3" rows="6" spellcheck="false"># ── ✨ Celda libre — Condicionales ──
+# Escribe un algoritmo que clasifique algo
+# usando if / elif / else
+
+# Ideas:
+# - Clasificar edad de paciente (niño/adolescente/adulto/mayor)
+# - Calcular impuesto según rango de ingreso
+# - Determinar categoría de IMC (índice de masa corporal)
+
+# recuerda: Python usa indentación de 4 espacios
+# y NO usa SINO FSI — solo elif y else</textarea>
+        </div>
+        <div class="py-output" id="py-out-3"><pre></pre></div>
+      </div>
+  <div style="font-size:.78rem;color:var(--muted);margin-top:.5rem;">
+    ⚡ Cada ejecución cuenta para tu aprendizaje. Código ejecutado en tu navegador — sin servidor.
+  </div>
+</div>
+
 
 <!-- ══ QUIZ ══ -->
 <section id="quiz" class="card">
@@ -1333,6 +1572,125 @@ return{check:ck};
 })();
 window.InteractiveQ=IQ;
 }();
+</script>
+
+<!-- ══ PYODIDE PYTHON REFERENCE ENGINE ══ -->
+<script>
+// ── State ──────────────────────────────────────────────────────
+var pyReady = false;
+var pyLoading = false;
+var pyodide = null;
+
+function pySetStatus(msg, ready) {
+  var el = document.getElementById('py-status');
+  if (!el) return;
+  el.textContent = msg;
+  if (ready) el.classList.add('ready');
+  else el.classList.remove('ready');
+}
+
+function pyDisableBtns(disabled) {
+  for (var i = 1; i <= 4; i++) {
+    var btn = document.getElementById('py-run-' + i);
+    if (btn) btn.disabled = disabled;
+  }
+}
+
+async function initPyodide() {
+  if (pyReady || pyLoading) return;
+  pyLoading = true;
+  pyDisableBtns(true);
+  pySetStatus('⏳ Cargando motor Python (Pyodide v0.24.1)...');
+
+  try {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+    await new Promise(function(resolve, reject) {
+      script.onload = resolve;
+      script.onerror = function() { reject(new Error('No se pudo cargar Pyodide')); };
+      document.head.appendChild(script);
+    });
+
+    if (typeof window.loadPyodide !== 'function') {
+      throw new Error('loadPyodide no está definido');
+    }
+
+    pyodide = await window.loadPyodide({
+      indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'
+    });
+
+    pyReady = true;
+    pyLoading = false;
+    pyDisableBtns(false);
+    pySetStatus('✅ Python listo — presiona ▶ para ejecutar', true);
+
+    // expose runner
+    window._pyodideRunner = function(code) {
+      return pyodide.runPythonAsync(code)
+        .then(function(out) { return { output: out }; })
+        .catch(function(err) { return { output: '', error: err.message || String(err) }; });
+    };
+  } catch(err) {
+    console.error('Pyodide load error:', err);
+    pyLoading = false;
+    pyReady = false;
+    pySetStatus('⚠️ Pyodide no disponible: ' + err.message);
+    pyDisableBtns(false);
+  }
+}
+
+// Auto-init on page load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPyodide);
+} else {
+  setTimeout(initPyodide, 500); // small delay to not compete with other onload
+}
+
+// ── runPyCell(n) ───────────────────────────────────────────────
+window.runPyCell = async function(n) {
+  if (!pyReady) {
+    if (!pyLoading) { pySetStatus('⏳ Cargando Python...'); initPyodide(); }
+    else pySetStatus('⏳ Python cargando, espera...');
+    return;
+  }
+
+  var codeArea = document.getElementById('py-code-' + n);
+  var outDiv   = document.getElementById('py-out-' + n);
+  var bodyDiv  = document.getElementById('py-body-' + n);
+  var runBtn   = document.getElementById('py-run-' + n);
+
+  if (!codeArea || !outDiv) return;
+  var code = codeArea.value;
+  if (!code.trim()) return;
+
+  if (runBtn) { runBtn.textContent = '⏳...'; runBtn.disabled = true; }
+  outDiv.classList.add('visible');
+  outDiv.querySelector('pre').textContent = '';
+  if (bodyDiv) bodyDiv.classList.add('ran');
+
+  try {
+    if (!pyodide || typeof pyodide.setStdout !== 'function') {
+      pyReady = false;
+      throw new Error('Pyodide no listo. Recarga la página.');
+    }
+
+    var output = '';
+    pyodide.setStdout({ batched: function(t) { output += t; } });
+    pyodide.setStderr({ batched: function(t) { output += t; } });
+
+    await pyodide.runPythonAsync(code);
+
+    var pre = outDiv.querySelector('pre');
+    pre.textContent = output || '(sin salida)';
+    pre.className = '';
+  } catch(err) {
+    var pre = outDiv.querySelector('pre');
+    pre.textContent = 'Error: ' + (err.message || String(err));
+    pre.className = 'py-err';
+  }
+
+  if (runBtn) { runBtn.textContent = '▶ Run'; runBtn.disabled = false; }
+};
 </script>
 </body>
 </html>
