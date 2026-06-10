@@ -20,20 +20,33 @@
     });
   }
 
+  var MODULE_DEFAULTS = {
+    ADM18: { prefix: "adm18", offering: "ADM18-2026-2", narrative: "LatamBox" },
+    TGA04: { prefix: "tga04", offering: "TGA04-2026-2", narrative: "NeuroBiz S.A.S." },
+    TGA05: { prefix: "tga05", offering: "TGA05-2026-2", narrative: "NeuroBiz S.A.S." },
+    TD: { prefix: "td", offering: "TD-2026-2", narrative: "Mercado360" },
+  };
+
+  function moduleDefaults(moduleCode) {
+    return MODULE_DEFAULTS[moduleCode] || {
+      prefix: String(moduleCode || "ADM18").toLowerCase(),
+      offering: moduleCode + "-2026-2",
+      narrative: moduleCode,
+    };
+  }
+
   function getConfig() {
     var moduleCode = global.MODULE_CODE || localStorage.getItem("gamif_module_code") || "ADM18";
-    var legacyPrefix = moduleCode === "ADM18" ? "adm18" : "tga04";
-    var defaultOffering = moduleCode === "ADM18" ? "ADM18-2026-2" : "TGA04-2026-2";
+    var defs = moduleDefaults(moduleCode);
+    var prefix = global.GAMIF_PREFIX || defs.prefix;
     return {
       moduleCode: moduleCode,
       offeringCode: global.OFFERING_CODE || localStorage.getItem("gamif_offering_code")
-        || localStorage.getItem("adm18_course_code")
-        || localStorage.getItem("tga04_course_code")
-        || defaultOffering,
-      narrative: global.NARRATIVE || localStorage.getItem("gamif_narrative")
-        || (moduleCode === "ADM18" ? "LatamBox" : "NeuroBiz S.A.S."),
-      prefix: global.GAMIF_PREFIX || legacyPrefix,
-      legacyPrefix: legacyPrefix,
+        || localStorage.getItem(prefix + "_course_code")
+        || defs.offering,
+      narrative: global.NARRATIVE || localStorage.getItem("gamif_narrative") || defs.narrative,
+      prefix: prefix,
+      legacyPrefix: prefix,
       useUnified: localStorage.getItem("gamif_use_unified") !== "false",
     };
   }
@@ -42,11 +55,7 @@
     localStorage.setItem("gamif_module_code", cfg.moduleCode);
     localStorage.setItem("gamif_offering_code", cfg.offeringCode);
     localStorage.setItem("gamif_narrative", cfg.narrative);
-    if (cfg.legacyPrefix === "adm18") {
-      localStorage.setItem("adm18_course_code", cfg.offeringCode);
-    } else {
-      localStorage.setItem("tga04_course_code", cfg.offeringCode);
-    }
+    localStorage.setItem(cfg.prefix + "_course_code", cfg.offeringCode);
   }
 
   function progressKey(cfg, semana) {
@@ -66,16 +75,20 @@
   }
 
   function sbUrl() {
-    return localStorage.getItem("adm18_supabase_url")
-      || localStorage.getItem("tga04_supabase_url")
+    var cfg = getConfig();
+    return localStorage.getItem(cfg.prefix + "_supabase_url")
       || global.SUPABASE_URL
+      || localStorage.getItem("adm18_supabase_url")
+      || localStorage.getItem("tga04_supabase_url")
       || "";
   }
 
   function sbKey() {
-    return localStorage.getItem("adm18_supabase_key")
-      || localStorage.getItem("tga04_supabase_key")
+    var cfg = getConfig();
+    return localStorage.getItem(cfg.prefix + "_supabase_key")
       || global.SUPABASE_KEY
+      || localStorage.getItem("adm18_supabase_key")
+      || localStorage.getItem("tga04_supabase_key")
       || "";
   }
 

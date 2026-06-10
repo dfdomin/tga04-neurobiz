@@ -1,15 +1,18 @@
 # Configuración Supabase — TGA04 (NeuroBiz)
 
-Proyecto: `https://aeuimhmiwhvqeeojlfvs.supabase.co`  
+**Proyecto compartido IUB** (mismo que ADM18):  
+`https://nnrgxuzvjtweyzkdrech.supabase.co` · ref `nnrgxuzvjtweyzkdrech`  
 Offering: `TGA04-2026-2`
 
-## Scripts SQL (en orden)
+Ver `setup/IUB_SUPABASE_COMPARTIDO.md` para credenciales y comandos CLI.
 
-1. `setup/migrations/000_preserve_tga04_legacy.sql`
-2. `setup/gamification_unified.sql`
-3. `setup/migrations/003_tga04_seed_and_rpc.sql`
-4. `setup/migrations/004_roster_rpc.sql`
-5. `setup/migrations/005_attendance_states.sql`
+## Scripts SQL (solo si falta algo en el proyecto remoto)
+
+Los datos ya viven en el Supabase unificado. Ejecutar solo si verificas que falta:
+
+1. `setup/gamification_unified.sql`
+2. `setup/migrations/003_tga04_seed_and_rpc.sql` (en este repo, semanas TGA04)
+3. Migraciones ADM18 compartidas: `004_*`, `005_*`, `006_*`
 
 ## Verificación
 
@@ -18,7 +21,6 @@ select code from public.course_offerings where code = 'TGA04-2026-2';
 select count(*) from public.periods p
 join public.course_offerings co on co.id = p.offering_id
 where co.code = 'TGA04-2026-2';
--- Debe dar 15 semanas
 ```
 
 ## GitHub Pages

@@ -1,10 +1,10 @@
 // ══════════════════════════════════════════════════════════════
-//  TGA04 · NeuroBiz S.A.S. — Configuración Supabase (gamificación)
+//  TGA04 · NeuroBiz S.A.S. — Supabase compartido IUB (mismo que ADM18)
 // ══════════════════════════════════════════════════════════════
 
 (function () {
-  var SUPABASE_URL = "https://aeuimhmiwhvqeeojlfvs.supabase.co";
-  var SUPABASE_KEY = "sb_publishable_L4AqPaDMZX42lDPNu2S2cQ_y53Cf4sP";
+  var SUPABASE_URL = "https://nnrgxuzvjtweyzkdrech.supabase.co";
+  var SUPABASE_KEY = "sb_publishable_-101J7EEEhv-C5kjosWGTg_657OtsBg";
 
   var MODULE_CODE   = "TGA04";
   var OFFERING_CODE = "TGA04-2026-2";
