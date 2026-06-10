@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
   <script src="../js/supabase-config.js"></script>
   <script src="../js/gamification-sdk.js"></script>
+  <script src="../js/group-schedules.js"></script>
   <script src="../js/import-students-browser.js"></script>
   <script src="../js/teacher-auth.js"></script>
   <script src="../js/teacher-week-validator.js"></script>
@@ -170,10 +171,10 @@
         </div>
         <div class="panel">
           <div class="toolbar">
-            <div><label for="attGroup">Grupo</label><select id="attGroup" onchange="renderAttendance()"><option value="">Todos</option></select></div>
+            <div><label for="attGroup">Grupo</label><select id="attGroup" onchange="onAttGroupChange()"><option value="">Todos</option></select></div>
             <div><label for="attDate">Fecha de clase</label>
               <input id="attDate" type="date" onchange="updateAttDateHint(); renderAttendance();">
-              <button type="button" class="btn-sm btn-gold" style="margin-top:.35rem" onclick="useClassSessionDate()">Usar jueves de esta semana</button>
+              <div id="attSessionButtons" style="display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.35rem"></div>
             </div>
             <div style="grid-column:1/-1"><p id="attDateHint" class="msg" style="min-height:1rem;margin:0"></p></div>
             <div><label for="attSearch">Buscar</label><input id="attSearch" placeholder="Nombre o CC" oninput="renderAttendance()"></div>
@@ -340,18 +341,36 @@
       localStorage.setItem(STORAGE_CLASS_META, JSON.stringify(meta || {}));
     }
 
+    function selectedAttGroup() {
+      const el = document.getElementById("attGroup");
+      return el && el.value ? el.value : "";
+    }
+
+    function groupSchedule() {
+      const grupo = selectedAttGroup();
+      return window.IUBGroupSchedules && grupo ? IUBGroupSchedules.forGrupo(grupo) : null;
+    }
+
     function classWeekday() {
+      const gs = groupSchedule();
+      if (gs && gs.sessions && gs.sessions.length) return gs.sessions[0].weekday;
       const meta = getClassMeta();
       return typeof meta.weekday === "number" ? meta.weekday : 4;
     }
 
     function classDayLabel() {
+      const gs = groupSchedule();
+      if (gs) return gs.label || gs.horario;
       const meta = getClassMeta();
       return meta.dayLabel || "JUEVES";
     }
 
-    function classSessionDate(refDate) {
-      const target = classWeekday();
+    function classSessionDate(refDate, weekday) {
+      const gs = groupSchedule();
+      const target = typeof weekday === "number" ? weekday : classWeekday();
+      if (gs && window.IUBGroupSchedules) {
+        return IUBGroupSchedules.sessionDateForWeekday(refDate, target);
+      }
       const d = refDate ? new Date(refDate) : new Date();
       const day = d.getDay();
       const mondayOffset = day === 0 ? -6 : 1 - day;
@@ -364,6 +383,11 @@
 
     function isClassSessionDate(dateStr) {
       if (!dateStr) return false;
+      const grupo = selectedAttGroup();
+      if (grupo && window.IUBGroupSchedules) {
+        const ok = IUBGroupSchedules.isSessionDate(grupo, dateStr);
+        if (ok !== null) return ok;
+      }
       const parts = dateStr.split("-");
       const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 12);
       return d.getDay() === classWeekday();
@@ -379,28 +403,75 @@
     function updateAttDateHint() {
       const el = document.getElementById("attDateHint");
       if (!el) return;
+      const gs = groupSchedule();
       const label = classDayLabel();
       const dateVal = document.getElementById("attDate").value;
-      const suggested = classSessionDate();
-      const horario = getClassMeta().horario || label;
+      const suggested = (gs && window.IUBGroupSchedules)
+        ? IUBGroupSchedules.nearestSessionDate(selectedAttGroup(), dateVal || undefined)
+        : classSessionDate();
+      const horario = (gs && gs.horario) || getClassMeta().horario || label;
+      const hours = (gs && dateVal && window.IUBGroupSchedules)
+        ? IUBGroupSchedules.hoursForSession(selectedAttGroup(), dateVal)
+        : null;
       if (isClassSessionDate(dateVal)) {
-        el.textContent = "Sesión de clase: " + formatDateEs(dateVal) + " (" + horario + ").";
+        el.textContent = "Sesión de clase: " + formatDateEs(dateVal) + " (" + horario + (hours ? " · " + hours + " h" : "") + ").";
         el.className = "msg ok";
       } else {
-        el.textContent = "Este curso es los " + label + " (" + horario + "). Fecha sugerida: " + formatDateEs(suggested) + ".";
+        el.textContent = "Horario del grupo: " + label + " (" + horario + "). Fecha sugerida: " + formatDateEs(suggested) + ".";
         el.className = "msg err";
       }
     }
 
-    function useClassSessionDate() {
-      document.getElementById("attDate").value = classSessionDate();
+    function useClassSessionDate(weekday) {
+      document.getElementById("attDate").value = classSessionDate(undefined, weekday);
+      updateAttDateHint();
+      renderAttendance();
+    }
+
+    function updateSessionButtons() {
+      const host = document.getElementById("attSessionButtons");
+      if (!host) return;
+      host.innerHTML = "";
+      const gs = groupSchedule();
+      if (gs && gs.sessions && gs.sessions.length) {
+        gs.sessions.forEach(function (s) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "btn-sm btn-gold";
+          btn.textContent = "Usar " + s.dayLabel.toLowerCase() + " (" + s.hours + " h)";
+          btn.onclick = function () { useClassSessionDate(s.weekday); };
+          host.appendChild(btn);
+        });
+        return;
+      }
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn-sm btn-gold";
+      btn.textContent = "Usar " + classDayLabel().toLowerCase() + " de esta semana";
+      btn.onclick = function () { useClassSessionDate(); };
+      host.appendChild(btn);
+    }
+
+    function onAttGroupChange() {
+      updateSessionButtons();
+      const grupo = selectedAttGroup();
+      if (grupo && window.IUBGroupSchedules) {
+        const near = IUBGroupSchedules.nearestSessionDate(grupo);
+        if (near) document.getElementById("attDate").value = near;
+      }
       updateAttDateHint();
       renderAttendance();
     }
 
     function updateClassDayButtonLabel() {
-      const btn = document.querySelector("button[onclick='useClassSessionDate()']");
-      if (btn) btn.textContent = "Usar " + classDayLabel().toLowerCase() + " de esta semana";
+      updateSessionButtons();
+    }
+
+    function normalizeStudentHorario(s) {
+      if (!window.IUBGroupSchedules || !s.grupo) return s;
+      return Object.assign({}, s, {
+        horario: IUBGroupSchedules.normalizeHorario(s.grupo, s.horario)
+      });
     }
 
     function nowISO() {
@@ -556,12 +627,12 @@
         const data = await res.json();
         if (data && data.length) {
           const students = data.map(function(s) {
-            return {
+            return normalizeStudentHorario({
               name: s.name,
               cc: s.cc,
               grupo: s.grupo || "",
               horario: s.horario || ""
-            };
+            });
           });
           setStudents(students);
           return true;
@@ -1208,11 +1279,12 @@
       try {
         const offering = GamifSDK.getOfferingCode() || "TGA04-2026-2";
         const payload = students.map(function(s) {
+          const row = normalizeStudentHorario(s);
           return {
-            cc: s.cc,
-            name: s.name,
-            grupo: s.grupo || "",
-            horario: s.horario || ""
+            cc: row.cc,
+            name: row.name,
+            grupo: row.grupo || "",
+            horario: row.horario || ""
           };
         });
         const res = await fetch(GamifSDK.sbUrl() + "/rest/v1/rpc/upsert_roster_students", {
