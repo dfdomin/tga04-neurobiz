@@ -3,129 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi progreso · TGA04</title>
+  <title>Mi progreso · IUB</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
   <script src="../js/supabase-config.js"></script>
+  <script src="../js/gamification-sdk.js"></script>
+  <script src="../js/academic-rules.js"></script>
+  <script src="../js/academic-status-bar.js"></script>
+  <script src="../js/student-dashboard.js"></script>
+  <script src="../js/celebration.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --primary:#1E2843; --accent:#2d3a5e; --gold:#FFDF2D; --green:#2e7d32; --red:#c62828; --light-bg:#FAFAFA; --card-bg:#fff; --text:#212121; --muted:#546e7a; --border:#DEDFE4; --radius:12px; }
-    body { font-family:'Open Sans', Arial, sans-serif; background:var(--light-bg); color:var(--text); line-height:1.6; }
-    header { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; padding:1.5rem 1.2rem; }
-    .wrap { max-width:1120px; margin:0 auto; }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root { --primary:#1E2843; --accent:#2d3a5e; --gold:#FFDF2D; --green:#2e7d32; --muted:#546e7a; --border:#DEDFE4; --radius:12px; }
+    body { font-family:'Open Sans', Arial, sans-serif; background:#F4F6FA; color:#212121; line-height:1.55; }
+    header { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; padding:1.4rem 1.2rem 1.8rem; }
+    .wrap { max-width:1180px; margin:0 auto; }
     .top { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
-    h1 { font-size:clamp(1.6rem,4vw,2.6rem); line-height:1.1; }
-    header p { opacity:.85; margin-top:.4rem; }
-    a { color:inherit; }
+    h1 { font-size:clamp(1.5rem,4vw,2.2rem); }
+    header p { opacity:.88; margin-top:.35rem; }
     .nav { display:flex; gap:.5rem; flex-wrap:wrap; }
-    .nav a, button { border:1px solid var(--border); border-radius:10px; padding:.55rem .85rem; background:#fff; color:var(--primary); font-weight:800; text-decoration:none; cursor:pointer; font-family:inherit; }
-    main { padding:1.4rem 1.2rem 3rem; }
-    .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1rem; margin-bottom:1.2rem; }
-    .metric, .panel { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:1rem; box-shadow:0 2px 10px rgba(0,0,0,.04); }
-    .metric span { color:var(--muted); font-size:.8rem; font-weight:800; text-transform:uppercase; }
-    .metric strong { display:block; color:var(--primary); font-size:2rem; line-height:1.1; margin-top:.3rem; }
-    .bar { height:12px; background:#E9EAED; border-radius:20px; overflow:hidden; margin-top:.75rem; }
-    .bar > div { height:100%; background:var(--gold); width:0%; transition:width:.5s ease; }
-    .weeks { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:.8rem; }
-    .week { border:1px solid var(--border); border-radius:10px; padding:.85rem; background:#fff; min-height:142px; display:grid; gap:.6rem; }
-    .week.done { border-color:#a5d6a7; background:#f7fff8; }
-    .week h3 { color:var(--primary); font-size:.98rem; }
-    .week p { color:var(--muted); font-size:.84rem; }
-    .chips { display:flex; gap:.35rem; flex-wrap:wrap; }
-    .chip { border-radius:999px; border:1px solid var(--border); padding:.15rem .5rem; font-size:.72rem; font-weight:800; color:var(--accent); background:#fff; }
-    .actions { display:flex; gap:.5rem; margin-top:1rem; flex-wrap:wrap; }
-    .notice { color:var(--muted); font-size:.9rem; margin-top:.75rem; }
+    .nav a { border:1px solid rgba(255,255,255,.35); border-radius:10px; padding:.5rem .85rem; color:#fff; font-weight:800; text-decoration:none; font-size:.84rem; }
+    main { padding:1.2rem; }
+    .panel { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:1rem; box-shadow:0 2px 10px rgba(0,0,0,.04); margin-bottom:1rem; }
+    .dash-summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-bottom:1rem; }
+    .dash-metric { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:1rem; }
+    .dash-metric span { color:var(--muted); font-size:.75rem; font-weight:800; text-transform:uppercase; }
+    .dash-metric strong { display:block; font-size:1.8rem; color:var(--primary); margin:.2rem 0; }
+    .dash-metric small { color:var(--muted); font-size:.82rem; }
+    .dash-overall h2, .dash-block h3 { color:var(--primary); font-size:1.05rem; margin-bottom:.7rem; }
+    .dash-blocks { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; }
+    .dash-block { border-left:5px solid var(--block-accent, var(--gold)); }
+    .dash-block-cut { background:linear-gradient(180deg,#fff,#fffef5); }
+    .dash-weeks { display:grid; gap:.55rem; margin-top:.7rem; }
+    .dash-week { display:block; text-decoration:none; color:inherit; border:1px solid var(--border); border-radius:10px; padding:.65rem .75rem; transition:transform .15s, box-shadow .15s; }
+    .dash-week:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,.08); }
+    .dash-week-top { display:flex; justify-content:space-between; font-size:.84rem; margin-bottom:.35rem; }
+    .dash-week-top strong { color:var(--primary); }
+    .dash-week-top span { color:var(--muted); font-weight:700; }
+    .dash-week-disabled { opacity:.65; cursor:not-allowed; background:#f8f9fb; }
+    .dash-week-disabled:hover { transform:none; box-shadow:none; }
+    .xp-bar { height:10px; background:#E9EAED; border-radius:999px; overflow:hidden; margin-top:.25rem; }
+    .xp-bar-fill { height:100%; border-radius:999px; transition:width .45s ease; }
+    .dash-note { color:var(--muted); font-size:.88rem; margin-top:.6rem; }
+    .course-bar { height:14px; background:#E9EAED; border-radius:999px; overflow:hidden; margin-top:.5rem; }
+    .course-bar > div { height:100%; background:linear-gradient(90deg,var(--primary),var(--gold)); width:0%; transition:width .5s; }
   </style>
 </head>
 <body>
   <header>
     <div class="wrap top">
       <div>
-        <h1>Mi progreso TGA04</h1>
-        <p id="studentLine">Resumen local del navegador actual.</p>
+        <h1 id="dashTitle">Mi progreso</h1>
+        <p id="studentLine">Cargando…</p>
       </div>
       <nav class="nav">
         <a href="../index.html">Inicio</a>
-        <a href="../semana1/index.html">Semana 1</a>
-        <a href="profesor.html">Docente</a>
+        <a href="participacion.html" hidden id="teacherLink">Docente</a>
       </nav>
+    </div>
+    <div class="wrap" style="margin-top:1rem">
+      <div class="course-bar"><div id="courseXpBar"></div></div>
     </div>
   </header>
   <main class="wrap">
-    <section class="summary">
-      <div class="metric"><span>XP acumulado local</span><strong id="totalXp">0</strong><div class="bar"><div id="xpBar"></div></div></div>
-      <div class="metric"><span>Semanas visitadas</span><strong id="visitedCount">0/13</strong></div>
-      <div class="metric"><span>Quiz correctos</span><strong id="quizTotal">0</strong></div>
-      <div class="metric"><span>Rango</span><strong id="rank">Aprendiz</strong></div>
-    </section>
-    <section class="panel">
-      <h2 style="color:var(--primary);font-size:1.2rem;margin-bottom:.8rem">Semanas</h2>
-      <div class="weeks" id="weeks"></div>
-      <div class="actions">
-        <button onclick="downloadBackup()">Exportar respaldo local</button>
-        <button onclick="syncCurrent()">Guardar semana actual en Supabase</button>
-      </div>
-      <p class="notice" id="msg">Este dashboard lee `localStorage`; si cambias de computador, usa Supabase o el respaldo exportado desde cada semana.</p>
-    </section>
+    <div id="attendance-panel"></div>
+    <div id="academic-panels"></div>
+    <div id="student-dashboard"></div>
   </main>
   <script>
-    const weeks = [1,2,3,4,6,7,8,9,11,12,13,14,15];
-    const labels = {
-      1:"Algoritmos", 2:"Variables", 3:"SI-FSI", 4:"Clasificacion",
-      6:"MIENTRAS", 7:"HACER-HASTA", 8:"PARA", 9:"Integrador",
-      11:"Prueba escritorio", 12:"Python listas", 13:"Python ciclos",
-      14:"Proyecto", 15:"Debugging"
-    };
-    function getWeek(n) {
-      try { return JSON.parse(localStorage.getItem(`tga04_s${n}`) || "{}"); }
-      catch(e) { return {}; }
-    }
-    function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
-    function rankFor(xp) {
-      if (xp >= 650) return "CTO";
-      if (xp >= 450) return "Arquitecto";
-      if (xp >= 250) return "Consultor";
-      if (xp >= 100) return "Analista Junior";
-      return "Aprendiz";
-    }
-    function render() {
-      const global = JSON.parse(localStorage.getItem("tga04_global") || "{}");
-      const rows = weeks.map(n => ({ n, s:getWeek(n), visited:!!localStorage.getItem(`tga04_visited_s${n}`) }));
-      const totalXp = rows.reduce((sum, r) => sum + Number(r.s.xp || 0), 0);
-      const quiz = rows.reduce((sum, r) => sum + Number(r.s.quiz_puntaje || r.s.quiz_score || 0), 0);
-      const visited = rows.filter(r => r.visited || r.s.xp).length;
-      document.getElementById("studentLine").textContent = global.nombre ? `${global.nombre} · ${global.grupo || "Sin grupo"}` : "Configura tu nombre desde cualquier semana del curso.";
-      document.getElementById("totalXp").textContent = totalXp;
-      document.getElementById("visitedCount").textContent = `${visited}/13`;
-      document.getElementById("quizTotal").textContent = quiz;
-      document.getElementById("rank").textContent = rankFor(totalXp);
-      document.getElementById("xpBar").style.width = Math.min(totalXp / 700 * 100, 100) + "%";
-      document.getElementById("weeks").innerHTML = rows.map(r => `
-        <article class="week ${r.visited || r.s.xp ? "done" : ""}">
-          <div class="chips"><span class="chip">Semana ${r.n}</span><span class="chip">${r.s.xp || 0} XP</span></div>
-          <h3>${labels[r.n]}</h3>
-          <p>${r.visited || r.s.xp ? "Con progreso local registrado." : "Sin visita registrada en este navegador."}</p>
-          <a href="../semana${r.n}/index.html">Abrir semana</a>
-        </article>
-      `).join("");
-    }
-    function downloadBackup() {
-      const data = {};
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith("tga04_")) data[key] = localStorage.getItem(key);
-      }
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = "tga04-respaldo-local.json"; a.click();
-      URL.revokeObjectURL(url);
-    }
-    async function syncCurrent() {
-      document.getElementById("msg").textContent = "Abre la semana que quieras guardar y usa el boton Guardar. Este panel no reemplaza el estado interno de cada semana.";
-    }
-    render();
+    (function () {
+      var dash = window.IUB_DASHBOARD || {};
+      var title = document.getElementById("dashTitle");
+      if (title) title.textContent = "Mi progreso · " + (dash.title || window.MODULE_CODE || "IUB");
+      IUBStudentDashboard.render("student-dashboard");
+    })();
   </script>
 </body>
 </html>

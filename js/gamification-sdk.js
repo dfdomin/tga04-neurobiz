@@ -62,8 +62,9 @@
     return cfg.prefix + "_progress:" + cfg.offeringCode + ":" + semana;
   }
 
-  function legacyProgressKey(semana) {
-    return "tga04_s" + semana;
+  function legacyProgressKey(cfg, semana) {
+    var p = (cfg && cfg.prefix) || "tga04";
+    return p + "_s" + semana;
   }
 
   function profileKey(cfg) {
@@ -71,7 +72,9 @@
   }
 
   function legacyProfileKey(cfg) {
-    return (cfg && cfg.legacyPrefix === "adm18") ? "adm18_user" : "tga04_global";
+    var p = (cfg && cfg.prefix) || "adm18";
+    if (p === "adm18") return "adm18_user";
+    return p + "_global";
   }
 
   function sbUrl() {
@@ -129,15 +132,15 @@
       } catch (e) { /* ignore */ }
       return total;
     }
+    var legacyRe = new RegExp("^" + cfgRef.prefix + "_s(\\d+)$");
+    var unifiedRe = new RegExp("^" + cfgRef.prefix + "_progress:[^:]+:(\\d+)$");
     for (var i = 0; i < localStorage.length; i++) {
       var k = localStorage.key(i);
       if (!k) continue;
-      var m = k.match(/^tga04_s(\d+)$/) || k.match(/^gamif_progress:[^:]+:(\d+)$/);
-      if (m) {
-        try {
-          total += Number(JSON.parse(localStorage.getItem(k) || "{}").xp || 0);
-        } catch (e) { /* ignore */ }
-      }
+      if (!legacyRe.test(k) && !unifiedRe.test(k)) continue;
+      try {
+        total += Number(JSON.parse(localStorage.getItem(k) || "{}").xp || 0);
+      } catch (e) { /* ignore */ }
     }
     return total;
   }
@@ -213,7 +216,7 @@
 
   function loadWeekState(cfg, semana) {
     var key = progressKey(cfg, semana);
-    var legacy = legacyProgressKey(semana);
+    var legacy = legacyProgressKey(cfg, semana);
     var raw = localStorage.getItem(key) || localStorage.getItem(legacy);
     var state = {
       semana: semana,
@@ -247,7 +250,7 @@
   function saveWeekState(cfg, semana, state) {
     var json = JSON.stringify(state);
     localStorage.setItem(progressKey(cfg, semana), json);
-    localStorage.setItem(legacyProgressKey(semana), json);
+    localStorage.setItem(legacyProgressKey(cfg, semana), json);
   }
 
   async function syncLegacyProgress(state, cfg) {
@@ -392,7 +395,7 @@
     persistConfig(cfg);
     var semana = options.semana;
     var xpMax = options.xpMax || 80;
-    var visitedKey = options.visitedKey || ("tga04_visited_s" + semana);
+    var visitedKey = options.visitedKey || (cfg.prefix + "_visited_s" + semana);
     var state = loadWeekState(cfg, semana);
 
     function msg(text, color) {
@@ -436,6 +439,19 @@
       state.xp = Math.min((state.xp || 0) + pts, xpMax);
       msg("✨ +" + pts + " XP — " + motivo, "lime");
       save();
+      if (/complet|correct|ganaste|éxito|exito|✅|quiz|actividad|lectura|📖/i.test(String(motivo || ""))) {
+        if (global.IUBCelebrate) global.IUBCelebrate.launch({ message: motivo });
+        try {
+          document.dispatchEvent(new CustomEvent("iub:activity-complete", { detail: { message: motivo } }));
+        } catch (e) { /* ignore */ }
+      }
+    }
+
+    function completeActivity(motivo, pts) {
+      state.actividad_completada = true;
+      state.activity_done = true;
+      addXP(typeof pts === "number" ? pts : Math.min(15, xpMax - (state.xp || 0)), motivo || "Actividad completada ✅");
+      syncCloud();
     }
 
     async function syncCloud() {
@@ -504,6 +520,7 @@
     return {
       init: init,
       addXP: addXP,
+      completeActivity: completeActivity,
       save: save,
       sync: syncCloud,
       export: exportCode,
