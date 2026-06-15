@@ -1,0 +1,98 @@
+# Gitleaks configuration — TGA04 NeuroBiz
+# Reglas personalizadas para detectar secretos específicos del proyecto.
+# Docs: https://github.com/gitleaks/gitleaks#configuration
+
+title = "TGA04 NeuroBiz — Secret Detection"
+
+# Extender las reglas por defecto de Gitleaks
+[extend]
+useDefault = true
+
+# ═══════════════════════════════════════════════════════
+# Reglas personalizadas
+# ═══════════════════════════════════════════════════════
+
+# Supabase anon key (sb_publishable_...)
+[[rules]]
+id = "supabase-anon-key"
+description = "Supabase anon/publishable key"
+regex = '''sb_publishable_[a-zA-Z0-9_\-]{20,}'''
+tags = ["supabase", "api-key"]
+
+# Supabase service role key (NUNCA debe estar en código)
+[[rules]]
+id = "supabase-service-key"
+description = "Supabase service_role key — CRÍTICO"
+regex = '''eyJ[A-Za-z0-9_\-]{50,}'''
+tags = ["supabase", "critical", "api-key"]
+
+# Supabase Project URL con key embebida
+[[rules]]
+id = "supabase-url-with-key"
+description = "Supabase URL con clave en query string"
+regex = '''https://[a-z0-9]+\.supabase\.co[^"'\s]*[?&](apikey|token|key)=[^"'\s&]+'''
+tags = ["supabase", "critical", "url"]
+
+# OpenAI / Azure API keys
+[[rules]]
+id = "openai-api-key"
+description = "OpenAI API key (sk-...)"
+regex = '''sk-[A-Za-z0-9_\-]{20,}'''
+tags = ["openai", "api-key"]
+
+# Azure credentials
+[[rules]]
+id = "azure-connection-string"
+description = "Azure connection string o credential"
+regex = '''(DefaultEndpointsProtocol|AccountName|AccountKey|SharedAccessKey)'''
+tags = ["azure", "credentials"]
+
+# GitHub tokens
+[[rules]]
+id = "github-token"
+description = "GitHub personal access token"
+regex = '''gh[pousr]_[A-Za-z0-9_]{20,}'''
+tags = ["github", "token"]
+
+# Student PII — cédulas colombianas (CC)
+[[rules]]
+id = "colombian-cc"
+description = "Posible cédula colombiana en código (PII)"
+regex = '''\b[1-9][0-9]{4,11}\b'''
+tags = ["pii", "student-data"]
+[rules.allowlist]
+description = "Excluir números que no son cédulas (IDs de semana, XP, etc.)"
+regexes = [
+  '''semana''',
+  '''xp''',
+  '''quiz''',
+  '''width''',
+  '''height''',
+  '''font-size''',
+  '''padding''',
+  '''margin''',
+  '''border''',
+  '''radius''',
+  '''color''',
+  '''background''',
+  '''max-width''',
+  '''min-width''',
+]
+
+# ═══════════════════════════════════════════════════════
+# Allowlist — archivos y paths a ignorar
+# ═══════════════════════════════════════════════════════
+
+[allowlist]
+description = "Archivos y paths excluidos del escaneo"
+paths = [
+  # Archivos de ejemplo/documentación que contienen placeholders
+  '''setup/.env.example''',
+  '''docs/SECURITY_BEST_PRACTICES.md''',
+  '''BEST_PRACTICES*.md''',
+  '''setup/CONFIGURAR_SUPABASE.html''',
+  # Archivos generados / binarios
+  '''*.min.js''',
+  '''*.min.css''',
+  '''*.svg''',
+]

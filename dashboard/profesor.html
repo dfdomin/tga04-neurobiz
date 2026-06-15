@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
   <script src="../js/supabase-config.js"></script>
+  <script src="../js/gamification-sdk.js"></script>
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     :root { --primary:#1E2843; --accent:#2d3a5e; --gold:#FFDF2D; --green:#2e7d32; --red:#c62828; --light-bg:#FAFAFA; --card-bg:#fff; --text:#212121; --muted:#546e7a; --border:#DEDFE4; --radius:12px; }
@@ -99,23 +100,87 @@
       document.getElementById("app").hidden = false;
       loadData();
     }
+    function offeringCode() {
+      return (window.GamifSDK && GamifSDK.getOfferingCode())
+        || localStorage.getItem("gamif_offering_code")
+        || localStorage.getItem("tga04_course_code")
+        || "TGA04-2026-2";
+    }
+    function baseUrl() {
+      var raw = localStorage.getItem("tga04_supabase_url") || window.SUPABASE_URL || "";
+      return (window.GamifSDK && GamifSDK.normalizeBaseUrl)
+        ? GamifSDK.normalizeBaseUrl(raw)
+        : raw.trim().replace(/\/+$/, "").replace(/\/rest\/v1\/?$/i, "");
+    }
     async function loadData() {
       const msg = document.getElementById("msg");
-      const url = localStorage.getItem("tga04_supabase_url");
-      const key = localStorage.getItem("tga04_supabase_key");
-      if (!url || !key) { msg.textContent = "Supabase no configurado. Revisa js/supabase-config.js y setup/supabase_schema.sql."; return; }
+      const url = baseUrl();
+      const key = localStorage.getItem("tga04_supabase_key") || window.SUPABASE_KEY || "";
+      if (!url || !key) { msg.textContent = "Supabase no configurado. Recarga con Cmd+Shift+R."; return; }
       msg.textContent = "Cargando datos desde Supabase...";
+      const headers = { apikey: key, Authorization: `Bearer ${key}` };
+      const offering = encodeURIComponent(offeringCode());
+      const endpoints = [
+        `${url}/rest/v1/v_legacy_resumen_docente?select=*&offering_code=eq.${offering}`,
+        `${url}/rest/v1/student_progress?select=*`,
+      ];
       try {
-        // Usar la vista resumen_docente (agregación server-side)
-        const res = await fetch(`${url}/rest/v1/resumen_docente?select=*`, { headers:{ apikey:key, Authorization:`Bearer ${key}` } });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        records = await res.json();
-        fillGroups();
-        render();
-        msg.textContent = `Datos actualizados: ${new Date().toLocaleString()}`;
+        for (const endpoint of endpoints) {
+          const res = await fetch(endpoint, { headers });
+          if (!res.ok) continue;
+          const data = await res.json();
+          if (!data || !data.length) continue;
+          if (endpoint.includes("student_progress")) {
+            records = aggregateFromProgress(data);
+          } else {
+            records = data;
+          }
+          fillGroups();
+          render();
+          msg.textContent = `Datos actualizados: ${records.length} estudiantes · ${new Date().toLocaleString()}`;
+          return;
+        }
+        msg.textContent = "Sin datos en Supabase para este curso.";
       } catch (err) {
         msg.textContent = `No se pudo cargar Supabase: ${err.message}`;
       }
+    }
+    function aggregateFromProgress(rows) {
+      const map = new Map();
+      for (const r of rows) {
+        const id = r.student_id || "desconocido";
+        const item = map.get(id) || {
+          student_id: id,
+          student_name: r.student_name || "Anónimo",
+          grupo: r.grupo || "",
+          horario: r.horario || "",
+          semanas_visitadas: 0,
+          xp_total: 0,
+          quiz_promedio: 0,
+          actividades: 0,
+          _quizSum: 0,
+          _quizN: 0,
+        };
+        item.student_name = r.student_name || item.student_name;
+        item.grupo = r.grupo || item.grupo;
+        item.semanas_visitadas += 1;
+        item.xp_total += Number(r.xp || 0);
+        item._quizSum += Number(r.quiz_score || 0);
+        item._quizN += 1;
+        if (r.activity_done || r.hti_done) item.actividades += 1;
+        map.set(id, item);
+      }
+      return [...map.values()].map(x => ({
+        student_id: x.student_id,
+        student_name: x.student_name,
+        grupo: x.grupo,
+        horario: x.horario,
+        semanas_visitadas: x.semanas_visitadas,
+        xp_total: x.xp_total,
+        quiz_promedio: x._quizN ? x._quizSum / x._quizN : 0,
+        actividades: x.actividades,
+        ultima_actualizacion: "",
+      }));
     }
     function fillGroups() {
       const select = document.getElementById("group");
@@ -140,9 +205,7 @@
       }));
     }
     function riskFor(x) {
-      if (x.semanas_visitadas <= 2 || x.xp < 80) return ["Alto", "high"];
-      if (x.semanas_visitadas <= 5 || x.xp < 220) return ["Medio", "warn"];
-      return ["Normal", "ok"];
+      return GamifSDK.riskFor(x.semanas_visitadas, x.xp);
     }
     function render() {
       const q = document.getElementById("search").value.toLowerCase();

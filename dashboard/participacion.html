@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
   <script src="../js/supabase-config.js"></script>
+  <script src="../js/gamification-sdk.js"></script>
   <script src="../js/import-students-browser.js"></script>
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -176,6 +177,7 @@
           </div>
           <div class="actions-row">
             <button onclick="exportHistory()">Exportar Historial (.tsv)</button>
+            <button onclick="syncParticipationToSupabase()">Sincronizar participacion a Supabase</button>
             <button class="btn-red btn-sm" onclick="clearHistory()">Borrar historial</button>
           </div>
         </div>
@@ -304,6 +306,19 @@
 
     function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
 
+    function offeringCode() {
+      return GamifSDK.getOfferingCode();
+    }
+
+    async function pushParticipationEvents(newEvents) {
+      if (!newEvents || !newEvents.length || !window.GamifSDK) return;
+      try {
+        await GamifSDK.syncParticipation(newEvents, offeringCode());
+      } catch (e) {
+        console.warn("pushParticipationEvents:", e.message);
+      }
+    }
+
     function init() {
       // Si no hay estudiantes en localStorage, cargar desde Supabase
       const students = getStudents();
@@ -426,6 +441,11 @@
       });
       setTodayPoints(todayPts);
       setHistory(history);
+      const batch = [];
+      checks.forEach(cb => {
+        batch.push({ ts: now, cc: cb.value, name: findStudentName(cb.value), type: label, points: amount });
+      });
+      pushParticipationEvents(batch);
       document.getElementById("liveMsg").textContent = `+${amount} pts otorgados a ${checks.length} estudiante(s).`;
       document.getElementById("liveMsg").className = "msg ok";
       renderLive();
@@ -439,6 +459,7 @@
       history.push({ ts: nowISO(), cc, name: findStudentName(cc), type: label, points: amount });
       setTodayPoints(todayPts);
       setHistory(history);
+      pushParticipationEvents([{ ts: nowISO(), cc, name: findStudentName(cc), type: label, points: amount }]);
       renderLive();
     }
 
@@ -597,13 +618,30 @@
             headers: { apikey: key, Authorization: "Bearer " + key, "Content-Type": "application/json", Prefer: "resolution=merge-duplicates" },
             body: JSON.stringify(batch)
           });
-          if (!res.ok) throw new Error("HTTP " + res.status);
+          if (!res.ok) throw new Error("HTTP legacy " + res.status);
         }
-        document.getElementById("attMsg").textContent = "Asistencia sincronizada.";
+        const unified = await GamifSDK.syncAttendanceRows(rows, offeringCode());
+        document.getElementById("attMsg").textContent = "Asistencia sincronizada (legacy + unificado: " + (unified.count || 0) + " filas).";
         document.getElementById("attMsg").className = "msg ok";
       } catch(e) {
         document.getElementById("attMsg").textContent = "Error: " + e.message;
         document.getElementById("attMsg").className = "msg err";
+      }
+    }
+
+    async function syncParticipationToSupabase() {
+      const history = getHistory();
+      if (!history.length) { document.getElementById("histMsg").textContent = "Sin historial para sincronizar."; return; }
+      document.getElementById("histMsg").textContent = "Sincronizando participacion...";
+      try {
+        const result = await GamifSDK.syncParticipation(history, offeringCode());
+        document.getElementById("histMsg").textContent = result.ok
+          ? `Participacion sincronizada: ${result.count} eventos.`
+          : `Parcial: ${result.count} ok, ${result.failed || 0} fallos.`;
+        document.getElementById("histMsg").className = result.ok ? "msg ok" : "msg err";
+      } catch (e) {
+        document.getElementById("histMsg").textContent = "Error: " + e.message;
+        document.getElementById("histMsg").className = "msg err";
       }
     }
 

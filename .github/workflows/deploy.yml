@@ -1,0 +1,133 @@
+name: CI/CD — TGA04 NeuroBiz
+
+# ═══════════════════════════════════════════════════════════
+# Pipeline secuencial con gates:
+#   gitleaks → validate → (GitHub Pages auto-deploy)
+#
+# GitHub Pages despliega automáticamente al pushear a main.
+# Este pipeline solo ejecuta validación y escaneo de secretos.
+# ═══════════════════════════════════════════════════════════
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Permisos mínimos necesarios
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  # ═══════════════════════════════════════════════════════
+  # Gate 1: Escaneo de secretos (bloquea si encuentra)
+  # ═══════════════════════════════════════════════════════
+  gitleaks:
+    name: 🔐 Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Historial completo para escanear todos los commits
+
+      - name: Gitleaks — detectar secretos
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+          GITLEAKS_ENABLE_COMMENTS: false
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
+          GITLEAKS_CONFIG: .gitleaks.toml
+
+  # ═══════════════════════════════════════════════════════
+  # Gate 2: Validación de código
+  # ═══════════════════════════════════════════════════════
+  validate:
+    name: ✅ Validación
+    needs: gitleaks
+    if: ${{ needs.gitleaks.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validar sintaxis Python (py_compile)
+        run: |
+          scripts=(
+            setup/backup.py
+            setup/restore.py
+            setup/exportar_notas.py
+            setup/smoke_test.py
+          )
+          failed=0
+          for f in "${scripts[@]}"; do
+            if python3 -m py_compile "$f"; then
+              echo "✅ $f — OK"
+            else
+              echo "❌ $f — FAILED"
+              failed=1
+            fi
+          done
+          if [ $failed -ne 0 ]; then
+            echo "::error::Uno o más scripts Python tienen errores de sintaxis."
+            exit 1
+          fi
+
+      - name: Smoke test — verificar links rotos en HTML
+        run: |
+          python3 setup/smoke_test.py
+          if [ $? -ne 0 ]; then
+            echo "::error::Se encontraron links rotos en los archivos HTML."
+            exit 1
+          fi
+
+  # ═══════════════════════════════════════════════════════
+  # Gate 3: Reporte de fallos (solo si algo falla)
+  # ═══════════════════════════════════════════════════════
+  failure-report:
+    name: 📋 Reporte de fallos
+    needs: [gitleaks, validate]
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generar resumen de fallos
+        run: |
+          echo "## 🚨 Pipeline Fallido — TGA04 NeuroBiz" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Paso | Estado |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|------|--------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 🔐 Gitleaks (secretos) | ${{ needs.gitleaks.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| ✅ Validación (Python + HTML) | ${{ needs.validate.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Acciones recomendadas:" >> "$GITHUB_STEP_SUMMARY"
+          echo "1. Revisar los logs del paso fallido arriba ↑" >> "$GITHUB_STEP_SUMMARY"
+          echo "2. Si Gitleaks falló: rotar credenciales expuestas y limpiar el historial de git" >> "$GITHUB_STEP_SUMMARY"
+          echo "3. Si Validación falló: corregir errores de sintaxis o links rotos" >> "$GITHUB_STEP_SUMMARY"
+          echo "4. Hacer push de la corrección para re-ejecutar el pipeline" >> "$GITHUB_STEP_SUMMARY"
+
+  # ═══════════════════════════════════════════════════════
+  # Gate 4: Reporte de éxito (pipeline verde)
+  # ═══════════════════════════════════════════════════════
+  success-report:
+    name: 🎉 Pipeline exitoso
+    needs: [gitleaks, validate]
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resumen de éxito
+        run: |
+          echo "## ✅ Pipeline Exitoso — TGA04 NeuroBiz" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Paso | Estado |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|------|--------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 🔐 Gitleaks (secretos) | ✅ PASS |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| ✅ Validación (Python + HTML) | ✅ PASS |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "> **GitHub Pages** desplegará automáticamente desde la rama \`main\`." >> "$GITHUB_STEP_SUMMARY"
+          echo "> Revisar: https://dfdomin.github.io/tga04-neurobiz/" >> "$GITHUB_STEP_SUMMARY"

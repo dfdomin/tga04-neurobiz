@@ -8,12 +8,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
   <script src="../js/supabase-config.js"></script>
+  <script src="../js/gamification-sdk.js"></script>
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     :root { --primary:#1E2843; --accent:#2d3a5e; --gold:#FFDF2D; --green:#2e7d32; --light-bg:#FAFAFA; --text:#212121; --muted:#546e7a; --border:#DEDFE4; --radius:12px; }
     body { font-family:'Open Sans', Arial, sans-serif; background:var(--light-bg); color:var(--text); line-height:1.55; }
     header { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; padding:1.4rem 1.2rem; }
-    .wrap { max-width:1180px; margin:0 auto; }
+    .wrap { max-width:1280px; margin:0 auto; }
+    .wrap.wide { max-width:none; padding:0 1rem; }
     .top { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
     h1 { font-size:clamp(1.5rem,4vw,2.3rem); }
     .nav { display:flex; gap:.5rem; flex-wrap:wrap; }
@@ -26,23 +28,38 @@
     .metric strong { display:block; font-size:1.8rem; color:var(--primary); }
     .controls { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:.7rem; align-items:end; margin-bottom:.9rem; }
     label { color:var(--muted); display:block; font-size:.78rem; font-weight:800; text-transform:uppercase; margin-bottom:.25rem; }
-    input { width:100%; border:1px solid var(--border); border-radius:10px; padding:.6rem .75rem; }
-    table { width:100%; border-collapse:collapse; font-size:.88rem; }
-    th { text-align:left; background:var(--primary); color:#fff; padding:.65rem .75rem; }
-    td { border-bottom:1px solid var(--border); padding:.6rem .75rem; }
-    tr:nth-child(even) td { background:#f8f9fb; }
+    input, select { width:100%; border:1px solid var(--border); border-radius:10px; padding:.6rem .75rem; }
+    table { width:100%; border-collapse:collapse; font-size:.84rem; }
+    th { text-align:left; background:var(--primary); color:#fff; padding:.55rem .6rem; position:sticky; top:0; z-index:1; white-space:nowrap; }
+    th.week-col { background:#2d3a5e; text-align:center; font-size:.75rem; }
+    th.total-col { background:#3d4f7c; }
+    td.num { text-align:center; }
+    td.nota-cell { font-weight:800; background:#eef2ff !important; }
+    td { border-bottom:1px solid var(--border); padding:.5rem .6rem; vertical-align:top; }
+    tr:nth-child(even):not(.total-row) td { background:#f8f9fb; }
     .msg { color:var(--muted); font-size:.9rem; margin:.7rem 0; min-height:1.3rem; }
-    @media (max-width:760px) { table { min-width:760px; } .table-wrap { overflow-x:auto; } }
+    .tabs { display:flex; gap:.35rem; margin-bottom:1rem; flex-wrap:wrap; }
+    .tab-btn { border:1px solid var(--border); border-radius:10px; padding:.5rem .9rem; background:var(--light-bg); cursor:pointer; font-weight:700; font-size:.84rem; }
+    .tab-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .view-panel { display:none; }
+    .view-panel.active { display:block; }
+    tr.total-row td { background:#eef2ff !important; font-weight:700; border-top:2px solid var(--primary); }
+    tr.week-row td { font-size:.82rem; }
+    .chip-yes { color:var(--green); font-weight:800; }
+    .chip-no { color:var(--muted); }
+    .formula-hint { font-size:.82rem; color:var(--muted); margin-bottom:.8rem; line-height:1.5; }
+    .filter-row { display:grid; grid-template-columns:1fr 180px; gap:.7rem; margin-bottom:.8rem; align-items:end; }
+    @media (max-width:760px) { .table-wrap { overflow-x:auto; } table { min-width:2400px; } .filter-row { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
   <header>
     <div class="wrap top">
-      <div><h1>Consolidador de notas</h1><p>Formula formativa configurable por corte.</p></div>
+      <div><h1>Consolidador de notas</h1><p>Resumen y desglose auditable de la nota formativa.</p></div>
       <nav class="nav"><a href="../index.html">Inicio</a><a href="profesor.html">Docente</a></nav>
     </div>
   </header>
-  <main class="wrap">
+  <main class="wrap wide">
     <section class="summary">
       <div class="metric"><span>Estudiantes</span><strong id="mStudents">0</strong></div>
       <div class="metric"><span>Promedio formativo</span><strong id="mAvg">0.0</strong></div>
@@ -55,68 +72,337 @@
         <div><label for="actW">Peso actividad</label><input id="actW" type="number" step=".05" value=".30" oninput="render()"></div>
         <div><label for="visitW">Peso visitas</label><input id="visitW" type="number" step=".05" value=".20" oninput="render()"></div>
         <button onclick="loadData()">Cargar Supabase</button>
-        <button onclick="exportCsv()">Exportar CSV</button>
+        <button onclick="exportCsv()">Exportar resumen CSV</button>
+        <button onclick="exportDetailCsv()">Exportar detalle CSV</button>
+        <button onclick="copyDetailForExcel()">Copiar detalle para Excel</button>
       </div>
       <p class="msg" id="msg"></p>
-      <div class="table-wrap"><table><thead><tr><th>Estudiante</th><th>ID</th><th>Grupo</th><th>Semanas</th><th>Quiz prom</th><th>Actividades</th><th>Nota formativa</th></tr></thead><tbody id="rows"></tbody></table></div>
+
+      <div class="tabs">
+        <button class="tab-btn active" type="button" onclick="showView('resumen')">Resumen</button>
+        <button class="tab-btn" type="button" onclick="showView('detalle')">Para Excel</button>
+      </div>
+
+      <div class="view-panel active" id="view-resumen">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Estudiante</th><th>ID</th><th>Grupo</th><th>Semanas</th><th>Quiz prom</th><th>Actividades</th><th>Nota formativa</th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="view-panel" id="view-detalle">
+        <p class="formula-hint">
+          <strong>Una fila por estudiante</strong> — columnas S1…S13 con quiz, HTI (1/0), actividad (1/0) y XP; al final el desglose de la nota.<br>
+          Selecciona la tabla y copia (Cmd+C), o usa <strong>Copiar detalle para Excel</strong>. HTI y actividad van como 1 = sí, 0 = no.
+        </p>
+        <div class="filter-row">
+          <div><label for="detailSearch">Buscar estudiante</label><input id="detailSearch" placeholder="Nombre o cédula" oninput="renderDetail()"></div>
+          <div><label for="detailGroup">Grupo</label><select id="detailGroup" onchange="renderDetail()"><option value="">Todos</option></select></div>
+        </div>
+        <div class="table-wrap">
+          <table id="detailTable">
+            <thead id="detailHead"></thead>
+            <tbody id="detailRows"></tbody>
+          </table>
+        </div>
+      </div>
     </section>
   </main>
   <script>
-    let records = [], currentRows = [];
+    let records = [], currentRows = [], wideRows = [], activeView = "resumen";
+
+    function weights() {
+      const expected = Math.max(Number(document.getElementById("expected").value || 13), 1);
+      return {
+        expected,
+        qw: Number(document.getElementById("quizW").value || .5),
+        aw: Number(document.getElementById("actW").value || .3),
+        vw: Number(document.getElementById("visitW").value || .2),
+      };
+    }
+
+    function calcNota(quizAvg10, acts, semCount, w) {
+      return (quizAvg10 / 10 * 5) * w.qw
+        + (Math.min(acts / w.expected, 1) * 5) * w.aw
+        + (Math.min(semCount / w.expected, 1) * 5) * w.vw;
+    }
+
+    function offeringCode() {
+      return (window.GamifSDK && GamifSDK.getOfferingCode())
+        || localStorage.getItem("gamif_offering_code")
+        || localStorage.getItem("tga04_course_code")
+        || "TGA04-2026-2";
+    }
+
+    function baseUrl() {
+      const raw = localStorage.getItem("tga04_supabase_url") || window.SUPABASE_URL || "";
+      return (window.GamifSDK && GamifSDK.normalizeBaseUrl)
+        ? GamifSDK.normalizeBaseUrl(raw)
+        : raw.trim().replace(/\/+$/, "").replace(/\/rest\/v1\/?$/i, "");
+    }
+
+    function showView(name) {
+      activeView = name;
+      document.querySelectorAll(".tab-btn").forEach((btn, i) => {
+        btn.classList.toggle("active", (name === "resumen" && i === 0) || (name === "detalle" && i === 1));
+      });
+      document.getElementById("view-resumen").classList.toggle("active", name === "resumen");
+      document.getElementById("view-detalle").classList.toggle("active", name === "detalle");
+    }
+
     async function loadData() {
       const msg = document.getElementById("msg");
-      const url = localStorage.getItem("tga04_supabase_url");
-      const key = localStorage.getItem("tga04_supabase_key");
-      if (!url || !key) { msg.textContent = "Supabase no configurado."; return; }
+      const url = baseUrl();
+      const key = localStorage.getItem("tga04_supabase_key") || window.SUPABASE_KEY || "";
+      if (!url || !key) {
+        msg.textContent = "Supabase no configurado. Recarga la página (Cmd+Shift+R).";
+        return;
+      }
       msg.textContent = "Cargando registros...";
+      const headers = { apikey: key, Authorization: `Bearer ${key}` };
+      const sources = [
+        `${url}/rest/v1/student_progress?select=*`,
+        `${url}/rest/v1/v_legacy_student_progress?select=*&offering_code=eq.${encodeURIComponent(offeringCode())}`,
+      ];
       try {
-        const res = await fetch(`${url}/rest/v1/student_progress?select=*`, { headers:{ apikey:key, Authorization:`Bearer ${key}` } });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        records = await res.json();
+        let lastStatus = 0;
+        records = [];
+        for (const endpoint of sources) {
+          const res = await fetch(endpoint, { headers });
+          lastStatus = res.status;
+          if (!res.ok) continue;
+          const data = await res.json();
+          if (data && data.length) {
+            records = data;
+            msg.textContent = `${records.length} registros cargados · ${new Date().toLocaleString()}`;
+            render();
+            return;
+          }
+        }
+        msg.textContent = records.length ? `${records.length} registros` : `Sin registros (HTTP ${lastStatus}).`;
         render();
-        msg.textContent = `Datos actualizados: ${new Date().toLocaleString()}`;
-      } catch(e) { msg.textContent = `Error: ${e.message}`; }
+      } catch (e) {
+        msg.textContent = `Error: ${e.message}`;
+      }
     }
-    function aggregate() {
+
+    function buildStudentMap() {
       const map = new Map();
       for (const r of records) {
         const id = r.student_id || r.cc || r.student_name || "desconocido";
-        const item = map.get(id) || { id, name:r.student_name || "Anonimo", grupo:r.grupo || "", semanas:new Set(), quizSum:0, quizCount:0, acts:0 };
-        item.name = r.student_name || item.name;
-        item.grupo = r.grupo || item.grupo;
-        if (r.semana) item.semanas.add(Number(r.semana));
-        item.quizSum += Number(r.quiz_score || r.quiz_puntaje || 0);
-        item.quizCount += 1;
-        if (r.activity_done || r.hti_done) item.acts += 1;
-        map.set(id, item);
+        if (!map.has(id)) {
+          map.set(id, {
+            id, name: r.student_name || "Anónimo", grupo: r.grupo || "",
+            weeks: [],
+          });
+        }
+        const s = map.get(id);
+        s.name = r.student_name || s.name;
+        s.grupo = r.grupo || s.grupo;
+        s.weeks.push({
+          semana: Number(r.semana) || 0,
+          quiz: Number(r.quiz_score || r.quiz_puntaje || 0),
+          hti: !!(r.hti_done || r.hti_entregado),
+          act: !!(r.activity_done || r.actividad_completada),
+          xp: Number(r.xp || 0),
+        });
       }
-      return [...map.values()];
+      for (const s of map.values()) {
+        s.weeks.sort((a, b) => a.semana - b.semana);
+      }
+      return map;
     }
+
+    function aggregate() {
+      const w = weights();
+      return [...buildStudentMap().values()].map(s => {
+        const semanas = new Set(s.weeks.map(x => x.semana).filter(Boolean));
+        const quizSum = s.weeks.reduce((n, x) => n + x.quiz, 0);
+        const quizCount = s.weeks.length;
+        const acts = s.weeks.filter(x => x.act || x.hti).length;
+        const quizAvg10 = quizCount ? Math.min(quizSum / quizCount, 10) : 0;
+        const nota = calcNota(quizAvg10, acts, semanas.size, w);
+        return { id: s.id, name: s.name, grupo: s.grupo, semanas, quizAvg10, acts, nota };
+      }).sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    function buildWideRows() {
+      const w = weights();
+      return [...buildStudentMap().values()].map(s => {
+        const byWeek = {};
+        for (const week of s.weeks) byWeek[week.semana] = week;
+        const semanas = new Set(s.weeks.map(x => x.semana).filter(Boolean));
+        const acts = s.weeks.filter(x => x.act || x.hti).length;
+        const quizSum = s.weeks.reduce((n, x) => n + x.quiz, 0);
+        const quizAvg10 = s.weeks.length ? Math.min(quizSum / s.weeks.length, 10) : 0;
+        const ptsQuiz = (quizAvg10 / 10 * 5) * w.qw;
+        const ptsAct = (Math.min(acts / w.expected, 1) * 5) * w.aw;
+        const ptsVis = (Math.min(semanas.size / w.expected, 1) * 5) * w.vw;
+        const weekCols = {};
+        for (let n = 1; n <= w.expected; n++) {
+          const wk = byWeek[n];
+          weekCols[n] = wk
+            ? { quiz: wk.quiz, hti: wk.hti ? 1 : 0, act: wk.act ? 1 : 0, xp: wk.xp }
+            : { quiz: "", hti: "", act: "", xp: "" };
+        }
+        return {
+          id: s.id, name: s.name, grupo: s.grupo,
+          weekCols, quizAvg10, acts, semCount: semanas.size,
+          ptsQuiz, ptsAct, ptsVis, nota: ptsQuiz + ptsAct + ptsVis,
+        };
+      }).sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    function detailHeaderHtml() {
+      const w = weights();
+      let weekTh = "";
+      for (let n = 1; n <= w.expected; n++) {
+        weekTh += `<th class="week-col" colspan="4">S${n}</th>`;
+      }
+      let weekSub = "";
+      for (let n = 1; n <= w.expected; n++) {
+        weekSub += `<th class="week-col">Quiz</th><th class="week-col">HTI</th><th class="week-col">Act</th><th class="week-col">XP</th>`;
+      }
+      return `<tr>
+        <th rowspan="2">Estudiante</th><th rowspan="2">ID</th><th rowspan="2">Grupo</th>
+        ${weekTh}
+        <th class="total-col" colspan="7">Cálculo nota formativa</th>
+      </tr><tr>${weekSub}
+        <th class="total-col">Quiz prom</th><th class="total-col"># Act</th><th class="total-col"># Sem</th>
+        <th class="total-col">Pts quiz</th><th class="total-col">Pts act</th><th class="total-col">Pts visitas</th>
+        <th class="total-col">Nota 0–5</th>
+      </tr>`;
+    }
+
+    function filteredWideRows() {
+      const q = (document.getElementById("detailSearch").value || "").toLowerCase();
+      const g = document.getElementById("detailGroup").value;
+      return wideRows.filter(r => {
+        if (g && r.grupo !== g) return false;
+        if (q && !`${r.name} ${r.id}`.toLowerCase().includes(q)) return false;
+        return true;
+      });
+    }
+
+    function weekCells(weekCols) {
+      const w = weights();
+      let html = "";
+      for (let n = 1; n <= w.expected; n++) {
+        const c = weekCols[n];
+        const quiz = c.quiz === "" ? "" : Number(c.quiz).toFixed(1);
+        html += `<td class="num">${quiz}</td><td class="num">${c.hti}</td><td class="num">${c.act}</td><td class="num">${c.xp}</td>`;
+      }
+      return html;
+    }
+
+    function fillGroupFilter() {
+      const select = document.getElementById("detailGroup");
+      const current = select.value;
+      const groups = [...new Set(currentRows.map(r => r.grupo).filter(Boolean))].sort();
+      select.innerHTML = '<option value="">Todos</option>' + groups.map(g => `<option>${esc(g)}</option>`).join("");
+      select.value = current;
+    }
+
     function render() {
-      const expected = Math.max(Number(document.getElementById("expected").value || 13), 1);
-      const qw = Number(document.getElementById("quizW").value || .5);
-      const aw = Number(document.getElementById("actW").value || .3);
-      const vw = Number(document.getElementById("visitW").value || .2);
-      currentRows = aggregate().map(x => {
-        const quizAvg10 = x.quizCount ? Math.min(x.quizSum / x.quizCount, 10) : 0;
-        const nota = (quizAvg10 / 10 * 5) * qw + (Math.min(x.acts / expected, 1) * 5) * aw + (Math.min(x.semanas.size / expected, 1) * 5) * vw;
-        return { ...x, quizAvg10, nota };
-      }).sort((a,b)=>a.name.localeCompare(b.name));
+      currentRows = aggregate();
+      wideRows = buildWideRows();
       document.getElementById("mStudents").textContent = currentRows.length;
       document.getElementById("mRows").textContent = records.length;
-      document.getElementById("mAvg").textContent = currentRows.length ? (currentRows.reduce((s,x)=>s+x.nota,0)/currentRows.length).toFixed(1) : "0.0";
-      document.getElementById("rows").innerHTML = currentRows.map(x => `<tr><td>${esc(x.name)}</td><td>${esc(x.id)}</td><td>${esc(x.grupo)}</td><td>${x.semanas.size}</td><td>${x.quizAvg10.toFixed(1)}</td><td>${x.acts}</td><td><strong>${x.nota.toFixed(2)}</strong></td></tr>`).join("");
+      document.getElementById("mAvg").textContent = currentRows.length
+        ? (currentRows.reduce((n, x) => n + x.nota, 0) / currentRows.length).toFixed(1)
+        : "0.0";
+      document.getElementById("rows").innerHTML = currentRows.map(x =>
+        `<tr><td>${esc(x.name)}</td><td>${esc(x.id)}</td><td>${esc(x.grupo)}</td><td>${x.semanas.size}</td><td>${x.quizAvg10.toFixed(1)}</td><td>${x.acts}</td><td><strong>${x.nota.toFixed(2)}</strong></td></tr>`
+      ).join("");
+      fillGroupFilter();
+      renderDetail();
     }
+
+    function renderDetail() {
+      document.getElementById("detailHead").innerHTML = detailHeaderHtml();
+      document.getElementById("detailRows").innerHTML = filteredWideRows().map(r =>
+        `<tr>
+          <td>${esc(r.name)}</td><td>${esc(r.id)}</td><td>${esc(r.grupo)}</td>
+          ${weekCells(r.weekCols)}
+          <td class="num">${r.quizAvg10.toFixed(1)}</td><td class="num">${r.acts}</td><td class="num">${r.semCount}</td>
+          <td class="num">${r.ptsQuiz.toFixed(2)}</td><td class="num">${r.ptsAct.toFixed(2)}</td><td class="num">${r.ptsVis.toFixed(2)}</td>
+          <td class="num nota-cell">${r.nota.toFixed(2)}</td>
+        </tr>`
+      ).join("");
+    }
+
+    function wideRowsToMatrix(rows) {
+      const w = weights();
+      const header1 = ["Estudiante", "ID", "Grupo"];
+      const header2 = ["", "", ""];
+      for (let n = 1; n <= w.expected; n++) {
+        header1.push(`S${n}`, "", "", "");
+        header2.push("Quiz", "HTI", "Act", "XP");
+      }
+      header1.push("Quiz prom", "# Act", "# Sem", "Pts quiz", "Pts act", "Pts visitas", "Nota 0-5");
+      header2.push("", "", "", "", "", "", "");
+      const lines = [header1, header2];
+      for (const r of rows) {
+        const line = [r.name, r.id, r.grupo];
+        for (let n = 1; n <= w.expected; n++) {
+          const c = r.weekCols[n];
+          line.push(
+            c.quiz === "" ? "" : Number(c.quiz).toFixed(1),
+            c.hti, c.act, c.xp
+          );
+        }
+        line.push(
+          r.quizAvg10.toFixed(1), r.acts, r.semCount,
+          r.ptsQuiz.toFixed(2), r.ptsAct.toFixed(2), r.ptsVis.toFixed(2), r.nota.toFixed(2)
+        );
+        lines.push(line);
+      }
+      return lines;
+    }
+
+    async function copyDetailForExcel() {
+      const rows = filteredWideRows();
+      if (!rows.length) {
+        document.getElementById("msg").textContent = "No hay filas para copiar.";
+        return;
+      }
+      const tsv = wideRowsToMatrix(rows).map(row => row.join("\t")).join("\n");
+      try {
+        await navigator.clipboard.writeText(tsv);
+        document.getElementById("msg").textContent = `${rows.length} estudiantes copiados al portapapeles · pega en Excel con Cmd+V`;
+      } catch (e) {
+        document.getElementById("msg").textContent = "No se pudo copiar automáticamente. Selecciona la tabla y usa Cmd+C.";
+      }
+    }
+
     function exportCsv() {
       const lines = [["student_name","student_id","grupo","semanas","quiz_prom_10","actividades","nota_formativa_5"]];
-      for (const x of currentRows) lines.push([x.name,x.id,x.grupo,x.semanas.size,x.quizAvg10.toFixed(1),x.acts,x.nota.toFixed(2)]);
-      const csv = lines.map(row => row.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
-      const blob = new Blob([csv], { type:"text/csv;charset=utf-8" });
+      for (const x of currentRows) {
+        lines.push([x.name, x.id, x.grupo, x.semanas.size, x.quizAvg10.toFixed(1), x.acts, x.nota.toFixed(2)]);
+      }
+      downloadCsv(lines, "tga04-notas-resumen.csv");
+    }
+
+    function exportDetailCsv() {
+      downloadCsv(wideRowsToMatrix(wideRows), "tga04-notas-excel.csv");
+    }
+
+    function downloadCsv(lines, filename) {
+      const csv = lines.map(row => row.map(v => `"${String(v).replaceAll('"', '""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a"); a.href = url; a.download = "tga04-notas.csv"; a.click();
+      const a = document.createElement("a");
+      a.href = url; a.download = filename; a.click();
       URL.revokeObjectURL(url);
     }
-    function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
+
+    function esc(s) {
+      return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m]));
+    }
+
+    document.addEventListener("DOMContentLoaded", () => loadData());
   </script>
 </body>
 </html>
