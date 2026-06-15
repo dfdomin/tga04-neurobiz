@@ -152,7 +152,28 @@
   .pt-link-btn { background: none; border: none; color: rgba(255,255,255,.7); font-size: .8rem; cursor: pointer; text-decoration: underline; padding: .3rem 0 0; display: block; text-align: center; width: 100%; }
   </style>
   <script src="../js/supabase-config.js"></script>
-<script src="../js/gamification-sdk.js"></script>
+  <script src="../js/academic-rules.js"></script>
+  <script src="../js/academic-status-bar.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pyodide@0.25.0/out/styles/pyodide.css">
+  <script defer src="https://cdn.jsdelivr.net/pyodide@0.25.0/full/pyodide.js"></script>
+  <style>
+    .colab-cell { border: 2px solid #c7d2fe; border-radius: 12px; margin: 1.2rem 0; overflow: hidden; background: #f8fafc; }
+    .colab-cell-header { background: linear-gradient(135deg, #1E2843, #2d3a5e); color: #fff; padding: .55rem 1rem; display: flex; align-items: center; gap: .7rem; font-size: .82rem; font-weight: 700; }
+    .colab-run-btn { background: #FFDF2D; color: #1E2843; border: none; border-radius: 8px; padding: .35rem .9rem; font-size: .8rem; font-weight: 900; cursor: pointer; margin-left: auto; }
+    .colab-run-btn:hover { background: #ffe82a; }
+    .colab-run-btn.running { opacity: .6; cursor: wait; }
+    .colab-output { padding: .8rem 1rem; min-height: 48px; font-family: 'Courier New', monospace; font-size: .85rem; color: #1a1a2e; background: #1E2843; color: #cdd6f4; display: none; white-space: pre-wrap; }
+    .colab-output.show { display: block; }
+    .colab-output .error { color: #ff8a80; }
+    .colab-output .ok { color: #a6e3a1; }
+    .colab-status { padding: .4rem 1rem; font-size: .78rem; color: var(--muted); display: none; }
+    .colab-status.loading { display: block; }
+  </style>
+  <script src="../js/gamification-sdk.js"></script>
+  <script src="../js/celebration.js"></script>
+  <script src="../js/week-auto-sync.js"></script>
+  <script src="../js/reading-tracker.js"></script>
+  <script src="../js/reading-xp-policy.js"></script>
 </head>
 <body>
 <header>
@@ -398,9 +419,18 @@
     El <code>RETORNAR</code> del pseudocódigo es <code>return</code> en Python.</p>
   </div>
 
+  <div class="colab-cell">
+    <div class="colab-cell-header">
+      🐍 Python interactivo — NeuroBiz S.A.S.
+      <button class="colab-run-btn" id="runNeurobiz" onclick="runNeurobiz()">▶ Ejecutar</button>
+    </div>
+    <div class="colab-status" id="statusNeurobiz">⏳ Cargando runtime Pyodide…</div>
+    <div class="colab-output" id="outNeurobiz"></div>
+  </div>
+
   <div class="code-wrap">
     <div class="code-title">🐍 Python — Funciones NeuroBiz (equivale a subalgoritmos)</div>
-    <pre><span class="cm"># NeuroBiz — Módulo de análisis de sesiones con funciones</span>
+    <pre id="pyCodeNeurobiz"><span class="cm"># NeuroBiz — Módulo de análisis de sesiones con funciones</span>
 
 <span class="kw">def</span> <span class="fn">calcular_tasa</span>(asistidas, programadas):
     <span class="str">"""Calcula y retorna la tasa de asistencia."""</span>
@@ -929,37 +959,71 @@ document.addEventListener('DOMContentLoaded', function(){ if(document.getElement
 })();
 </script>
 
-
-<!-- GAMIF_SDK_WEEK_11 -->
-<script>if(window.GamifSDK){window.PT=window.PT||GamifSDK.createPT({semana:11,xpMax:90,visitedKey:'tga04_visited_s11',autoVisitXp:false});}</script>
-
-<!-- GAMIF_AUTO_SYNC -->
 <script>
-(function () {
-  function hook() {
-    var pt = window.PT;
-    if (!pt || pt.__gamifAutoHook) return;
-    pt.__gamifAutoHook = true;
-    var timer = null;
-    function schedule() {
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(function () {
-        if (typeof pt.sync === "function") pt.sync();
-      }, 700);
-    }
-    if (pt.addXP) {
-      var origAdd = pt.addXP;
-      pt.addXP = function () { var r = origAdd.apply(this, arguments); schedule(); return r; };
-    }
-    if (pt.save) {
-      var origSave = pt.save;
-      pt.save = function () { var r = origSave.apply(this, arguments); schedule(); return r; };
-    }
+let pyodideInstance = null;
+const pyCodeNeurobiz = `# NeuroBiz — Módulo de análisis de sesiones con funciones
+
+def calcular_tasa(asistidas, programadas):
+    if programadas > 0:
+        return asistidas / programadas * 100
+    return 0.0
+
+def clasificar_sesion(tasa):
+    if tasa >= 80:
+        return "Verde"
+    elif tasa >= 60:
+        return "Amarillo"
+    else:
+        return "Rojo"
+
+def reporte_ejecutivo(sesiones):
+    print("\n=== REPORTE EJECUTIVO NEUROBIZ ===")
+    totales = {"Verde": 0, "Amarillo": 0, "Rojo": 0}
+    for s in sesiones:
+        tasa = calcular_tasa(s['asistidas'], s['programadas'])
+        estado = clasificar_sesion(tasa)
+        totales[estado] += 1
+        print(f"  {s['id']} Tasa: {tasa:.1f}% -> {estado}")
+    print(f"\nResumen: {totales}")
+
+sesiones_demo = [
+    {'id': 'S01', 'asistidas': 42, 'programadas': 50},
+    {'id': 'S02', 'asistidas': 31, 'programadas': 50},
+    {'id': 'S03', 'asistidas': 48, 'programadas': 50},
+]
+reporte_ejecutivo(sesiones_demo)
+`;
+
+async function loadPyodideRuntime() {
+  const statusEl = document.getElementById('statusNeurobiz');
+  if (statusEl) { statusEl.classList.add('loading'); statusEl.textContent = '⏳ Cargando runtime Pyodide…'; }
+  try {
+    pyodideInstance = await loadPyodide();
+    if (statusEl) { statusEl.classList.remove('loading'); statusEl.textContent = ''; statusEl.style.display = 'none'; }
+  } catch (e) {
+    if (statusEl) { statusEl.textContent = '❌ Error cargando Pyodide: ' + e.message; }
   }
-  function boot() { hook(); setTimeout(hook, 400); setTimeout(hook, 900); }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
-  else boot();
-})();
+}
+
+async function runNeurobiz() {
+  const btn = document.getElementById('runNeurobiz');
+  const out = document.getElementById('outNeurobiz');
+  if (!pyodideInstance) {
+    if (out) { out.classList.add('show'); out.innerHTML = '<span class="error">⏳ Pyodide aún se está cargando. Espera un momento.</span>'; }
+    return;
+  }
+  if (btn) { btn.classList.add('running'); btn.textContent = '⏳ Ejecutando…'; }
+  if (out) { out.classList.add('show'); out.textContent = ''; }
+  try {
+    let result = await pyodideInstance.runPythonAsync(pyCodeNeurobiz);
+    if (out) out.innerHTML = result ? result.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '<span class="ok">✅ Ejecución completada (sin salida de print).</span>';
+  } catch (e) {
+    if (out) out.innerHTML = '<span class="error">❌ Error:\n' + e.message + '</span>';
+  }
+  if (btn) { btn.classList.remove('running'); btn.textContent = '▶ Ejecutar'; }
+}
+
+loadPyodideRuntime();
 </script>
 
 </body>

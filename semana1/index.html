@@ -119,7 +119,66 @@
       .card { padding: 1.2rem; }
       main { padding: 0 .8rem 3rem; }
     }
-  </style>
+  
+    .colab-cell{background:#fff;border:1px solid #dadce0;border-radius:8px;margin:1rem 0;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08);transition:box-shadow .2s,border-left .3s}
+    .colab-cell:hover{box-shadow:0 2px 6px rgba(0,0,0,.12)} .colab-cell.running{border-left:4px solid #FFDF2D;box-shadow:0 0 0 2px rgba(255,223,45,.3)} .colab-cell.success{border-left:4px solid #43a047} .colab-cell.error{border-left:4px solid #c62828}
+    .colab-toolbar{display:flex;align-items:center;gap:.5rem;padding:.35rem .8rem;background:#f8f9fa;border-bottom:1px solid #dadce0;font-size:.78rem;color:#5f6368}
+    .colab-run-btn{background:#1a73e8;color:#fff;border:none;border-radius:4px;padding:.3rem .9rem;font-size:.78rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.35rem;transition:background .15s,transform .1s}
+    .colab-run-btn:hover{background:#1557b0} .colab-run-btn:active{transform:scale(.96)} .colab-run-btn.running{background:#9e9e9e;cursor:wait}
+    .colab-run-btn .spinner{display:none;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:colab-spin .6s linear infinite}
+    @keyframes colab-spin{to{transform:rotate(360deg)}} .colab-run-btn.running .spinner{display:inline-block} .colab-run-btn.running .btn-label{display:none}
+    .colab-lang-badge{font-size:.7rem;background:#e8eaed;color:#5f6368;border-radius:4px;padding:.15rem .5rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+    .colab-cell-label{font-size:.75rem;color:#5f6368;font-weight:600;margin-left:auto}
+    .colab-editor{padding:.8rem 1rem;font-family:'Courier New','Fira Code','Consolas',monospace;font-size:.85rem;line-height:1.65;color:#1E2843;background:#fafafa;min-height:60px;max-height:400px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;outline:none;border:none;caret-color:#1a73e8}
+    .colab-editor:focus{background:#fff;box-shadow:inset 0 0 0 2px #e8f0fe} .colab-editor .kw{color:#7c3aed;font-weight:700} .colab-editor .fn{color:#2563eb} .colab-editor .str{color:#059669} .colab-editor .cm{color:#9ca3af;font-style:italic} .colab-editor .num{color:#d97706}
+    .colab-output{display:none;background:#1e1e1e;color:#d4d4d4;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.6;padding:.8rem 1rem;max-height:300px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;border-top:1px solid #333}
+    .colab-output.visible{display:block} .colab-output .out-info{color:#6a9955} .colab-output .out-input{color:#ce9178} .colab-output .out-error{color:#f44747} .colab-output .out-value{color:#4ec9b0}
+    .data-playground{background:#fff;border:1px solid #dadce0;border-radius:8px;padding:1rem 1.2rem;margin:1rem 0}
+    .data-playground h4{font-size:.95rem;color:var(--primary);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+    .data-table-mini{width:100%;border-collapse:collapse;font-size:.82rem;margin:.5rem 0}
+    .data-table-mini th{background:#1E2843;color:#fff;padding:.4rem .6rem;text-align:left;font-size:.78rem}
+    .data-table-mini td{padding:.3rem .6rem;border-bottom:1px solid #eee} .data-table-mini tr:hover td{background:#f5f5f5}
+    .data-filter-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.5rem 0}
+    .data-filter-row select,.data-filter-row button{padding:.35rem .7rem;border:1px solid #dadce0;border-radius:6px;font-size:.8rem;font-family:inherit}
+    .data-filter-row button{background:#1a73e8;color:#fff;border:none;cursor:pointer;font-weight:600} .data-filter-row button:hover{background:#1557b0}
+    .data-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin-top:.8rem}
+    .data-stat-card{background:#f8f9fa;border:1px solid #dadce0;border-radius:8px;padding:.6rem .8rem;text-align:center}
+    .data-stat-card .stat-val{font-size:1.3rem;font-weight:800;color:var(--primary)} .data-stat-card .stat-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase}
+    .lab-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:1rem}
+    .lab-tab{padding:.5rem 1rem;font-size:.85rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s}
+    .lab-tab:hover{color:var(--primary)} .lab-tab.active{color:var(--primary);border-bottom-color:var(--gold)}
+    .lab-panel{display:none} .lab-panel.active{display:block}
+    .xp-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1E2843,#2d3a5e);color:#fff;padding:.7rem 1.5rem;border-radius:20px;font-weight:700;font-size:.9rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);animation:xpToastIn .4s ease,xpToastOut .4s ease 2.5s forwards}
+    @keyframes xpToastIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    @keyframes xpToastOut{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-10px)}}
+    .lab-challenge-done{display:inline-flex;align-items:center;gap:.3rem;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:12px;padding:.15rem .6rem;font-size:.75rem;font-weight:700}
+    .step-indicator{display:flex;align-items:center;gap:.3rem;margin:.5rem 0 1rem;font-size:.8rem;color:var(--muted);flex-wrap:wrap}
+
+    .interactive-q{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;margin:.8rem 0;transition:border-color .3s}
+    .interactive-q.answered{border-color:#43a047;background:#f9fef9}
+    .interactive-q.partial{border-color:#e6c800;background:#fffdf5}
+    .interactive-q.wrong{border-color:#c62828;background:#fff5f5}
+    .iq-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
+    .iq-num{background:var(--primary);color:#fff;border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0}
+    .iq-pts{font-size:.75rem;color:var(--gold);font-weight:700;background:#fff9c4;border-radius:10px;padding:.1rem .6rem}
+    .iq-pts.earned{background:#e8f5e9;color:#2e7d32}
+    .iq-question{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.6rem;line-height:1.5}
+    .iq-textarea{width:100%;min-height:70px;padding:.6rem .8rem;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;line-height:1.6;resize:vertical;transition:border-color .2s;background:var(--light-bg)}
+    .iq-textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(45,58,94,.1)}
+    .iq-actions{margin-top:.5rem;display:flex;gap:.5rem;align-items:center}
+    .iq-btn{background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .15s}
+    .iq-btn:hover{background:#1557b0}
+    .iq-btn:disabled{background:#9e9e9e;cursor:not-allowed}
+    .iq-feedback{margin-top:.6rem;padding:.6rem .8rem;border-radius:8px;font-size:.84rem;line-height:1.6;display:none}
+    .iq-feedback.show{display:block}
+    .iq-feedback.success{background:#e8f5e9;border:1px solid #a5d6a7;color:#1b5e20}
+    .iq-feedback.partial{background:#fff8e1;border:1px solid #ffe082;color:#e65100}
+    .iq-feedback.error{background:#ffebee;border:1px solid #ef9a9a;color:#b71c1c}
+    .iq-keywords{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem}
+    .iq-kw{font-size:.7rem;background:#e3f2fd;color:#1565c0;border-radius:8px;padding:.1rem .5rem}
+    .iq-kw.matched{background:#c8e6c9;color:#1b5e20;font-weight:600}
+    .iq-kw.missed{background:#ffcdd2;color:#b71c1c;text-decoration:line-through}
+</style>
 
   <style id="pt-css">
   #pt-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg,#1E2843,#2d3a5e); color: #fff; border-radius: 16px; padding: 14px 18px; min-width: 240px; max-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,.35); font-family: 'Open Sans', Arial, sans-serif; font-size: .85rem; transition: transform .3s; }
@@ -163,10 +222,142 @@
   .pt-step { transition: opacity .2s; }
   .pt-link-btn { background: none; border: none; color: rgba(255,255,255,.6); font-size: .8rem; cursor: pointer; text-decoration: underline; padding: .3rem 0 0; display: block; text-align: center; width: 100%; }
   .pt-link-btn:hover { color: #fff; }
-  </style>
+  
+    /* ══════════════════════════════════════════
+       PYTHON REFERENCE CELLS (Pyodide)
+    ══════════════════════════════════════════ */
+    .py-section { margin: 1.5rem 0; }
+    .py-section h3 {
+      color: var(--primary);
+      font-size: 1.05rem;
+      margin-bottom: .8rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .py-status {
+      background: #fff8e1;
+      border: 1px solid #e6c800;
+      border-radius: 8px;
+      padding: .5rem 1rem;
+      margin-bottom: 1rem;
+      font-size: .85rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      color: #5d4037;
+    }
+    .py-status.ready { background: #e8f5e9; border-color: #43a047; color: var(--green); }
+    .py-cell {
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      transition: box-shadow .3s;
+    }
+    .py-cell:hover { box-shadow: 0 4px 16px rgba(0,0,0,.25); }
+    .py-cell-header {
+      display: flex;
+      align-items: center;
+      padding: .45rem .8rem;
+      background: #16162a;
+      border-bottom: 1px solid #2a2a4a;
+    }
+    .py-cell-idx {
+      color: #6c7086;
+      font-family: 'Courier New', monospace;
+      font-size: .75rem;
+      font-weight: 700;
+      min-width: 50px;
+    }
+    .py-run-btn {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: .2rem .65rem;
+      font-size: .72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+      transition: background .2s;
+    }
+    .py-run-btn:hover { background: #388e3c; }
+    .py-run-btn:disabled { background: #555; cursor: not-allowed; }
+    .py-cell-body {
+      padding: .7rem 1rem .7rem 3.2rem;
+      position: relative;
+    }
+    .py-cell-body::before {
+      content: 'In [ ]:';
+      position: absolute;
+      left: .8rem;
+      top: .75rem;
+      color: #6c7086;
+      font-family: 'Courier New', monospace;
+      font-size: .78rem;
+    }
+    .py-cell-body.ran::before { content: 'In [*]:'; color: #89b4fa; }
+    .py-cell textarea {
+      width: 100%;
+      min-height: 70px;
+      background: transparent;
+      border: none;
+      color: #cdd6f4;
+      font-family: 'Courier New', monospace;
+      font-size: .85rem;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      padding: 0;
+    }
+    .py-output {
+      display: none;
+      background: #0d0d1a;
+      color: #d4d4d4;
+      font-family: 'Courier New', monospace;
+      font-size: .82rem;
+      line-height: 1.6;
+      padding: .7rem 1rem;
+      max-height: 250px;
+      overflow-y: auto;
+      border-top: 1px solid #2a2a4a;
+    }
+    .py-output.visible { display: block; }
+    .py-output .py-err { color: #f48771; }
+    .py-ref-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      background: #e8f0fe;
+      color: #1a73e8;
+      border-radius: 6px;
+      padding: .1rem .55rem;
+      font-size: .72rem;
+      font-weight: 700;
+    }
+    .py-ref-note {
+      font-size: .8rem;
+      color: var(--muted);
+      background: var(--light-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .6rem 1rem;
+      margin-bottom: 1rem;
+    }
+</style>
 
   <script src="../js/supabase-config.js"></script>
-<script src="../js/gamification-sdk.js"></script>
+  <script src="../js/academic-rules.js"></script>
+  <script src="../js/academic-status-bar.js"></script>
+  <script src="../js/gamification-sdk.js"></script>
+  <script src="../js/celebration.js"></script>
+  <script src="../js/week-auto-sync.js"></script>
+  <script src="../js/reading-tracker.js"></script>
+  <script src="../js/reading-xp-policy.js"></script>
 </head>
 <body>
 
@@ -186,6 +377,7 @@
   <a href="#pseudocodigo">📝 Pseudocódigo</a>
   <a href="#actividad">⚙️ Actividad</a>
   <a href="#hti">🏠 HTI</a>
+  <a href="#lab">🧪 Lab</a>
   <a href="#quiz">🎮 Quiz</a>
   <a href="#bib">📖 Fuentes</a>
 </nav>
@@ -221,7 +413,7 @@
     De: Dirección Ejecutiva, NeuroBiz S.A.S.<br>
     Asunto: Rediseño del Sistema de Información Terapéutico</strong>
 
-    NeuroBiz S.A.S. atiende actualmente más de <strong>1.200 sesiones mensuales</strong> en sus sedes de Barranquilla,
+    NeuroBiz S.A.S. atiende actualmente más de <b>1.200 sesiones mensuales</b> en sus sedes de Barranquilla,
     Bogotá y Medellín. Sin embargo, los registros de los pacientes se gestionan de forma dispersa:
     algunas áreas usan hojas de cálculo, otras notas de papel, y algunos terapeutas guardan los datos
     en mensajes de WhatsApp. Esto genera errores, duplicados e inconsistencias.<br><br>
@@ -374,16 +566,10 @@
 <!-- ══ PSEUDOCÓDIGO ══ -->
 <section id="pseudocodigo" class="card">
   <h2>📝 Pseudocódigo — La Notación del Curso</h2>
-
-  <p>El pseudocódigo que usaremos sigue la notación de <strong>Cairó Battistutti & Guardati</strong>
-  (Alfaomega), el libro de referencia del módulo. Es independiente del lenguaje de programación
-  y se puede escribir en papel y lápiz, en tu cuaderno, o directamente en
-  <strong>Google Colab</strong> (<a href="https://colab.research.google.com/" target="_blank" rel="noopener">colab.research.google.com</a>) desde el primer día.</p>
-
-  <h3>Estructura básica de un algoritmo</h3>
-  <div class="code-wrap">
-    <div class="code-title">📝 Notación Cairó — Estructura mínima</div>
-    <pre>
+  <p>El pseudocódigo que usaremos sigue la notación de <strong>Cairó Battistutti &amp; Guardati</strong> (Alfaomega), el libro de referencia del módulo. Es independiente del lenguaje de programación y se puede escribir en papel y lápiz, en tu cuaderno, o directamente en <strong>Google Colab</strong> (<a href="https://colab.research.google.com/" target="_blank" rel="noopener">colab.research.google.com</a>) desde el primer día.</p>
+  <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">💡 <strong>Las celdas de abajo son interactivas:</strong> haz clic en <strong>▶ Ejecutar</strong> para ver el algoritmo en acción. ¡Como en Google Colab!</p>
+  <h3>Estructura básica</h3>
+  <div class="colab-cell" id="cell-estructura"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-estructura')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span><span class="colab-cell-label">Celda 1</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
 <span class="kw">ALGORITMO</span> NombreDelAlgoritmo
 <span class="kw">VARIABLES</span>
   <span class="cm">{ Declarar aquí cada variable: nombre : TIPO }</span>
@@ -391,14 +577,14 @@
   <span class="cm">{ Instrucciones aquí }</span>
   <span class="fn">LEER</span>  nombre_variable         <span class="cm">{ Entrada de datos }</span>
   <span class="fn">ESCRIBIR</span> expresion_o_mensaje  <span class="cm">{ Salida de datos }</span>
-<span class="kw">FIN</span>
-    </pre>
-  </div>
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Haz clic en Ejecutar...</span></div></div>
 
-  <h3>Primer pseudocódigo: Proceso de admisión NeuroBiz</h3>
-  <div class="code-wrap">
-    <div class="code-title">📝 Pseudocódigo — Admisión de paciente (lenguaje natural → algoritmo)</div>
-    <pre>
+  <div class="info-box cite" style="margin-top:1.2rem"><span class="icon">🏛️</span><p><strong>MIT 18.S191:</strong> <em>"Before you write a single line of code, write the algorithm in plain language. If you can't explain it to a human, a computer won't understand it either."</em> — MIT.</p></div>
+
+  <h3 style="margin-top:1.5rem">Primer pseudocódigo: Proceso de admisión NeuroBiz</h3>
+  <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>¡Ejecútalo!</strong> — te pedirá los datos del paciente.</p>
+
+  <div class="colab-cell" id="cell-admision"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-admision')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span><span class="colab-cell-label">Celda 2 — Admisión NeuroBiz</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
 <span class="kw">ALGORITMO</span> AdmisionPaciente
 <span class="kw">VARIABLES</span>
   nombre_paciente   : <span class="kw">CADENA</span>
@@ -406,37 +592,23 @@
   numero_documento  : <span class="kw">ENTERO</span>
   tipo_terapia      : <span class="kw">CADENA</span>
 <span class="kw">INICIO</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"=== SISTEMA DE ADMISIÓN NEUROBIZ S.A.S. ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== SISTEMA DE ADMISION NEUROBIZ S.A.S. ==="</span>
   <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese el nombre del paciente:"</span>
   <span class="fn">LEER</span>     nombre_paciente
   <span class="fn">ESCRIBIR</span> <span class="str">"Tipo de documento (CC/TI/CE):"</span>
   <span class="fn">LEER</span>     tipo_documento
-  <span class="fn">ESCRIBIR</span> <span class="str">"Número de documento:"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Numero de documento:"</span>
   <span class="fn">LEER</span>     numero_documento
-  <span class="fn">ESCRIBIR</span> <span class="str">"Tipo de terapia (cognitiva/ocupacional/fonoaudiología):"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Tipo de terapia (cognitiva/ocupacional/fonoaudiologia):"</span>
   <span class="fn">LEER</span>     tipo_terapia
-  <span class="fn">ESCRIBIR</span> <span class="str">"Paciente registrado: "</span> + nombre_paciente
+  <span class="fn">ESCRIBIR</span> <span class="str">"PACIENTE REGISTRADO: "</span> + nombre_paciente
   <span class="fn">ESCRIBIR</span> <span class="str">"Terapia asignada: "</span> + tipo_terapia
-<span class="kw">FIN</span>
-    </pre>
-  </div>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Documento: "</span> + tipo_documento + <span class="str">" "</span> + numero_documento
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Haz clic en Ejecutar — el algoritmo te pedirá los datos...</span></div></div>
 
-  <div class="info-box cite">
-    <span class="icon">🏛️</span>
-    <p><strong>MIT 18.S191:</strong> <em>"Before you write a single line of code, write the algorithm
-    in plain language. If you can't explain it to a human, a computer won't understand it either."</em>
-    — Computational Thinking course, MIT.</p>
-  </div>
-
-  <div class="info-box tip">
-    <span class="icon">📱</span>
-    <p><strong>¿Tienes celular o tablet? Úsalo desde hoy.</strong><br>
-    <a href="https://colab.research.google.com/" target="_blank" rel="noopener"><strong>Google Colab</strong></a> funciona en el navegador — sin instalación, sin computador propio.
-    Si prefieres trabajar con <strong>papel y lápiz</strong>, también es completamente válido; ambas opciones son bienvenidas.
-    Pronto tendremos computadores en el aula, pero nunca son una barrera para aprender.</p>
-  </div>
+  <div class="info-box tip" style="margin-top:1.5rem"><span class="icon">🧪</span><p><strong>Prueba a editar el algoritmo:</strong> Haz clic dentro del código, modifica los mensajes o agrega variables, luego vuelve a ejecutar.</p></div>
+  <div class="info-box tip"><span class="icon">📱</span><p><strong>¿Celular o tablet?</strong> <a href="https://colab.research.google.com/" target="_blank" rel="noopener"><strong>Google Colab</strong></a> funciona en el navegador — sin instalación. Papel y lápiz también es válido.</p></div>
 </section>
-
 <!-- ══ ACTIVIDAD PRESENCIAL ══ -->
 <section id="actividad" class="card">
   <h2>⚙️ Actividad Presencial</h2>
@@ -466,16 +638,56 @@ fecha        paciente         tipo_terapia   sesion
 ...          (112 registros más)
         </pre>
       </div>
-      <ol>
-        <li>¿Cuáles de estos elementos son <em>datos</em>? ¿Cuál sería la <em>información</em> derivada?</li>
-        <li>¿Qué preguntas de negocio puede responder este conjunto de datos?</li>
-        <li>¿Qué pasos (algoritmo en lenguaje natural) se necesitan para calcular la tasa de retención?</li>
-      </ol>
-      <p style="margin-top:.8rem"><strong>Parte B — Propiedades de los algoritmos:</strong></p>
-      <ol>
-        <li>En grupos de 3, describir en lenguaje natural el proceso de incorporación de un empleado nuevo. Luego verificar: ¿es finito, preciso, efectivo?</li>
-        <li>Comparar con el proceso de admisión de un paciente en NeuroBiz.</li>
-      </ol>
+      <div class="data-playground" id="data-playground"><h4>🧪 Laboratorio de Datos — Explora los registros de NeuroBiz</h4><p style="font-size:.8rem;color:var(--muted);margin-bottom:.6rem">Filtra y analiza los datos tú mismo. Así es como un sistema de información convierte <strong>datos</strong> en <strong>información</strong>.</p><div class="data-filter-row"><select id="dp-filter-terapia" onchange="DataPlayground.fl()"><option value="todas">Todas las terapias</option><option value="cognitiva">Cognitiva</option><option value="ocupacional">Ocupacional</option><option value="fonoaudiología">Fonoaudiología</option></select> <select id="dp-filter-estado" onchange="DataPlayground.fl()"><option value="todos">Todos los estados</option><option value="asistida">Asistida</option><option value="fallida">Fallida</option></select> <button onclick="DataPlayground.rs2()">Restablecer</button></div><div id="dp-table-container"></div><div class="data-stats" id="dp-stats"></div></div>
+
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">💡 <strong>Responde cada pregunta</strong> y haz clic en <strong>Verificar</strong> para obtener retroalimentación inmediata. Cada respuesta correcta o bien argumentada te da <strong>+4 XP</strong>.</p>
+
+      <!-- Q1 -->
+      <div class="interactive-q" id="iq1">
+        <div class="iq-header"><span class="iq-num">1</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">¿Cuáles de estos elementos son <em>datos</em>? ¿Cuál sería la <em>información</em> derivada?</p>
+        <textarea class="iq-textarea" placeholder="Escribe tu respuesta aquí... (mínimo 20 caracteres)" minlength="20" id="iq1-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq1')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq1-fb"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="interactive-q" id="iq2">
+        <div class="iq-header"><span class="iq-num">2</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">¿Qué preguntas de negocio puede responder este conjunto de datos?</p>
+        <textarea class="iq-textarea" placeholder="Escribe tu respuesta aquí... (mínimo 20 caracteres)" minlength="20" id="iq2-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq2')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq2-fb"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="interactive-q" id="iq3">
+        <div class="iq-header"><span class="iq-num">3</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">¿Qué pasos (algoritmo en lenguaje natural) se necesitan para calcular la tasa de retención?</p>
+        <textarea class="iq-textarea" placeholder="Describe los pasos uno por uno... (mínimo 20 caracteres)" minlength="20" id="iq3-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq3')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq3-fb"></div>
+      </div>
+
+      <p style="margin-top:1.5rem"><strong>Parte B — Propiedades de los algoritmos:</strong></p>
+
+      <!-- Q4 -->
+      <div class="interactive-q" id="iq4">
+        <div class="iq-header"><span class="iq-num">4</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Describe en lenguaje natural el proceso de incorporación de un empleado nuevo. Luego verifica: ¿es finito, preciso, efectivo?</p>
+        <textarea class="iq-textarea" placeholder="Escribe el proceso paso a paso y analiza sus propiedades... (mínimo 30 caracteres)" minlength="30" id="iq4-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq4')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq4-fb"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="interactive-q" id="iq5">
+        <div class="iq-header"><span class="iq-num">5</span> <span class="iq-pts">+4 XP</span></div>
+        <p class="iq-question">Compara el proceso de admisión de un paciente en NeuroBiz con el de incorporación de un empleado. ¿En qué se parecen sus algoritmos?</p>
+        <textarea class="iq-textarea" placeholder="Compara ambos procesos... (mínimo 30 caracteres)" minlength="30" id="iq5-ta"></textarea>
+        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq5')">🔍 Verificar respuesta</button></div>
+        <div class="iq-feedback" id="iq5-fb"></div>
+      </div>
     </div>
   </div>
 
@@ -555,6 +767,185 @@ fecha        paciente         tipo_terapia   sesion
     </div>
   </div>
 </section>
+
+<!-- ══ LABORATORIO INTERACTIVO ══ -->
+<section id="lab" class="card">
+  <h2>🧪 Laboratorio Interactivo — Estilo Google Colab</h2>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Practica escribiendo y ejecutando pseudocódigo como en Google Colab. Cada celda es <strong>editable</strong> y <strong>ejecutable</strong>.</p>
+  <div class="lab-tabs"><button class="lab-tab active" onclick="CairoLab.stb('tab-ej1')">📝 Ej. 1: Promedio</button><button class="lab-tab" onclick="CairoLab.stb('tab-ej2')">📝 Ej. 2: Retención</button><button class="lab-tab" onclick="CairoLab.stb('tab-ej3')">📝 Ej. 3: Sucursal</button><button class="lab-tab" onclick="CairoLab.stb('tab-libre')">✨ Celda Libre</button></div>
+  <div class="lab-panel active" id="tab-ej1"><p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>HTI-B Ejercicio 1:</strong> Calcula el promedio de 5 calificaciones.</p><div class="colab-cell" id="cell-ej1"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-ej1')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> PromedioCalificaciones
+<span class="kw">VARIABLES</span>
+  nota1 : <span class="kw">REAL</span>
+  nota2 : <span class="kw">REAL</span>
+  nota3 : <span class="kw">REAL</span>
+  nota4 : <span class="kw">REAL</span>
+  nota5 : <span class="kw">REAL</span>
+  promedio : <span class="kw">REAL</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== CALCULADORA DE PROMEDIO ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la nota 1:"</span>
+  <span class="fn">LEER</span> nota1
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la nota 2:"</span>
+  <span class="fn">LEER</span> nota2
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la nota 3:"</span>
+  <span class="fn">LEER</span> nota3
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la nota 4:"</span>
+  <span class="fn">LEER</span> nota4
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la nota 5:"</span>
+  <span class="fn">LEER</span> nota5
+  promedio = (nota1 + nota2 + nota3 + nota4 + nota5) / <span class="num">5</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"El promedio es: "</span> + promedio
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Ejecuta para calcular tu promedio...</span></div></div><div class="step-indicator"><span id="ej1-badge" style="font-size:.75rem"></span></div></div>
+  <div class="lab-panel" id="tab-ej2"><p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>HTI-B Reto:</strong> Calcula la tasa de retención de NeuroBiz (847 asistidas, 112 fallidas).</p><div class="colab-cell" id="cell-ej2"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-ej2')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> TasaRetencionNeuroBiz
+<span class="kw">VARIABLES</span>
+  sesiones_asistidas : <span class="kw">ENTERO</span>
+  sesiones_fallidas  : <span class="kw">ENTERO</span>
+  total_sesiones     : <span class="kw">ENTERO</span>
+  tasa_retencion     : <span class="kw">REAL</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== NEUROBIZ S.A.S. — TASA DE RETENCION ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Cuantas sesiones fueron asistidas?"</span>
+  <span class="fn">LEER</span> sesiones_asistidas
+  <span class="fn">ESCRIBIR</span> <span class="str">"Cuantas sesiones fueron fallidas?"</span>
+  <span class="fn">LEER</span> sesiones_fallidas
+  total_sesiones = sesiones_asistidas + sesiones_fallidas
+  tasa_retencion = (sesiones_asistidas / total_sesiones) * <span class="num">100</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Total de sesiones: "</span> + total_sesiones
+  <span class="fn">ESCRIBIR</span> <span class="str">"Tasa de retencion: "</span> + tasa_retencion + <span class="str">"%"</span>
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Ingresa 847 asistidas y 112 fallidas...</span></div></div><div class="step-indicator"><span id="ej2-badge" style="font-size:.75rem"></span></div></div>
+  <div class="lab-panel" id="tab-ej3"><p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>HTI-B Ejercicio 2:</strong> Proceso de apertura de sucursal NeuroBiz.</p><div class="colab-cell" id="cell-ej3"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-ej3')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> AperturaSucursal
+<span class="kw">VARIABLES</span>
+  ciudad : <span class="kw">CADENA</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== APERTURA DE NUEVA SUCURSAL NEUROBIZ ==="</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"En que ciudad se abrira la sucursal?"</span>
+  <span class="fn">LEER</span> ciudad
+  <span class="fn">ESCRIBIR</span> <span class="str">"Paso 1: Verificando local disponible en "</span> + ciudad
+  <span class="fn">ESCRIBIR</span> <span class="str">"  >> Local verificado: apto"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Paso 2: Contratando terapeutas"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"  >> 4 terapeutas contratados"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Paso 3: Instalando sistema NeuroBiz"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"  >> Sistema configurado"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Paso 4: SUCURSAL ABIERTA en "</span> + ciudad
+  <span class="fn">ESCRIBIR</span> <span class="str">"=== PROCESO COMPLETADO ==="</span>
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Ejecuta para ver el proceso...</span></div></div><div class="step-indicator"><span id="ej3-badge" style="font-size:.75rem"></span></div></div>
+  <div class="lab-panel" id="tab-libre"><p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>✨ Celda Libre:</strong> Escribe tu propio algoritmo.</p><div class="colab-cell" id="cell-libre"><div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-libre')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div><div class="colab-editor" contenteditable="true" spellcheck="false">
+<span class="kw">ALGORITMO</span> MiAlgoritmo
+<span class="kw">VARIABLES</span>
+  <span class="cm">{ Declara tus variables aqui }</span>
+<span class="kw">INICIO</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Hola! Este es mi primer algoritmo."</span>
+  <span class="cm">{ Escribe tu codigo aqui }</span>
+<span class="kw">FIN</span></div><div class="colab-output"><span class="out-info">🔍 Escribe tu código y ejecuta...</span></div></div></div>
+  <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:#e8f5e9;border-radius:12px;border:1px solid #a5d6a7"><p style="margin:0;font-size:.85rem">🎯 <strong>¿Completaste los 3 ejercicios?</strong> ¡Has aplicado pensamiento algorítmico a NeuroBiz! +5 XP por cada ejecución.</p></div>
+</section>
+<!-- ══ PYTHON REFERENCE SECTION — SEMANA 1 ══ -->
+<div class="py-section">
+  <h3>🐍 Python de Referencia — Semana 1</h3>
+  <div class="py-ref-note">
+    📌 <strong>Referencia:</strong> El mismo algoritmo de <strong>Tasa de Retención</strong> escrito en Python. Compara la sintaxis Cairó con Python real.
+    <span class="py-ref-badge">🐍 Python · Pyodide · No evaluado</span>
+  </div>
+  <div id="py-status" class="py-status">
+    ⏳ Iniciando motor Python (Pyodide)...
+  </div>
+  
+      <!-- Cell 1 -->
+      <div class="py-cell" id="py-cell-1">
+        <div class="py-cell-header">
+          <span class="py-cell-idx">[1]</span>
+          <button class="py-run-btn" onclick="runPyCell(1)" id="py-run-1">
+            ▶ Run
+          </button>
+        </div>
+        <div class="py-cell-body" id="py-body-1">
+          <textarea id="py-code-1" rows="6" spellcheck="false"># ── NeuroBiz: Calcular tasa de retención ──
+# Las variables en Python se declaran sin tipo
+# (Python infiere el tipo automáticamente)
+
+sesiones_asistidas = 847   # int (entero)
+sesiones_fallidas  = 112   # int
+tasa_retencion     = 0.78   # float (decimal)
+sede               = "Barranquilla"  # str (cadena)
+
+# Python usa indentación en lugar de INICIO/FIN
+# Comentarios con #
+
+print("=== NeuroBiz S.A.S. — Reporte de Retención ===")
+print(f"Sede: {sede}")
+print(f"Sesiones asistidas: {sesiones_asistidas}")
+print(f"Sesiones fallidas:  {sesiones_fallidas}")
+
+total = sesiones_asistidas + sesiones_fallidas
+tasa  = sesiones_asistidas / total * 100
+
+print(f"Total de sesiones:  {total}")
+print(f"Tasa de retención:  {tasa:.1f}%")</textarea>
+        </div>
+        <div class="py-output" id="py-out-1"><pre></pre></div>
+      </div>
+      <!-- Cell 2 -->
+      <div class="py-cell" id="py-cell-2">
+        <div class="py-cell-header">
+          <span class="py-cell-idx">[2]</span>
+          <button class="py-run-btn" onclick="runPyCell(2)" id="py-run-2">
+            ▶ Run
+          </button>
+        </div>
+        <div class="py-cell-body" id="py-body-2">
+          <textarea id="py-code-2" rows="6" spellcheck="false"># ── Input en Python = LEER en Cairó ──
+# Python usa input() para entrada de datos
+# Equivale a LEER en pseudocódigo Cairó
+
+print("=== Sistema de Admisión NeuroBiz ===")
+
+# input() siempre devuelve una cadena (str)
+nombre    = input("Nombre del paciente: ")
+terapia   = input("Tipo de terapia (cognitiva/ocupacional/fonoaudiologia): ")
+documento = input("Número de documento: ")
+
+# Conversión de tipos cuando es necesario
+# int() convierte cadena a entero
+# float() convierte cadena a decimal
+
+print(f"\n✔ PACIENTE REGISTRADO: {nombre}")
+print(f"  Terapia asignada: {terapia}")
+print(f"  Documento: {documento}")</textarea>
+        </div>
+        <div class="py-output" id="py-out-2"><pre></pre></div>
+      </div>
+      <!-- Cell 3 -->
+      <div class="py-cell" id="py-cell-3">
+        <div class="py-cell-header">
+          <span class="py-cell-idx">[3]</span>
+          <button class="py-run-btn" onclick="runPyCell(3)" id="py-run-3">
+            ▶ Run
+          </button>
+        </div>
+        <div class="py-cell-body" id="py-body-3">
+          <textarea id="py-code-3" rows="6" spellcheck="false"># ── ✨ Celda libre — Escribe tu algoritmo ──
+# Practica: declara variables, usa input(), haz cálculos
+# Python es legible y no necesita punto y coma al final
+
+# Ejemplo base:
+nombre = input("¿Tu nombre? ")
+print(f"Hola, {nombre}! Bienvenido a NeuroBiz.")
+
+# Experimenta libremente:
+# - Declara variables de distintos tipos
+# - Usa operadores aritméticos: +  -  *  /
+# - Usa print() para mostrar resultados</textarea>
+        </div>
+        <div class="py-output" id="py-out-3"><pre></pre></div>
+      </div>
+  <div style="font-size:.78rem;color:var(--muted);margin-top:.5rem;">
+    ⚡ Cada ejecución cuenta para tu aprendizaje. Código ejecutado en tu navegador — sin servidor.
+  </div>
+</div>
+
 
 <!-- ══ QUIZ ══ -->
 <section id="quiz" class="card">
@@ -1116,37 +1507,344 @@ else PT.init();
 </script>
 
 
-<!-- GAMIF_SDK_WEEK_1 -->
-<script>if(window.GamifSDK){window.PT=window.PT||GamifSDK.createPT({semana:1,xpMax:55,visitedKey:'tga04_visited_s1',autoVisitXp:false});}</script>
-
-<!-- GAMIF_AUTO_SYNC -->
+<!-- ══ CAIRO PSEUDOCODE INTERPRETER ══ -->
 <script>
-(function () {
-  function hook() {
-    var pt = window.PT;
-    if (!pt || pt.__gamifAutoHook) return;
-    pt.__gamifAutoHook = true;
-    var timer = null;
-    function schedule() {
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(function () {
-        if (typeof pt.sync === "function") pt.sync();
-      }, 700);
+!function(){"use strict";
+var I=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;};
+I.prototype.reset=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;};
+I.prototype.tok=function(l){l=l.replace(/\{[^}]*\}/g,'').trim();if(!l)return[];var t=[],re=/"([^"]*)"|(\d+\.?\d*)|(ALGORITMO|FIN|VARIABLES|INICIO|LEER|ESCRIBIR|CADENA|ENTERO|REAL|BOOLEANO)|([a-zA-Z_][a-zA-Z0-9_]*)|([+\-*\/=()])/g,m;while((m=re.exec(l))!==null){if(m[1]!==undefined)t.push({ty:'S',v:m[1]});else if(m[2]!==undefined)t.push({ty:'N',v:parseFloat(m[2])});else if(m[3]!==undefined)t.push({ty:'K',v:m[3]});else if(m[4]!==undefined)t.push({ty:'I',v:m[4]});else if(m[5]!==undefined)t.push({ty:'O',v:m[5]});}return t;};
+I.prototype.gv=function(t){if(t.ty==='N')return t.v;if(t.ty==='S')return t.v;if(t.ty==='I'){if(t.v in this.v){var v=this.v[t.v];if(typeof v==='string'){var n=parseFloat(v);return isNaN(n)?v:n;}return v;}return 0;}return t.v||0;};
+I.prototype.eval=function(t,i){var j=i;if(j>=t.length)return[0,j];var l=this.gv(t[j]);j++;while(j<t.length){var o=t[j];if(o.ty!=='O'||['+','-','*','/'].indexOf(o.v)===-1)break;var ov=o.v;j++;if(j>=t.length)break;var r=this.gv(t[j]);j++;if(ov==='+'){if(typeof l==='string'||typeof r==='string')l=String(l)+String(r);else l=l+r;}else if(ov==='-')l=l-r;else if(ov==='*')l=l*r;else if(ov==='/')l=r!==0?l/r:0;}return[l,j];};
+I.prototype.exe=function(l){var t=this.tok(l);if(t.length===0)return null;var f=t[0];if(f.ty==='K'&&f.v==='ESCRIBIR'){var r=this.eval(t,1);this.o.push({ty:'W',v:String(r[0])});return null;}if(f.ty==='K'&&f.v==='LEER'){if(t.length<2||t[1].ty!=='I'){this.o.push({ty:'E',v:'Error: LEER necesita variable'});return null;}return{ty:'R',v:t[1].v};}if(f.ty==='I'&&t.length>=2&&t[1].ty==='O'&&t[1].v==='='){var vn=f.v;var vl=this.eval(t,2);this.v[vn]=vl[0];return null;}if(f.ty==='K')return null;return null;};
+I.prototype.parse=function(p){if(typeof p==='string'&&p.indexOf('<')!==-1){var d=document.createElement('div');d.innerHTML=p;p=d.textContent||d.innerText||'';}return p.split(String.fromCharCode(10)).map(function(l){return l.trim();}).filter(function(l){return l.length>0;});};
+I.prototype.run=function(p){this.reset();this.l=this.parse(p);this.r=true;return this.sa();};
+I.prototype.sa=function(){while(this.p<this.l.length&&this.r){var l=this.l[this.p];var r=this.exe(l);this.p++;if(r&&r.ty==='R'){this.a=true;this.iv=r.v;return{p:true,v:r.v,o:this.o.slice()};}}this.r=false;return{p:false,o:this.o.slice()};};
+I.prototype.pi=function(v){if(!this.a)return null;var n=parseFloat(v);this.v[this.iv]=isNaN(n)?v:n;this.a=false;this.iv=null;return this.sa();};
+
+var L={ip:new I(),cc:{},xa:{},ge:function(id){var c=document.getElementById(id);if(!c)return'';var e=c.querySelector('.colab-editor');return e?(e.textContent||e.innerText||''):'';},go:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-output'):null;},gb:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-run-btn'):null;},rc:function(id){var s=this,cl=document.getElementById(id),ou=s.go(id),bt=s.gb(id);if(!cl||!ou)return;cl.classList.add('running');cl.classList.remove('success','error');if(bt)bt.classList.add('running');ou.classList.add('visible');ou.innerHTML='<span class="out-info">Ejecutando...</span>';var pg=s.ge(id);var rs=s.ip.run(pg);
+function pr(r){var h='';if(r.o){for(var i=0;i<r.o.length;i++){var e=r.o[i];if(e.ty==='W')h+='<span class="out-value">'+s.es(e.v)+'</span>\n';else if(e.ty==='E')h+='<span class="out-error">'+s.es(e.v)+'</span>\n';}}
+function ct(r2){if(!r2||!r2.p){h+='<span class="out-info">Ejecucion completada.</span>\n';ou.innerHTML=h||'<span class="out-info">Sin salida.</span>';cl.classList.remove('running');cl.classList.add('success');if(bt)bt.classList.remove('running');s.cc[id]=true;s.ax(id);s.ub();s.sp();return;}
+var inp=prompt('[ENTRADA] '+r2.v+' = ?\n\nEscribe un valor:');if(inp===null){h+='<span class="out-error">Cancelado.</span>\n';ou.innerHTML=h;cl.classList.remove('running');cl.classList.add('error');if(bt)bt.classList.remove('running');return;}
+h+='<span class="out-input">'+s.es(r2.v)+' ← '+s.es(inp)+'</span>\n';ou.innerHTML=h+'<span class="out-info">Continuando...</span>';
+setTimeout(function(){var nr=s.ip.pi(inp);if(nr&&nr.o){var ol=r.o?r.o.length:0;var no=nr.o.slice(ol);for(var j=0;j<no.length;j++){var ne=no[j];if(ne.ty==='W')h+='<span class="out-value">'+s.es(ne.v)+'</span>\n';else if(ne.ty==='E')h+='<span class="out-error">'+s.es(ne.v)+'</span>\n';}}ct(nr);},150);}
+ct(r);}
+pr(rs);},ax:function(id){if(this.xa[id])return;this.xa[id]=true;var m={'cell-admision':{p:5,l:'Admision NeuroBiz'},'cell-estructura':{p:2,l:'Plantilla Cairo'},'cell-ej1':{p:5,l:'Ej. 1: Promedio'},'cell-ej2':{p:5,l:'Ej. 2: Retencion'},'cell-ej3':{p:5,l:'Ej. 3: Sucursal'},'cell-libre':{p:3,l:'Celda Libre'}};var a=m[id];if(a&&typeof PT!=='undefined'&&PT.addXP){PT.addXP(a.p,a.l);this.st('+'+a.p+' XP — '+a.l);}},ub:function(){var b={'ej1-badge':this.cc['cell-ej1'],'ej2-badge':this.cc['cell-ej2'],'ej3-badge':this.cc['cell-ej3']};for(var id in b){if(!b.hasOwnProperty(id))continue;var el=document.getElementById(id);if(el&&b[id])el.innerHTML='<span class="lab-challenge-done">Completado</span>';}},sp:function(){if(typeof PT==='undefined')return;if(this.cc['cell-ej1']&&this.cc['cell-ej2']&&this.cc['cell-ej3']&&!this._lm){this._lm=true;PT.save();}},stb:function(id){var ts=document.querySelectorAll('.lab-tab');for(var i=0;i<ts.length;i++)ts[i].classList.remove('active');var ps=document.querySelectorAll('.lab-panel');for(var j=0;j<ps.length;j++)ps[j].classList.remove('active');var bs=document.querySelectorAll('.lab-tab');for(var k=0;k<bs.length;k++){if(bs[k].getAttribute('onclick')&&bs[k].getAttribute('onclick').indexOf(id)!==-1)bs[k].classList.add('active');}var pn=document.getElementById(id);if(pn)pn.classList.add('active');},es:function(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;},st:function(m){var t=document.createElement('div');t.className='xp-toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);}};
+window.CairoLab=L;
+var ND=[{f:'2026-01-05',p:'Ana Garcia',t:'cognitiva',e:'asistida'},{f:'2026-01-05',p:'Luis Martin',t:'ocupacional',e:'fallida'},{f:'2026-01-06',p:'Carmen Ruiz',t:'cognitiva',e:'asistida'},{f:'2026-01-07',p:'Pedro Sosa',t:'fonoaudiologia',e:'asistida'},{f:'2026-01-08',p:'Maria Lopez',t:'cognitiva',e:'asistida'},{f:'2026-01-08',p:'Jorge Diaz',t:'ocupacional',e:'fallida'},{f:'2026-01-09',p:'Sofia Rios',t:'fonoaudiologia',e:'asistida'},{f:'2026-01-10',p:'Carlos Pena',t:'cognitiva',e:'asistida'},{f:'2026-01-10',p:'Elena Mora',t:'ocupacional',e:'fallida'},{f:'2026-01-12',p:'Diego Ruiz',t:'cognitiva',e:'asistida'},{f:'2026-01-12',p:'Laura Gil',t:'fonoaudiologia',e:'asistida'},{f:'2026-01-13',p:'Andres Paz',t:'cognitiva',e:'fallida'},{f:'2026-01-14',p:'Valeria Sol',t:'ocupacional',e:'asistida'},{f:'2026-01-15',p:'Mateo Rey',t:'cognitiva',e:'asistida'},{f:'2026-01-15',p:'Diana Flor',t:'fonoaudiologia',e:'fallida'}];
+var DP={fl:function(){var ts=document.getElementById('dp-filter-terapia'),es=document.getElementById('dp-filter-estado'),t=ts?ts.value:'todas',e=es?es.value:'todos',f=ND.slice();if(t!=='todas')f=f.filter(function(r){return r.t===t;});if(e!=='todos')f=f.filter(function(r){return r.e===e;});this.rt(f);this.rs(f);},rs2:function(){var ts=document.getElementById('dp-filter-terapia'),es=document.getElementById('dp-filter-estado');if(ts)ts.value='todas';if(es)es.value='todos';this.fl();},rt:function(d){var c=document.getElementById('dp-table-container');if(!c)return;if(d.length===0){c.innerHTML='<p style="color:var(--muted);font-size:.82rem;text-align:center;padding:1rem">Sin resultados.</p>';return;}var h='<table class="data-table-mini"><thead><tr><th>Fecha</th><th>Paciente</th><th>Terapia</th><th>Estado</th></tr></thead><tbody>';for(var i=0;i<d.length;i++){var r=d[i],ec=r.e==='asistida'?'color:#2e7d32':'color:#c62828';h+='<tr><td>'+r.f+'</td><td>'+r.p+'</td><td>'+r.t+'</td><td style="font-weight:700;'+ec+'">'+(r.e==='asistida'?'✓ ':'✗ ')+r.e+'</td></tr>';}h+='</tbody></table><p style="font-size:.75rem;color:var(--muted);margin-top:.3rem">'+d.length+' de '+ND.length+' registros</p>';c.innerHTML=h;},rs:function(d){var c=document.getElementById('dp-stats');if(!c)return;var t=d.length,a=d.filter(function(r){return r.e==='asistida';}).length,f=d.filter(function(r){return r.e==='fallida';}).length,rt=t>0?((a/t)*100).toFixed(1):'0.0';c.innerHTML='<div class="data-stat-card"><div class="stat-val">'+t+'</div><div class="stat-lbl">Total</div></div><div class="data-stat-card"><div class="stat-val" style="color:#2e7d32">'+a+'</div><div class="stat-lbl">Asistidas</div></div><div class="data-stat-card"><div class="stat-val" style="color:#c62828">'+f+'</div><div class="stat-lbl">Fallidas</div></div><div class="data-stat-card"><div class="stat-val" style="color:#2563eb">'+rt+'%</div><div class="stat-lbl">Retencion</div></div>';},init:function(){this.fl();}};
+window.DataPlayground=DP;
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){DP.init();});else DP.init();
+}();
+</script>
+
+<script>
+var InteractiveQ = (function() {
+  var answered = {};
+  var xpAwarded = {};
+
+  // Load previous state from localStorage
+  try {
+    var saved = JSON.parse(localStorage.getItem('tga04_iq_answers') || '{}');
+    answered = saved.answered || {};
+    xpAwarded = saved.xpAwarded || {};
+  } catch(e) {}
+
+  function save() {
+    try { localStorage.setItem('tga04_iq_answers', JSON.stringify({answered:answered, xpAwarded:xpAwarded})); } catch(e) {}
+  }
+
+  // Keyword-based checking for open-ended questions
+  var rubrics = {
+    iq1: {
+      keywords: ['dato', 'información', 'fecha', 'paciente', 'terapia', 'sesión', '847', '112', 'asistida', 'fallida', 'crudo', 'contexto', 'procesado', 'tasa', 'retención', '78', 'porcentaje', 'indicador', 'negocio', 'registro'],
+      feedback: {
+        full: '¡Excelente! Identificaste correctamente que los <strong>datos</strong> son los registros crudos (fecha, paciente, terapia, sesión) y la <strong>información</strong> derivada es un indicador procesado como la tasa de retención (78%). <br><br>💡 <em>Un dato es un hecho sin contexto. La información es el dato procesado que responde una pregunta de negocio.</em>',
+        partial: '¡Bien! Vas por buen camino. Recuerda: los <strong>datos</strong> son los valores crudos de la tabla (fecha, nombre, terapia, estado). La <strong>información</strong> es lo que obtienes al procesarlos: por ejemplo, la tasa de retención del 78%. Intenta mencionar ambos conceptos con ejemplos concretos de la tabla.',
+        wrong: 'Revisa la sección de <strong>Marco Teórico → Dato vs. Información</strong>. Los <strong>datos</strong> son los valores individuales de la tabla (nombres, fechas, estados). La <strong>información</strong> es lo que obtienes al procesarlos para responder una pregunta (ej: "la tasa de retención es 78%"). Inténtalo de nuevo.'
+      }
+    },
+    iq2: {
+      keywords: ['tasa', 'retención', 'terapia', 'demandada', 'frecuente', 'paciente', 'asistencia', 'fallida', 'mensual', 'sede', 'comparar', 'indicador', 'rendimiento', 'desempeño', 'estadística', 'patrón', 'tendencia', 'negocio', 'decisión'],
+      feedback: {
+        full: '¡Muy bien! Identificaste preguntas de negocio clave: tasa de retención, terapia más demandada, frecuencia de pacientes, comparación entre sedes. <br><br>💡 <em>Un conjunto de datos permite responder múltiples preguntas de negocio si se procesa adecuadamente.</em>',
+        partial: '¡Buena dirección! Algunas preguntas de negocio que estos datos pueden responder: ¿cuál es la tasa de retención? ¿qué terapia tiene más demanda? ¿hay pacientes que faltan con frecuencia? ¿qué sede tiene mejor desempeño? Intenta mencionar al menos 2 preguntas concretas.',
+        wrong: 'Piensa en qué querría saber la dirección de NeuroBiz: ¿qué porcentaje de sesiones son exitosas? ¿qué terapia es la más solicitada? ¿hay patrones de inasistencia? Las preguntas de negocio convierten los datos en decisiones. Revisa el ejemplo de los KPIs en la sección del Memorando.'
+      }
+    },
+    iq3: {
+      keywords: ['contar', 'asistidas', 'fallidas', 'total', 'sumar', 'dividir', 'multiplicar', '100', 'porcentaje', 'paso', 'leer', 'escribir', 'variable', 'fórmula', 'cálculo', 'sesiones'],
+      feedback: {
+        full: '¡Perfecto! Describiste el algoritmo correctamente: 1) Contar sesiones asistidas, 2) Contar sesiones fallidas, 3) Sumar para obtener el total, 4) Dividir asistidas entre total, 5) Multiplicar por 100. <br><br>💡 <em>Este es un algoritmo finito, preciso y efectivo — las 3 propiedades que definen un algoritmo.</em>',
+        partial: '¡Vas bien! El algoritmo necesita estos pasos: contar las sesiones asistidas, contar las fallidas, sumarlas para el total, dividir (asistidas ÷ total) y multiplicar por 100 para obtener el porcentaje. Intenta describir los pasos en orden, uno por uno.',
+        wrong: 'Piensa en los pasos necesarios: ¿cómo calcularías la tasa de retención con lápiz y papel? 1) Cuenta las sesiones asistidas, 2) Cuenta las fallidas, 3) Súmalas, 4) Divide asistidas entre el total, 5) Multiplica por 100. Describe cada paso en orden.'
+      }
+    },
+    iq4: {
+      keywords: ['paso', 'empleado', 'incorporación', 'contratar', 'documento', 'credencial', 'puesto', 'inducción', 'finito', 'preciso', 'efectivo', 'algoritmo', 'proceso', 'secuencia', 'termina', 'claro', 'sin', 'ambigüedad'],
+      feedback: {
+        full: '¡Excelente! Describiste un proceso secuencial claro y verificaste las 3 propiedades: es <strong>finito</strong> (tiene fin), <strong>preciso</strong> (cada paso es claro) y <strong>efectivo</strong> (cada paso es realizable). <br><br>💡 <em>Un SOP empresarial es un algoritmo de negocio: cumple las mismas 3 propiedades que un algoritmo computacional.</em>',
+        partial: '¡Buen proceso! Ahora verifica las 3 propiedades: ¿Es <strong>finito</strong>? (¿termina en algún momento?) ¿Es <strong>preciso</strong>? (¿cada paso es claro sin ambigüedad?) ¿Es <strong>efectivo</strong>? (¿cada paso se puede ejecutar?). Menciona explícitamente cada propiedad en tu respuesta.',
+        wrong: 'Describe el proceso paso a paso: entregar credencial → asignar puesto → instalar equipo → iniciar inducción. Luego verifica: ¿termina? (finito ✓), ¿cada paso es claro? (preciso ✓), ¿se puede ejecutar? (efectivo ✓). Revisa la tabla de propiedades en Marco Teórico.'
+      }
+    },
+    iq5: {
+      keywords: ['similar', 'algoritmo', 'secuencia', 'pasos', 'leer', 'escribir', 'registrar', 'verificar', 'asignar', 'confirmar', 'estructura', 'patrón', 'entrada', 'salida', 'proceso', 'compara'],
+      feedback: {
+        full: '¡Excelente comparación! Ambos procesos comparten una <strong>estructura algorítmica</strong>: tienen entrada de datos (LEER), procesamiento (verificar/asignar) y salida (ESCRIBIR/confirmar). Son secuencias finitas, precisas y efectivas. <br><br>💡 <em>Reconocer patrones algorítmicos en procesos de negocio es la base del pensamiento computacional aplicado a la gestión.</em>',
+        partial: '¡Buena observación! Ambos procesos siguen un patrón similar: entrada de información → procesamiento → salida/confirmación. En Cairó: LEER datos → procesar → ESCRIBIR resultado. Intenta identificar qué partes de cada proceso corresponden a LEER y cuáles a ESCRIBIR.',
+        wrong: 'Piensa en la estructura de ambos algoritmos: en la admisión, LEES datos del paciente y ESCRIBES una confirmación. En la incorporación, LEES datos del empleado, procesas (asignas puesto, instalas equipo) y ESCRIBES/confirmas la incorporación. Ambos siguen el patrón: entrada → proceso → salida.'
+      }
     }
-    if (pt.addXP) {
-      var origAdd = pt.addXP;
-      pt.addXP = function () { var r = origAdd.apply(this, arguments); schedule(); return r; };
+  };
+
+  function normalize(s) {
+    return s.toLowerCase()
+      .replace(/[áàäâ]/g,'a').replace(/[éèëê]/g,'e').replace(/[íìïî]/g,'i')
+      .replace(/[óòöô]/g,'o').replace(/[úùüû]/g,'u')
+      .replace(/[ñ]/g,'n')
+      .replace(/[^a-z0-9 ]/g,' ');
+  }
+
+  function check(id) {
+    var rubric = rubrics[id];
+    if (!rubric) return;
+
+    var ta = document.getElementById(id + '-ta');
+    var fb = document.getElementById(id + '-fb');
+    var iq = document.getElementById(id);
+    var btn = iq ? iq.querySelector('.iq-btn') : null;
+
+    if (!ta || !fb || !iq) return;
+
+    var answer = ta.value.trim();
+    if (answer.length < 20) {
+      fb.className = 'iq-feedback error show';
+      fb.innerHTML = '⚠️ Escribe una respuesta más completa (mínimo 20 caracteres).';
+      iq.className = 'interactive-q wrong';
+      return;
     }
-    if (pt.save) {
-      var origSave = pt.save;
-      pt.save = function () { var r = origSave.apply(this, arguments); schedule(); return r; };
+
+    var words = normalize(answer).split(/\s+/);
+    var matched = [];
+    var missed = [];
+
+    for (var i = 0; i < rubric.keywords.length; i++) {
+      var kw = rubric.keywords[i];
+      var kwNorm = normalize(kw);
+      var found = false;
+      for (var j = 0; j < words.length; j++) {
+        if (words[j] === kwNorm || (words[j].length >= 4 && words[j].indexOf(kwNorm) >= 0) || (words[j].length >= 4 && kwNorm.indexOf(words[j]) >= 0)) {
+          found = true;
+          break;
+        }
+      }
+      if (found) matched.push(kw);
+      else missed.push(kw);
+    }
+
+    var ratio = matched.length / rubric.keywords.length;
+    var fbClass, fbText;
+
+    if (ratio >= 0.20) {
+      fbClass = 'success';
+      fbText = rubric.feedback.full;
+      iq.className = 'interactive-q answered';
+    } else if (ratio >= 0.08) {
+      fbClass = 'partial';
+      fbText = rubric.feedback.partial;
+      iq.className = 'interactive-q partial';
+    } else {
+      fbClass = 'error';
+      fbText = rubric.feedback.wrong;
+      iq.className = 'interactive-q wrong';
+    }
+
+    fb.className = 'iq-feedback ' + fbClass + ' show';
+    fb.innerHTML = fbText;
+
+    // Show keyword matches
+    var kwHtml = '<div class="iq-keywords">';
+    for (var k = 0; k < matched.length; k++) {
+      kwHtml += '<span class="iq-kw matched">✓ ' + matched[k] + '</span>';
+    }
+    kwHtml += '</div>';
+    fb.innerHTML += kwHtml;
+
+    // Award XP (once per question)
+    if (!xpAwarded[id] && ratio >= 0.08) {
+      xpAwarded[id] = true;
+      answered[id] = ratio >= 0.20 ? 'full' : 'partial';
+      if (typeof PT !== 'undefined' && PT.addXP) {
+        var pts = ratio >= 0.20 ? 4 : 2;
+        var label = 'Pregunta ' + id.replace('iq','') + (ratio >= 0.20 ? ' (completa)' : ' (parcial)');
+        PT.addXP(pts, label);
+        // Show XP badge
+        var ptsEl = iq.querySelector('.iq-pts');
+        if (ptsEl) { ptsEl.textContent = '+' + pts + ' XP'; ptsEl.classList.add('earned'); }
+        // Toast
+        if (typeof CairoLab !== 'undefined' && CairoLab.st) {
+          CairoLab.st('✨ +' + pts + ' XP — ' + label);
+        }
+      }
+    } else if (xpAwarded[id]) {
+      // Already answered - restore state
+      var ptsEl2 = iq.querySelector('.iq-pts');
+      if (ptsEl2 && answered[id]) {
+        var prevPts = answered[id] === 'full' ? 4 : 2;
+        ptsEl2.textContent = '+' + prevPts + ' XP';
+        ptsEl2.classList.add('earned');
+      }
+    }
+
+    if (btn) btn.disabled = true;
+    answered[id] = answered[id] || (ratio >= 0.20 ? 'full' : 'partial');
+    save();
+  }
+
+  // Restore previous state on load
+  function restore() {
+    for (var id in answered) {
+      if (!answered.hasOwnProperty(id)) continue;
+      var iq = document.getElementById(id);
+      var ptsEl = iq ? iq.querySelector('.iq-pts') : null;
+      if (ptsEl) {
+        var pts = answered[id] === 'full' ? 4 : 2;
+        ptsEl.textContent = '+' + pts + ' XP';
+        ptsEl.classList.add('earned');
+      }
+      var btn = iq ? iq.querySelector('.iq-btn') : null;
+      if (btn) btn.disabled = true;
+      if (iq) iq.className = 'interactive-q ' + (answered[id] === 'full' ? 'answered' : 'partial');
     }
   }
-  function boot() { hook(); setTimeout(hook, 400); setTimeout(hook, 900); }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
-  else boot();
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', restore);
+  } else {
+    restore();
+  }
+
+  return { check: check };
 })();
 </script>
 
+<!-- ══ PYODIDE PYTHON REFERENCE ENGINE ══ -->
+<script>
+// ── State ──────────────────────────────────────────────────────
+var pyReady = false;
+var pyLoading = false;
+var pyodide = null;
+
+function pySetStatus(msg, ready) {
+  var el = document.getElementById('py-status');
+  if (!el) return;
+  el.textContent = msg;
+  if (ready) el.classList.add('ready');
+  else el.classList.remove('ready');
+}
+
+function pyDisableBtns(disabled) {
+  for (var i = 1; i <= 4; i++) {
+    var btn = document.getElementById('py-run-' + i);
+    if (btn) btn.disabled = disabled;
+  }
+}
+
+async function initPyodide() {
+  if (pyReady || pyLoading) return;
+  pyLoading = true;
+  pyDisableBtns(true);
+  pySetStatus('⏳ Cargando motor Python (Pyodide v0.24.1)...');
+
+  try {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+    await new Promise(function(resolve, reject) {
+      script.onload = resolve;
+      script.onerror = function() { reject(new Error('No se pudo cargar Pyodide')); };
+      document.head.appendChild(script);
+    });
+
+    if (typeof window.loadPyodide !== 'function') {
+      throw new Error('loadPyodide no está definido');
+    }
+
+    pyodide = await window.loadPyodide({
+      indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'
+    });
+
+    pyReady = true;
+    pyLoading = false;
+    pyDisableBtns(false);
+    pySetStatus('✅ Python listo — presiona ▶ para ejecutar', true);
+
+    // expose runner
+    window._pyodideRunner = function(code) {
+      return pyodide.runPythonAsync(code)
+        .then(function(out) { return { output: out }; })
+        .catch(function(err) { return { output: '', error: err.message || String(err) }; });
+    };
+  } catch(err) {
+    console.error('Pyodide load error:', err);
+    pyLoading = false;
+    pyReady = false;
+    pySetStatus('⚠️ Pyodide no disponible: ' + err.message);
+    pyDisableBtns(false);
+  }
+}
+
+// Auto-init on page load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPyodide);
+} else {
+  setTimeout(initPyodide, 500); // small delay to not compete with other onload
+}
+
+// ── runPyCell(n) ───────────────────────────────────────────────
+window.runPyCell = async function(n) {
+  if (!pyReady) {
+    if (!pyLoading) { pySetStatus('⏳ Cargando Python...'); initPyodide(); }
+    else pySetStatus('⏳ Python cargando, espera...');
+    return;
+  }
+
+  var codeArea = document.getElementById('py-code-' + n);
+  var outDiv   = document.getElementById('py-out-' + n);
+  var bodyDiv  = document.getElementById('py-body-' + n);
+  var runBtn   = document.getElementById('py-run-' + n);
+
+  if (!codeArea || !outDiv) return;
+  var code = codeArea.value;
+  if (!code.trim()) return;
+
+  if (runBtn) { runBtn.textContent = '⏳...'; runBtn.disabled = true; }
+  outDiv.classList.add('visible');
+  outDiv.querySelector('pre').textContent = '';
+  if (bodyDiv) bodyDiv.classList.add('ran');
+
+  try {
+    if (!pyodide || typeof pyodide.setStdout !== 'function') {
+      pyReady = false;
+      throw new Error('Pyodide no listo. Recarga la página.');
+    }
+
+    var output = '';
+    pyodide.setStdout({ batched: function(t) { output += t; } });
+    pyodide.setStderr({ batched: function(t) { output += t; } });
+
+    await pyodide.runPythonAsync(code);
+
+    var pre = outDiv.querySelector('pre');
+    pre.textContent = output || '(sin salida)';
+    pre.className = '';
+  } catch(err) {
+    var pre = outDiv.querySelector('pre');
+    pre.textContent = 'Error: ' + (err.message || String(err));
+    pre.className = 'py-err';
+  }
+
+  if (runBtn) { runBtn.textContent = '▶ Run'; runBtn.disabled = false; }
+};
+</script>
 </body>
 </html>

@@ -20,13 +20,33 @@
     });
   }
 
+  var MODULE_DEFAULTS = {
+    ADM18: { prefix: "adm18", offering: "ADM18-2026-2", narrative: "LatamBox" },
+    TGA04: { prefix: "tga04", offering: "TGA04-2026-2", narrative: "NeuroBiz S.A.S." },
+    TGA05: { prefix: "tga05", offering: "TGA05-2026-2", narrative: "NeuroBiz S.A.S." },
+    TD: { prefix: "td", offering: "TD-2026-2", narrative: "Mercado360" },
+  };
+
+  function moduleDefaults(moduleCode) {
+    return MODULE_DEFAULTS[moduleCode] || {
+      prefix: String(moduleCode || "ADM18").toLowerCase(),
+      offering: moduleCode + "-2026-2",
+      narrative: moduleCode,
+    };
+  }
+
   function getConfig() {
+    var moduleCode = global.MODULE_CODE || localStorage.getItem("gamif_module_code") || "ADM18";
+    var defs = moduleDefaults(moduleCode);
+    var prefix = global.GAMIF_PREFIX || defs.prefix;
     return {
-      moduleCode: global.MODULE_CODE || localStorage.getItem("gamif_module_code") || "TGA04",
-      offeringCode: global.OFFERING_CODE || localStorage.getItem("gamif_offering_code") || localStorage.getItem("tga04_course_code") || "TGA04-2026-2",
-      narrative: global.NARRATIVE || localStorage.getItem("gamif_narrative") || "NeuroBiz S.A.S.",
-      prefix: global.GAMIF_PREFIX || "gamif",
-      legacyPrefix: "tga04",
+      moduleCode: moduleCode,
+      offeringCode: global.OFFERING_CODE || localStorage.getItem("gamif_offering_code")
+        || localStorage.getItem(prefix + "_course_code")
+        || defs.offering,
+      narrative: global.NARRATIVE || localStorage.getItem("gamif_narrative") || defs.narrative,
+      prefix: prefix,
+      legacyPrefix: prefix,
       useUnified: localStorage.getItem("gamif_use_unified") !== "false",
     };
   }
@@ -35,39 +55,44 @@
     localStorage.setItem("gamif_module_code", cfg.moduleCode);
     localStorage.setItem("gamif_offering_code", cfg.offeringCode);
     localStorage.setItem("gamif_narrative", cfg.narrative);
-    localStorage.setItem("tga04_course_code", cfg.offeringCode);
+    localStorage.setItem(cfg.prefix + "_course_code", cfg.offeringCode);
   }
 
   function progressKey(cfg, semana) {
     return cfg.prefix + "_progress:" + cfg.offeringCode + ":" + semana;
   }
 
-  function legacyProgressKey(semana) {
-    return "tga04_s" + semana;
+  function legacyProgressKey(cfg, semana) {
+    var p = (cfg && cfg.prefix) || "tga04";
+    return p + "_s" + semana;
   }
 
   function profileKey(cfg) {
     return cfg.prefix + "_profile";
   }
 
-  function legacyProfileKey() {
-    return "tga04_global";
+  function legacyProfileKey(cfg) {
+    var p = (cfg && cfg.prefix) || "adm18";
+    if (p === "adm18") return "adm18_user";
+    return p + "_global";
   }
 
   function sbUrl() {
-    return normalizeBaseUrl(
-      localStorage.getItem("tga04_supabase_url") || global.SUPABASE_URL || ""
-    );
-  }
-
-  function normalizeBaseUrl(url) {
-    var u = String(url || "").trim().replace(/\/+$/, "");
-    u = u.replace(/\/rest\/v1\/?$/i, "");
-    return u;
+    var cfg = getConfig();
+    return localStorage.getItem(cfg.prefix + "_supabase_url")
+      || global.SUPABASE_URL
+      || localStorage.getItem("adm18_supabase_url")
+      || localStorage.getItem("tga04_supabase_url")
+      || "";
   }
 
   function sbKey() {
-    return localStorage.getItem("tga04_supabase_key") || global.SUPABASE_KEY || "";
+    var cfg = getConfig();
+    return localStorage.getItem(cfg.prefix + "_supabase_key")
+      || global.SUPABASE_KEY
+      || localStorage.getItem("adm18_supabase_key")
+      || localStorage.getItem("tga04_supabase_key")
+      || "";
   }
 
   function rankFor(xp, ranks) {
@@ -94,37 +119,248 @@
 
   function totalXP(cfg) {
     var total = 0;
+    var cfgRef = cfg || getConfig();
+    if (cfgRef.legacyPrefix === "adm18") {
+      try {
+        var scores = JSON.parse(localStorage.getItem("adm18_scores") || "{}");
+        Object.keys(scores).forEach(function (key) {
+          var entry = scores[key];
+          if (entry && typeof entry.percent === "number") {
+            total += entry.percent;
+          }
+        });
+      } catch (e) { /* ignore */ }
+      return total;
+    }
+    var legacyRe = new RegExp("^" + cfgRef.prefix + "_s(\\d+)$");
+    var unifiedRe = new RegExp("^" + cfgRef.prefix + "_progress:[^:]+:(\\d+)$");
     for (var i = 0; i < localStorage.length; i++) {
       var k = localStorage.key(i);
       if (!k) continue;
-      var m = k.match(/^tga04_s(\d+)$/) || k.match(/^gamif_progress:[^:]+:(\d+)$/);
-      if (m) {
-        try {
-          total += Number(JSON.parse(localStorage.getItem(k) || "{}").xp || 0);
-        } catch (e) { /* ignore */ }
-      }
+      if (!legacyRe.test(k) && !unifiedRe.test(k)) continue;
+      try {
+        total += Number(JSON.parse(localStorage.getItem(k) || "{}").xp || 0);
+      } catch (e) { /* ignore */ }
     }
     return total;
   }
 
-  function loadProfile(cfg) {
-    var raw = localStorage.getItem(profileKey(cfg)) || localStorage.getItem(legacyProfileKey());
-    try {
-      return raw ? JSON.parse(raw) : {};
-    } catch (e) {
-      return {};
+  async function upsertWeeklyProgress(payload) {
+    return callRpc("upsert_weekly_progress", payload);
+  }
+
+  async function teacherValidateWeek(row, cfg) {
+    var config = cfg || getConfig();
+    var teacher = global.TeacherAuth && TeacherAuth.getSession();
+    var semana = row.semana;
+    if (!row || !semana || !row.cc) return { ok: false, reason: "invalid_row" };
+
+    var xp = Number(row.xp);
+    if (isNaN(xp)) xp = 0;
+    xp = Math.max(0, Math.min(100, Math.round(xp)));
+
+    return upsertWeeklyProgress({
+      p_offering_code: config.offeringCode,
+      p_student_id: String(row.cc).trim(),
+      p_student_name: row.name || "",
+      p_grupo: row.grupo || "",
+      p_horario: row.horario || "",
+      p_semana: semana,
+      p_xp: xp,
+      p_quiz_score: Number(row.quizScore || row.quiz_score || 0),
+      p_quiz_answers: Object.assign({}, row.quizAnswers || {}, {
+        teacher_validated: true,
+        teacher_validated_at: new Date().toISOString(),
+        teacher_username: teacher && teacher.username ? teacher.username : "",
+        phone_xp: row.phoneXp != null ? row.phoneXp : xp,
+        teacher_note: row.note || "",
+      }),
+      p_hti_done: !!(row.htiDone || row.hti_done),
+      p_activity_done: !!(row.activityDone || row.activity_done || xp > 0),
+    });
+  }
+
+  async function syncWeekProgress(state, cfg, semana) {
+    var config = cfg || getConfig();
+    var week = semana || (state && state.semana);
+    if (!state || !week) return { ok: false, reason: "no_state" };
+    if (!sbUrl() || !sbKey()) return { ok: false, reason: "no_config" };
+
+    var cc = String(state.id_estudiante || state.cc || "").trim();
+    if (!cc) return { ok: false, reason: "no_cc" };
+
+    var rpc = await upsertWeeklyProgress({
+      p_offering_code: config.offeringCode,
+      p_student_id: cc,
+      p_student_name: state.nombre || state.name || "",
+      p_grupo: state.grupo || "",
+      p_horario: state.horario || "",
+      p_semana: week,
+      p_xp: Number(state.xp || 0),
+      p_quiz_score: Number(state.quiz_puntaje || state.quiz_score || 0),
+      p_quiz_answers: state.quiz_respuestas || state.quiz_answers || {},
+      p_hti_done: !!(state.hti_entregado || state.hti_done),
+      p_activity_done: !!(state.actividad_completada || state.activity_done),
+    });
+    if (rpc.ok) return rpc;
+
+    var legacy = await syncLegacyProgress(state, config);
+    var unified = await syncUnifiedProgress(state, config);
+    return {
+      ok: legacy.ok || unified.ok,
+      status: rpc.status || legacy.status || unified.status,
+      reason: rpc.ok ? undefined : "rpc_failed",
+      rpc: rpc,
+      legacy: legacy,
+      unified: unified,
+    };
+  }
+
+  async function syncAdm18Scores(scores, progress, profile) {
+    var cfg = getConfig();
+    var cc = profile && (profile.cc || profile.id_estudiante);
+    if (!cc) return { ok: false, reason: "no_cc", synced: 0 };
+
+    var synced = 0;
+    var failed = 0;
+    var entries = Object.entries(scores || {});
+
+    for (var i = 0; i < entries.length; i++) {
+      var key = entries[i][0];
+      var value = entries[i][1];
+      if (!value || value.synced) continue;
+
+      var weekNum = parseInt(String(key).replace("week_", ""), 10);
+      if (!weekNum) continue;
+
+      var weekProgress = progress && progress["week_" + weekNum];
+      var result = await upsertWeeklyProgress({
+        p_offering_code: cfg.offeringCode,
+        p_student_id: cc,
+        p_student_name: profile.nombre || profile.name || "",
+        p_grupo: profile.grupo || "",
+        p_horario: profile.horario || "",
+        p_semana: weekNum,
+        p_xp: value.percent || 0,
+        p_quiz_score: value.percent || 0,
+        p_quiz_answers: value.answers || {},
+        p_hti_done: false,
+        p_activity_done: !!(weekProgress && weekProgress.completed),
+      });
+
+      if (result.ok) {
+        value.synced = true;
+        synced++;
+      } else {
+        failed++;
+      }
     }
+
+    return { ok: failed === 0, synced: synced, failed: failed };
+  }
+
+  function loadProfile(cfg) {
+    var config = cfg || getConfig();
+    var raw = localStorage.getItem(profileKey(config)) || localStorage.getItem(legacyProfileKey(config));
+    try {
+      if (!raw) return {};
+      var parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === "object") return parsed;
+    } catch (e) {
+      if (typeof raw === "string" && raw.trim()) {
+        return { nombre: raw.trim() };
+      }
+    }
+    return {};
   }
 
   function saveProfile(cfg, profile) {
+    var config = cfg || getConfig();
     var json = JSON.stringify(profile);
-    localStorage.setItem(profileKey(cfg), json);
-    localStorage.setItem(legacyProfileKey(), json);
+    localStorage.setItem(profileKey(config), json);
+    localStorage.setItem(legacyProfileKey(config), json);
+    try {
+      document.dispatchEvent(new CustomEvent("iub:profile-saved", { detail: profile }));
+    } catch (e) { /* ignore */ }
+  }
+
+  function isCloudDirectMode() {
+    return !!(sbUrl() && sbKey());
+  }
+
+  function applyCloudRowToState(state, row) {
+    if (!state || !row) return state;
+    state.xp = Number(row.xp || 0);
+    state.quiz_puntaje = Number(row.quiz_score || 0);
+    state.quiz_respuestas = row.quiz_answers || {};
+    state.hti_entregado = !!row.hti_done;
+    state.hti_done = !!row.hti_done;
+    state.actividad_completada = !!row.activity_done;
+    state.activity_done = !!row.activity_done;
+    if (row.student_name && !state.nombre) state.nombre = row.student_name;
+    if (row.grupo && !state.grupo) state.grupo = row.grupo;
+    if (row.horario && !state.horario) state.horario = row.horario;
+    return state;
+  }
+
+  async function fetchWeekProgressFromCloud(cfg, semana, cc) {
+    var config = cfg || getConfig();
+    var url = sbUrl();
+    var key = sbKey();
+    var id = String(cc || "").trim();
+    if (!url || !key || !id || !semana) return null;
+    try {
+      var offering = encodeURIComponent(config.offeringCode);
+      var res = await fetch(
+        url + "/rest/v1/v_legacy_student_progress?select=*"
+          + "&student_id=eq." + encodeURIComponent(id)
+          + "&offering_code=eq." + offering
+          + "&semana=eq." + semana
+          + "&limit=1",
+        { headers: { apikey: key, Authorization: "Bearer " + key } }
+      );
+      if (!res.ok) return null;
+      var rows = await res.json();
+      return rows && rows[0] ? rows[0] : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function fetchAllProgressFromCloud(cfg, cc) {
+    var config = cfg || getConfig();
+    var url = sbUrl();
+    var key = sbKey();
+    var id = String(cc || "").trim();
+    if (!url || !key || !id) return [];
+    try {
+      var offering = encodeURIComponent(config.offeringCode);
+      var res = await fetch(
+        url + "/rest/v1/v_legacy_student_progress?select=*"
+          + "&student_id=eq." + encodeURIComponent(id)
+          + "&offering_code=eq." + offering
+          + "&order=semana.asc",
+        { headers: { apikey: key, Authorization: "Bearer " + key } }
+      );
+      if (!res.ok) return [];
+      return await res.json();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function clearLocalWeekProgress(cfg, semana) {
+    if (!semana) return;
+    var config = cfg || getConfig();
+    try {
+      localStorage.removeItem(progressKey(config, semana));
+      localStorage.removeItem(legacyProgressKey(config, semana));
+    } catch (e) { /* ignore */ }
   }
 
   function loadWeekState(cfg, semana) {
     var key = progressKey(cfg, semana);
-    var legacy = legacyProgressKey(semana);
+    var legacy = legacyProgressKey(cfg, semana);
     var raw = localStorage.getItem(key) || localStorage.getItem(legacy);
     var state = {
       semana: semana,
@@ -156,9 +392,10 @@
   }
 
   function saveWeekState(cfg, semana, state) {
+    if (isCloudDirectMode()) return;
     var json = JSON.stringify(state);
     localStorage.setItem(progressKey(cfg, semana), json);
-    localStorage.setItem(legacyProgressKey(semana), json);
+    localStorage.setItem(legacyProgressKey(cfg, semana), json);
   }
 
   async function syncLegacyProgress(state, cfg) {
@@ -249,7 +486,9 @@
       },
       body: JSON.stringify(payload),
     });
-    return { ok: res.ok, status: res.status };
+    var body = "";
+    try { body = await res.text(); } catch (e) { /* ignore */ }
+    return { ok: res.ok, status: res.status, body: body };
   }
 
   async function syncParticipation(events, offeringCode) {
@@ -261,7 +500,7 @@
     var fail = 0;
     for (var i = 0; i < events.length; i++) {
       var ev = events[i];
-      if (!ev.cc || !ev.points) continue;
+      if (!ev.cc || ev.points == null || Number(ev.points) <= 0) continue;
       var result = await callRpc("record_participation", {
         p_cc: ev.cc,
         p_offering_code: offering,
@@ -298,148 +537,14 @@
     return { ok: fail === 0, count: ok, failed: fail };
   }
 
-  async function pushProgress(state, cfg, showFeedback, msgFn) {
-    var cc = state.id_estudiante || state.cc;
-    if (!cc || cc === "desconocido") {
-      if (showFeedback) setSyncStatus("⚠️ Configura tu cédula para guardar en la nube", false);
-      return { ok: false, reason: "no_cc" };
-    }
-    if (!sbUrl() || !sbKey()) {
-      if (showFeedback) setSyncStatus("⚠️ Supabase no configurado", false);
-      return { ok: false, reason: "no_config" };
-    }
-    if (showFeedback && msgFn) msgFn("⏳ Sincronizando…", "#fff9c4");
-    try {
-      var legacy = await syncLegacyProgress(state, cfg);
-      var unified = await syncUnifiedProgress(state, cfg);
-      var ok = legacy.ok || unified.ok;
-      if (ok) setSyncStatus("✅ Guardado en la nube · " + new Date().toLocaleTimeString(), true);
-      else if (showFeedback) setSyncStatus("❌ No se pudo guardar (error " + (legacy.status || unified.status || "?") + ")", false);
-      if (showFeedback && msgFn) {
-        if (ok) msgFn("✅ Guardado en Supabase ☁️", "lightgreen");
-        else msgFn("❌ Error " + (legacy.status || unified.status || ""), "salmon");
-      }
-      return { ok: ok, legacy: legacy, unified: unified };
-    } catch (e) {
-      if (showFeedback) setSyncStatus("❌ Sin conexión · queda guardado en este dispositivo", false);
-      if (showFeedback && msgFn) msgFn("❌ Sin conexión. Guardado local.", "salmon");
-      return { ok: false, error: e };
-    }
-  }
-
-  function detectSemanaFromPage(pt) {
-    try {
-      if (pt && pt.state) {
-        var s = pt.state();
-        if (s && s.semana) return Number(s.semana);
-      }
-    } catch (e) { /* ignore */ }
-    var path = String((global.location && global.location.pathname) || "");
-    var m = path.match(/semana(\d+)/i);
-    return m ? Number(m[1]) : null;
-  }
-
-  function installAutoSync(pt, options) {
-    if (!pt || pt.__gamifAutoSync) return pt;
-    pt.__gamifAutoSync = true;
-    var cfg = getConfig();
-    var semana = (options && options.semana) || detectSemanaFromPage(pt);
-    var timer = null;
-    var delay = (options && options.delayMs) || 600;
-
-    function resolveState() {
-      if (options && typeof options.getState === "function") return options.getState();
-      if (pt.state) return pt.state();
-      if (semana) return loadWeekState(cfg, semana);
-      return {};
-    }
-
-    function scheduleAutoSync() {
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(function () {
-        setSyncStatus("⏳ Guardando en la nube…");
-        pushProgress(resolveState(), cfg, false).then(function (r) {
-          if (!r.ok && r.reason === "no_cc") setSyncStatus("⚠️ Ingresa tu cédula para guardar en la nube", false);
-        });
-      }, delay);
-    }
-
-    if (pt.addXP) {
-      var origAddXP = pt.addXP;
-      pt.addXP = function () {
-        var out = origAddXP.apply(this, arguments);
-        scheduleAutoSync();
-        return out;
-      };
-    }
-    if (pt.save) {
-      var origSave = pt.save;
-      pt.save = function () {
-        var out = origSave.apply(this, arguments);
-        scheduleAutoSync();
-        return out;
-      };
-    }
-
-    pt.sync = async function () {
-      if (pt.save) pt.save();
-      return pushProgress(resolveState(), cfg, true, pt.msg);
-    };
-
-    return pt;
-  }
-
-  function enhanceWidgetUI() {
-    var status = document.getElementById("pt-sync-status");
-    if (!status) {
-      status = document.createElement("div");
-      status.id = "pt-sync-status";
-      status.style.cssText = "font-size:.72rem;opacity:.9;margin-top:8px;text-align:center;line-height:1.35;";
-      status.textContent = "☁️ Tu progreso se guarda solo en la nube";
-      var btns = document.getElementById("pt-btns");
-      if (btns) btns.parentNode.insertBefore(status, btns.nextSibling);
-    }
-    var saveBtn = document.getElementById("pt-btn-save");
-    var advanced = document.getElementById("pt-advanced");
-    if (saveBtn && advanced && !saveBtn.dataset.moved) {
-      saveBtn.dataset.moved = "1";
-      saveBtn.textContent = "☁️ Guardar ahora (manual)";
-      saveBtn.style.width = "100%";
-      saveBtn.style.marginBottom = "4px";
-      advanced.insertBefore(saveBtn, advanced.firstChild);
-    }
-    var btnRow = document.getElementById("pt-btns");
-    if (btnRow) {
-      btnRow.style.flexWrap = "nowrap";
-      btnRow.style.alignItems = "center";
-    }
-  }
-
-  function setSyncStatus(text, ok) {
-    enhanceWidgetUI();
-    var status = document.getElementById("pt-sync-status");
-    if (!status) return;
-    status.textContent = text;
-    status.style.color = ok === false ? "#ff8a80" : (ok ? "#b9f6ca" : "");
-  }
-
-  function bootPageAutoSync() {
-    if (!global.PT || global.PT.__gamifAutoSync) return;
-    var semana = detectSemanaFromPage(global.PT);
-    enhanceWidgetUI();
-    installAutoSync(global.PT, { semana: semana, quiet: true });
-    var cfg = getConfig();
-    var state = global.PT.state ? global.PT.state() : (semana ? loadWeekState(cfg, semana) : {});
-    if (state && (state.id_estudiante || state.cc)) pushProgress(state, cfg, false);
-  }
-
   function createPT(options) {
     var cfg = getConfig();
     persistConfig(cfg);
     var semana = options.semana;
     var xpMax = options.xpMax || 80;
-    var visitedKey = options.visitedKey || ("tga04_visited_s" + semana);
+    var visitedKey = options.visitedKey || (cfg.prefix + "_visited_s" + semana);
     var state = loadWeekState(cfg, semana);
+    var cloudPushTimer = null;
 
     function msg(text, color) {
       var el = document.getElementById("pt-msg");
@@ -473,61 +578,77 @@
       if (lbl) lbl.textContent = "Semana " + semana;
     }
 
-    var autoSync = options.autoSync !== false;
-    var syncTimer = null;
-
-    function scheduleAutoSync() {
-      if (!autoSync) return;
-      if (syncTimer) clearTimeout(syncTimer);
-      syncTimer = setTimeout(function () {
-        setSyncStatus("⏳ Guardando en la nube…");
-        pushProgress(state, cfg, false);
-      }, options.autoSyncDelayMs || 600);
+    function scheduleCloudPush() {
+      if (!isCloudDirectMode()) {
+        saveWeekState(cfg, semana, state);
+        return;
+      }
+      clearTimeout(cloudPushTimer);
+      cloudPushTimer = setTimeout(function () {
+        syncWeekProgress(state, cfg, semana).then(function (result) {
+          if (result && result.ok) clearLocalWeekProgress(cfg, semana);
+        });
+      }, 400);
     }
 
     function save() {
-      saveWeekState(cfg, semana, state);
       render();
-      scheduleAutoSync();
+      scheduleCloudPush();
     }
 
     function addXP(pts, motivo) {
       state.xp = Math.min((state.xp || 0) + pts, xpMax);
       msg("✨ +" + pts + " XP — " + motivo, "lime");
       save();
+      if (/complet|correct|ganaste|éxito|exito|✅|quiz|actividad|lectura|📖/i.test(String(motivo || ""))) {
+        if (global.IUBCelebrate) global.IUBCelebrate.launch({ message: motivo });
+        try {
+          document.dispatchEvent(new CustomEvent("iub:activity-complete", { detail: { message: motivo } }));
+        } catch (e) { /* ignore */ }
+      }
+    }
+
+    function completeActivity(motivo, pts) {
+      state.actividad_completada = true;
+      state.activity_done = true;
+      addXP(typeof pts === "number" ? pts : Math.min(15, xpMax - (state.xp || 0)), motivo || "Actividad completada ✅");
+      syncCloud();
     }
 
     async function syncCloud() {
-      save();
-      if (!sbUrl() || !sbKey()) {
+      render();
+      var result = await syncWeekProgress(state, cfg, semana);
+      if (result.ok) {
+        clearLocalWeekProgress(cfg, semana);
+        msg("✅ Progreso actualizado desde la nube", "lightgreen");
+      } else if (result.reason === "no_config") {
         msg("⚠️ Supabase no configurado", "orange");
-        return;
+      } else if (result.reason === "no_cc") {
+        msg("⚠️ Configura tu cédula en el perfil", "orange");
+      } else {
+        msg("❌ Error " + (result.status || result.reason || "sync"), "salmon");
       }
-      await pushProgress(state, cfg, true, msg);
+      return result;
     }
 
     function exportCode() {
-      save();
-      var code = btoa(encodeURIComponent(JSON.stringify(state)));
-      try {
-        navigator.clipboard.writeText(code);
-      } catch (e) { /* ignore */ }
-      var a = document.createElement("a");
-      a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(code);
-      a.download = "progreso_" + cfg.offeringCode + "_s" + semana + "_" + (state.id_estudiante || "est") + ".txt";
-      a.click();
-      msg("📋 ¡Código copiado!", "#fff9c4");
+      msg("ℹ️ El progreso se guarda automáticamente en la base de datos.", "#fff9c4");
     }
 
     function importCode() {
-      var code = prompt("Pega tu código de progreso:");
-      if (!code) return;
-      try {
-        Object.assign(state, JSON.parse(decodeURIComponent(atob(code.trim()))));
-        save();
-        msg("✅ Progreso restaurado.", "lightgreen");
-      } catch (e) {
-        msg("❌ Código inválido.", "salmon");
+      msg("ℹ️ Ingresa tu cédula; tu progreso se carga desde la nube.", "#fff9c4");
+    }
+
+    async function hydrateFromCloud() {
+      if (!isCloudDirectMode()) return;
+      var profile = loadProfile(cfg);
+      var cc = String(state.id_estudiante || state.cc || profile.cc || "").trim();
+      if (!cc) return;
+      var row = await fetchWeekProgressFromCloud(cfg, semana, cc);
+      if (row) {
+        applyCloudRowToState(state, row);
+        clearLocalWeekProgress(cfg, semana);
+        render();
       }
     }
 
@@ -539,19 +660,21 @@
     }
 
     function init() {
-      loadWeekState(cfg, semana);
       state = loadWeekState(cfg, semana);
       render();
-      if (options.autoVisitXp && !localStorage.getItem(visitedKey)) {
-        localStorage.setItem(visitedKey, "1");
-        addXP(10, "Asistencia Semana " + semana + " ✅");
-      }
-      if (typeof options.onInit === "function") options.onInit(state, { addXP: addXP, save: save });
+      hydrateFromCloud().then(function () {
+        if (options.autoVisitXp && !localStorage.getItem(visitedKey)) {
+          localStorage.setItem(visitedKey, "1");
+          addXP(10, "Asistencia Semana " + semana + " ✅");
+        }
+        if (typeof options.onInit === "function") options.onInit(state, { addXP: addXP, save: save });
+      });
     }
 
     return {
       init: init,
       addXP: addXP,
+      completeActivity: completeActivity,
       save: save,
       sync: syncCloud,
       export: exportCode,
@@ -577,20 +700,25 @@
     calcNotaFormativa: calcNotaFormativa,
     totalXP: totalXP,
     createPT: createPT,
-    installAutoSync: installAutoSync,
-    pushProgress: pushProgress,
     syncParticipation: syncParticipation,
     syncAttendanceRows: syncAttendanceRows,
+    upsertWeeklyProgress: upsertWeeklyProgress,
+    syncWeekProgress: syncWeekProgress,
+    teacherValidateWeek: teacherValidateWeek,
+    syncAdm18Scores: syncAdm18Scores,
     callRpc: callRpc,
     loadProfile: loadProfile,
     saveProfile: saveProfile,
     loadWeekState: loadWeekState,
     loadWeekXp: function (semana, cfg) {
-      var c = cfg || getConfig();
-      return Number(loadWeekState(c, semana).xp || 0);
+      return Number(loadWeekState(cfg || getConfig(), semana).xp || 0);
     },
+    isCloudDirectMode: isCloudDirectMode,
+    applyCloudRowToState: applyCloudRowToState,
+    fetchWeekProgressFromCloud: fetchWeekProgressFromCloud,
+    fetchAllProgressFromCloud: fetchAllProgressFromCloud,
+    clearLocalWeekProgress: clearLocalWeekProgress,
     sbUrl: sbUrl,
-    normalizeBaseUrl: normalizeBaseUrl,
     sbKey: sbKey,
     DEFAULT_RANKS: DEFAULT_RANKS,
   };
@@ -598,15 +726,5 @@
   global.GamifSDK = GamifSDK;
   global.rankFor = rankFor;
   global.riskFor = riskFor;
-
-  if (typeof document !== "undefined") {
-    var boot = function () {
-      bootPageAutoSync();
-      setTimeout(bootPageAutoSync, 200);
-      setTimeout(bootPageAutoSync, 700);
-    };
-    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
-    else boot();
-  }
 
 })(typeof window !== "undefined" ? window : globalThis);

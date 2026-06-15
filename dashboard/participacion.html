@@ -9,7 +9,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
   <script src="../js/supabase-config.js"></script>
   <script src="../js/gamification-sdk.js"></script>
+  <script src="../js/group-schedules.js"></script>
   <script src="../js/import-students-browser.js"></script>
+  <script src="../js/teacher-auth.js"></script>
+  <script src="../js/teacher-week-validator.js"></script>
+  <script src="../js/academic-rules.js"></script>
+  <script src="../js/student-dashboard.js"></script>
+  <script src="../js/celebration.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     [hidden] { display:none !important; }
@@ -50,7 +57,10 @@
     .att-btn.p { background:#e8f5e9; color:#1b5e20; border-color:#a5d6a7; }
     .att-btn.t { background:#fff3e0; color:#e65100; border-color:#ffb74d; }
     .att-btn.f { background:#ffebee; color:#b71c1c; border-color:#ef9a9a; }
+    .att-btn.m { background:#e3f2fd; color:#0d47a1; border-color:#90caf9; }
+    .att-btn.i { background:#f3e5f5; color:#4a148c; border-color:#ce93d8; }
     .att-btn.sel { box-shadow:0 0 0 2px var(--primary); }
+    .att-actions { display:flex; flex-wrap:wrap; gap:.2rem; }
     .chips { display:flex; gap:.25rem; flex-wrap:wrap; }
     .chip { border-radius:999px; border:1px solid var(--border); padding:.12rem .45rem; font-size:.7rem; font-weight:800; }
     .chip.p { background:#e8f5e9; color:#1b5e20; }
@@ -64,32 +74,50 @@
     .preview-box { background:#f5f5f5; border-radius:var(--radius); padding:.8rem; font-family:monospace; font-size:.82rem; white-space:pre-wrap; max-height:200px; overflow-y:auto; }
     .card-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
     @media (max-width:760px) { .card-row { grid-template-columns:1fr; } table { min-width:700px; } .table-wrap { overflow-x:auto; } }
+    .group-layer { display:flex; justify-content:space-between; align-items:center; gap:1rem; background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; padding:.75rem 1rem; border-radius:10px; margin-bottom:.8rem; flex-wrap:wrap; }
+    .group-layer span { opacity:.85; font-size:.85rem; }
+    .att-summary-chips { display:flex; flex-wrap:wrap; gap:.5rem; margin:.6rem 0; }
+    .att-chip { display:inline-block; padding:.25rem .65rem; border-radius:999px; font-size:.78rem; font-weight:700; background:#f4f6fa; border:1px solid var(--border); }
+    .att-chip.ok { background:#e8f5e9; color:#1b5e20; }
+    .att-chip.risk { background:#fff8e1; color:#e65100; }
+    .att-chip.lost { background:#ffebee; color:#b71c1c; }
+    .iub-bar { height:10px; background:#E9EAED; border-radius:999px; overflow:hidden; margin-top:.25rem; }
+    .iub-bar-fill { height:100%; border-radius:999px; }
   </style>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/gamification-sdk.js"></script>
+  <script src="../js/academic-rules.js"></script>
+  <script src="../js/academic-status-bar.js"></script>
+  <script src="../js/celebration.js"></script>
 </head>
 <body>
   <header>
     <div class="wrap top">
       <div>
         <h1>Participación y Asistencia</h1>
-        <p>Registro de clase, pasar lista y exportar evidencia.</p>
+        <p>TGA04 · NeuroBiz S.A.S. — registro de clase, importación y participación.</p>
       </div>
       <nav class="nav">
         <a href="../index.html">Inicio</a>
-        <a href="index.html">Progreso</a>
+        <a href="#live">Clase en vivo</a>
+        <a href="#validar-semana">Validar semana</a>
+        <a href="#report">Reporte</a>
         <a href="profesor.html">Docente</a>
+        <a href="../JuegoDelAhorcado/index.html">🎮 Ahorcado</a>
         <a href="#importar-estudiantes">Importar estudiantes</a>
-        <a href="notas.html">Notas</a>
       </nav>
     </div>
   </header>
   <main class="wrap">
 
-    <!-- PIN login -->
+    <!-- Acceso docente -->
     <section class="login" id="login">
-      <label for="pin">PIN docente</label>
-      <input id="pin" type="password" autocomplete="current-password" placeholder="Ingrese PIN">
-      <button onclick="unlock()">Entrar</button>
-      <p class="msg">PIN local: protege la vista en clase.</p>
+      <label for="teacherUser">Usuario docente</label>
+      <input id="teacherUser" type="text" autocomplete="username" placeholder="Ej: docente">
+      <label for="teacherPass">Contraseña</label>
+      <input id="teacherPass" type="password" autocomplete="current-password" placeholder="Contraseña">
+      <button type="button" id="teacherLoginBtn">Entrar</button>
+      <p class="msg" id="teacherLoginMsg">Acceso verificado en Supabase (cuenta docente IUB).</p>
     </section>
 
     <!-- Main app -->
@@ -98,6 +126,8 @@
         <button class="tab-btn active" onclick="showTab('live')">Clase en Vivo</button>
         <button class="tab-btn" onclick="showTab('attendance')">Asistencia</button>
         <button class="tab-btn" onclick="showTab('history')">Historial</button>
+        <button class="tab-btn" onclick="showTab('validate')">Validar semana</button>
+        <button class="tab-btn" onclick="showTab('report')">Reporte</button>
         <button class="tab-btn" onclick="showTab('config')">Configuracion</button>
       </div>
 
@@ -135,12 +165,18 @@
           <div class="metric"><span>Presentes hoy</span><strong id="mAttPresent">0</strong></div>
           <div class="metric"><span>Tardanza</span><strong id="mAttLate">0</strong></div>
           <div class="metric"><span>Ausentes</span><strong id="mAttAbsent">0</strong></div>
+          <div class="metric"><span>Motivo</span><strong id="mAttMotivo">0</strong></div>
+          <div class="metric"><span>Incapacitado</span><strong id="mAttIncap">0</strong></div>
           <div class="metric"><span>% Asistencia</span><strong id="mAttPct">0%</strong></div>
         </div>
         <div class="panel">
           <div class="toolbar">
-            <div><label for="attGroup">Grupo</label><select id="attGroup" onchange="renderAttendance()"><option value="">Todos</option></select></div>
-            <div><label for="attDate">Fecha</label><input id="attDate" type="date" onchange="renderAttendance()"></div>
+            <div><label for="attGroup">Grupo</label><select id="attGroup" onchange="onAttGroupChange()"><option value="">Todos</option></select></div>
+            <div><label for="attDate">Fecha de clase</label>
+              <input id="attDate" type="date" onchange="updateAttDateHint(); renderAttendance();">
+              <div id="attSessionButtons" style="display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.35rem"></div>
+            </div>
+            <div style="grid-column:1/-1"><p id="attDateHint" class="msg" style="min-height:1rem;margin:0"></p></div>
             <div><label for="attSearch">Buscar</label><input id="attSearch" placeholder="Nombre o CC" oninput="renderAttendance()"></div>
           </div>
           <div class="actions-row">
@@ -156,10 +192,17 @@
             </table>
           </div>
           <div class="actions-row" style="margin-top:1rem">
+            <button onclick="exportAttendanceXLSX()">Exportar Excel (.xlsx)</button>
             <button onclick="exportAttendanceCSV()">Exportar CSV (Academusoft)</button>
             <button onclick="syncAttendanceToSupabase()">Sincronizar a Supabase</button>
           </div>
         </div>
+      </div>
+
+
+      <!-- TAB: Validar XP semanal (celular) -->
+      <div class="tab-panel" id="tab-validate">
+        <div id="teacherWeekValidatorRoot"></div>
       </div>
 
       <!-- TAB: Historial -->
@@ -177,8 +220,39 @@
           </div>
           <div class="actions-row">
             <button onclick="exportHistory()">Exportar Historial (.tsv)</button>
-            <button onclick="syncParticipationToSupabase()">Sincronizar participacion a Supabase</button>
             <button class="btn-red btn-sm" onclick="clearHistory()">Borrar historial</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Reporte asistencia -->
+      <div class="tab-panel" id="tab-report">
+        <div class="panel">
+          <strong style="color:var(--primary)">Asistencia reglamentaria por grupo</strong>
+          <p class="msg" style="min-height:auto">Estudiantes en riesgo o con módulo perdido (máx. 10,4 h de inasistencia).</p>
+          <div id="teacherAttendancePanel"></div>
+        </div>
+        <div class="panel">
+          <strong style="color:var(--primary)">Progreso XP por grupo (Supabase)</strong>
+          <p class="msg">Módulo, horario y XP agregado por grupo matriculado.</p>
+          <div id="groupProgressPanel"></div>
+        </div>
+        <div class="panel">
+          <p style="color:var(--muted);font-size:.9rem;margin-bottom:.8rem">
+            Registro de cada toma de asistencia con fecha y hora exacta (local + nube).
+          </p>
+          <div class="actions-row">
+            <button class="btn-gold" onclick="renderReport()">Actualizar tabla</button>
+            <button onclick="fetchReportFromCloud()">Cargar desde Supabase</button>
+            <button class="btn-gold" onclick="exportReportXLSX()">Exportar Excel (.xlsx)</button>
+            <button onclick="exportReportCSV()">Exportar CSV</button>
+          </div>
+          <p class="msg" id="reportMsg"></p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Fecha</th><th>Hora</th><th>Estudiante</th><th>CC</th><th>Grupo</th><th>Estado</th><th>Origen</th></tr></thead>
+              <tbody id="reportRows"></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -226,22 +300,178 @@
     const STORAGE_STUDENTS = "tga04_students_v1";
     const STORAGE_HISTORY = "tga04_participation_history";
     const STORAGE_ATTENDANCE = "tga04_attendance";
+    const STORAGE_ATT_LOG = "tga04_attendance_log_v1";
     const STORAGE_TODAY_PTS = "tga04_today_points";
+    const STORAGE_CLOUD_REPORT = "tga04_attendance_cloud_report";
+    const STORAGE_CLASS_META = "tga04_class_meta_v1";
+    const ATT_CODES = ["P", "T", "F", "M", "I"];
 
     let currentTab = "live";
     let importedData = null;
+    let lastImportMeta = null;
 
     function unlock() {
-      if (document.getElementById("pin").value.trim() !== "sasadfgh2019") return alert("PIN incorrecto");
-      document.getElementById("login").hidden = true;
-      document.getElementById("app").hidden = false;
-      document.getElementById("attDate").value = todayStr();
-      init();
-      showTab(tabFromHash());
+      /* Reemplazado por TeacherAuth.bindLoginForm — ver initTeacherGate() */
+    }
+
+    function initTeacherGate() {
+      TeacherAuth.bindLoginForm({
+        onSuccess: function () {
+          document.getElementById("attDate").value = classSessionDate();
+          updateAttDateHint();
+          wireLiveActions();
+          init();
+          showTab(tabFromHash());
+          if (window.IUBStudentDashboard) IUBStudentDashboard.renderGroupProgress("groupProgressPanel");
+          if (window.IUBAcademicRules) IUBAcademicRules.renderTeacherAttendanceReport("teacherAttendancePanel");
+        },
+      });
     }
 
     function todayStr() {
       return new Date().toISOString().slice(0, 10);
+    }
+
+    function getClassMeta() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_CLASS_META) || "{}"); }
+      catch(e) { return {}; }
+    }
+
+    function setClassMeta(meta) {
+      localStorage.setItem(STORAGE_CLASS_META, JSON.stringify(meta || {}));
+    }
+
+    function selectedAttGroup() {
+      const el = document.getElementById("attGroup");
+      return el && el.value ? el.value : "";
+    }
+
+    function groupSchedule() {
+      const grupo = selectedAttGroup();
+      return window.IUBGroupSchedules && grupo ? IUBGroupSchedules.forGrupo(grupo) : null;
+    }
+
+    function classWeekday() {
+      const gs = groupSchedule();
+      if (gs && gs.sessions && gs.sessions.length) return gs.sessions[0].weekday;
+      const meta = getClassMeta();
+      return typeof meta.weekday === "number" ? meta.weekday : 4;
+    }
+
+    function classDayLabel() {
+      const gs = groupSchedule();
+      if (gs) return gs.label || gs.horario;
+      const meta = getClassMeta();
+      return meta.dayLabel || "JUEVES";
+    }
+
+    function classSessionDate(refDate, weekday) {
+      const gs = groupSchedule();
+      const target = typeof weekday === "number" ? weekday : classWeekday();
+      if (gs && window.IUBGroupSchedules) {
+        return IUBGroupSchedules.sessionDateForWeekday(refDate, target);
+      }
+      const d = refDate ? new Date(refDate) : new Date();
+      const day = d.getDay();
+      const mondayOffset = day === 0 ? -6 : 1 - day;
+      const monday = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      monday.setDate(monday.getDate() + mondayOffset);
+      const session = new Date(monday);
+      session.setDate(monday.getDate() + (target === 0 ? 6 : target - 1));
+      return session.toISOString().slice(0, 10);
+    }
+
+    function isClassSessionDate(dateStr) {
+      if (!dateStr) return false;
+      const grupo = selectedAttGroup();
+      if (grupo && window.IUBGroupSchedules) {
+        const ok = IUBGroupSchedules.isSessionDate(grupo, dateStr);
+        if (ok !== null) return ok;
+      }
+      const parts = dateStr.split("-");
+      const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 12);
+      return d.getDay() === classWeekday();
+    }
+
+    function formatDateEs(dateStr) {
+      if (!dateStr) return "";
+      const parts = dateStr.split("-");
+      const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 12);
+      return d.toLocaleDateString("es-CO", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+    }
+
+    function updateAttDateHint() {
+      const el = document.getElementById("attDateHint");
+      if (!el) return;
+      const gs = groupSchedule();
+      const label = classDayLabel();
+      const dateVal = document.getElementById("attDate").value;
+      const suggested = (gs && window.IUBGroupSchedules)
+        ? IUBGroupSchedules.nearestSessionDate(selectedAttGroup(), dateVal || undefined)
+        : classSessionDate();
+      const horario = (gs && gs.horario) || getClassMeta().horario || label;
+      const hours = (gs && dateVal && window.IUBGroupSchedules)
+        ? IUBGroupSchedules.hoursForSession(selectedAttGroup(), dateVal)
+        : null;
+      if (isClassSessionDate(dateVal)) {
+        el.textContent = "Sesión de clase: " + formatDateEs(dateVal) + " (" + horario + (hours ? " · " + hours + " h" : "") + ").";
+        el.className = "msg ok";
+      } else {
+        el.textContent = "Horario del grupo: " + label + " (" + horario + "). Fecha sugerida: " + formatDateEs(suggested) + ".";
+        el.className = "msg err";
+      }
+    }
+
+    function useClassSessionDate(weekday) {
+      document.getElementById("attDate").value = classSessionDate(undefined, weekday);
+      updateAttDateHint();
+      renderAttendance();
+    }
+
+    function updateSessionButtons() {
+      const host = document.getElementById("attSessionButtons");
+      if (!host) return;
+      host.innerHTML = "";
+      const gs = groupSchedule();
+      if (gs && gs.sessions && gs.sessions.length) {
+        gs.sessions.forEach(function (s) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "btn-sm btn-gold";
+          btn.textContent = "Usar " + s.dayLabel.toLowerCase() + " (" + s.hours + " h)";
+          btn.onclick = function () { useClassSessionDate(s.weekday); };
+          host.appendChild(btn);
+        });
+        return;
+      }
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn-sm btn-gold";
+      btn.textContent = "Usar " + classDayLabel().toLowerCase() + " de esta semana";
+      btn.onclick = function () { useClassSessionDate(); };
+      host.appendChild(btn);
+    }
+
+    function onAttGroupChange() {
+      updateSessionButtons();
+      const grupo = selectedAttGroup();
+      if (grupo && window.IUBGroupSchedules) {
+        const near = IUBGroupSchedules.nearestSessionDate(grupo);
+        if (near) document.getElementById("attDate").value = near;
+      }
+      updateAttDateHint();
+      renderAttendance();
+    }
+
+    function updateClassDayButtonLabel() {
+      updateSessionButtons();
+    }
+
+    function normalizeStudentHorario(s) {
+      if (!window.IUBGroupSchedules || !s.grupo) return s;
+      return Object.assign({}, s, {
+        horario: IUBGroupSchedules.normalizeHorario(s.grupo, s.horario)
+      });
     }
 
     function nowISO() {
@@ -273,6 +503,7 @@
 
     function setAttendance(obj) {
       localStorage.setItem(STORAGE_ATTENDANCE, JSON.stringify(obj));
+      try { document.dispatchEvent(new CustomEvent("iub:attendance-updated")); } catch (e) { /* ignore */ }
     }
 
     function getTodayPoints() {
@@ -284,6 +515,52 @@
       localStorage.setItem(STORAGE_TODAY_PTS, JSON.stringify(obj));
     }
 
+    function getAttLog() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_ATT_LOG) || "[]"); }
+      catch(e) { return []; }
+    }
+
+    function setAttLog(arr) {
+      localStorage.setItem(STORAGE_ATT_LOG, JSON.stringify(arr));
+    }
+
+    function appendAttLog(entry) {
+      const log = getAttLog();
+      log.push(entry);
+      setAttLog(log);
+    }
+
+    function getCloudReport() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_CLOUD_REPORT) || "[]"); }
+      catch(e) { return []; }
+    }
+
+    function setCloudReport(arr) {
+      localStorage.setItem(STORAGE_CLOUD_REPORT, JSON.stringify(arr));
+    }
+
+    function attStateValue(cell) {
+      if (cell == null || cell === "-") return "-";
+      if (typeof cell === "string") return cell;
+      return cell.estado || "-";
+    }
+
+    function wireLiveActions() {
+      const panel = document.getElementById("tab-live");
+      if (!panel || panel.dataset.wired === "1") return;
+      panel.dataset.wired = "1";
+      panel.addEventListener("click", function(e) {
+        const btn = e.target.closest("button[data-live-points]");
+        if (!btn) return;
+        e.preventDefault();
+        giveToStudent(btn.getAttribute("data-cc"), Number(btn.getAttribute("data-live-points")));
+      });
+    }
+
+    function ccAttr(cc) {
+      return String(cc ?? "").replace(/[^\d]/g, "");
+    }
+
     function showTab(name) {
       currentTab = name;
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -293,11 +570,22 @@
       if (name === "live") renderLive();
       if (name === "attendance") renderAttendance();
       if (name === "history") renderHistory();
+      if (name === "validate" && window.IUBTeacherWeekValidator) IUBTeacherWeekValidator.mount("teacherWeekValidatorRoot");
+      if (name === "report") {
+        renderReport();
+        if (window.IUBStudentDashboard) IUBStudentDashboard.renderGroupProgress("groupProgressPanel");
+        if (window.IUBAcademicRules) IUBAcademicRules.renderTeacherAttendanceReport("teacherAttendancePanel");
+      }
       if (name === "config") renderConfig();
     }
 
     function tabFromHash() {
-      return location.hash === "#importar-estudiantes" || location.hash === "#config" ? "config" : "live";
+      if (location.hash === "#importar-estudiantes" || location.hash === "#config") return "config";
+      if (location.hash === "#report") return "report";
+      if (location.hash === "#attendance") return "attendance";
+      if (location.hash === "#validar-semana" || location.hash === "#validate") return "validate";
+      if (location.hash === "#history") return "history";
+      return "live";
     }
 
     window.addEventListener("hashchange", () => {
@@ -306,54 +594,45 @@
 
     function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
 
-    function offeringCode() {
-      return GamifSDK.getOfferingCode();
-    }
-
-    async function pushParticipationEvents(newEvents) {
-      if (!newEvents || !newEvents.length || !window.GamifSDK) return;
-      try {
-        await GamifSDK.syncParticipation(newEvents, offeringCode());
-      } catch (e) {
-        console.warn("pushParticipationEvents:", e.message);
-      }
-    }
-
     function init() {
-      // Si no hay estudiantes en localStorage, cargar desde Supabase
-      const students = getStudents();
-      if (!students.length) {
-        fetchStudentsFromSupabase().then(function(loaded) {
-          fillGroupSelect("liveGroup");
-          fillGroupSelect("attGroup");
-          renderLive();
-          if (loaded) renderConfig();
-        });
-        return;
+      const meta = getClassMeta();
+      if (typeof meta.weekday !== "number") {
+        setClassMeta({ weekday: 4, dayLabel: "JUEVES", horario: "JUEVES" });
       }
-      fillGroupSelect("liveGroup");
-      fillGroupSelect("attGroup");
-      renderLive();
+      updateClassDayButtonLabel();
+      updateAttDateHint();
+      fetchStudentsFromSupabase().finally(function() {
+        fillGroupSelect("liveGroup");
+        fillGroupSelect("attGroup");
+        renderLive();
+        renderConfig();
+      });
     }
 
     async function fetchStudentsFromSupabase() {
       const url = localStorage.getItem("tga04_supabase_url");
       const key = localStorage.getItem("tga04_supabase_key");
       if (!url || !key) return false;
+      const offering = encodeURIComponent(
+        (typeof GamifSDK !== "undefined" && GamifSDK.getOfferingCode()) || "TGA04-2026-2"
+      );
       try {
-        const res = await fetch(url + "/rest/v1/students?select=*&order=name", {
+        let res = await fetch(url + "/rest/v1/v_legacy_students?select=cc,name,grupo,horario&offering_code=eq." + offering + "&order=name", {
           headers: { apikey: key, Authorization: "Bearer " + key }
         });
-        if (!res.ok) return false;
+        if (!res.ok) {
+          console.warn("v_legacy_students:", res.status);
+          return false;
+        }
         const data = await res.json();
         if (data && data.length) {
           const students = data.map(function(s) {
-            return {
+            return normalizeStudentHorario({
               name: s.name,
               cc: s.cc,
               grupo: s.grupo || "",
               horario: s.horario || ""
-            };
+            });
           });
           setStudents(students);
           return true;
@@ -403,63 +682,90 @@
       document.getElementById("liveRows").innerHTML = filtered.map(s => {
         const pts = todayPts[s.cc] || 0;
         return `<tr>
-          <td><input type="checkbox" value="${esc(s.cc)}" class="live-chk"></td>
+          <td><input type="checkbox" value="${ccAttr(s.cc)}" class="live-chk"></td>
           <td><strong>${esc(s.name)}</strong></td>
           <td>${esc(s.cc)}</td>
           <td>${esc(s.grupo || "-")}</td>
           <td>${pts}</td>
           <td>${getStudentTotalXP(s.cc)}</td>
-          <td><button class="btn-sm" onclick="giveToStudent('${esc(s.cc)}',1)">+1</button>
-              <button class="btn-sm" onclick="giveToStudent('${esc(s.cc)}',3)">+3</button></td>
+          <td>
+            <button type="button" class="btn-sm" data-cc="${ccAttr(s.cc)}" data-live-points="1">+1</button>
+            <button type="button" class="btn-sm" data-cc="${ccAttr(s.cc)}" data-live-points="3">+3</button>
+          </td>
         </tr>`;
       }).join("");
     }
 
     function getStudentTotalXP(cc) {
-      const weeks = [1,2,3,4,6,7,8,9,11,12,13,14,15];
-      let xp = 0;
-      for (const w of weeks) {
-        try {
-          const d = JSON.parse(localStorage.getItem(`tga04_s${w}`) || "{}");
-          xp += Number(d.xp || 0);
-        } catch(e) {}
-      }
-      return xp;
+      return getHistory()
+        .filter(function(h) { return h.cc === cc; })
+        .reduce(function(sum, h) { return sum + (Number(h.points) || 0); }, 0);
     }
 
-    function givePoints(amount) {
+    async function syncPointsToCloud(entries) {
+      if (typeof GamifSDK === "undefined" || !entries.length) {
+        return { ok: false, reason: "no_sdk", count: 0, failed: entries.length };
+      }
+      var events = entries.map(function(e) {
+        return { cc: e.cc, points: e.points, type: e.type, name: e.name, ts: e.ts };
+      });
+      return await GamifSDK.syncParticipation(events);
+    }
+
+    async function givePoints(amount) {
       const checks = document.querySelectorAll(".live-chk:checked");
-      if (!checks.length) { document.getElementById("liveMsg").textContent = "Selecciona al menos un estudiante."; return; }
+      if (!checks.length) {
+        document.getElementById("liveMsg").textContent = "Selecciona al menos un estudiante.";
+        document.getElementById("liveMsg").className = "msg err";
+        return;
+      }
       const history = getHistory();
       const todayPts = getTodayPoints();
       const label = amount === 1 ? "Asistencia" : amount === 3 ? "Participacion" : "Destacado";
       const now = nowISO();
+      const batch = [];
       checks.forEach(cb => {
         const cc = cb.value;
         todayPts[cc] = (todayPts[cc] || 0) + amount;
-        history.push({ ts: now, cc, name: findStudentName(cc), type: label, points: amount });
+        const entry = { ts: now, cc, name: findStudentName(cc), type: label, points: amount };
+        history.push(entry);
+        batch.push(entry);
       });
       setTodayPoints(todayPts);
       setHistory(history);
-      const batch = [];
-      checks.forEach(cb => {
-        batch.push({ ts: now, cc: cb.value, name: findStudentName(cb.value), type: label, points: amount });
-      });
-      pushParticipationEvents(batch);
-      document.getElementById("liveMsg").textContent = `+${amount} pts otorgados a ${checks.length} estudiante(s).`;
-      document.getElementById("liveMsg").className = "msg ok";
+      document.getElementById("liveMsg").textContent = "Guardando en la nube...";
+      document.getElementById("liveMsg").className = "msg";
+      const cloud = await syncPointsToCloud(batch);
+      if (cloud.ok) {
+        document.getElementById("liveMsg").textContent = `+${amount} pts otorgados a ${checks.length} estudiante(s). Sincronizado (${cloud.count}).`;
+        document.getElementById("liveMsg").className = "msg ok";
+      } else {
+        document.getElementById("liveMsg").textContent = `+${amount} pts locales. Nube: ${cloud.failed || 0} error(es). Revisa consola (F12).`;
+        document.getElementById("liveMsg").className = "msg err";
+      }
       renderLive();
     }
 
-    function giveToStudent(cc, amount) {
+    async function giveToStudent(cc, amount) {
+      if (!cc) return;
       const history = getHistory();
       const todayPts = getTodayPoints();
       const label = amount === 1 ? "Asistencia" : amount === 3 ? "Participacion" : "Destacado";
+      const entry = { ts: nowISO(), cc, name: findStudentName(cc), type: label, points: amount };
       todayPts[cc] = (todayPts[cc] || 0) + amount;
-      history.push({ ts: nowISO(), cc, name: findStudentName(cc), type: label, points: amount });
+      history.push(entry);
       setTodayPoints(todayPts);
       setHistory(history);
-      pushParticipationEvents([{ ts: nowISO(), cc, name: findStudentName(cc), type: label, points: amount }]);
+      document.getElementById("liveMsg").textContent = `Guardando +${amount} para ${entry.name}...`;
+      document.getElementById("liveMsg").className = "msg";
+      const cloud = await syncPointsToCloud([entry]);
+      if (cloud.ok) {
+        document.getElementById("liveMsg").textContent = `+${amount} pts a ${entry.name}. Sincronizado en Supabase.`;
+        document.getElementById("liveMsg").className = "msg ok";
+      } else {
+        document.getElementById("liveMsg").textContent = `+${amount} pts locales a ${entry.name}. Error nube (HTTP ${cloud.status || "?"}).`;
+        document.getElementById("liveMsg").className = "msg err";
+      }
       renderLive();
     }
 
@@ -471,8 +777,28 @@
 
     function findStudentName(cc) {
       const students = getStudents();
-      const s = students.find(s => s.cc === cc);
+      const s = students.find(s => String(s.cc) === String(cc));
       return s ? s.name : cc;
+    }
+
+    function findStudentGrupo(cc) {
+      const students = getStudents();
+      const s = students.find(s => String(s.cc) === String(cc));
+      return s ? (s.grupo || "") : "";
+    }
+
+    function attLabel(estado) {
+      if (estado === "P") return "Presente";
+      if (estado === "T") return "Tardanza";
+      if (estado === "F") return "Ausente";
+      if (estado === "M") return "Motivo";
+      if (estado === "I") return "Incapacitado";
+      return estado;
+    }
+
+    function attExportCode(v) {
+      if (v === "P" || v === "T" || v === "F" || v === "M" || v === "I") return v;
+      return "-";
     }
 
     // ── TAB: Asistencia ─────────────────────────────────────
@@ -502,28 +828,37 @@
 
       const dayKey = date;
       const dayAtt = att[dayKey] || {};
-      const dayValues = Object.values(dayAtt);
+      const dayValues = Object.values(dayAtt).map(attStateValue);
       const pCount = dayValues.filter(v => v === "P").length;
       const tCount = dayValues.filter(v => v === "T").length;
       const fCount = dayValues.filter(v => v === "F").length;
+      const mCount = dayValues.filter(v => v === "M").length;
+      const iCount = dayValues.filter(v => v === "I").length;
       const total = filtered.length || 1;
 
       document.getElementById("mAttPresent").textContent = pCount;
       document.getElementById("mAttLate").textContent = tCount;
       document.getElementById("mAttAbsent").textContent = fCount;
+      document.getElementById("mAttMotivo").textContent = mCount;
+      document.getElementById("mAttIncap").textContent = iCount;
       document.getElementById("mAttPct").textContent = Math.round(pCount / total * 100) + "%";
 
       document.getElementById("attRows").innerHTML = filtered.map(s => {
-        const state = dayAtt[s.cc] || "-";
+        const state = attStateValue(dayAtt[s.cc]);
         const pct = calcAttendancePct(s.cc);
+        const ccSafe = ccAttr(s.cc);
         return `<tr>
           <td><strong>${esc(s.name)}</strong></td>
           <td>${esc(s.cc)}</td>
           <td>${esc(s.grupo || "-")}</td>
           <td>
-            <button class="att-btn p${state==='P'?' sel':''}" onclick="setAtt('${esc(s.cc)}','P')">Presente</button>
-            <button class="att-btn t${state==='T'?' sel':''}" onclick="setAtt('${esc(s.cc)}','T')">Tarde</button>
-            <button class="att-btn f${state==='F'?' sel':''}" onclick="setAtt('${esc(s.cc)}','F')">Ausente</button>
+            <div class="att-actions">
+              <button type="button" class="att-btn p${state==='P'?' sel':''}" onclick="setAtt('${ccSafe}','P')">Presente</button>
+              <button type="button" class="att-btn t${state==='T'?' sel':''}" onclick="setAtt('${ccSafe}','T')">Tarde</button>
+              <button type="button" class="att-btn f${state==='F'?' sel':''}" onclick="setAtt('${ccSafe}','F')">Ausente</button>
+              <button type="button" class="att-btn m${state==='M'?' sel':''}" onclick="setAtt('${ccSafe}','M')">Motivo</button>
+              <button type="button" class="att-btn i${state==='I'?' sel':''}" onclick="setAtt('${ccSafe}','I')">Incap.</button>
+            </div>
           </td>
           <td>${pct}%</td>
         </tr>`;
@@ -531,30 +866,67 @@
     }
 
     function setAtt(cc, state) {
-      const date = document.getElementById("attDate").value || todayStr();
+      const date = document.getElementById("attDate").value || classSessionDate();
       const att = getAttendance();
       if (!att[date]) att[date] = {};
-      att[date][cc] = att[date][cc] === state ? "-" : state;
+      const current = attStateValue(att[date][cc]);
+      const next = current === state ? "-" : state;
+      const ts = nowISO();
+      if (next === "-") {
+        att[date][cc] = "-";
+      } else {
+        att[date][cc] = { estado: next, ts: ts };
+        appendAttLog({
+          ts: ts,
+          fecha: date,
+          cc: cc,
+          name: findStudentName(cc),
+          grupo: findStudentGrupo(cc),
+          estado: next,
+          origen: "local"
+        });
+      }
       setAttendance(att);
+      document.getElementById("attMsg").textContent = next === "-"
+        ? "Marca de asistencia quitada."
+        : `${attLabel(next)} registrado a las ${new Date(ts).toLocaleTimeString()}.`;
+      document.getElementById("attMsg").className = "msg ok";
       renderAttendance();
+      updateAttDateHint();
     }
 
     function markAllAttendance(state) {
-      const date = document.getElementById("attDate").value || todayStr();
+      const date = document.getElementById("attDate").value || classSessionDate();
       const students = getStudents();
       const group = document.getElementById("attGroup").value;
       let filtered = students;
       if (group) filtered = filtered.filter(s => s.grupo === group);
       const att = getAttendance();
       if (!att[date]) att[date] = {};
-      filtered.forEach(s => { att[date][s.cc] = state; });
+      const ts = nowISO();
+      filtered.forEach(s => {
+        const cc = ccAttr(s.cc);
+        att[date][cc] = { estado: state, ts: ts };
+        appendAttLog({
+          ts: ts,
+          fecha: date,
+          cc: cc,
+          name: s.name,
+          grupo: s.grupo || "",
+          estado: state,
+          origen: "local"
+        });
+      });
       setAttendance(att);
+      document.getElementById("attMsg").textContent = `${attLabel(state)} masivo: ${filtered.length} estudiantes (${new Date(ts).toLocaleString()}).`;
+      document.getElementById("attMsg").className = "msg ok";
       renderAttendance();
+      updateAttDateHint();
     }
 
     function clearTodayAtt() {
       if (!confirm("Limpiar asistencia de esta fecha?")) return;
-      const date = document.getElementById("attDate").value || todayStr();
+      const date = document.getElementById("attDate").value || classSessionDate();
       const att = getAttendance();
       delete att[date];
       setAttendance(att);
@@ -567,9 +939,10 @@
       if (!dates.length) return 100;
       let total = 0, present = 0;
       for (const d of dates) {
-        if (att[d][cc] !== undefined && att[d][cc] !== "-") {
+        const v = attStateValue((att[d] || {})[cc]);
+        if (v === "P" || v === "T" || v === "F") {
           total++;
-          if (att[d][cc] === "P") present++;
+          if (v === "P") present++;
         }
       }
       return total ? Math.round(present / total * 100) : 100;
@@ -585,10 +958,10 @@
         const row = [s.name, s.cc, s.grupo || ""];
         let p = 0, t = 0;
         for (const d of dates) {
-          const v = (att[d] || {})[s.cc] || "-";
-          row.push(v === "P" ? "P" : v === "T" ? "T" : "F");
+          const v = attStateValue((att[d] || {})[s.cc]);
+          row.push(attExportCode(v));
           if (v === "P") p++;
-          else if (v !== "-") t++;
+          else if (v === "T" || v === "F") t++;
         }
         row.push(dates.length ? Math.round(p / dates.length * 100) + "%" : "");
         rows.push(row);
@@ -596,52 +969,50 @@
       downloadCSV(rows, `Asistencia_TGA04_${todayStr()}.csv`);
     }
 
+    function exportAttendanceXLSX() {
+      const att = getAttendance();
+      const dates = Object.keys(att).sort();
+      const students = getStudents();
+      if (!dates.length) { alert("No hay datos de asistencia."); return; }
+      const rows = [["Estudiante", "CC", "Grupo", ...dates, "% Asistencia"]];
+      for (const s of students.sort((a,b) => a.name.localeCompare(b.name))) {
+        const row = [s.name, s.cc, s.grupo || ""];
+        let p = 0;
+        for (const d of dates) {
+          const v = attStateValue((att[d] || {})[s.cc]);
+          row.push(attExportCode(v));
+          if (v === "P") p++;
+        }
+        row.push(dates.length ? Math.round(p / dates.length * 100) + "%" : "");
+        rows.push(row);
+      }
+      downloadXLSX(rows, `Asistencia_TGA04_${todayStr()}.xlsx`, "Asistencia");
+    }
+
     async function syncAttendanceToSupabase() {
-      const url = localStorage.getItem("tga04_supabase_url");
-      const key = localStorage.getItem("tga04_supabase_key");
-      if (!url || !key) { alert("Supabase no configurado."); return; }
+      if (typeof GamifSDK === "undefined") { alert("Supabase no configurado."); return; }
       const att = getAttendance();
       const rows = [];
       for (const [fecha, states] of Object.entries(att)) {
-        for (const [cc, estado] of Object.entries(states)) {
+        for (const [cc, cell] of Object.entries(states)) {
+          const estado = attStateValue(cell);
           if (estado === "-") continue;
-          rows.push({ cc, fecha, estado, grupo: getStudents().find(s => s.cc === cc)?.grupo || "" });
+          rows.push({ cc, fecha, estado });
         }
       }
       if (!rows.length) { alert("Sin datos para sincronizar."); return; }
       document.getElementById("attMsg").textContent = "Sincronizando...";
       try {
-        for (let i = 0; i < rows.length; i += 200) {
-          const batch = rows.slice(i, i + 200);
-          const res = await fetch(url + "/rest/v1/attendance", {
-            method: "POST",
-            headers: { apikey: key, Authorization: "Bearer " + key, "Content-Type": "application/json", Prefer: "resolution=merge-duplicates" },
-            body: JSON.stringify(batch)
-          });
-          if (!res.ok) throw new Error("HTTP legacy " + res.status);
+        const result = await GamifSDK.syncAttendanceRows(rows);
+        if (result.ok) {
+          document.getElementById("attMsg").textContent = `Asistencia sincronizada (${result.count} registros).`;
+          document.getElementById("attMsg").className = "msg ok";
+        } else {
+          throw new Error((result.failed || 0) + " filas fallaron");
         }
-        const unified = await GamifSDK.syncAttendanceRows(rows, offeringCode());
-        document.getElementById("attMsg").textContent = "Asistencia sincronizada (legacy + unificado: " + (unified.count || 0) + " filas).";
-        document.getElementById("attMsg").className = "msg ok";
       } catch(e) {
         document.getElementById("attMsg").textContent = "Error: " + e.message;
         document.getElementById("attMsg").className = "msg err";
-      }
-    }
-
-    async function syncParticipationToSupabase() {
-      const history = getHistory();
-      if (!history.length) { document.getElementById("histMsg").textContent = "Sin historial para sincronizar."; return; }
-      document.getElementById("histMsg").textContent = "Sincronizando participacion...";
-      try {
-        const result = await GamifSDK.syncParticipation(history, offeringCode());
-        document.getElementById("histMsg").textContent = result.ok
-          ? `Participacion sincronizada: ${result.count} eventos.`
-          : `Parcial: ${result.count} ok, ${result.failed || 0} fallos.`;
-        document.getElementById("histMsg").className = result.ok ? "msg ok" : "msg err";
-      } catch (e) {
-        document.getElementById("histMsg").textContent = "Error: " + e.message;
-        document.getElementById("histMsg").className = "msg err";
       }
     }
 
@@ -680,6 +1051,111 @@
       renderHistory();
     }
 
+    function buildReportRows() {
+      const local = getAttLog().map(function(r) {
+        return Object.assign({ origen: r.origen || "local" }, r);
+      });
+      const cloud = getCloudReport();
+      const merged = local.concat(cloud);
+      merged.sort(function(a, b) {
+        return new Date(b.ts || b.fecha).getTime() - new Date(a.ts || a.fecha).getTime();
+      });
+      return merged;
+    }
+
+    function renderReport() {
+      const rows = buildReportRows();
+      const tbody = document.getElementById("reportRows");
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--muted)">
+          Sin registros aun. Marca asistencia en la pestaña <strong>Asistencia</strong>.
+        </td></tr>`;
+        document.getElementById("reportMsg").textContent = "0 registros.";
+        return;
+      }
+      tbody.innerHTML = rows.map(function(r) {
+        const dt = new Date(r.ts || r.fecha);
+        const fecha = r.fecha || dt.toISOString().slice(0, 10);
+        const hora = r.ts ? dt.toLocaleTimeString() : "—";
+        return `<tr>
+          <td>${esc(fecha)}</td>
+          <td>${esc(hora)}</td>
+          <td><strong>${esc(r.name || findStudentName(r.cc))}</strong></td>
+          <td>${esc(r.cc)}</td>
+          <td>${esc(r.grupo || findStudentGrupo(r.cc) || "-")}</td>
+          <td>${esc(attLabel(r.estado))}</td>
+          <td>${esc(r.origen || "local")}</td>
+        </tr>`;
+      }).join("");
+      document.getElementById("reportMsg").textContent = rows.length + " registros en el reporte.";
+      document.getElementById("reportMsg").className = "msg ok";
+    }
+
+    async function fetchReportFromCloud() {
+      if (typeof GamifSDK === "undefined") {
+        document.getElementById("reportMsg").textContent = "Supabase no configurado.";
+        return;
+      }
+      document.getElementById("reportMsg").textContent = "Cargando desde Supabase...";
+      const offering = encodeURIComponent(GamifSDK.getOfferingCode() || "TGA04-2026-2");
+      try {
+        const res = await fetch(
+          GamifSDK.sbUrl() + "/rest/v1/v_legacy_attendance?select=cc,fecha,estado,created_at,grupo,offering_code&offering_code=eq." + offering + "&order=created_at.desc",
+          { headers: { apikey: GamifSDK.sbKey(), Authorization: "Bearer " + GamifSDK.sbKey() } }
+        );
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const mapped = (data || []).map(function(r) {
+          return {
+            ts: r.created_at,
+            fecha: r.fecha,
+            cc: r.cc,
+            name: findStudentName(r.cc),
+            grupo: r.grupo || findStudentGrupo(r.cc),
+            estado: r.estado,
+            origen: "supabase"
+          };
+        });
+        setCloudReport(mapped);
+        renderReport();
+        document.getElementById("reportMsg").textContent = mapped.length + " registros cargados desde Supabase.";
+        document.getElementById("reportMsg").className = "msg ok";
+      } catch (e) {
+        document.getElementById("reportMsg").textContent = "Error: " + e.message;
+        document.getElementById("reportMsg").className = "msg err";
+      }
+    }
+
+    function reportSheetRows() {
+      const rows = buildReportRows();
+      const sheet = [["Fecha", "Hora", "Estudiante", "CC", "Grupo", "Estado", "Origen"]];
+      rows.forEach(function(r) {
+        const dt = new Date(r.ts || r.fecha);
+        sheet.push([
+          r.fecha || dt.toISOString().slice(0, 10),
+          r.ts ? dt.toLocaleTimeString() : "",
+          r.name || findStudentName(r.cc),
+          r.cc,
+          r.grupo || findStudentGrupo(r.cc),
+          attLabel(r.estado),
+          r.origen || "local"
+        ]);
+      });
+      return sheet;
+    }
+
+    function exportReportCSV() {
+      const rows = buildReportRows();
+      if (!rows.length) { alert("Sin registros para exportar."); return; }
+      downloadCSV(reportSheetRows(), "Reporte_Asistencia_TGA04_" + todayStr() + ".csv");
+    }
+
+    function exportReportXLSX() {
+      const rows = buildReportRows();
+      if (!rows.length) { alert("Sin registros para exportar."); return; }
+      downloadXLSX(reportSheetRows(), "Reporte_Asistencia_TGA04_" + todayStr() + ".xlsx", "Reporte");
+    }
+
     // ── TAB: Configuracion ──────────────────────────────────
     function renderConfig() {
       const students = getStudents();
@@ -692,8 +1168,8 @@
     }
 
     function studentImporter() {
-      if (!window.TGA04ImportStudents) throw new Error("El importador aun no termino de cargar. Recarga la pagina e intenta de nuevo.");
-      return window.TGA04ImportStudents;
+      if (!window.IUBImportStudents) throw new Error("El importador aun no termino de cargar. Recarga la pagina e intenta de nuevo.");
+      return window.IUBImportStudents;
     }
 
     async function importSelectedFile() {
@@ -742,8 +1218,10 @@
       }
 
       importedData = students;
+      lastImportMeta = result.meta;
       const groupLabel = result.meta.grupo ? ` (${result.meta.grupo})` : "";
-      msg.textContent = `${students.length} estudiantes detectados${groupLabel} desde ${sourceLabel}.`;
+      const dayLabel = result.meta.dayLabel ? ` · Clase: ${result.meta.dayLabel}` : "";
+      msg.textContent = `${students.length} estudiantes detectados${groupLabel}${dayLabel} desde ${sourceLabel}.`;
       msg.className = "msg ok";
       const preview = document.getElementById("importPreview");
       preview.hidden = false;
@@ -762,15 +1240,28 @@
       }
       const final = [...byCC.values()];
       setStudents(final);
+      if (lastImportMeta) {
+        setClassMeta({
+          weekday: lastImportMeta.weekday,
+          dayLabel: lastImportMeta.dayLabel || "JUEVES",
+          horario: lastImportMeta.horario || lastImportMeta.dayLabel || "JUEVES",
+          grupo: lastImportMeta.grupo || ""
+        });
+        document.getElementById("attDate").value = classSessionDate();
+        updateAttDateHint();
+        updateClassDayButtonLabel();
+        lastImportMeta = null;
+      }
       importedData = null;
       document.getElementById("importPreview").hidden = true;
       document.getElementById("importActions").hidden = true;
-      document.getElementById("importMsg").textContent = `${final.length} estudiantes totales cargados.`;
+      document.getElementById("importMsg").textContent = `${final.length} estudiantes totales cargados. Sincronizando a la nube...`;
       document.getElementById("importMsg").className = "msg ok";
       fillGroupSelect("liveGroup");
       fillGroupSelect("attGroup");
       renderConfig();
       renderLive();
+      syncStudentsToSupabase();
     }
 
     function cancelImport() {
@@ -781,23 +1272,37 @@
     }
 
     async function syncStudentsToSupabase() {
-      const url = localStorage.getItem("tga04_supabase_url");
-      const key = localStorage.getItem("tga04_supabase_key");
-      if (!url || !key) { alert("Supabase no configurado."); return; }
+      if (typeof GamifSDK === "undefined") { alert("Supabase no configurado."); return; }
       const students = getStudents();
       if (!students.length) { alert("No hay estudiantes para sincronizar."); return; }
       document.getElementById("configSummary").textContent = "Sincronizando...";
       try {
-        for (let i = 0; i < students.length; i += 200) {
-          const batch = students.slice(i, i + 200);
-          const res = await fetch(url + "/rest/v1/students", {
-            method: "POST",
-            headers: { apikey: key, Authorization: "Bearer " + key, "Content-Type": "application/json", Prefer: "resolution=merge-duplicates" },
-            body: JSON.stringify(batch)
-          });
-          if (!res.ok) throw new Error("HTTP " + res.status);
-        }
-        document.getElementById("configSummary").textContent = `${students.length} estudiantes sincronizados a Supabase.`;
+        const offering = GamifSDK.getOfferingCode() || "TGA04-2026-2";
+        const payload = students.map(function(s) {
+          const row = normalizeStudentHorario(s);
+          return {
+            cc: row.cc,
+            name: row.name,
+            grupo: row.grupo || "",
+            horario: row.horario || ""
+          };
+        });
+        const res = await fetch(GamifSDK.sbUrl() + "/rest/v1/rpc/upsert_roster_students", {
+          method: "POST",
+          headers: {
+            apikey: GamifSDK.sbKey(),
+            Authorization: "Bearer " + GamifSDK.sbKey(),
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            p_offering_code: offering,
+            p_students: payload
+          })
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const count = await res.json();
+        document.getElementById("configSummary").textContent =
+          (count || students.length) + " estudiantes sincronizados a Supabase.";
       } catch(e) {
         document.getElementById("configSummary").textContent = "Error: " + e.message;
       }
@@ -828,6 +1333,24 @@
       a.click();
       URL.revokeObjectURL(a.href);
     }
+
+    function downloadXLSX(rows, filename, sheetName) {
+      if (typeof XLSX === "undefined") {
+        alert("La libreria Excel aun no cargo. Recarga la pagina (Cmd+Shift+R) e intenta de nuevo.");
+        return;
+      }
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, sheetName || "Reporte");
+      XLSX.writeFile(wb, filename);
+    }
+
+    document.addEventListener("DOMContentLoaded", initTeacherGate);
+    document.addEventListener("iub:attendance-updated", function () {
+      if (currentTab === "report" && window.IUBAcademicRules) {
+        IUBAcademicRules.renderTeacherAttendanceReport("teacherAttendancePanel");
+      }
+    });
   </script>
 </body>
 </html>

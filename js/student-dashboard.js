@@ -33,9 +33,13 @@
     var key = cfg.prefix + "_progress:" + cfg.offeringCode + ":" + semana;
     var raw = localStorage.getItem(key);
     if (!raw) raw = localStorage.getItem("tga04_s" + semana);
+    if (!raw && cfg.prefix === "adm18") {
+      raw = localStorage.getItem("adm18_scores") ? null : localStorage.getItem("adm18_s" + semana);
+    }
     if (!raw) raw = localStorage.getItem(cfg.prefix + "_s" + semana);
     try {
-      return Number(JSON.parse(raw || "{}").xp || 0);
+      var st = JSON.parse(raw || "{}");
+      return Number(st.xp || 0);
     } catch (e) {
       return 0;
     }
