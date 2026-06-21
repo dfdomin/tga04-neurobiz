@@ -1389,12 +1389,14 @@ else PT.init();
       return;
     }
 
-    // 2. Buscar en Supabase
+    // 2. Buscar en Supabase unificado (v_legacy_students)
     var sUrl = localStorage.getItem("tga04_supabase_url");
     var sKey = localStorage.getItem("tga04_supabase_key");
     if (sUrl && sKey) {
       if (errEl) errEl.textContent = "⏳ Buscando…";
-      fetch(sUrl + "/rest/v1/students?cc=eq." + encodeURIComponent(cc) + "&limit=1", {
+      var offering = window.OFFERING_CODE || "TGA04-2026-2";
+      fetch(sUrl + "/rest/v1/v_legacy_students?cc=eq." + encodeURIComponent(cc)
+          + "&offering_code=eq." + encodeURIComponent(offering) + "&limit=1", {
         headers: { "apikey": sKey, "Authorization": "Bearer " + sKey }
       }).then(function(r){ return r.json(); })
         .then(function(rows){
@@ -1465,7 +1467,45 @@ else PT.init();
   };
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function(){ if (shouldShowModal()) showModal(); });
+    document.addEventListener("DOMContentLoaded", function(){
+      // Si hay cc almacenada, verificar contra Supabase antes de mostrar modal
+      try {
+        var g = JSON.parse(localStorage.getItem("tga04_global") || "{}");
+        if (g && g.cc && String(g.cc).trim().length >= 5) {
+          var sUrl = localStorage.getItem("tga04_supabase_url");
+          var sKey = localStorage.getItem("tga04_supabase_key");
+          var offering = window.OFFERING_CODE || "TGA04-2026-2";
+          if (sUrl && sKey) {
+            fetch(sUrl + "/rest/v1/v_legacy_students?cc=eq." + encodeURIComponent(g.cc)
+                + "&offering_code=eq." + encodeURIComponent(offering) + "&limit=1", {
+              headers: { "apikey": sKey, "Authorization": "Bearer " + sKey }
+            }).then(function(r){ return r.json(); })
+              .then(function(rows){
+                if (rows && rows.length) {
+                  var overlay = document.getElementById("pt-overlay");
+                  if (overlay) overlay.style.display = "none";
+                } else {
+                  if (shouldShowModal()) showModal();
+                }
+              }).catch(function(){
+                if (shouldShowModal()) showModal();
+              });
+            return;
+          }
+        }
+      } catch(e) {}
+      if (shouldShowModal()) showModal();
+    });
+                }
+              }).catch(function(){
+                if (shouldShowModal()) showModal();
+              });
+            return;
+          }
+        }
+      } catch(e) {}
+      if (shouldShowModal()) showModal();
+    });
   } else {
     if (shouldShowModal()) showModal();
   }
