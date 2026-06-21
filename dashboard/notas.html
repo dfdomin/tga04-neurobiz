@@ -3,406 +3,732 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consolidador de notas · TGA04</title>
+  <title>Consolidación de Notas — TGA05</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script src="../js/supabase-config.js"></script>
-  <script src="../js/gamification-sdk.js"></script>
+  <script src="../js/student-identicon.js"></script>
+  <!-- SheetJS para generar XLSX en el navegador -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
   <style>
-    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-    :root { --primary:#1E2843; --accent:#2d3a5e; --gold:#FFDF2D; --green:#2e7d32; --light-bg:#FAFAFA; --text:#212121; --muted:#546e7a; --border:#DEDFE4; --radius:12px; }
-    body { font-family:'Open Sans', Arial, sans-serif; background:var(--light-bg); color:var(--text); line-height:1.55; }
-    header { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; padding:1.4rem 1.2rem; }
-    .wrap { max-width:1280px; margin:0 auto; }
-    .wrap.wide { max-width:none; padding:0 1rem; }
-    .top { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
-    h1 { font-size:clamp(1.5rem,4vw,2.3rem); }
-    .nav { display:flex; gap:.5rem; flex-wrap:wrap; }
-    a, button, input { font-family:inherit; }
-    .nav a, button { border:1px solid var(--border); border-radius:10px; padding:.55rem .85rem; background:#fff; color:var(--primary); font-weight:800; text-decoration:none; cursor:pointer; }
-    main { padding:1.2rem; }
-    .panel, .metric { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:1rem; box-shadow:0 2px 10px rgba(0,0,0,.04); }
-    .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1rem; margin-bottom:1rem; }
-    .metric span { color:var(--muted); font-size:.78rem; font-weight:800; text-transform:uppercase; }
-    .metric strong { display:block; font-size:1.8rem; color:var(--primary); }
-    .controls { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:.7rem; align-items:end; margin-bottom:.9rem; }
-    label { color:var(--muted); display:block; font-size:.78rem; font-weight:800; text-transform:uppercase; margin-bottom:.25rem; }
-    input, select { width:100%; border:1px solid var(--border); border-radius:10px; padding:.6rem .75rem; }
-    table { width:100%; border-collapse:collapse; font-size:.84rem; }
-    th { text-align:left; background:var(--primary); color:#fff; padding:.55rem .6rem; position:sticky; top:0; z-index:1; white-space:nowrap; }
-    th.week-col { background:#2d3a5e; text-align:center; font-size:.75rem; }
-    th.total-col { background:#3d4f7c; }
-    td.num { text-align:center; }
-    td.nota-cell { font-weight:800; background:#eef2ff !important; }
-    td { border-bottom:1px solid var(--border); padding:.5rem .6rem; vertical-align:top; }
-    tr:nth-child(even):not(.total-row) td { background:#f8f9fb; }
-    .msg { color:var(--muted); font-size:.9rem; margin:.7rem 0; min-height:1.3rem; }
-    .tabs { display:flex; gap:.35rem; margin-bottom:1rem; flex-wrap:wrap; }
-    .tab-btn { border:1px solid var(--border); border-radius:10px; padding:.5rem .9rem; background:var(--light-bg); cursor:pointer; font-weight:700; font-size:.84rem; }
-    .tab-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
-    .view-panel { display:none; }
-    .view-panel.active { display:block; }
-    tr.total-row td { background:#eef2ff !important; font-weight:700; border-top:2px solid var(--primary); }
-    tr.week-row td { font-size:.82rem; }
-    .chip-yes { color:var(--green); font-weight:800; }
-    .chip-no { color:var(--muted); }
-    .formula-hint { font-size:.82rem; color:var(--muted); margin-bottom:.8rem; line-height:1.5; }
-    .filter-row { display:grid; grid-template-columns:1fr 180px; gap:.7rem; margin-bottom:.8rem; align-items:end; }
-    @media (max-width:760px) { .table-wrap { overflow-x:auto; } table { min-width:2400px; } .filter-row { grid-template-columns:1fr; } }
+    :root {
+      --navy:   #1E2843;
+      --navy2:  #2d3a5e;
+      --yellow: #FFDF2D;
+      --bg:     #FAFAFA;
+      --border: #DEDFE4;
+      --gray:   #E9EAED;
+      --green:  #2e7d32;
+      --red:    #c62828;
+      --amber:  #e65100;
+      --text:   #212121;
+      --muted:  #546e7a;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    /* PIN GATE */
+    #pin-gate {
+      position: fixed; inset: 0; background: linear-gradient(135deg, var(--navy), var(--navy2));
+      display: flex; align-items: center; justify-content: center; z-index: 9999;
+    }
+    #pin-box {
+      background: rgba(255,255,255,.1); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.2); border-radius: 20px;
+      padding: 2.5rem 2rem; width: min(92vw,380px); text-align: center; color: #fff;
+    }
+    #pin-box h2 { font-size: 1.3rem; margin-bottom: .3rem; }
+    #pin-box p  { opacity: .75; font-size: .85rem; margin-bottom: 1.5rem; }
+    #pin-input {
+      width: 100%; background: rgba(255,255,255,.15); border: 1.5px solid rgba(255,255,255,.3);
+      border-radius: 10px; padding: .65rem 1rem; color: #fff; font-size: 1.1rem;
+      text-align: center; letter-spacing: .3em; outline: none; font-family: inherit;
+    }
+    #pin-input:focus { border-color: var(--yellow); }
+    #pin-btn {
+      width: 100%; margin-top: .8rem; padding: .75rem;
+      background: var(--yellow); color: var(--navy); border: none;
+      border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer;
+      font-family: inherit;
+    }
+    #pin-error { color: #ff8a80; font-size: .85rem; margin-top: .5rem; min-height: 1.2rem; }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, var(--navy), var(--navy2));
+      color: #fff; padding: 1.8rem 2rem 1.5rem;
+    }
+    .hdr-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    header h1 { font-size: 1.4rem; font-weight: 800; }
+    header p  { opacity: .8; font-size: .85rem; margin-top: .2rem; }
+    .hdr-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+    .btn {
+      padding: .55rem 1.1rem; border-radius: 8px; border: none;
+      font-family: inherit; font-size: .88rem; font-weight: 600; cursor: pointer; transition: opacity .2s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn-primary { background: var(--yellow); color: var(--navy); }
+    .btn-outline { background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.3); }
+    .btn-green   { background: #2e7d32; color: #fff; }
+    .btn-lg { padding: .75rem 1.6rem; font-size: 1rem; }
+
+    /* CONTENT */
+    .container { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+    /* CONFIGURACIÓN */
+    .config-card {
+      background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end;
+    }
+    .config-group { display: flex; flex-direction: column; gap: .3rem; }
+    .config-group label { font-size: .8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+    .config-group select, .config-group input[type=number] {
+      padding: .5rem .8rem; border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: inherit; font-size: .9rem; background: var(--bg); outline: none;
+    }
+    .config-group select:focus, .config-group input:focus { border-color: var(--navy); }
+
+    /* FORMULA DISPLAY */
+    .formula-card {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      color: #fff; border-radius: var(--radius); padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem; font-size: .88rem;
+    }
+    .formula-card h3 { font-size: .95rem; margin-bottom: .6rem; opacity: .9; }
+    .formula-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+    .formula-chip {
+      background: rgba(255,255,255,.12); border-radius: 6px; padding: .3rem .7rem;
+      font-size: .82rem; border: 1px solid rgba(255,255,255,.15);
+    }
+    .formula-chip span { color: var(--yellow); font-weight: 700; }
+    .formula-eq { color: var(--yellow); font-weight: 700; font-size: 1.1rem; }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .stat-chip {
+      background: #fff; border: 1px solid var(--border); border-radius: 10px;
+      padding: .7rem 1.2rem; text-align: center; flex: 1; min-width: 120px;
+    }
+    .stat-chip .num { font-size: 1.5rem; font-weight: 800; color: var(--navy); }
+    .stat-chip .lbl { font-size: .75rem; color: var(--muted); margin-top: .1rem; }
+
+    /* TABLE */
+    .table-wrap { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    thead th {
+      background: var(--navy); color: #fff; padding: .75rem 1rem;
+      text-align: left; font-size: .8rem; font-weight: 700; white-space: nowrap;
+    }
+    thead th.center { text-align: center; }
+    tbody tr:nth-child(even) { background: var(--bg); }
+    tbody tr:hover { background: #e3f2fd22; }
+    td { padding: .65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    td.center { text-align: center; }
+
+    .grade-display {
+      font-weight: 700; font-size: 1rem;
+      padding: .2rem .6rem; border-radius: 6px; display: inline-block;
+    }
+    .grade-pass { background: #e8f5e9; color: #1b5e20; }
+    .grade-fail { background: #ffebee; color: #b71c1c; }
+    .grade-na   { background: var(--gray); color: var(--muted); }
+
+    input.parcial-input {
+      width: 80px; padding: .4rem .6rem; border: 1.5px solid var(--yellow);
+      border-radius: 7px; font-family: inherit; font-size: .95rem; font-weight: 700;
+      text-align: center; background: #fffde7; outline: none; color: var(--navy);
+    }
+    input.parcial-input:focus { border-color: var(--navy); background: #fff; }
+    input.parcial-input.invalid { border-color: var(--red); background: #ffebee; }
+
+    .corte-final { font-weight: 800; font-size: 1.05rem; }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 3rem; color: var(--muted); }
+    .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
+
+    /* EXPORT SECTION */
+    .export-card {
+      background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.2rem 1.5rem; margin-top: 1.5rem; display: flex;
+      justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .export-info h3 { font-size: 1rem; color: var(--navy); }
+    .export-info p  { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+    /* LOADING */
+    #loading { text-align: center; padding: 3rem; }
+    .spinner {
+      width: 40px; height: 40px; border: 4px solid var(--border);
+      border-top-color: var(--navy); border-radius: 50%;
+      animation: spin 1s linear infinite; margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* TOAST */
+    #toast {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      background: var(--navy); color: #fff; padding: .8rem 1.4rem;
+      border-radius: 10px; font-size: .9rem; font-weight: 600;
+      transform: translateY(100px); opacity: 0; transition: all .3s;
+      z-index: 1000; max-width: 300px;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 600px) {
+      table { font-size: .8rem; }
+      td, thead th { padding: .5rem .6rem; }
+      input.parcial-input { width: 65px; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap top">
-      <div><h1>Consolidador de notas</h1><p>Resumen y desglose auditable de la nota formativa.</p></div>
-      <nav class="nav"><a href="../index.html">Inicio</a><a href="profesor.html">Docente</a></nav>
+
+<!-- PIN GATE -->
+<div id="pin-gate">
+  <div id="pin-box">
+    <div style="font-size:2.5rem;margin-bottom:.5rem">📊</div>
+    <h2>Consolidación de Notas</h2>
+    <p>TGA05 — Estructura de Datos para los Negocios</p>
+    <input type="password" id="pin-input" placeholder="PIN docente" maxlength="10"
+           onkeydown="if(event.key==='Enter')checkPin()">
+    <button class="btn btn-primary" id="pin-btn" onclick="checkPin()" style="width:100%;margin-top:.8rem">
+      Ingresar
+    </button>
+    <p id="pin-error"></p>
+    <p style="font-size:.75rem;opacity:.5;margin-top:1rem">PIN por defecto: tga05</p>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr-inner">
+    <div>
+      <h1>📊 Consolidación de Notas — TGA05</h1>
+      <p>Ingresa la nota del parcial · El resto se calcula automáticamente desde Supabase</p>
     </div>
-  </header>
-  <main class="wrap wide">
-    <section class="summary">
-      <div class="metric"><span>Estudiantes</span><strong id="mStudents">0</strong></div>
-      <div class="metric"><span>Promedio formativo</span><strong id="mAvg">0.0</strong></div>
-      <div class="metric"><span>Registros fuente</span><strong id="mRows">0</strong></div>
-    </section>
-    <section class="panel">
-      <div class="controls">
-        <div><label for="expected">Semanas esperadas</label><input id="expected" type="number" min="1" value="13" oninput="render()"></div>
-        <div><label for="quizW">Peso quiz</label><input id="quizW" type="number" step=".05" value=".50" oninput="render()"></div>
-        <div><label for="actW">Peso actividad</label><input id="actW" type="number" step=".05" value=".30" oninput="render()"></div>
-        <div><label for="visitW">Peso visitas</label><input id="visitW" type="number" step=".05" value=".20" oninput="render()"></div>
-        <button onclick="loadData()">Cargar Supabase</button>
-        <button onclick="exportCsv()">Exportar resumen CSV</button>
-        <button onclick="exportDetailCsv()">Exportar detalle CSV</button>
-        <button onclick="copyDetailForExcel()">Copiar detalle para Excel</button>
-      </div>
-      <p class="msg" id="msg"></p>
+    <div class="hdr-actions">
+      <button class="btn btn-outline" onclick="loadData()">🔄 Actualizar</button>
+      <a href="participacion.html" class="btn" style="background:rgba(156,39,176,.15);color:#9c27b0;border:1px solid #9c27b0;font-weight:700;text-decoration:none">🎯 Ver Participación</a>
+      <button class="btn btn-green btn-lg" onclick="exportXLSX()" id="export-btn" disabled>
+        📥 Descargar XLSX
+      </button>
+    </div>
+  </div>
+</header>
 
-      <div class="tabs">
-        <button class="tab-btn active" type="button" onclick="showView('resumen')">Resumen</button>
-        <button class="tab-btn" type="button" onclick="showView('detalle')">Para Excel</button>
-      </div>
+<div class="container">
 
-      <div class="view-panel active" id="view-resumen">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Estudiante</th><th>ID</th><th>Grupo</th><th>Semanas</th><th>Quiz prom</th><th>Actividades</th><th>Nota formativa</th></tr></thead>
-            <tbody id="rows"></tbody>
-          </table>
-        </div>
-      </div>
+  <!-- CONFIGURACIÓN DEL CORTE -->
+  <div class="config-card">
+    <div class="config-group">
+      <label>Corte</label>
+      <select id="sel-corte" onchange="updateCorteConfig()">
+        <option value="1">Corte 1 (Semanas 1–5)</option>
+        <option value="2">Corte 2 (Semanas 6–10)</option>
+        <option value="3">Corte 3 (Semanas 11–14)</option>
+      </select>
+    </div>
+    <div class="config-group">
+      <label>Semanas del corte</label>
+      <input type="number" id="inp-sem-esperadas" value="5" min="1" max="14" style="width:80px">
+    </div>
+    <div class="config-group">
+      <label>Peso formativa %</label>
+      <input type="number" id="inp-peso-form" value="70" min="1" max="99" style="width:80px">
+    </div>
+    <div class="config-group">
+      <label>Peso parcial %</label>
+      <input type="number" id="inp-peso-parc" value="30" min="1" max="99" style="width:80px" readonly>
+    </div>
+    <div class="config-group">
+      <label>Nota mínima aprobación</label>
+      <input type="number" id="inp-min-pass" value="3.0" min="0" max="5" step="0.1" style="width:90px">
+    </div>
+    <button class="btn btn-primary" onclick="loadData()">Cargar datos</button>
+  </div>
 
-      <div class="view-panel" id="view-detalle">
-        <p class="formula-hint">
-          <strong>Una fila por estudiante</strong> — columnas S1…S13 con quiz, HTI (1/0), actividad (1/0) y XP; al final el desglose de la nota.<br>
-          Selecciona la tabla y copia (Cmd+C), o usa <strong>Copiar detalle para Excel</strong>. HTI y actividad van como 1 = sí, 0 = no.
-        </p>
-        <div class="filter-row">
-          <div><label for="detailSearch">Buscar estudiante</label><input id="detailSearch" placeholder="Nombre o cédula" oninput="renderDetail()"></div>
-          <div><label for="detailGroup">Grupo</label><select id="detailGroup" onchange="renderDetail()"><option value="">Todos</option></select></div>
-        </div>
-        <div class="table-wrap">
-          <table id="detailTable">
-            <thead id="detailHead"></thead>
-            <tbody id="detailRows"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  </main>
-  <script>
-    let records = [], currentRows = [], wideRows = [], activeView = "resumen";
+  <!-- FÓRMULA -->
+  <div class="formula-card" id="formula-display"></div>
 
-    function weights() {
-      const expected = Math.max(Number(document.getElementById("expected").value || 13), 1);
-      return {
-        expected,
-        qw: Number(document.getElementById("quizW").value || .5),
-        aw: Number(document.getElementById("actW").value || .3),
-        vw: Number(document.getElementById("visitW").value || .2),
-      };
-    }
+  <!-- STATS -->
+  <div class="stats-bar" id="stats-bar" style="display:none">
+    <div class="stat-chip"><div class="num" id="stat-total">—</div><div class="lbl">Estudiantes</div></div>
+    <div class="stat-chip"><div class="num" id="stat-pass">—</div><div class="lbl">Aprueban formativa</div></div>
+    <div class="stat-chip"><div class="num" id="stat-avg-form">—</div><div class="lbl">Prom. formativa</div></div>
+    <div class="stat-chip"><div class="num" id="stat-avg-final">—</div><div class="lbl">Prom. nota corte</div></div>
+    <div class="stat-chip"><div class="num" id="stat-parciales">—</div><div class="lbl">Parciales ingresados</div></div>
+  </div>
 
-    function calcNota(quizAvg10, acts, semCount, w) {
-      return (quizAvg10 / 10 * 5) * w.qw
-        + (Math.min(acts / w.expected, 1) * 5) * w.aw
-        + (Math.min(semCount / w.expected, 1) * 5) * w.vw;
-    }
+  <!-- TABLA -->
+  <div id="loading" style="display:none">
+    <div class="spinner"></div>
+    <p style="color:var(--muted)">Cargando datos de Supabase…</p>
+  </div>
 
-    function offeringCode() {
-      return (window.GamifSDK && GamifSDK.getOfferingCode())
-        || localStorage.getItem("gamif_offering_code")
-        || localStorage.getItem("tga04_course_code")
-        || "TGA04-2026-2";
-    }
+  <div id="table-area"></div>
 
-    function baseUrl() {
-      const raw = localStorage.getItem("tga04_supabase_url") || window.SUPABASE_URL || "";
-      return (window.GamifSDK && GamifSDK.normalizeBaseUrl)
-        ? GamifSDK.normalizeBaseUrl(raw)
-        : raw.trim().replace(/\/+$/, "").replace(/\/rest\/v1\/?$/i, "");
-    }
+  <!-- EXPORTAR -->
+  <div class="export-card" id="export-area" style="display:none">
+    <div class="export-info">
+      <h3>📥 Descargar planilla</h3>
+      <p>El archivo incluye: nombre, grupo, formativa, columna <strong>Nota Parcial</strong> (amarilla) y fórmula de nota final.<br>
+         Solo agrega los parciales que falten y sube a Academusoft.</p>
+    </div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+      <button class="btn btn-green btn-lg" onclick="exportXLSX()">📥 Exportar XLSX</button>
+      <button class="btn btn-outline" style="background:var(--navy);color:#fff" onclick="exportCSV()">📄 CSV</button>
+    </div>
+  </div>
 
-    function showView(name) {
-      activeView = name;
-      document.querySelectorAll(".tab-btn").forEach((btn, i) => {
-        btn.classList.toggle("active", (name === "resumen" && i === 0) || (name === "detalle" && i === 1));
-      });
-      document.getElementById("view-resumen").classList.toggle("active", name === "resumen");
-      document.getElementById("view-detalle").classList.toggle("active", name === "detalle");
-    }
+</div>
 
-    async function loadData() {
-      const msg = document.getElementById("msg");
-      const url = baseUrl();
-      const key = localStorage.getItem("tga04_supabase_key") || window.SUPABASE_KEY || "";
-      if (!url || !key) {
-        msg.textContent = "Supabase no configurado. Recarga la página (Cmd+Shift+R).";
-        return;
-      }
-      msg.textContent = "Cargando registros...";
-      const headers = { apikey: key, Authorization: `Bearer ${key}` };
-      const sources = [
-        `${url}/rest/v1/student_progress?select=*`,
-        `${url}/rest/v1/v_legacy_student_progress?select=*&offering_code=eq.${encodeURIComponent(offeringCode())}`,
-      ];
-      try {
-        let lastStatus = 0;
-        records = [];
-        for (const endpoint of sources) {
-          const res = await fetch(endpoint, { headers });
-          lastStatus = res.status;
-          if (!res.ok) continue;
-          const data = await res.json();
-          if (data && data.length) {
-            records = data;
-            msg.textContent = `${records.length} registros cargados · ${new Date().toLocaleString()}`;
-            render();
-            return;
-          }
-        }
-        msg.textContent = records.length ? `${records.length} registros` : `Sin registros (HTTP ${lastStatus}).`;
-        render();
-      } catch (e) {
-        msg.textContent = `Error: ${e.message}`;
-      }
-    }
+<div id="toast"></div>
 
-    function buildStudentMap() {
-      const map = new Map();
-      for (const r of records) {
-        const id = r.student_id || r.cc || r.student_name || "desconocido";
-        if (!map.has(id)) {
-          map.set(id, {
-            id, name: r.student_name || "Anónimo", grupo: r.grupo || "",
-            weeks: [],
-          });
-        }
-        const s = map.get(id);
-        s.name = r.student_name || s.name;
-        s.grupo = r.grupo || s.grupo;
-        s.weeks.push({
-          semana: Number(r.semana) || 0,
-          quiz: Number(r.quiz_score || r.quiz_puntaje || 0),
-          hti: !!(r.hti_done || r.hti_entregado),
-          act: !!(r.activity_done || r.actividad_completada),
-          xp: Number(r.xp || 0),
-        });
-      }
-      for (const s of map.values()) {
-        s.weeks.sort((a, b) => a.semana - b.semana);
-      }
-      return map;
-    }
+<script>
+// ── Config Supabase (desde supabase-config.js o localStorage) ────────────────
+function getSupabaseConfig() {
+  const url = localStorage.getItem('tga05_supabase_url') || '';
+  const key = localStorage.getItem('tga05_supabase_key') || '';
+  return { url, key };
+}
 
-    function aggregate() {
-      const w = weights();
-      return [...buildStudentMap().values()].map(s => {
-        const semanas = new Set(s.weeks.map(x => x.semana).filter(Boolean));
-        const quizSum = s.weeks.reduce((n, x) => n + x.quiz, 0);
-        const quizCount = s.weeks.length;
-        const acts = s.weeks.filter(x => x.act || x.hti).length;
-        const quizAvg10 = quizCount ? Math.min(quizSum / quizCount, 10) : 0;
-        const nota = calcNota(quizAvg10, acts, semanas.size, w);
-        return { id: s.id, name: s.name, grupo: s.grupo, semanas, quizAvg10, acts, nota };
-      }).sort((a, b) => a.name.localeCompare(b.name));
-    }
+// ── PIN ───────────────────────────────────────────────────────────────────────
+function checkPin() {
+  const pin = document.getElementById('pin-input').value;
+  const stored = localStorage.getItem('tga05_prof_pin') || 'tga05';
+  if (pin === stored) {
+    document.getElementById('pin-gate').style.display = 'none';
+    initPage();
+  } else {
+    const el = document.getElementById('pin-error');
+    el.textContent = '❌ PIN incorrecto';
+    document.getElementById('pin-input').value = '';
+  }
+}
+document.getElementById('pin-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPin();
+});
 
-    function buildWideRows() {
-      const w = weights();
-      return [...buildStudentMap().values()].map(s => {
-        const byWeek = {};
-        for (const week of s.weeks) byWeek[week.semana] = week;
-        const semanas = new Set(s.weeks.map(x => x.semana).filter(Boolean));
-        const acts = s.weeks.filter(x => x.act || x.hti).length;
-        const quizSum = s.weeks.reduce((n, x) => n + x.quiz, 0);
-        const quizAvg10 = s.weeks.length ? Math.min(quizSum / s.weeks.length, 10) : 0;
-        const ptsQuiz = (quizAvg10 / 10 * 5) * w.qw;
-        const ptsAct = (Math.min(acts / w.expected, 1) * 5) * w.aw;
-        const ptsVis = (Math.min(semanas.size / w.expected, 1) * 5) * w.vw;
-        const weekCols = {};
-        for (let n = 1; n <= w.expected; n++) {
-          const wk = byWeek[n];
-          weekCols[n] = wk
-            ? { quiz: wk.quiz, hti: wk.hti ? 1 : 0, act: wk.act ? 1 : 0, xp: wk.xp }
-            : { quiz: "", hti: "", act: "", xp: "" };
-        }
-        return {
-          id: s.id, name: s.name, grupo: s.grupo,
-          weekCols, quizAvg10, acts, semCount: semanas.size,
-          ptsQuiz, ptsAct, ptsVis, nota: ptsQuiz + ptsAct + ptsVis,
+// ── Estado global ─────────────────────────────────────────────────────────────
+let students = [];   // [{student_id, nombre, grupo, semanas, xp, quiz_avg, actividades, nota_formativa}]
+let parcialesGuardados = {};  // {student_id: nota_parcial}
+let participacionData = null; // loaded from tga05_participacion_v1
+
+const CORTE_RANGES = { '1': [1,5], '2': [6,10], '3': [11,14] };
+
+function loadParticipacion() {
+  try {
+    const raw = localStorage.getItem('tga05_participacion_v1');
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    const cfg = d.config || { max_pts: 50, peso: 10 };
+
+    // Map numeric sid (1–29) → CC number so we can match with Supabase student_id
+    const SID_TO_CC = {
+      1:'1043158867',2:'SIN_DOC_2',3:'1042455285',4:'1129513136',5:'SIN_DOC_5',
+      6:'1130269210',7:'1044619786',8:'1043132495',9:'1130271420',10:'1100394417',
+      11:'1044390913',12:'1045750902',13:'1092185876',14:'1043442844',15:'1193548488',
+      16:'1096801658',17:'1001876950',18:'1043669582',19:'1002231958',20:'1044622270',
+      21:'1129505964',22:'1143120550',23:'1048064753',24:'1121844008',25:'1007892916',
+      26:'1192714188',27:'1042249560',28:'1045691499',29:'1143461984',
+    };
+
+    participacionData = {};
+    (d.events || []).forEach(e => {
+      const cc = SID_TO_CC[e.sid];
+      if (cc) participacionData[cc] = (participacionData[cc] || 0) + e.pts;
+    });
+    participacionData._cfg = cfg;
+  } catch(e) { participacionData = null; }
+}
+
+function getPtsPeso() {
+  return participacionData?._cfg?.peso ?? 10;
+}
+
+function getNotaParticipacion(studentId) {
+  if (!participacionData) return null;
+  const pts = participacionData[String(studentId)] ?? 0;
+  if (pts === 0 && !participacionData[String(studentId)]) return null; // no data for this student
+  const maxPts = participacionData._cfg?.max_pts || 50;
+  return Math.min(5.0, Math.max(0, (pts / maxPts) * 5.0));
+}
+
+function getConfig() {
+  const pf = parseInt(document.getElementById('inp-peso-form').value) / 100;
+  const pp = 1 - pf;
+  document.getElementById('inp-peso-parc').value = Math.round(pp * 100);
+  return {
+    corte: document.getElementById('sel-corte').value,
+    semEsperadas: parseInt(document.getElementById('inp-sem-esperadas').value),
+    pesoForm: pf,
+    pesoParcial: pp,
+    notaMin: parseFloat(document.getElementById('inp-min-pass').value),
+  };
+}
+
+function updateCorteConfig() {
+  const c = document.getElementById('sel-corte').value;
+  const [s, e] = CORTE_RANGES[c];
+  document.getElementById('inp-sem-esperadas').value = e - s + 1;
+}
+
+function renderFormula() {
+  const cfg = getConfig();
+  const pf = Math.round(cfg.pesoForm * 100);
+  const pp = Math.round(cfg.pesoParcial * 100);
+  document.getElementById('formula-display').innerHTML = `
+    <h3>📐 Fórmula activa — Corte ${cfg.corte}</h3>
+    <div class="formula-row">
+      <div class="formula-chip">Quiz avg (0-10) <span>× 50%</span> → peso en formativa</div>
+      <div class="formula-chip">Actividades completadas <span>× 30%</span></div>
+      <div class="formula-chip">Semanas visitadas <span>× 20%</span></div>
+      <div class="formula-eq">→</div>
+      <div class="formula-chip"><strong>Nota Formativa</strong> (0.0–5.0)</div>
+      <div class="formula-eq">×</div>
+      <div class="formula-chip"><span>${pf}%</span></div>
+      <div class="formula-eq">+</div>
+      <div class="formula-chip">Nota Parcial <span>× ${pp}%</span></div>
+      <div class="formula-eq">=</div>
+      <div class="formula-chip"><strong>🎯 Nota Corte ${cfg.corte}</strong></div>
+    </div>
+  `;
+}
+
+// ── Inicializar ───────────────────────────────────────────────────────────────
+function initPage() {
+  // Restaurar parciales guardados en localStorage
+  const saved = localStorage.getItem('tga05_parciales_corte' + getConfig().corte);
+  if (saved) parcialesGuardados = JSON.parse(saved);
+  loadParticipacion();
+  renderFormula();
+  // Auto-load si hay config
+  const { url, key } = getSupabaseConfig();
+  if (url && key) loadData();
+  else {
+    document.getElementById('table-area').innerHTML = `
+      <div class="empty-state">
+        <div class="icon">⚙️</div>
+        <p>Configura Supabase en <code>js/supabase-config.js</code> o abre<br>
+        <a href="../setup/CONFIGURAR_SUPABASE.html">CONFIGURAR_SUPABASE.html</a> primero.</p>
+      </div>`;
+  }
+}
+
+// ── Cargar datos Supabase ─────────────────────────────────────────────────────
+async function loadData() {
+  renderFormula();
+  const { url, key } = getSupabaseConfig();
+  if (!url || !key) { toast('⚠️ Configura Supabase primero'); return; }
+
+  const cfg = getConfig();
+  const [semStart, semEnd] = CORTE_RANGES[cfg.corte];
+  parcialesGuardados = JSON.parse(localStorage.getItem('tga05_parciales_corte' + cfg.corte) || '{}');
+
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('table-area').innerHTML = '';
+
+  try {
+    // Fetch all rows for this corte's semana range
+    const resp = await fetch(
+      `${url}/rest/v1/student_progress?semana=gte.${semStart}&semana=lte.${semEnd}&select=student_id,student_name,grupo,semana,xp,quiz_score,activity_done&limit=5000`,
+      { headers: { 'apikey': key, 'Authorization': `Bearer ${key}` } }
+    );
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const rows = await resp.json();
+
+    // Agrupar por estudiante
+    const byStudent = {};
+    rows.forEach(r => {
+      if (!byStudent[r.student_id]) {
+        byStudent[r.student_id] = {
+          student_id: r.student_id,
+          nombre: r.student_name || 'Anónimo',
+          grupo: r.grupo || '—',
+          semanas: [], xp: 0, quiz_scores: [], actividades: 0
         };
-      }).sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    function detailHeaderHtml() {
-      const w = weights();
-      let weekTh = "";
-      for (let n = 1; n <= w.expected; n++) {
-        weekTh += `<th class="week-col" colspan="4">S${n}</th>`;
       }
-      let weekSub = "";
-      for (let n = 1; n <= w.expected; n++) {
-        weekSub += `<th class="week-col">Quiz</th><th class="week-col">HTI</th><th class="week-col">Act</th><th class="week-col">XP</th>`;
-      }
-      return `<tr>
-        <th rowspan="2">Estudiante</th><th rowspan="2">ID</th><th rowspan="2">Grupo</th>
-        ${weekTh}
-        <th class="total-col" colspan="7">Cálculo nota formativa</th>
-      </tr><tr>${weekSub}
-        <th class="total-col">Quiz prom</th><th class="total-col"># Act</th><th class="total-col"># Sem</th>
-        <th class="total-col">Pts quiz</th><th class="total-col">Pts act</th><th class="total-col">Pts visitas</th>
-        <th class="total-col">Nota 0–5</th>
-      </tr>`;
-    }
+      const s = byStudent[r.student_id];
+      s.semanas.push(r.semana);
+      s.xp += (r.xp || 0);
+      if (r.quiz_score > 0) s.quiz_scores.push(r.quiz_score);
+      if (r.activity_done) s.actividades++;
+    });
 
-    function filteredWideRows() {
-      const q = (document.getElementById("detailSearch").value || "").toLowerCase();
-      const g = document.getElementById("detailGroup").value;
-      return wideRows.filter(r => {
-        if (g && r.grupo !== g) return false;
-        if (q && !`${r.name} ${r.id}`.toLowerCase().includes(q)) return false;
-        return true;
-      });
-    }
+    // Calcular nota formativa
+    students = Object.values(byStudent).map(s => {
+      const quiz_avg = s.quiz_scores.length > 0
+        ? s.quiz_scores.reduce((a,b) => a+b, 0) / s.quiz_scores.length
+        : 0;
+      const vis_pct = Math.min(1, s.semanas.length / cfg.semEsperadas);
+      const act_pct = Math.min(1, s.actividades / cfg.semEsperadas);
 
-    function weekCells(weekCols) {
-      const w = weights();
-      let html = "";
-      for (let n = 1; n <= w.expected; n++) {
-        const c = weekCols[n];
-        const quiz = c.quiz === "" ? "" : Number(c.quiz).toFixed(1);
-        html += `<td class="num">${quiz}</td><td class="num">${c.hti}</td><td class="num">${c.act}</td><td class="num">${c.xp}</td>`;
-      }
-      return html;
-    }
+      // Fórmula formativa (0-5):
+      const nota_formativa = Math.min(5.0,
+        (quiz_avg / 10 * 5.0) * 0.50 +
+        (act_pct * 5.0) * 0.30 +
+        (vis_pct * 5.0) * 0.20
+      );
 
-    function fillGroupFilter() {
-      const select = document.getElementById("detailGroup");
-      const current = select.value;
-      const groups = [...new Set(currentRows.map(r => r.grupo).filter(Boolean))].sort();
-      select.innerHTML = '<option value="">Todos</option>' + groups.map(g => `<option>${esc(g)}</option>`).join("");
-      select.value = current;
-    }
+      return {
+        ...s,
+        semanas_count: s.semanas.length,
+        quiz_avg: quiz_avg,
+        nota_formativa: Math.round(nota_formativa * 100) / 100
+      };
+    });
 
-    function render() {
-      currentRows = aggregate();
-      wideRows = buildWideRows();
-      document.getElementById("mStudents").textContent = currentRows.length;
-      document.getElementById("mRows").textContent = records.length;
-      document.getElementById("mAvg").textContent = currentRows.length
-        ? (currentRows.reduce((n, x) => n + x.nota, 0) / currentRows.length).toFixed(1)
-        : "0.0";
-      document.getElementById("rows").innerHTML = currentRows.map(x =>
-        `<tr><td>${esc(x.name)}</td><td>${esc(x.id)}</td><td>${esc(x.grupo)}</td><td>${x.semanas.size}</td><td>${x.quizAvg10.toFixed(1)}</td><td>${x.acts}</td><td><strong>${x.nota.toFixed(2)}</strong></td></tr>`
-      ).join("");
-      fillGroupFilter();
-      renderDetail();
-    }
+    // Ordenar por nombre
+    students.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
-    function renderDetail() {
-      document.getElementById("detailHead").innerHTML = detailHeaderHtml();
-      document.getElementById("detailRows").innerHTML = filteredWideRows().map(r =>
-        `<tr>
-          <td>${esc(r.name)}</td><td>${esc(r.id)}</td><td>${esc(r.grupo)}</td>
-          ${weekCells(r.weekCols)}
-          <td class="num">${r.quizAvg10.toFixed(1)}</td><td class="num">${r.acts}</td><td class="num">${r.semCount}</td>
-          <td class="num">${r.ptsQuiz.toFixed(2)}</td><td class="num">${r.ptsAct.toFixed(2)}</td><td class="num">${r.ptsVis.toFixed(2)}</td>
-          <td class="num nota-cell">${r.nota.toFixed(2)}</td>
-        </tr>`
-      ).join("");
-    }
+    renderTable(cfg);
+    renderStats(cfg);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('export-btn').disabled = false;
+    document.getElementById('stats-bar').style.display = 'flex';
+    document.getElementById('export-area').style.display = 'flex';
+    toast(`✅ ${students.length} estudiantes cargados`);
 
-    function wideRowsToMatrix(rows) {
-      const w = weights();
-      const header1 = ["Estudiante", "ID", "Grupo"];
-      const header2 = ["", "", ""];
-      for (let n = 1; n <= w.expected; n++) {
-        header1.push(`S${n}`, "", "", "");
-        header2.push("Quiz", "HTI", "Act", "XP");
-      }
-      header1.push("Quiz prom", "# Act", "# Sem", "Pts quiz", "Pts act", "Pts visitas", "Nota 0-5");
-      header2.push("", "", "", "", "", "", "");
-      const lines = [header1, header2];
-      for (const r of rows) {
-        const line = [r.name, r.id, r.grupo];
-        for (let n = 1; n <= w.expected; n++) {
-          const c = r.weekCols[n];
-          line.push(
-            c.quiz === "" ? "" : Number(c.quiz).toFixed(1),
-            c.hti, c.act, c.xp
-          );
-        }
-        line.push(
-          r.quizAvg10.toFixed(1), r.acts, r.semCount,
-          r.ptsQuiz.toFixed(2), r.ptsAct.toFixed(2), r.ptsVis.toFixed(2), r.nota.toFixed(2)
-        );
-        lines.push(line);
-      }
-      return lines;
-    }
+  } catch (e) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('table-area').innerHTML = `
+      <div class="empty-state">
+        <div class="icon">❌</div>
+        <p>Error al conectar con Supabase:<br><code>${e.message}</code></p>
+      </div>`;
+  }
+}
 
-    async function copyDetailForExcel() {
-      const rows = filteredWideRows();
-      if (!rows.length) {
-        document.getElementById("msg").textContent = "No hay filas para copiar.";
-        return;
-      }
-      const tsv = wideRowsToMatrix(rows).map(row => row.join("\t")).join("\n");
-      try {
-        await navigator.clipboard.writeText(tsv);
-        document.getElementById("msg").textContent = `${rows.length} estudiantes copiados al portapapeles · pega en Excel con Cmd+V`;
-      } catch (e) {
-        document.getElementById("msg").textContent = "No se pudo copiar automáticamente. Selecciona la tabla y usa Cmd+C.";
-      }
-    }
+// ── Identicon helpers (delegado a student-identicon.js) ────────────────────────
+function renderIdenticonSVGInline(id) {
+  if (typeof window.renderIdenticonSVG !== 'function') return '';
+  var svg = window.renderIdenticonSVG(id);
+  // reducir tamaño para tabla
+  return svg.replace('width="44" height="44"', 'width="28" height="28"').replace('viewBox="0 0 44 44"', 'viewBox="0 0 44 44"');
+}
+function getFirmaName(id) {
+  return typeof window.getIdenticonFirmaName === 'function' ? window.getIdenticonFirmaName(id) : '?';
+}
+function getVerifCode(id) {
+  return typeof window.getIdenticonCode === 'function' ? window.getIdenticonCode(id) : '';
+}
 
-    function exportCsv() {
-      const lines = [["student_name","student_id","grupo","semanas","quiz_prom_10","actividades","nota_formativa_5"]];
-      for (const x of currentRows) {
-        lines.push([x.name, x.id, x.grupo, x.semanas.size, x.quizAvg10.toFixed(1), x.acts, x.nota.toFixed(2)]);
-      }
-      downloadCsv(lines, "tga04-notas-resumen.csv");
-    }
+// ── Renderizar tabla ──────────────────────────────────────────────────────────
+function renderTable(cfg) {
+  if (!students.length) {
+    document.getElementById('table-area').innerHTML =
+      '<div class="empty-state"><div class="icon">🔍</div><p>No hay datos para este corte aún.</p></div>';
+    return;
+  }
 
-    function exportDetailCsv() {
-      downloadCsv(wideRowsToMatrix(wideRows), "tga04-notas-excel.csv");
-    }
+  let rows = students.map((s, i) => {
+    const parcial = parcialesGuardados[s.student_id];
+    const notaPartic = getNotaParticipacion(s.student_id);
+    const nota_corte = parcial != null
+      ? Math.round((s.nota_formativa * cfg.pesoForm + parcial * cfg.pesoParcial) * 100) / 100
+      : null;
+    const passForm = s.nota_formativa >= cfg.notaMin;
+    const passCorte = nota_corte != null ? nota_corte >= cfg.notaMin : null;
 
-    function downloadCsv(lines, filename) {
-      const csv = lines.map(row => row.map(v => `"${String(v).replaceAll('"', '""')}"`).join(",")).join("\n");
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = filename; a.click();
-      URL.revokeObjectURL(url);
-    }
+    const particCell = notaPartic != null
+      ? `<span class="grade-display ${notaPartic >= 3 ? 'grade-pass' : 'grade-fail'}">${notaPartic.toFixed(2)}</span>`
+      : `<span class="grade-display grade-na">—</span>`;
 
-    function esc(s) {
-      return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m]));
-    }
+    return `<tr>
+      <td>${i+1}</td>
+      <td style="white-space:nowrap">${renderIdenticonSVGInline(s.student_id)}&nbsp;<strong>${escHtml(s.nombre)}</strong> <span class="identicon-verify" style="font-size:.65rem;color:#7c3aed;font-weight:700;background:rgba(124,58,237,.1);padding:0 4px;border-radius:4px">${getVerifCode(s.student_id)}</span> <span class="identicon-firma" title="Pixel-firma: ${getFirmaName(s.student_id)}" style="font-size:.6rem;color:#546e7a;opacity:.4">◇</span></td>
+      <td class="center">${escHtml(s.grupo)}</td>
+      <td class="center">${s.semanas_count}/${cfg.semEsperadas}</td>
+      <td class="center">${s.actividades}</td>
+      <td class="center">${s.quiz_avg > 0 ? s.quiz_avg.toFixed(1) : '—'}</td>
+      <td class="center">
+        <span class="grade-display ${passForm ? 'grade-pass' : 'grade-fail'}">
+          ${s.nota_formativa.toFixed(2)}
+        </span>
+      </td>
+      <td class="center">${particCell}</td>
+      <td class="center">
+        <input class="parcial-input" type="number" min="0" max="5" step="0.1"
+          data-id="${s.student_id}"
+          value="${parcial != null ? parcial.toFixed(1) : ''}"
+          placeholder="0.0–5.0"
+          onchange="updateParcial(this)"
+          oninput="validateParcialInput(this)">
+      </td>
+      <td class="center">
+        ${nota_corte != null
+          ? `<span class="grade-display corte-final ${passCorte ? 'grade-pass' : 'grade-fail'}">${nota_corte.toFixed(2)}</span>`
+          : `<span class="grade-display grade-na">—</span>`}
+      </td>
+    </tr>`;
+  }).join('');
 
-    document.addEventListener("DOMContentLoaded", () => loadData());
-  </script>
+  document.getElementById('table-area').innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Estudiante</th>
+            <th class="center">Grupo</th>
+            <th class="center">Semanas</th>
+            <th class="center">Actividades</th>
+            <th class="center">Quiz avg</th>
+            <th class="center">Nota Formativa</th>
+            <th class="center" style="background:#4a148c;color:#e1bee7">🎯 Participación</th>
+            <th class="center" style="background:#6d4c00;color:#FFDF2D">⭐ Nota Parcial</th>
+            <th class="center">Nota Corte ${cfg.corte}</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function validateParcialInput(inp) {
+  const v = parseFloat(inp.value);
+  inp.classList.toggle('invalid', inp.value !== '' && (isNaN(v) || v < 0 || v > 5));
+}
+
+function updateParcial(inp) {
+  const sid = inp.dataset.id;
+  const v = parseFloat(inp.value);
+  if (!isNaN(v) && v >= 0 && v <= 5) {
+    parcialesGuardados[sid] = Math.round(v * 100) / 100;
+  } else if (inp.value === '') {
+    delete parcialesGuardados[sid];
+  }
+  // Guardar en localStorage
+  const cfg = getConfig();
+  localStorage.setItem('tga05_parciales_corte' + cfg.corte, JSON.stringify(parcialesGuardados));
+  renderTable(cfg);
+  renderStats(cfg);
+}
+
+function renderStats(cfg) {
+  const vals = students.map(s => s.nota_formativa);
+  const avgForm = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2) : '—';
+  const passing = vals.filter(v => v >= cfg.notaMin).length;
+
+  const finales = students
+    .filter(s => parcialesGuardados[s.student_id] != null)
+    .map(s => s.nota_formativa * cfg.pesoForm + parcialesGuardados[s.student_id] * cfg.pesoParcial);
+  const avgFinal = finales.length ? (finales.reduce((a,b)=>a+b,0)/finales.length).toFixed(2) : '—';
+
+  document.getElementById('stat-total').textContent = students.length;
+  document.getElementById('stat-pass').textContent = passing;
+  document.getElementById('stat-avg-form').textContent = avgForm;
+  document.getElementById('stat-avg-final').textContent = avgFinal;
+  document.getElementById('stat-parciales').textContent =
+    `${Object.keys(parcialesGuardados).length}/${students.length}`;
+}
+
+// ── Exportar XLSX ─────────────────────────────────────────────────────────────
+function exportXLSX() {
+  const cfg = getConfig();
+  if (!students.length) { toast('⚠️ No hay datos para exportar'); return; }
+
+  const wb = XLSX.utils.book_new();
+
+  // Datos
+  const header = [
+    'ID Estudiante', 'Nombre', 'Grupo',
+    `Semanas Visitadas (/${cfg.semEsperadas})`, 'Actividades', 'Quiz Promedio (0-10)',
+    'Nota Formativa (0-5)', 'Nota Parcial (0-5)', `Nota Corte ${cfg.corte} (0-5)`, 'Estado'
+  ];
+
+  const dataRows = students.map(s => {
+    const parcial = parcialesGuardados[s.student_id];
+    const nota_corte = parcial != null
+      ? Math.round((s.nota_formativa * cfg.pesoForm + parcial * cfg.pesoParcial) * 100) / 100
+      : null;
+    return [
+      s.student_id,
+      s.nombre,
+      s.grupo,
+      s.semanas_count,
+      s.actividades,
+      s.quiz_avg > 0 ? parseFloat(s.quiz_avg.toFixed(2)) : 0,
+      parseFloat(s.nota_formativa.toFixed(2)),
+      parcial != null ? parcial : '',
+      nota_corte != null ? nota_corte : '',
+      nota_corte != null ? (nota_corte >= cfg.notaMin ? 'APROBADO' : 'REPROBADO') : 'PENDIENTE PARCIAL'
+    ];
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet([header, ...dataRows]);
+
+  // Ancho de columnas
+  ws['!cols'] = [
+    {wch:30},{wch:28},{wch:10},{wch:22},{wch:14},{wch:22},{wch:22},{wch:22},{wch:22},{wch:22}
+  ];
+
+  // Estilo de encabezado (color amarillo en col H = Nota Parcial)
+  XLSX.utils.book_append_sheet(wb, ws, `Corte ${cfg.corte}`);
+
+  // Hoja de fórmula
+  const formula_ws = XLSX.utils.aoa_to_sheet([
+    ['FÓRMULA DE CALIFICACIÓN'],
+    [''],
+    ['Componente', 'Peso dentro de formativa', 'Descripción'],
+    ['Quiz Promedio', '50%', 'Promedio de quizzes de las semanas del corte (escala 0-10 → 0-5)'],
+    ['Actividades', '30%', 'Actividades completadas / semanas esperadas'],
+    ['Semanas Visitadas', '20%', 'Semanas visitadas / semanas esperadas'],
+    [''],
+    ['Nota Corte', `Formativa × ${Math.round(cfg.pesoForm*100)}% + Parcial × ${Math.round(cfg.pesoParcial*100)}%`, ''],
+    ['Nota mínima aprobación', cfg.notaMin, ''],
+    [''],
+    ['Corte', `${cfg.corte}`, ''],
+    ['Semanas cubierta', `${CORTE_RANGES[cfg.corte].join(' a ')}`, ''],
+    ['Generado', new Date().toLocaleString('es-CO'), ''],
+  ]);
+  formula_ws['!cols'] = [{wch:25},{wch:30},{wch:55}];
+  XLSX.utils.book_append_sheet(wb, formula_ws, 'Fórmula');
+
+  const fecha = new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `TGA05_Corte${cfg.corte}_Notas_${fecha}.xlsx`);
+  toast('✅ XLSX descargado');
+}
+
+function exportCSV() {
+  const cfg = getConfig();
+  if (!students.length) { toast('⚠️ No hay datos'); return; }
+  let csv = 'ID,Nombre,Grupo,Semanas,Actividades,Quiz Promedio,Nota Formativa,Nota Parcial,Nota Corte,Estado\n';
+  students.forEach(s => {
+    const p = parcialesGuardados[s.student_id];
+    const nc = p != null ? (s.nota_formativa * cfg.pesoForm + p * cfg.pesoParcial).toFixed(2) : '';
+    const estado = nc !== '' ? (parseFloat(nc) >= cfg.notaMin ? 'APROBADO' : 'REPROBADO') : 'PENDIENTE';
+    csv += `"${s.student_id}","${s.nombre}","${s.grupo}",${s.semanas_count},${s.actividades},` +
+           `${s.quiz_avg.toFixed(2)},${s.nota_formativa.toFixed(2)},${p != null ? p : ''},${nc},${estado}\n`;
+  });
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent('\ufeff' + csv);
+  a.download = `TGA05_Corte${cfg.corte}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  toast('✅ CSV descargado');
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Sync peso formativa ↔ parcial ─────────────────────────────────────────────
+document.getElementById('inp-peso-form').addEventListener('input', function() {
+  const v = Math.min(99, Math.max(1, parseInt(this.value) || 70));
+  document.getElementById('inp-peso-parc').value = 100 - v;
+  renderFormula();
+});
+</script>
 </body>
 </html>

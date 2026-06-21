@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mis Puntos de Participación — TGA05</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1E2843;--yellow:#FFDF2D;--bg:#FAFAFA;--border:#DEDFE4;--green:#2e7d32;--red:#c62828;--radius:12px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Open Sans',sans-serif;background:var(--bg);color:#222;min-height:100vh;display:flex;flex-direction:column;}
+
+header{background:var(--navy);color:#fff;padding:1rem 1.5rem;text-align:center;}
+header h1{font-size:1.2rem;font-weight:800;}
+header p{font-size:.78rem;opacity:.75;margin-top:.2rem;}
+
+main{flex:1;max-width:520px;margin:0 auto;padding:1.5rem;width:100%;}
+
+/* Search card */
+.search-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;margin-bottom:1rem;text-align:center;box-shadow:0 2px 12px rgba(30,40,67,.08);}
+.search-card h2{color:var(--navy);font-size:1rem;font-weight:700;margin-bottom:.8rem;}
+.search-input{width:100%;padding:.65rem 1rem;border:2px solid var(--border);border-radius:8px;font-size:.95rem;margin-bottom:.7rem;font-family:inherit;}
+.search-input:focus{outline:none;border-color:var(--navy);}
+.search-btn{width:100%;padding:.7rem;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;}
+.search-btn:hover{background:#2d3f6b;}
+
+/* Results */
+.result-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;}
+.result-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;cursor:pointer;transition:.12s;font-size:.88rem;font-weight:600;}
+.result-item:hover{border-color:var(--navy);background:#e8eaf6;}
+
+/* Profile card */
+.profile-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;box-shadow:0 2px 12px rgba(30,40,67,.08);display:none;}
+.profile-name{font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:1.2rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);}
+
+.pts-hero{text-align:center;padding:1.2rem;background:linear-gradient(135deg,var(--navy),#3949ab);border-radius:10px;color:#fff;margin-bottom:1rem;}
+.pts-hero .big{font-size:3rem;font-weight:800;line-height:1;}
+.pts-hero .lbl{font-size:.82rem;opacity:.8;margin-top:.3rem;}
+
+.nota-hero{display:flex;gap:.8rem;margin-bottom:1rem;}
+.nota-block{flex:1;background:#f8f9ff;border:1px solid var(--border);border-radius:8px;padding:.8rem;text-align:center;}
+.nota-block .n{font-size:1.5rem;font-weight:800;color:var(--navy);}
+.nota-block .l{font-size:.72rem;color:#888;margin-top:.2rem;}
+
+/* Reward status */
+.reward-status{border-radius:10px;padding:1rem 1.2rem;margin-bottom:1rem;text-align:center;}
+.reward-exon{background:#e8f5e9;border:2px solid #a5d6a7;}
+.reward-ayuda{background:#fff8e1;border:2px solid #ffe082;}
+.reward-normal{background:#e3f2fd;border:2px solid #90caf9;}
+.reward-riesgo{background:#ffebee;border:2px solid #ef9a9a;}
+.reward-status .icon{font-size:2rem;margin-bottom:.3rem;}
+.reward-status .title{font-weight:800;font-size:1rem;color:var(--navy);}
+.reward-status .desc{font-size:.82rem;color:#555;margin-top:.3rem;line-height:1.5;}
+
+/* Progress bar */
+.progress-wrap{margin-bottom:1rem;}
+.progress-wrap .lbl{display:flex;justify-content:space-between;font-size:.78rem;color:#888;margin-bottom:.3rem;}
+.progress-bar{background:#e0e0e0;border-radius:20px;height:10px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#1565c0,#42a5f5);transition:.5s;}
+.progress-fill.fill-exon{background:linear-gradient(90deg,#2e7d32,#66bb6a);}
+
+/* Event log */
+.events-section{margin-top:.8rem;}
+.events-title{font-size:.8rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.5rem;}
+.event-entry{display:flex;align-items:center;gap:.5rem;padding:.4rem .5rem;border-radius:6px;font-size:.78rem;margin-bottom:.25rem;}
+.event-entry.pos{background:#f1f8e9;}
+.event-entry.neg{background:#fff3e0;}
+.event-pts{font-weight:800;min-width:28px;text-align:center;}
+.event-pts.pos{color:var(--green);}
+.event-pts.neg{color:var(--red);}
+.event-meta{flex:1;}
+.event-concept{font-weight:600;}
+.event-date{color:#aaa;font-size:.7rem;}
+
+/* Motivational box */
+.motiv-box{background:linear-gradient(135deg,var(--navy),#3949ab);color:#fff;border-radius:10px;padding:1rem 1.2rem;margin-top:1rem;font-size:.88rem;line-height:1.6;text-align:center;}
+.motiv-box strong{color:var(--yellow);display:block;font-size:.95rem;margin-bottom:.3rem;}
+
+.back-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:.35rem .8rem;font-size:.8rem;cursor:pointer;color:#888;margin-top:.8rem;}
+.back-btn:hover{background:#e8eaf6;}
+
+/* Empty */
+.empty-box{text-align:center;padding:2rem;color:#aaa;font-size:.88rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎯 Mis Puntos de Participación</h1>
+  <p>TGA05 · Estructura de Datos para los Negocios · Grupo 7_GA_G1</p>
+</header>
+
+<main>
+
+  <div class="search-card" id="search-section">
+    <h2>¿Quién eres? Busca tu nombre</h2>
+    <input type="text" class="search-input" id="search-input" placeholder="Escribe tu apellido o nombre…" oninput="onSearch()" autocomplete="off">
+    <div class="result-list" id="results-list"></div>
+    <p style="font-size:.75rem;color:#aaa;margin-top:.4rem">Tu CC o código no se comparte. Solo tú puedes ver tu información.</p>
+  </div>
+
+  <div class="profile-card" id="profile-card">
+    <div class="profile-name" id="profile-name">—</div>
+
+    <div class="pts-hero">
+      <div class="big" id="pts-big">0</div>
+      <div class="lbl">puntos de participación acumulados</div>
+    </div>
+
+    <div class="nota-hero">
+      <div class="nota-block">
+        <div class="n" id="nota-n">0.00</div>
+        <div class="l">Nota (0–5)</div>
+      </div>
+      <div class="nota-block">
+        <div class="n" id="max-n">50</div>
+        <div class="l">Pts máximos</div>
+      </div>
+      <div class="nota-block">
+        <div class="n" id="rank-n">—</div>
+        <div class="l">Posición en clase</div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="lbl"><span>Progreso hacia meta</span><span id="pct-lbl">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#aaa;margin-top:.2rem">
+        <span>0</span>
+        <span id="thresh-ayuda-lbl">30 pts</span>
+        <span id="thresh-exon-lbl">40 pts</span>
+        <span id="max-pts-lbl">50 pts</span>
+      </div>
+    </div>
+
+    <div class="reward-status" id="reward-status"></div>
+
+    <div class="events-section">
+      <div class="events-title">📋 Historial de puntos</div>
+      <div id="events-log">
+        <div class="empty-box">Aún no tienes puntos registrados.</div>
+      </div>
+    </div>
+
+    <div class="motiv-box">
+      <strong>🌟 Recuerda siempre:</strong>
+      Lo importante no es esta puntuación ni tu nota, sino lo que has aprendido y cómo has crecido como profesional.<br>¡Sigue adelante con entusiasmo!
+    </div>
+
+    <button class="back-btn" onclick="goBack()">← Buscar otro estudiante</button>
+  </div>
+
+</main>
+
+<script>
+const STORE_KEY_PUB = 'tga05_participacion_pub';
+const STORE_KEY     = 'tga05_participacion_v1';
+
+// ── Load data ────────────────────────────────────────────────────────────────
+function getSnapshot() {
+  const pub = localStorage.getItem(STORE_KEY_PUB);
+  if (pub) {
+    const parsed = JSON.parse(pub);
+    if (parsed.students) {
+      // New format: { config, students: [...] }
+      return parsed.students.map(s => ({ ...s, config: parsed.config }));
+    }
+    return parsed; // legacy flat array (no events)
+  }
+
+  // Fallback: compute from raw data if on same device as teacher
+  const raw = localStorage.getItem(STORE_KEY);
+  if (!raw) return null;
+  const data = JSON.parse(raw);
+
+  const STUDENTS = [
+    { id:1,  name:'ARIZA DE LA CRUZ YORYELIS PATRICIA',     cc:'1043158867' },
+    { id:2,  name:'BERRIO JULIO BLEIDYS',                    cc:'SIN_DOC_2'  },
+    { id:3,  name:'BOTELLO CACERES ALBERTO MARIO',           cc:'1042455285' },
+    { id:4,  name:'CAÑATE HERRERA SANTIAGO',                 cc:'1129513136' },
+    { id:5,  name:'CASARRUBIA PUELLO LINA MARCELA',          cc:'SIN_DOC_5'  },
+    { id:6,  name:'DE LA CRUZ DONADO ANGELITH YULIETH',      cc:'1130269210' },
+    { id:7,  name:'ESTRADA GOMEZ LUIS EDUARDO',              cc:'1044619786' },
+    { id:8,  name:'FLORES CHAVARRO HILARY JOHANA',           cc:'1043132495' },
+    { id:9,  name:'GONZALEZ ZAMORA JHONLUIS',                cc:'1130271420' },
+    { id:10, name:'HERAZO PEREZ LUIS JAVIER',                cc:'1100394417' },
+    { id:11, name:'HERNANDEZ AVILA ESTELIA DEL CARMEN',      cc:'1044390913' },
+    { id:12, name:'HERNANDEZ COGOLLO MARIA FERNANDA',        cc:'1045750902' },
+    { id:13, name:'JIMÉNEZ LOPEZ MARYURIS ARLE',             cc:'1092185876' },
+    { id:14, name:'MERIÑO SILVERA ARNOLD JUNIOR',            cc:'1043442844' },
+    { id:15, name:'OLIVEROS CAMACHO LAIZA LEM',              cc:'1193548488' },
+    { id:16, name:'OLIVEROS SIERRA LUISA FERNANDA',          cc:'1096801658' },
+    { id:17, name:'PALENCIA RODRIGUEZ MELANY ESTHER',        cc:'1001876950' },
+    { id:18, name:'PEREZ RODRIGUEZ LARITZA JOHANA',          cc:'1043669582' },
+    { id:19, name:'PEREZ SANCHEZ JULIETH PAOLA',             cc:'1002231958' },
+    { id:20, name:'PUGLIESE HERNANDEZ CAROLINE MICHELLE',    cc:'1044622270' },
+    { id:21, name:'REALES TOVAR YEIMY SADRIT',               cc:'1129505964' },
+    { id:22, name:'REDONDO LAURENS MARIA JOSE',              cc:'1143120550' },
+    { id:23, name:'RESTREPO FLOREZ JASSLEYDYS SHARIK',       cc:'1048064753' },
+    { id:24, name:'ROSAS GARCIA MIGUEL ARMANDO',             cc:'1121844008' },
+    { id:25, name:'SENIOR GONZALEZ YULEYDIS MARIA',          cc:'1007892916' },
+    { id:26, name:'UCROS ZAMBRANO VALENTINA',                cc:'1192714188' },
+    { id:27, name:'VALDÉS VALIENTE CARLOS ANDRÉS',           cc:'1042249560' },
+    { id:28, name:'VIDAL ORTIZ SABRINA ISABEL',              cc:'1045691499' },
+    { id:29, name:'VILORIA CARDENAS DANIT MERCEDES',         cc:'1143461984' },
+  ];
+
+  const cfg = data.config || { max_pts:50, thresh_exon:40, thresh_ayuda:30 };
+  function getTotal(sid) { return data.events.filter(e=>e.sid===sid).reduce((s,e)=>s+e.pts,0); }
+  function getGrade(sid) { const p=getTotal(sid); return Math.min(5,Math.max(0,(p/cfg.max_pts)*5)); }
+  function getStatus(pts) {
+    if(pts>=cfg.thresh_exon)  return { label:'🏆 Exoneración',  cls:'reward-exon' };
+    if(pts>=cfg.thresh_ayuda) return { label:'📝 Ayuda parcial', cls:'reward-ayuda' };
+    if(pts>0)                 return { label:'✅ Normal',         cls:'reward-normal' };
+    return { label:'⚠️ Sin puntos', cls:'reward-riesgo' };
+  }
+  return STUDENTS.map(s => ({
+    id: s.id, cc: s.cc, name: s.name,
+    pts: getTotal(s.id),
+    nota: getGrade(s.id).toFixed(2),
+    status: getStatus(getTotal(s.id)).label,
+    events: data.events.filter(e=>e.sid===s.id),
+    config: cfg,
+  }));
+}
+
+let snapshot = null;
+
+function onSearch() {
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  const list = document.getElementById('results-list');
+  if (!q || q.length < 2) { list.innerHTML = ''; return; }
+  if (!snapshot) snapshot = getSnapshot();
+  if (!snapshot) {
+    list.innerHTML = '<div class="empty-box">Datos no disponibles. Contacta a tu docente.</div>';
+    return;
+  }
+  const matches = snapshot.filter(s => s.name.toLowerCase().includes(q));
+  if (!matches.length) {
+    list.innerHTML = '<div style="color:#aaa;font-size:.83rem;padding:.5rem">No encontrado. Prueba con tu apellido.</div>';
+    return;
+  }
+  list.innerHTML = matches.slice(0,5).map(s =>
+    `<div class="result-item" onclick="showProfile(${s.id})">${s.name}</div>`
+  ).join('');
+}
+
+function showProfile(id) {
+  if (!snapshot) return;
+  const s = snapshot.find(s => s.id === id);
+  if (!s) return;
+
+  const cfg = s.config || { max_pts:50, thresh_exon:40, thresh_ayuda:30 };
+  const pts  = s.pts;
+  const nota = parseFloat(s.nota);
+  const pct  = Math.min(100, Math.max(0, (pts / cfg.max_pts) * 100));
+
+  // Rank
+  const sorted = [...snapshot].sort((a,b) => b.pts - a.pts);
+  const rank   = sorted.findIndex(x => x.id === id) + 1;
+
+  document.getElementById('profile-name').textContent  = s.name;
+  document.getElementById('pts-big').textContent       = pts >= 0 ? '+'+pts : pts;
+  document.getElementById('nota-n').textContent        = nota.toFixed(2);
+  document.getElementById('max-n').textContent         = cfg.max_pts;
+  document.getElementById('rank-n').textContent        = `${rank}°`;
+  document.getElementById('pct-lbl').textContent       = pct.toFixed(0) + '%';
+  document.getElementById('thresh-ayuda-lbl').textContent = cfg.thresh_ayuda + ' pts';
+  document.getElementById('thresh-exon-lbl').textContent  = cfg.thresh_exon  + ' pts';
+  document.getElementById('max-pts-lbl').textContent      = cfg.max_pts + ' pts';
+
+  const fill = document.getElementById('progress-fill');
+  fill.style.width = pct + '%';
+  fill.className   = 'progress-fill' + (pts >= cfg.thresh_exon ? ' fill-exon' : '');
+
+  // Reward status
+  const rw = document.getElementById('reward-status');
+  if (pts >= cfg.thresh_exon) {
+    rw.className = 'reward-status reward-exon';
+    rw.innerHTML = `<div class="icon">🏆</div><div class="title">¡Exoneración lograda!</div><div class="desc">Tu participación excepcional te da la <strong>exoneración de la parte práctica del parcial</strong>. ¡Sigue así!</div>`;
+  } else if (pts >= cfg.thresh_ayuda) {
+    rw.className = 'reward-status reward-ayuda';
+    rw.innerHTML = `<div class="icon">📝</div><div class="title">Ayuda para parciales</div><div class="desc">Puedes usar una <strong>ayuda permitida</strong> en los parciales 1 y 2. ¡Vas muy bien!</div>`;
+  } else if (pts > 0) {
+    const left = cfg.thresh_ayuda - pts;
+    rw.className = 'reward-status reward-normal';
+    rw.innerHTML = `<div class="icon">✅</div><div class="title">¡Vas por buen camino!</div><div class="desc">Te faltan <strong>${left} puntos</strong> para obtener ayuda en parciales. ¡Participa más!</div>`;
+  } else {
+    rw.className = 'reward-status reward-riesgo';
+    rw.innerHTML = `<div class="icon">💡</div><div class="title">Aún estás a tiempo</div><div class="desc">Participa activamente en clase para acumular puntos. Cada contribución cuenta.</div>`;
+  }
+
+  // Events log
+  const log = document.getElementById('events-log');
+  const evs = (s.events || []).slice().reverse();
+  if (!evs.length) {
+    log.innerHTML = '<div class="empty-box">Aún no tienes puntos registrados.</div>';
+  } else {
+    log.innerHTML = evs.map(e =>
+      `<div class="event-entry ${e.pts>=0?'pos':'neg'}">
+        <span class="event-pts ${e.pts>=0?'pos':'neg'}">${e.pts>=0?'+'+e.pts:e.pts}</span>
+        <div class="event-meta">
+          <div class="event-concept">${esc(e.concept)}</div>
+          <div class="event-date">Semana ${e.semana} · ${e.date}</div>
+        </div>
+      </div>`
+    ).join('');
+  }
+
+  document.getElementById('search-section').style.display = 'none';
+  document.getElementById('profile-card').style.display   = 'block';
+}
+
+function goBack() {
+  document.getElementById('profile-card').style.display   = 'none';
+  document.getElementById('search-section').style.display = 'block';
+  document.getElementById('results-list').innerHTML = '';
+  document.getElementById('search-input').value = '';
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>

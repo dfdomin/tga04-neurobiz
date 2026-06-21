@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard docente · TGA04</title>
+  <title>Dashboard docente · TGA05</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
@@ -12,6 +12,7 @@
   <script src="../js/academic-rules.js"></script>
   <script src="../js/teacher-auth.js"></script>
   <script src="../js/student-dashboard.js"></script>
+  <script src="../js/student-identicon.js"></script>
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     :root { --primary:#1E2843; --accent:#2d3a5e; --gold:#FFDF2D; --green:#2e7d32; --red:#c62828; --light-bg:#FAFAFA; --card-bg:#fff; --text:#212121; --muted:#546e7a; --border:#DEDFE4; --radius:12px; }
@@ -196,6 +197,20 @@
       if (a.status === "risk") return ["En riesgo", "warn", a.hoursLost + " h"];
       return ["En regla", "ok", a.hoursLost + " h"];
     }
+    // ── Identicon helpers ───────────────────────────────────────
+    function identiconInline(id) {
+      if (typeof window.renderIdenticonSVG !== 'function') return '';
+      var svg = window.renderIdenticonSVG(id);
+      if (!svg) return '';
+      return svg.replace('width="44" height="44"', 'width="24" height="24"');
+    }
+    function firmaName(id) {
+      return typeof window.getIdenticonFirmaName === 'function' ? window.getIdenticonFirmaName(id) : '?';
+    }
+    function verifCode(id) {
+      return typeof window.getIdenticonCode === 'function' ? window.getIdenticonCode(id) : '';
+    }
+
     function render() {
       const q = document.getElementById("search").value.toLowerCase();
       const g = document.getElementById("group").value;
@@ -204,7 +219,7 @@
       document.getElementById("mXp").textContent = data.length ? Math.round(data.reduce((s,x)=>s+x.xp,0)/data.length) : 0;
       document.getElementById("rows").innerHTML = data.sort((a,b)=>a.name.localeCompare(b.name)).map(x => {
         const [label, cls, hours] = attStatusFor(x.id);
-        return `<tr><td><strong>${esc(x.name)}</strong><br><small>${esc(x.id)}</small></td><td>${esc(x.grupo || "-")}</td><td><span class="risk ${cls}">${label}</span></td><td>${hours}</td><td>${x.semanas_visitadas}</td><td>${x.xp}</td><td>${Number(x.quiz).toFixed(1)}</td><td>${x.activities}</td><td>${x.updated ? new Date(x.updated).toLocaleString() : "-"}</td></tr>`;
+        return `<tr><td style="white-space:nowrap">${identiconInline(x.id)}&nbsp;<strong>${esc(x.name)}</strong> <span class="identicon-verify" style="font-size:.65rem;color:#7c3aed;font-weight:700;background:rgba(124,58,237,.1);padding:0 4px;border-radius:4px">${verifCode(x.id)}</span> <span class="firma-dot" title="Pixel-firma: ${firmaName(x.id)}" style="font-size:.6rem;color:#546e7a;opacity:.3">◇</span><br><small>${esc(x.id)} ${esc(x.horario)}</small></td><td>${esc(x.grupo || "-")}</td><td><span class="risk ${cls}">${label}</span></td><td>${hours}</td><td>${x.semanas_visitadas}</td><td>${x.xp}</td><td>${Number(x.quiz).toFixed(1)}</td><td>${x.activities}</td><td>${x.updated ? new Date(x.updated).toLocaleString() : "-"}</td></tr>`;
       }).join("");
     }
     function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }

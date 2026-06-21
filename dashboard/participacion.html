@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Participación y Asistencia · TGA04</title>
+  <title>Participación y Asistencia · TGA05</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
   <script src="../js/supabase-config.js"></script>
   <script src="../js/gamification-sdk.js"></script>
-  <script src="../js/group-schedules.js"></script>
   <script src="../js/import-students-browser.js"></script>
   <script src="../js/teacher-auth.js"></script>
   <script src="../js/teacher-week-validator.js"></script>
@@ -89,13 +88,14 @@
   <script src="../js/academic-rules.js"></script>
   <script src="../js/academic-status-bar.js"></script>
   <script src="../js/celebration.js"></script>
+  <script src="../js/student-identicon.js"></script>
 </head>
 <body>
   <header>
     <div class="wrap top">
       <div>
         <h1>Participación y Asistencia</h1>
-        <p>TGA04 · NeuroBiz S.A.S. — registro de clase, importación y participación.</p>
+        <p>TGA05 · NeuroBiz S.A.S. — registro de clase, importación y participación.</p>
       </div>
       <nav class="nav">
         <a href="../index.html">Inicio</a>
@@ -171,10 +171,10 @@
         </div>
         <div class="panel">
           <div class="toolbar">
-            <div><label for="attGroup">Grupo</label><select id="attGroup" onchange="onAttGroupChange()"><option value="">Todos</option></select></div>
+            <div><label for="attGroup">Grupo</label><select id="attGroup" onchange="renderAttendance()"><option value="">Todos</option></select></div>
             <div><label for="attDate">Fecha de clase</label>
               <input id="attDate" type="date" onchange="updateAttDateHint(); renderAttendance();">
-              <div id="attSessionButtons" style="display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.35rem"></div>
+              <button type="button" class="btn-sm btn-gold" style="margin-top:.35rem" onclick="useClassSessionDate()">Usar jueves de esta semana</button>
             </div>
             <div style="grid-column:1/-1"><p id="attDateHint" class="msg" style="min-height:1rem;margin:0"></p></div>
             <div><label for="attSearch">Buscar</label><input id="attSearch" placeholder="Nombre o CC" oninput="renderAttendance()"></div>
@@ -297,13 +297,13 @@
   </main>
 
   <script>
-    const STORAGE_STUDENTS = "tga04_students_v1";
-    const STORAGE_HISTORY = "tga04_participation_history";
-    const STORAGE_ATTENDANCE = "tga04_attendance";
-    const STORAGE_ATT_LOG = "tga04_attendance_log_v1";
-    const STORAGE_TODAY_PTS = "tga04_today_points";
-    const STORAGE_CLOUD_REPORT = "tga04_attendance_cloud_report";
-    const STORAGE_CLASS_META = "tga04_class_meta_v1";
+    const STORAGE_STUDENTS = "tga05_students_v1";
+    const STORAGE_HISTORY = "tga05_participation_history";
+    const STORAGE_ATTENDANCE = "tga05_attendance";
+    const STORAGE_ATT_LOG = "tga05_attendance_log_v1";
+    const STORAGE_TODAY_PTS = "tga05_today_points";
+    const STORAGE_CLOUD_REPORT = "tga05_attendance_cloud_report";
+    const STORAGE_CLASS_META = "tga05_class_meta_v1";
     const ATT_CODES = ["P", "T", "F", "M", "I"];
 
     let currentTab = "live";
@@ -341,36 +341,18 @@
       localStorage.setItem(STORAGE_CLASS_META, JSON.stringify(meta || {}));
     }
 
-    function selectedAttGroup() {
-      const el = document.getElementById("attGroup");
-      return el && el.value ? el.value : "";
-    }
-
-    function groupSchedule() {
-      const grupo = selectedAttGroup();
-      return window.IUBGroupSchedules && grupo ? IUBGroupSchedules.forGrupo(grupo) : null;
-    }
-
     function classWeekday() {
-      const gs = groupSchedule();
-      if (gs && gs.sessions && gs.sessions.length) return gs.sessions[0].weekday;
       const meta = getClassMeta();
       return typeof meta.weekday === "number" ? meta.weekday : 4;
     }
 
     function classDayLabel() {
-      const gs = groupSchedule();
-      if (gs) return gs.label || gs.horario;
       const meta = getClassMeta();
       return meta.dayLabel || "JUEVES";
     }
 
-    function classSessionDate(refDate, weekday) {
-      const gs = groupSchedule();
-      const target = typeof weekday === "number" ? weekday : classWeekday();
-      if (gs && window.IUBGroupSchedules) {
-        return IUBGroupSchedules.sessionDateForWeekday(refDate, target);
-      }
+    function classSessionDate(refDate) {
+      const target = classWeekday();
       const d = refDate ? new Date(refDate) : new Date();
       const day = d.getDay();
       const mondayOffset = day === 0 ? -6 : 1 - day;
@@ -383,11 +365,6 @@
 
     function isClassSessionDate(dateStr) {
       if (!dateStr) return false;
-      const grupo = selectedAttGroup();
-      if (grupo && window.IUBGroupSchedules) {
-        const ok = IUBGroupSchedules.isSessionDate(grupo, dateStr);
-        if (ok !== null) return ok;
-      }
       const parts = dateStr.split("-");
       const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 12);
       return d.getDay() === classWeekday();
@@ -403,75 +380,28 @@
     function updateAttDateHint() {
       const el = document.getElementById("attDateHint");
       if (!el) return;
-      const gs = groupSchedule();
       const label = classDayLabel();
       const dateVal = document.getElementById("attDate").value;
-      const suggested = (gs && window.IUBGroupSchedules)
-        ? IUBGroupSchedules.nearestSessionDate(selectedAttGroup(), dateVal || undefined)
-        : classSessionDate();
-      const horario = (gs && gs.horario) || getClassMeta().horario || label;
-      const hours = (gs && dateVal && window.IUBGroupSchedules)
-        ? IUBGroupSchedules.hoursForSession(selectedAttGroup(), dateVal)
-        : null;
+      const suggested = classSessionDate();
+      const horario = getClassMeta().horario || label;
       if (isClassSessionDate(dateVal)) {
-        el.textContent = "Sesión de clase: " + formatDateEs(dateVal) + " (" + horario + (hours ? " · " + hours + " h" : "") + ").";
+        el.textContent = "Sesión de clase: " + formatDateEs(dateVal) + " (" + horario + ").";
         el.className = "msg ok";
       } else {
-        el.textContent = "Horario del grupo: " + label + " (" + horario + "). Fecha sugerida: " + formatDateEs(suggested) + ".";
+        el.textContent = "Este curso es los " + label + " (" + horario + "). Fecha sugerida: " + formatDateEs(suggested) + ".";
         el.className = "msg err";
       }
     }
 
-    function useClassSessionDate(weekday) {
-      document.getElementById("attDate").value = classSessionDate(undefined, weekday);
-      updateAttDateHint();
-      renderAttendance();
-    }
-
-    function updateSessionButtons() {
-      const host = document.getElementById("attSessionButtons");
-      if (!host) return;
-      host.innerHTML = "";
-      const gs = groupSchedule();
-      if (gs && gs.sessions && gs.sessions.length) {
-        gs.sessions.forEach(function (s) {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "btn-sm btn-gold";
-          btn.textContent = "Usar " + s.dayLabel.toLowerCase() + " (" + s.hours + " h)";
-          btn.onclick = function () { useClassSessionDate(s.weekday); };
-          host.appendChild(btn);
-        });
-        return;
-      }
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "btn-sm btn-gold";
-      btn.textContent = "Usar " + classDayLabel().toLowerCase() + " de esta semana";
-      btn.onclick = function () { useClassSessionDate(); };
-      host.appendChild(btn);
-    }
-
-    function onAttGroupChange() {
-      updateSessionButtons();
-      const grupo = selectedAttGroup();
-      if (grupo && window.IUBGroupSchedules) {
-        const near = IUBGroupSchedules.nearestSessionDate(grupo);
-        if (near) document.getElementById("attDate").value = near;
-      }
+    function useClassSessionDate() {
+      document.getElementById("attDate").value = classSessionDate();
       updateAttDateHint();
       renderAttendance();
     }
 
     function updateClassDayButtonLabel() {
-      updateSessionButtons();
-    }
-
-    function normalizeStudentHorario(s) {
-      if (!window.IUBGroupSchedules || !s.grupo) return s;
-      return Object.assign({}, s, {
-        horario: IUBGroupSchedules.normalizeHorario(s.grupo, s.horario)
-      });
+      const btn = document.querySelector("button[onclick='useClassSessionDate()']");
+      if (btn) btn.textContent = "Usar " + classDayLabel().toLowerCase() + " de esta semana";
     }
 
     function nowISO() {
@@ -594,6 +524,20 @@
 
     function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
 
+    // ── Identicon helpers (student-identicon.js) ────────────────
+    function identiconInline(id) {
+      if (typeof window.renderIdenticonSVG !== 'function') return '';
+      var svg = window.renderIdenticonSVG(id);
+      if (!svg) return '';
+      return svg.replace('width="44" height="44"', 'width="24" height="24"');
+    }
+    function firmaName(id) {
+      return typeof window.getIdenticonFirmaName === 'function' ? window.getIdenticonFirmaName(id) : '?';
+    }
+    function verifCode(id) {
+      return typeof window.getIdenticonCode === 'function' ? window.getIdenticonCode(id) : '';
+    }
+
     function init() {
       const meta = getClassMeta();
       if (typeof meta.weekday !== "number") {
@@ -610,11 +554,11 @@
     }
 
     async function fetchStudentsFromSupabase() {
-      const url = localStorage.getItem("tga04_supabase_url");
-      const key = localStorage.getItem("tga04_supabase_key");
+      const url = localStorage.getItem("tga05_supabase_url");
+      const key = localStorage.getItem("tga05_supabase_key");
       if (!url || !key) return false;
       const offering = encodeURIComponent(
-        (typeof GamifSDK !== "undefined" && GamifSDK.getOfferingCode()) || "TGA04-2026-2"
+        (typeof GamifSDK !== "undefined" && GamifSDK.getOfferingCode()) || "TGA05-2026-2"
       );
       try {
         let res = await fetch(url + "/rest/v1/v_legacy_students?select=cc,name,grupo,horario&offering_code=eq." + offering + "&order=name", {
@@ -627,12 +571,12 @@
         const data = await res.json();
         if (data && data.length) {
           const students = data.map(function(s) {
-            return normalizeStudentHorario({
+            return {
               name: s.name,
               cc: s.cc,
               grupo: s.grupo || "",
               horario: s.horario || ""
-            });
+            };
           });
           setStudents(students);
           return true;
@@ -683,7 +627,7 @@
         const pts = todayPts[s.cc] || 0;
         return `<tr>
           <td><input type="checkbox" value="${ccAttr(s.cc)}" class="live-chk"></td>
-          <td><strong>${esc(s.name)}</strong></td>
+          <td style="white-space:nowrap">${identiconInline(s.cc)}&nbsp;<strong>${esc(s.name)}</strong> <span class="identicon-verify" style="font-size:.65rem;color:#7c3aed;font-weight:700;background:rgba(124,58,237,.1);padding:0 4px;border-radius:4px">${verifCode(s.cc)}</span> <span class="firma-dot" title="Pixel-firma: ${firmaName(s.cc)}" style="font-size:.6rem;color:#546e7a;opacity:.3">◇</span></td>
           <td>${esc(s.cc)}</td>
           <td>${esc(s.grupo || "-")}</td>
           <td>${pts}</td>
@@ -848,7 +792,7 @@
         const pct = calcAttendancePct(s.cc);
         const ccSafe = ccAttr(s.cc);
         return `<tr>
-          <td><strong>${esc(s.name)}</strong></td>
+          <td style="white-space:nowrap">${identiconInline(s.cc)}&nbsp;<strong>${esc(s.name)}</strong> <span class="identicon-verify" style="font-size:.65rem;color:#7c3aed;font-weight:700;background:rgba(124,58,237,.1);padding:0 4px;border-radius:4px">${verifCode(s.cc)}</span> <span class="firma-dot" title="Pixel-firma: ${firmaName(s.cc)}" style="font-size:.6rem;color:#546e7a;opacity:.3">◇</span></td>
           <td>${esc(s.cc)}</td>
           <td>${esc(s.grupo || "-")}</td>
           <td>
@@ -966,7 +910,7 @@
         row.push(dates.length ? Math.round(p / dates.length * 100) + "%" : "");
         rows.push(row);
       }
-      downloadCSV(rows, `Asistencia_TGA04_${todayStr()}.csv`);
+      downloadCSV(rows, `Asistencia_TGA05_${todayStr()}.csv`);
     }
 
     function exportAttendanceXLSX() {
@@ -986,7 +930,7 @@
         row.push(dates.length ? Math.round(p / dates.length * 100) + "%" : "");
         rows.push(row);
       }
-      downloadXLSX(rows, `Asistencia_TGA04_${todayStr()}.xlsx`, "Asistencia");
+      downloadXLSX(rows, `Asistencia_TGA05_${todayStr()}.xlsx`, "Asistencia");
     }
 
     async function syncAttendanceToSupabase() {
@@ -1040,7 +984,7 @@
       const blob = new Blob([header + body], { type: "text/tab-separated-values" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = `Participacion_TGA04_${todayStr()}.tsv`;
+      a.download = `Participacion_TGA05_${todayStr()}.tsv`;
       a.click();
       URL.revokeObjectURL(a.href);
     }
@@ -1097,7 +1041,7 @@
         return;
       }
       document.getElementById("reportMsg").textContent = "Cargando desde Supabase...";
-      const offering = encodeURIComponent(GamifSDK.getOfferingCode() || "TGA04-2026-2");
+      const offering = encodeURIComponent(GamifSDK.getOfferingCode() || "TGA05-2026-2");
       try {
         const res = await fetch(
           GamifSDK.sbUrl() + "/rest/v1/v_legacy_attendance?select=cc,fecha,estado,created_at,grupo,offering_code&offering_code=eq." + offering + "&order=created_at.desc",
@@ -1147,13 +1091,13 @@
     function exportReportCSV() {
       const rows = buildReportRows();
       if (!rows.length) { alert("Sin registros para exportar."); return; }
-      downloadCSV(reportSheetRows(), "Reporte_Asistencia_TGA04_" + todayStr() + ".csv");
+      downloadCSV(reportSheetRows(), "Reporte_Asistencia_TGA05_" + todayStr() + ".csv");
     }
 
     function exportReportXLSX() {
       const rows = buildReportRows();
       if (!rows.length) { alert("Sin registros para exportar."); return; }
-      downloadXLSX(reportSheetRows(), "Reporte_Asistencia_TGA04_" + todayStr() + ".xlsx", "Reporte");
+      downloadXLSX(reportSheetRows(), "Reporte_Asistencia_TGA05_" + todayStr() + ".xlsx", "Reporte");
     }
 
     // ── TAB: Configuracion ──────────────────────────────────
@@ -1277,14 +1221,13 @@
       if (!students.length) { alert("No hay estudiantes para sincronizar."); return; }
       document.getElementById("configSummary").textContent = "Sincronizando...";
       try {
-        const offering = GamifSDK.getOfferingCode() || "TGA04-2026-2";
+        const offering = GamifSDK.getOfferingCode() || "TGA05-2026-2";
         const payload = students.map(function(s) {
-          const row = normalizeStudentHorario(s);
           return {
-            cc: row.cc,
-            name: row.name,
-            grupo: row.grupo || "",
-            horario: row.horario || ""
+            cc: s.cc,
+            name: s.name,
+            grupo: s.grupo || "",
+            horario: s.horario || ""
           };
         });
         const res = await fetch(GamifSDK.sbUrl() + "/rest/v1/rpc/upsert_roster_students", {
