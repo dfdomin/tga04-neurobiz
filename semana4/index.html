@@ -1444,7 +1444,7 @@ else PT.init();
         (found.horario ? " &nbsp;·&nbsp; ⏰ " + esc(found.horario) : "");
       nameEl.dataset.cc = cc; nameEl.dataset.nombre = found.name;
       nameEl.dataset.grupo = found.grupo || ""; nameEl.dataset.horario = found.horario || "";
-      showStep("pt-step2a");
+      window.showStep("pt-step2a");
       var btn = document.getElementById("pt-modal-btn");
       if (btn) setTimeout(function(){ btn.focus(); }, 100);
       return;
@@ -1472,17 +1472,17 @@ else PT.init();
               (r.horario ? " &nbsp;·&nbsp; ⏰ " + esc(r.horario) : "");
             nameEl.dataset.cc = cc; nameEl.dataset.nombre = r.name;
             nameEl.dataset.grupo = r.grupo || ""; nameEl.dataset.horario = r.horario || "";
-            showStep("pt-step2a");
+            window.showStep("pt-step2a");
           } else {
             var ni = document.getElementById("pt-modal-nombre");
             if (ni) ni.dataset.cc = cc;
-            showStep("pt-step2b");
+            window.showStep("pt-step2b");
             if (ni) setTimeout(function(){ ni.focus(); }, 100);
           }
         }).catch(function(){
           var ni = document.getElementById("pt-modal-nombre");
           if (ni) ni.dataset.cc = cc;
-          showStep("pt-step2b");
+          window.showStep("pt-step2b");
           if (ni) setTimeout(function(){ ni.focus(); }, 100);
         });
       return;
@@ -1491,7 +1491,7 @@ else PT.init();
     // 3. Manual
     var ni = document.getElementById("pt-modal-nombre");
     if (ni) ni.dataset.cc = cc;
-    showStep("pt-step2b");
+    window.showStep("pt-step2b");
     if (ni) setTimeout(function(){ ni.focus(); }, 100);
   };
 
@@ -1522,7 +1522,7 @@ else PT.init();
   };
 
   window.ptBackToCC = function() {
-    showStep("pt-step1");
+    window.showStep("pt-step1");
     var inp = document.getElementById("pt-modal-cc");
     if (inp) setTimeout(function(){ inp.focus(); }, 100);
   };

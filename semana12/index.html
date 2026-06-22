@@ -634,7 +634,7 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
   function showModal() {
     var overlay = document.getElementById('pt-overlay');
     if (overlay) overlay.style.display = 'flex';
-    showStep('pt-step1');
+    window.showStep('pt-step1');
     var inp = document.getElementById('pt-modal-cc');
     if (inp) setTimeout(function() { inp.focus(); }, 120);
   }
@@ -678,7 +678,7 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
       if (nameEl) {
         nameEl.dataset.cc = cc; nameEl.dataset.nombre = found.name; nameEl.dataset.grupo = found.grupo || ''; nameEl.dataset.horario = found.horario || '';
       }
-      showStep('pt-step2a');
+      window.showStep('pt-step2a');
       return;
     }
     var sUrl = localStorage.getItem('tga04_supabase_url');
@@ -700,22 +700,22 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
           if (nameEl) {
             nameEl.dataset.cc = cc; nameEl.dataset.nombre = r.name; nameEl.dataset.grupo = r.grupo || ''; nameEl.dataset.horario = r.horario || '';
           }
-          showStep('pt-step2a');
+          window.showStep('pt-step2a');
         } else {
           var ni = document.getElementById('pt-modal-nombre');
           if (ni) ni.dataset.cc = cc;
-          showStep('pt-step2b');
+          window.showStep('pt-step2b');
         }
       }).catch(function() {
         var ni = document.getElementById('pt-modal-nombre');
         if (ni) ni.dataset.cc = cc;
-        showStep('pt-step2b');
+        window.showStep('pt-step2b');
       });
       return;
     }
     var ni = document.getElementById('pt-modal-nombre');
     if (ni) ni.dataset.cc = cc;
-    showStep('pt-step2b');
+    window.showStep('pt-step2b');
   };
   window.ptConfirmFound = function() {
     var nameEl = document.getElementById('pt-fc-name');
@@ -742,7 +742,7 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
     if (!cc) cc = 'MANUAL_' + Date.now();
     saveProfile(cc, nombre, grupo, '');
   };
-  window.ptBackToCC = function() { showStep('pt-step1'); };
+  window.ptBackToCC = function() { window.showStep('pt-step1'); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function() {
       // Si hay cc almacenada, verificar contra Supabase antes de mostrar modal
       try {
