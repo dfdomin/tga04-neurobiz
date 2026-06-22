@@ -201,7 +201,21 @@
   document.addEventListener("iub:profile-saved", function () {
     exposeAndPatch();
     hydrateFromCloud().then(pushToCloud);
+    renderIdenticonProfile();
   });
+
+  function renderIdenticonProfile() {
+    if (typeof makeIdenticon !== "function") return;
+    var container = document.getElementById("pt-profile");
+    if (!container) return;
+    var profile = {};
+    try { profile = JSON.parse(localStorage.getItem(global.GAMIF_PREFIX + "_global") || "{}"); } catch(e) {}
+    try { var g = GamifSDK.loadProfile(); if (g && g.cc) profile = g; } catch(e) {}
+    if (!profile.cc || !profile.nombre) return;
+    container.innerHTML = "";
+    var el = makeIdenticon(profile.cc, profile.nombre, true);
+    if (el) container.appendChild(el);
+  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
