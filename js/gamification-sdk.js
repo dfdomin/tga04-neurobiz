@@ -117,6 +117,12 @@
     return Math.round((quiz + acts + sem) * 100) / 100;
   }
 
+  /** Calcula nota simple (0-5) basada en XP total acumulado */
+  function calcNotaSimple(xpTotal, xpMaxCurso) {
+    var maximo = xpMaxCurso || 995;
+    return Math.min(5.0, Math.round((xpTotal / maximo) * 5.0 * 100) / 100);
+  }
+
   function totalXP(cfg) {
     var total = 0;
     var cfgRef = cfg || getConfig();
@@ -698,6 +704,7 @@
     rankFor: rankFor,
     riskFor: riskFor,
     calcNotaFormativa: calcNotaFormativa,
+    calcNotaSimple: calcNotaSimple,
     totalXP: totalXP,
     createPT: createPT,
     syncParticipation: syncParticipation,

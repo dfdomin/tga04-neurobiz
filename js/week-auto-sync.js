@@ -109,6 +109,41 @@
     pt.__iubCloudDirect = true;
     global.PT = pt;
 
+    // ── Inject grade display into widget ────────────────────────
+    function ensureGradeDisplay() {
+      var container = document.getElementById("pt-grade");
+      if (container) return container;
+      var widget = document.getElementById("pt-widget");
+      if (!widget) return null;
+      var body = widget.querySelector("#pt-body, .pt-body, .pt-content");
+      if (!body) body = widget;
+      container = document.createElement("div");
+      container.id = "pt-grade";
+      container.style.cssText = "padding:.35rem .5rem;border-top:1px solid #DEDFE4;font-size:.78rem;color:#1E2843;display:flex;justify-content:space-between;align-items:center";
+      container.innerHTML = '<span>📊 Nota formativa: <strong id="pt-grade-value" style="font-size:.95rem">—</strong> / 5.0</span><span style="font-size:.68rem;opacity:.6">XP <span id="pt-grade-xp">0</span>/995</span>';
+      body.appendChild(container);
+      return container;
+    }
+    function updateGradeDisplay() {
+      var valEl = document.getElementById("pt-grade-value");
+      var xpEl = document.getElementById("pt-grade-xp");
+      if (!valEl || !xpEl) return;
+      if (typeof GamifSDK !== "object") return;
+      var cfg = GamifSDK.getConfig();
+      var txp = GamifSDK.totalXP(cfg);
+      var nota = GamifSDK.calcNotaSimple(txp, 995);
+      xpEl.textContent = txp;
+      valEl.textContent = nota.toFixed(2);
+      valEl.style.color = nota >= 3.0 ? "#2e7d32" : nota >= 2.0 ? "#e65100" : "#c62828";
+    }
+    ensureGradeDisplay();
+    updateGradeDisplay();
+    // Re-update on next tick (after async hydrate)
+    setTimeout(updateGradeDisplay, 300);
+    setTimeout(updateGradeDisplay, 1000);
+    // Live update every 3s for XP changes
+    setInterval(updateGradeDisplay, 3000);
+
     if (typeof pt.save === "function") {
       var origSave = pt.save;
       pt.save = function () {
