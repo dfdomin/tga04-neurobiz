@@ -83,7 +83,37 @@
       ? profile.nombre + (profile.grupo ? " · " + profile.grupo : "") + (profile.horario ? " · " + profile.horario : "")
       : "Configura tu perfil desde cualquier semana del curso.";
 
+    // ── Identidad visual del estudiante ────────────────────────
+    var cc = profile.cc || profile.id_estudiante || "";
+    var verifyCode = cc ? window.getIdenticonCode(cc) : "";
+    var firmaHex = cc ? window.getIdenticonFirmaHex(cc) : "";
+    var firmaName = cc ? window.getIdenticonFirmaName(cc) : "";
+    var identiconHtml = "";
+    if (cc) {
+      identiconHtml =
+        '<div class="identity-card" style="display:flex;align-items:center;gap:.8rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;margin-bottom:1rem;box-shadow:0 2px 10px rgba(0,0,0,.04)">' +
+          '<div style="flex-shrink:0">' + window.renderIdenticonSVG(cc) + '</div>' +
+          '<div style="flex:1;min-width:0">' +
+            '<div style="font-weight:700;font-size:.95rem;color:var(--primary)">' + GamifSDK.esc(profile.nombre || "—") + '</div>' +
+            '<div style="font-size:.78rem;color:var(--muted);margin-top:.15rem">' +
+              'CC: ' + GamifSDK.esc(cc) +
+              (profile.grupo ? ' · ' + GamifSDK.esc(profile.grupo) : "") +
+              (profile.horario ? ' · ' + GamifSDK.esc(profile.horario) : "") +
+            '</div>' +
+            '<div style="font-size:.72rem;color:var(--muted);margin-top:.1rem">' +
+              '<span style="display:inline-flex;align-items:center;gap:4px">' +
+                '<span style="font-weight:800;font-family:monospace;background:var(--gray);padding:.1rem .4rem;border-radius:4px;font-size:.85rem;color:var(--navy)">' + verifyCode + '</span>' +
+                ' <span style="opacity:.6">código de verificación</span>' +
+                ' · pixel-firma: <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:' + firmaHex + ';vertical-align:middle;border:1px solid rgba(0,0,0,.15)"></span> ' +
+                '<span style="font-weight:600">' + firmaName + '</span>' +
+              '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
     var html = "";
+    html += identiconHtml;
     html += '<section class="dash-summary">';
     html += '<div class="dash-metric"><span>XP total</span><strong>' + totalXp + '</strong>' + barHtml(totalXp, maxCourse, "#FFDF2D") + '<small>' + pct(totalXp, maxCourse) + "% del curso</small></div>";
     html += '<div class="dash-metric"><span>Rango</span><strong>' + GamifSDK.esc(rank) + "</strong></div>";
@@ -146,7 +176,12 @@
     }
 
     var line = document.getElementById("studentLine");
-    if (line) line.textContent = profileLine;
+    if (line) {
+      var cc = profile.cc || profile.id_estudiante || "";
+      var vCode = cc ? window.getIdenticonCode(cc) : "";
+      line.innerHTML = GamifSDK.esc(profileLine) +
+        (vCode ? ' · <span style="font-weight:800;font-family:monospace;background:rgba(255,255,255,.15);padding:.05rem .4rem;border-radius:4px;font-size:.8rem">' + vCode + '</span>' : "");
+    }
     var totalEl = document.getElementById("totalXp");
     if (totalEl) totalEl.textContent = String(totalXp);
     var rankEl = document.getElementById("rank");
