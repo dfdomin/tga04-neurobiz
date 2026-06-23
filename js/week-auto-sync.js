@@ -170,6 +170,7 @@
 
   function exposeAndPatch() {
     exposePT();
+    renderIdenticonProfile();
     hideLegacyUi();
   }
 
@@ -207,7 +208,17 @@
   function renderIdenticonProfile() {
     if (typeof makeIdenticon !== "function") return;
     var container = document.getElementById("pt-profile");
-    if (!container) return;
+    if (!container) {
+      // Create the profile container inside the PT widget if missing
+      var widget = document.getElementById("pt-widget") || document.querySelector(".pt-widget");
+      var body = widget ? widget.querySelector(".pt-body, .pt-content, [class*='body']") : null;
+      if (!body && widget) body = widget;
+      if (!body) return;
+      container = document.createElement("div");
+      container.id = "pt-profile";
+      container.style.cssText = "padding:.3rem .5rem;border-top:1px solid #DEDFE4;margin-top:.3rem";
+      body.appendChild(container);
+    }
     var profile = {};
     try { profile = JSON.parse(localStorage.getItem(global.GAMIF_PREFIX + "_global") || "{}"); } catch(e) {}
     try { var g = GamifSDK.loadProfile(); if (g && g.cc) profile = g; } catch(e) {}
@@ -215,6 +226,15 @@
     container.innerHTML = "";
     var el = makeIdenticon(profile.cc, profile.nombre, true);
     if (el) container.appendChild(el);
+    // Add verification code
+    var code = window.getIdenticonCode ? window.getIdenticonCode(profile.cc) : "";
+    if (code && container) {
+      var codeSpan = document.createElement("span");
+      codeSpan.style.cssText = "display:inline-block;font-weight:800;font-family:monospace;background:#E9EAED;padding:.05rem .35rem;border-radius:4px;font-size:.72rem;color:#1E2843;margin-left:6px;vertical-align:middle";
+      codeSpan.textContent = code;
+      codeSpan.title = "Código de verificación (comparte con tu docente para confirmar tu identidad)";
+      container.appendChild(codeSpan);
+    }
   }
 
   if (document.readyState === "loading") {
