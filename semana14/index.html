@@ -487,38 +487,32 @@ const PT = (function() {
   }
   async function syncCloud() {
     save();
-    const sbUrl = localStorage.getItem('tga04_supabase_url') || '';
-    const sbKey = localStorage.getItem('tga04_supabase_key') || '';
-    if (!sbUrl || !sbKey) { msg('⚠️ Supabase no configurado', 'orange'); return; }
-    msg('⏳ Sincronizando…', '#fff9c4');
+    const sbUrl = localStorage.getItem("tga04_supabase_url") || "";
+    const sbKey = localStorage.getItem("tga04_supabase_key") || "";
+    const offering = localStorage.getItem("tga04_course_code") || "TGA04-2026-2";
+    if (!sbUrl || !sbKey) { msg("⚠️ Supabase no configurado", "orange"); return; }
+    msg("⏳ Sincronizando…", "#fff9c4");
     try {
-      const res = await fetch(sbUrl + '/rest/v1/student_progress', {
-        method: 'POST',
-        headers: {
-          'apikey': sbKey,
-          'Authorization': 'Bearer ' + sbKey,
-          'Content-Type': 'application/json',
-          'Prefer': 'resolution=merge-duplicates'
-        },
+      const res = await fetch(sbUrl + "/rest/v1/rpc/upsert_weekly_progress", {
+        method: "POST",
+        headers: { "apikey": sbKey, "Authorization": "Bearer " + sbKey, "Content-Type": "application/json" },
         body: JSON.stringify({
-          student_name: state.nombre || 'Anónimo',
-          student_id: state.id_estudiante || state.cc || 'desconocido',
-          semana: state.semana,
-          xp: state.xp || 0,
-          quiz_answers: state.quiz_respuestas || {},
-          quiz_score: state.quiz_puntaje || 0,
-          hti_done: !!state.hti_entregado,
-          activity_done: !!state.actividad_completada,
-          grupo: state.grupo || '',
-          horario: state.horario || '',
-          updated_at: new Date().toISOString()
+          p_offering_code: offering,
+          p_student_id: state.id_estudiante || state.cc || "desconocido",
+          p_student_name: state.nombre || "Anónimo",
+          p_semana: state.semana,
+          p_xp: state.xp || 0,
+          p_quiz_answers: state.quiz_respuestas || {},
+          p_quiz_score: state.quiz_puntaje || 0,
+          p_hti_done: !!(state.hti_entregado || state.hti_done),
+          p_activity_done: !!(state.actividad_completada || state.activity_done),
+          p_grupo: state.grupo || "",
+          p_horario: state.horario || ""
         })
       });
-      if (res.ok || res.status === 201) msg('✅ Guardado en Supabase ☁️', 'lightgreen');
-      else msg('❌ Error ' + res.status, 'salmon');
-    } catch (e) {
-      msg('❌ Sin conexión. Guardado local.', 'salmon');
-    }
+      if (res.ok || res.status === 201) msg("✅ Guardado en Supabase ☁️", "lightgreen");
+      else { const t = await res.text(); msg("❌ Error " + res.status + " - " + t.substring(0,60), "salmon"); }
+    } catch(e) { msg("❌ Sin conexión. Guardado local.", "salmon"); }
   }
   function exportCode() {
     save();
@@ -654,6 +648,7 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
       if (el) el.style.display = (id === name) ? 'block' : 'none';
     });
   }
+  window.showStep = showStep;
   function showModal() {
     var overlay = document.getElementById('pt-overlay');
     if (overlay) overlay.style.display = 'flex';
