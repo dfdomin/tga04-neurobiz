@@ -1,1740 +1,1483 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Semana 3 — Estructura Condicional Simple (SI-FSI) | TGA04</title>
+  <title>Semana 3 — Estructura Condicional Simple (SI) | TGA04</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ── TOKENS ── */
     :root {
-      --primary:   #1E2843;
-      --accent:    #2d3a5e;
-      --gold:      #FFDF2D;
-      --green:     #2e7d32;
-      --red:       #c62828;
-      --light-bg:  #FAFAFA;
-      --card-bg:   #ffffff;
-      --text:      #212121;
-      --muted:     #546e7a;
-      --border:    #DEDFE4;
-      --radius:    12px;
+      --brand:       #1F5C8B;
+      --brand-dark:  #154069;
+      --accent:      #E8A020;
+      --accent-soft: #FFF3DC;
+      --ok:          #1A7F37;
+      --ok-soft:     #EAFBEE;
+      --warn:        #B45309;
+      --warn-soft:   #FFF7E6;
+      --danger:      #C0392B;
+      --danger-soft: #FDECEC;
+      --surface:     #F7F9FC;
+      --card:        #FFFFFF;
+      --border:      #DDE3EA;
+      --text:        #1C2B3A;
+      --muted:       #5A6A7A;
+      --code-bg:     #EEF2F7;
+      --radius:      10px;
+      --radius-lg:   16px;
+      --shadow:      0 2px 12px rgba(31,92,139,.09);
+      --shadow-md:   0 4px 20px rgba(31,92,139,.14);
+      --font-mono:   'Courier New', Courier, monospace;
     }
-    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--light-bg); color: var(--text); line-height: 1.7; font-size: 16px; }
 
-    header { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: #fff; padding: 2.5rem 2rem 2rem; text-align: center; position: relative; overflow: hidden; }
-    header::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 40px; background: var(--light-bg); clip-path: ellipse(55% 100% at 50% 100%); }
-    .badge-module { display: inline-block; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: .3rem 1rem; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .8rem; }
-    header h1 { font-size: 2rem; font-weight: 800; line-height: 1.2; }
-    header p  { font-size: 1rem; opacity: .85; margin-top: .5rem; }
-    .xp-bar-wrap { margin: 1.2rem auto 0; max-width: 400px; background: rgba(255,255,255,.2); border-radius: 20px; height: 14px; overflow: hidden; }
-    .xp-bar { height: 100%; width: 0%; background: var(--gold); border-radius: 20px; transition: width 1.5s ease; }
-    .xp-label { font-size: .78rem; opacity: .8; margin-top: .4rem; }
-
-    nav { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: .6rem 1.5rem; display: flex; gap: .5rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 99; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-    nav a { color: var(--accent); text-decoration: none; font-size: .85rem; font-weight: 600; padding: .3rem .7rem; border-radius: 8px; transition: background .2s; }
-    nav a:hover { background: var(--border); }
-
-    main { max-width: 960px; margin: 2rem auto; padding: 0 1.2rem 4rem; }
-
-    .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.8rem 2rem; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
-    .card h2 { font-size: 1.3rem; color: var(--primary); border-left: 5px solid var(--gold); padding-left: .8rem; margin-bottom: 1.2rem; }
-    .card h3 { font-size: 1.05rem; color: var(--accent); margin: 1.2rem 0 .6rem; }
-    .card p  { margin-bottom: .8rem; }
-    .card ul, .card ol { padding-left: 1.4rem; margin-bottom: .8rem; }
-    .card li { margin-bottom: .4rem; }
-
-    .bloom { display: inline-flex; align-items: center; gap: .4rem; background: #fff9c4; border: 1px solid #FFDF2D; border-radius: 20px; padding: .25rem .85rem; font-size: .8rem; font-weight: 700; color: #5d4037; margin-bottom: 1rem; }
-
-    .memo { background: #fffde7; border-left: 5px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; font-style: italic; }
-    .memo strong { font-style: normal; display: block; margin-bottom: .4rem; color: var(--primary); }
-
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 1rem; margin: 1rem 0; }
-    .kpi-card { background: var(--light-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
-    .kpi-card .kpi-icon { font-size: 1.8rem; }
-    .kpi-card .kpi-name { font-size: .78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin: .4rem 0; }
-    .kpi-card .kpi-val  { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
-
-    .code-wrap { background: #1E2843; border-radius: 10px; overflow: hidden; margin: 1rem 0; }
-    .code-title { background: #2d3a5e; color: #cdd6f4; font-size: .78rem; padding: .4rem 1rem; font-family: monospace; display: flex; justify-content: space-between; align-items: center; }
-    pre { padding: 1.2rem 1.5rem; overflow-x: auto; font-size: .88rem; line-height: 1.6; color: #cdd6f4; font-family: 'Courier New', monospace; }
-    .kw  { color: #cba6f7; }
-    .fn  { color: #89b4fa; }
-    .str { color: #a6e3a1; }
-    .cm  { color: #6c7086; font-style: italic; }
-    .num { color: #fab387; }
-
-    .info-box { border-radius: 10px; padding: 1rem 1.3rem; margin: 1rem 0; display: flex; gap: .8rem; align-items: flex-start; }
-    .info-box.tip   { background: #e8f5e9; border-left: 4px solid #43a047; }
-    .info-box.warn  { background: #fff8e1; border-left: 4px solid #e6c800; }
-    .info-box.brain { background: #f3e5f5; border-left: 4px solid #8e24aa; }
-    .info-box.cite  { background: #e3f2fd; border-left: 4px solid #1976d2; }
-    .info-box.hist  { background: #fce4ec; border-left: 4px solid #e91e63; }
-    .info-box .icon { font-size: 1.4rem; line-height: 1; flex-shrink: 0; }
-    .info-box p     { margin: 0; font-size: .93rem; }
-
-    table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 1rem 0; }
-    th { background: var(--primary); color: #fff; padding: .7rem 1rem; text-align: left; }
-    td { padding: .6rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-    tr:nth-child(even) td { background: var(--light-bg); }
-
-    .relevance-badge { display: inline-block; border-radius: 6px; padding: .15rem .55rem; font-size: .75rem; font-weight: 800; margin-left: .4rem; }
-    .vig  { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
-    .evo  { background: #fff8e1; color: #e65100; border: 1px solid #ffe082; }
-    .hist-badge { background: #fce4ec; color: #880e4f; border: 1px solid #f48fb1; }
-
-    .activity { border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 1.2rem 0; }
-    .activity-header { padding: .8rem 1.3rem; display: flex; align-items: center; gap: .7rem; font-weight: 700; font-size: 1rem; }
-    .activity-header.presencial { background: #E9EAED; color: var(--primary); }
-    .activity-header.hti-a      { background: #e8f5e9; color: var(--green); }
-    .activity-header.hti-b      { background: #fff8e1; color: #e65100; }
-    .activity-body { padding: 1.2rem 1.5rem; }
-    .activity-body ol, .activity-body ul { padding-left: 1.4rem; }
-    .activity-body li { margin-bottom: .5rem; }
-
-    .dojo-panel { background: linear-gradient(135deg, #1E2843 0%, #2d3a5e 100%); color: #fff; border-radius: var(--radius); padding: 1.5rem 2rem; margin: 1.5rem 0; }
-    .dojo-panel h3 { color: var(--gold); margin-bottom: 1rem; font-size: 1.05rem; }
-    .dojo-items { display: flex; flex-wrap: wrap; gap: .8rem; }
-    .dojo-item { background: rgba(255,255,255,.12); border-radius: 8px; padding: .5rem 1rem; font-size: .85rem; display: flex; align-items: center; gap: .5rem; }
-    .pts { color: var(--gold); font-weight: 800; font-size: 1.1rem; }
-
-    .quiz-box { background: #e3f2fd; border: 2px solid #1565c0; border-radius: var(--radius); padding: 1.4rem 1.8rem; margin: 1.5rem 0; }
-    .quiz-box h3 { color: #0d47a1; margin-bottom: 1rem; }
-    .quiz-q { margin-bottom: 1.4rem; }
-    .quiz-q p { font-weight: 600; margin-bottom: .5rem; }
-    .quiz-q ol { padding-left: 1.4rem; }
-    .quiz-q li { margin-bottom: .35rem; font-size: .93rem; cursor: pointer; padding: 3px 8px; border-radius: 6px; transition: background .15s; }
-    .quiz-q li:hover { background: rgba(25,118,210,.12); }
-    .quiz-answer { display: none; background: #e8f5e9; border-radius: 6px; padding: .4rem .8rem; font-size: .85rem; margin-top: .4rem; color: var(--green); font-weight: 600; }
-
-    .bib { font-size: .88rem; line-height: 1.8; }
-    .bib li { margin-bottom: .6rem; padding-left: .5rem; }
-
-    footer { text-align: center; padding: 2rem; font-size: .82rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem; }
-
-    @media (max-width: 640px) {
-      header h1 { font-size: 1.4rem; }
-      .card { padding: 1.2rem; }
-      main { padding: 0 .8rem 3rem; }
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.65;
     }
-  
-    .interactive-q{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;margin:.8rem 0;transition:border-color .3s}
-    .interactive-q.answered{border-color:#43a047;background:#f9fef9}
-    .interactive-q.partial{border-color:#e6c800;background:#fffdf5}
-    .interactive-q.wrong{border-color:#c62828;background:#fff5f5}
-    .iq-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
-    .iq-num{background:var(--primary);color:#fff;border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0}
-    .iq-pts{font-size:.75rem;color:var(--gold);font-weight:700;background:#fff9c4;border-radius:10px;padding:.1rem .6rem}
-    .iq-pts.earned{background:#e8f5e9;color:#2e7d32}
-    .iq-question{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.6rem;line-height:1.5}
-    .iq-textarea{width:100%;min-height:70px;padding:.6rem .8rem;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;line-height:1.6;resize:vertical;transition:border-color .2s;background:var(--light-bg)}
-    .iq-textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(45,58,94,.1)}
-    .iq-actions{margin-top:.5rem;display:flex;gap:.5rem;align-items:center}
-    .iq-btn{background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .15s}
-    .iq-btn:hover{background:#1557b0} .iq-btn:disabled{background:#9e9e9e;cursor:not-allowed}
-    .iq-feedback{margin-top:.6rem;padding:.6rem .8rem;border-radius:8px;font-size:.84rem;line-height:1.6;display:none}
-    .iq-feedback.show{display:block} .iq-feedback.success{background:#e8f5e9;border:1px solid #a5d6a7;color:#1b5e20}
-    .iq-feedback.partial{background:#fff8e1;border:1px solid #ffe082;color:#e65100}
-    .iq-feedback.error{background:#ffebee;border:1px solid #ef9a9a;color:#b71c1c}
-    .iq-keywords{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem}
-    .iq-kw{font-size:.7rem;background:#e3f2fd;color:#1565c0;border-radius:8px;padding:.1rem .5rem}
-    .iq-kw.matched{background:#c8e6c9;color:#1b5e20;font-weight:600}
-    .colab-cell{background:#fff;border:1px solid #dadce0;border-radius:8px;margin:1rem 0;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08);transition:box-shadow .2s,border-left .3s}
-    .colab-cell:hover{box-shadow:0 2px 6px rgba(0,0,0,.12)} .colab-cell.running{border-left:4px solid #FFDF2D;box-shadow:0 0 0 2px rgba(255,223,45,.3)} .colab-cell.success{border-left:4px solid #43a047} .colab-cell.error{border-left:4px solid #c62828}
-    .colab-toolbar{display:flex;align-items:center;gap:.5rem;padding:.35rem .8rem;background:#f8f9fa;border-bottom:1px solid #dadce0;font-size:.78rem;color:#5f6368}
-    .colab-run-btn{background:#1a73e8;color:#fff;border:none;border-radius:4px;padding:.3rem .9rem;font-size:.78rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.35rem;transition:background .15s,transform .1s}
-    .colab-run-btn:hover{background:#1557b0} .colab-run-btn:active{transform:scale(.96)} .colab-run-btn.running{background:#9e9e9e;cursor:wait}
-    .colab-run-btn .spinner{display:none;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:colab-spin .6s linear infinite}
-    @keyframes colab-spin{to{transform:rotate(360deg)}} .colab-run-btn.running .spinner{display:inline-block} .colab-run-btn.running .btn-label{display:none}
-    .colab-lang-badge{font-size:.7rem;background:#e8eaed;color:#5f6368;border-radius:4px;padding:.15rem .5rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-    .colab-cell-label{font-size:.75rem;color:#5f6368;font-weight:600;margin-left:auto}
-    .colab-editor{padding:.8rem 1rem;font-family:'Courier New','Fira Code','Consolas',monospace;font-size:.85rem;line-height:1.65;color:#1E2843;background:#fafafa;min-height:60px;max-height:400px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;outline:none;border:none;caret-color:#1a73e8}
-    .colab-editor:focus{background:#fff;box-shadow:inset 0 0 0 2px #e8f0fe} .colab-editor .kw{color:#7c3aed;font-weight:700} .colab-editor .fn{color:#2563eb} .colab-editor .str{color:#059669} .colab-editor .cm{color:#9ca3af;font-style:italic} .colab-editor .num{color:#d97706}
-    .colab-output{display:none;background:#1e1e1e;color:#d4d4d4;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.6;padding:.8rem 1rem;max-height:300px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;border-top:1px solid #333}
-    .colab-output.visible{display:block} .colab-output .out-info{color:#6a9955} .colab-output .out-input{color:#ce9178} .colab-output .out-error{color:#f44747} .colab-output .out-value{color:#4ec9b0}
-    .lab-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:1rem}
-    .lab-tab{padding:.5rem 1rem;font-size:.85rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s}
-    .lab-tab:hover{color:var(--primary)} .lab-tab.active{color:var(--primary);border-bottom-color:var(--gold)}
-    .lab-panel{display:none} .lab-panel.active{display:block}
-    .xp-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1E2843,#2d3a5e);color:#fff;padding:.7rem 1.5rem;border-radius:20px;font-weight:700;font-size:.9rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);animation:xpToastIn .4s ease,xpToastOut .4s ease 2.5s forwards}
-    @keyframes xpToastIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-    @keyframes xpToastOut{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-10px)}}
-    .lab-challenge-done{display:inline-flex;align-items:center;gap:.3rem;background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:12px;padding:.15rem .6rem;font-size:.75rem;font-weight:700}
-    .step-indicator{display:flex;align-items:center;gap:.3rem;margin:.5rem 0 1rem;font-size:.8rem;color:var(--muted);flex-wrap:wrap}
-</style>
 
-  <style id="pt-css">
-  #pt-widget { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg,#1E2843,#2d3a5e); color: #fff; border-radius: 16px; padding: 14px 18px; min-width: 240px; max-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,.35); font-family: 'Open Sans', Arial, sans-serif; font-size: .85rem; transition: transform .3s; }
-  #pt-widget.collapsed { transform: translateY(calc(100% - 42px)); }
-  #pt-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-  #pt-header strong { font-size: .92rem; }
-  #pt-toggle { background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; line-height: 1; }
-  #pt-body { margin-top: 10px; }
-  #pt-xp-bar-wrap { background: rgba(255,255,255,.2); border-radius: 20px; height: 10px; overflow: hidden; }
-  #pt-xp-bar { height: 100%; background: linear-gradient(90deg,#FFDF2D,#fff176); border-radius: 20px; transition: width .8s ease; }
-  #pt-xp-label { display: flex; justify-content: space-between; font-size: .75rem; opacity: .8; margin-top: 4px; }
-  #pt-btns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-  .pt-btn { flex: 1; padding: 5px 8px; border: none; border-radius: 8px; font-size: .75rem; font-weight: 700; cursor: pointer; transition: opacity .2s; }
-  .pt-btn:hover { opacity: .85; }
-  #pt-btn-save { background: #43a047; color: #fff; }
-  #pt-advanced { display: none; margin-top: 5px; }
-  #pt-msg { font-size: .72rem; margin-top: 6px; min-height: 16px; opacity: .85; text-align: center; }
-  </style>
-
-  <style id="modal-css">
-  #pt-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 10000; display: flex; align-items: center; justify-content: center; animation: fadeIn .3s ease; }
-  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
-  #pt-modal-box { background: linear-gradient(160deg,#1E2843,#1E2843 70%,#2d3a5e); color: #fff; border-radius: 20px; padding: 2rem 2rem 1.5rem; width: min(94vw,420px); box-shadow: 0 20px 60px rgba(0,0,0,.5); animation: slideUp .35s cubic-bezier(.2,.8,.3,1); }
-  @keyframes slideUp { from { transform: translateY(30px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
-  #pt-modal-box h2 { font-size: 1.25rem; font-weight: 900; margin-bottom: .3rem; }
-  #pt-modal-box .sub { opacity: .75; font-size: .85rem; margin-bottom: 1.3rem; }
-  #pt-modal-box .field { margin-bottom: .9rem; }
-  #pt-modal-box label { display: block; font-size: .78rem; font-weight: 700; opacity: .85; margin-bottom: .3rem; text-transform: uppercase; letter-spacing: .05em; }
-  #pt-modal-box input { width: 100%; background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.35); border-radius: 10px; padding: .6rem .9rem; color: #fff; font-size: .95rem; outline: none; }
-  #pt-modal-box input::placeholder { color: rgba(255,255,255,.45); }
-  #pt-modal-box input:focus { border-color: rgba(249,168,37,.9); }
-  #pt-modal-btn { width: 100%; padding: .7rem; border: none; border-radius: 12px; background: linear-gradient(135deg,#FFDF2D,#FFDF2D); color: #1E2843; font-weight: 900; font-size: 1rem; cursor: pointer; margin-top: .4rem; transition: opacity .15s; }
-  #pt-modal-btn:hover { opacity: .9; }
-  #pt-modal-btn-search { padding: .65rem 1.2rem; border: none; border-radius: 10px; background: rgba(255,255,255,.18); color: #fff; font-weight: 700; font-size: .92rem; cursor: pointer; transition: background .15s; flex-shrink: 0; }
-  #pt-modal-btn-search:hover { background: rgba(255,255,255,.28); }
-  #pt-modal-error, #pt-modal-error2, #pt-modal-error3 { color: #ff8a80; font-size: .8rem; margin-top: .5rem; min-height: 1em; }
-  #pt-modal-xp { text-align: center; font-size: .78rem; opacity: .7; margin-top: .7rem; }
-  .pt-found-card { background: rgba(255,255,255,.1); border: 1.5px solid rgba(249,168,37,.6); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: .9rem; }
-  .pt-found-card .pt-fc-name { font-size: 1rem; font-weight: 800; margin-bottom: .25rem; }
-  .pt-found-card .pt-fc-meta { font-size: .8rem; opacity: .8; line-height: 1.6; }
-  .pt-step { transition: opacity .2s; }
-  .pt-link-btn { background: none; border: none; color: rgba(255,255,255,.6); font-size: .8rem; cursor: pointer; text-decoration: underline; padding: .3rem 0 0; display: block; text-align: center; width: 100%; }
-  .pt-link-btn:hover { color: #fff; }
-  
-    /* ══════════════════════════════════════════
-       PYTHON REFERENCE CELLS (Pyodide)
-    ══════════════════════════════════════════ */
-    .py-section { margin: 1.5rem 0; }
-    .py-section h3 {
-      color: var(--primary);
-      font-size: 1.05rem;
-      margin-bottom: .8rem;
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-    }
-    .py-status {
-      background: #fff8e1;
-      border: 1px solid #e6c800;
-      border-radius: 8px;
-      padding: .5rem 1rem;
-      margin-bottom: 1rem;
-      font-size: .85rem;
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      color: #5d4037;
-    }
-    .py-status.ready { background: #e8f5e9; border-color: #43a047; color: var(--green); }
-    .py-cell {
-      background: #1a1a2e;
-      border: 1px solid #2a2a4a;
-      border-radius: 10px;
-      margin-bottom: 1rem;
+    /* ── HEADER ── */
+    .site-header {
+      background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 60%, #2980B9 100%);
+      color: #fff;
+      padding: 2.2rem 2rem 1.6rem;
+      position: relative;
       overflow: hidden;
-      transition: box-shadow .3s;
     }
-    .py-cell:hover { box-shadow: 0 4px 16px rgba(0,0,0,.25); }
-    .py-cell-header {
-      display: flex;
-      align-items: center;
-      padding: .45rem .8rem;
-      background: #16162a;
-      border-bottom: 1px solid #2a2a4a;
+    .site-header::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -60px;
+      width: 220px; height: 220px;
+      background: rgba(255,255,255,.06);
+      border-radius: 50%;
     }
-    .py-cell-idx {
-      color: #6c7086;
-      font-family: 'Courier New', monospace;
+    .header-eyebrow {
       font-size: .75rem;
-      font-weight: 700;
-      min-width: 50px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      opacity: .75;
+      margin-bottom: .5rem;
     }
-    .py-run-btn {
-      background: #2e7d32;
+    .header-title { font-size: 1.9rem; font-weight: 800; line-height: 1.2; }
+    .header-sub {
+      font-size: .85rem;
+      opacity: .8;
+      margin-top: .5rem;
+    }
+    .xp-bar-wrap {
+      margin-top: 1rem;
+      background: rgba(255,255,255,.18);
+      border-radius: 99px;
+      height: 8px;
+      max-width: 320px;
+    }
+    .xp-bar { height: 8px; border-radius: 99px; background: var(--accent); width: 0%; transition: width .6s; }
+    .xp-label { font-size: .78rem; opacity: .85; margin-top: .3rem; }
+
+    /* ── NAV ── */
+    .sticky-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--brand-dark);
+      display: flex; gap: 0; overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .sticky-nav::-webkit-scrollbar { display: none; }
+    .sticky-nav a {
+      color: rgba(255,255,255,.75);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      padding: .65rem 1rem;
+      white-space: nowrap;
+      transition: background .2s, color .2s;
+    }
+    .sticky-nav a:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 900px; margin: 0 auto; padding: 2rem 1.2rem 4rem; }
+
+    /* ── SECTION TITLES ── */
+    .sec-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--brand);
+      border-left: 4px solid var(--accent);
+      padding-left: .75rem;
+      margin: 2.5rem 0 1rem;
+    }
+    .sec-sub {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--brand-dark);
+      margin: 1.4rem 0 .5rem;
+    }
+
+    /* ── MEMO CARD ── */
+    .memo-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--brand);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.8rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+    .memo-header { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .6rem; }
+    .memo-title { font-size: 1.05rem; font-weight: 700; color: var(--brand); margin-bottom: .8rem; }
+    .memo-body { font-size: .93rem; color: var(--text); line-height: 1.7; }
+    .memo-kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: .8rem;
+      margin: 1.2rem 0;
+    }
+    .kpi-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: .7rem .9rem;
+      text-align: center;
+    }
+    .kpi-chip .icon { font-size: 1.3rem; }
+    .kpi-chip .label { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; display: block; margin-top: .2rem; }
+    .kpi-chip .value { font-size: 1.1rem; font-weight: 800; color: var(--brand); display: block; }
+    .kpi-chip.alert .value { color: var(--danger); }
+    .kpi-chip.ok   .value { color: var(--ok); }
+
+    .meta-table { width: 100%; border-collapse: collapse; font-size: .85rem; margin-top: 1rem; }
+    .meta-table td { padding: .4rem .6rem; border-bottom: 1px solid var(--border); }
+    .meta-table td:first-child { font-weight: 700; color: var(--brand); width: 35%; }
+
+    /* ── CALLOUT BOXES ── */
+    .callout {
+      display: flex; gap: .8rem; align-items: flex-start;
+      border-radius: var(--radius); padding: .9rem 1.1rem;
+      margin: 1rem 0; font-size: .88rem; line-height: 1.6;
+    }
+    .callout .ico { font-size: 1.3rem; flex-shrink: 0; margin-top: .05rem; }
+    .callout-info  { background: #EBF3FB; border-left: 3px solid var(--brand); }
+    .callout-warn  { background: var(--warn-soft); border-left: 3px solid var(--warn); }
+    .callout-ok    { background: var(--ok-soft); border-left: 3px solid var(--ok); }
+    .callout-tip   { background: var(--accent-soft); border-left: 3px solid var(--accent); }
+
+    /* ── IMAGE PLACEHOLDER ── */
+    .img-placeholder {
+      background: var(--code-bg);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .83rem;
+      margin: 1rem 0;
+    }
+    .img-placeholder .img-icon { font-size: 2rem; display: block; margin-bottom: .4rem; }
+    .img-placeholder strong { color: var(--brand); display: block; margin-bottom: .25rem; }
+
+    /* ── TABLES ── */
+    .data-table { width: 100%; border-collapse: collapse; font-size: .86rem; margin: .8rem 0; }
+    .data-table th {
+      background: var(--brand); color: #fff;
+      padding: .5rem .8rem; text-align: left; font-weight: 700;
+    }
+    .data-table td { padding: .5rem .8rem; border-bottom: 1px solid var(--border); }
+    .data-table tr:nth-child(even) td { background: var(--surface); }
+    .data-table code { background: var(--code-bg); padding: .1rem .3rem; border-radius: 4px; font-family: var(--font-mono); font-size: .82rem; }
+
+    /* ── CODE BLOCK ── */
+    .code-block {
+      background: #1E2D3D;
+      border-radius: var(--radius);
+      padding: 1.1rem 1.3rem;
+      overflow-x: auto;
+      margin: .8rem 0;
+    }
+    .code-block pre {
+      font-family: var(--font-mono);
+      font-size: .83rem;
+      color: #D4E6F1;
+      line-height: 1.7;
+      white-space: pre;
+    }
+    .code-block .kw  { color: #5DADE2; font-weight: 700; }
+    .code-block .str { color: #82E0AA; }
+    .code-block .num { color: #F9E79F; }
+    .code-block .cmt { color: #7F8C8D; font-style: italic; }
+    .code-block .fn  { color: #FAD7A0; }
+
+    /* ── COLLAPSIBLE ── */
+    details { border: 1px solid var(--border); border-radius: var(--radius); margin: 1rem 0; overflow: hidden; }
+    details summary {
+      background: var(--code-bg);
+      padding: .75rem 1.1rem;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: .9rem;
+      color: var(--brand-dark);
+      list-style: none;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::before { content: '▶'; font-size: .7rem; transition: transform .2s; }
+    details[open] summary::before { transform: rotate(90deg); }
+    details .details-body { padding: 1rem 1.2rem; }
+
+    /* ── EXCEL DEMO ── */
+    .excel-wrap {
+      background: #fff;
+      border: 2px solid #217346;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 1rem 0;
+      box-shadow: var(--shadow);
+    }
+    .excel-toolbar {
+      background: #217346;
+      color: #fff;
+      padding: .5rem 1rem;
+      font-size: .82rem;
+      font-weight: 700;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .excel-toolbar .fx-bar {
+      background: rgba(255,255,255,.15);
+      border-radius: 4px;
+      padding: .2rem .6rem;
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      color: #fff;
+      flex: 1;
+    }
+    .excel-grid { overflow-x: auto; }
+    .excel-table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .82rem; }
+    .excel-table th {
+      background: #E8F4EE; color: #1C2B3A;
+      border: 1px solid #C7D9CE;
+      padding: .35rem .6rem; font-weight: 700; text-align: center;
+    }
+    .excel-table td {
+      border: 1px solid #D8E4DC;
+      padding: .35rem .6rem;
+    }
+    .excel-table .row-num { background: #E8F4EE; color: var(--muted); text-align: center; font-weight: 600; width: 32px; }
+    .excel-table .formula { color: #217346; font-family: var(--font-mono); font-size: .78rem; }
+    .excel-table .result-ok   { color: var(--ok);     font-weight: 700; }
+    .excel-table .result-warn { color: var(--danger); font-weight: 700; }
+    .excel-table .header-row td { background: #D5E8D4; font-weight: 700; }
+
+    /* ── INTERACTIVE CELLS ── */
+    .cell-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: .8rem 0;
+      box-shadow: var(--shadow);
+    }
+    .cell-header {
+      background: var(--brand);
+      color: #fff;
+      padding: .5rem 1rem;
+      font-size: .8rem;
+      font-weight: 700;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .cell-header .lang-badge {
+      background: rgba(255,255,255,.2);
+      padding: .15rem .5rem;
+      border-radius: 99px;
+      font-size: .72rem;
+    }
+    .cell-body { padding: 1rem; }
+    .cell-body textarea {
+      width: 100%;
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      background: #1E2D3D;
+      color: #D4E6F1;
+      border: none;
+      border-radius: 6px;
+      padding: .8rem 1rem;
+      resize: vertical;
+      min-height: 130px;
+      outline: none;
+    }
+    .cell-actions { display: flex; gap: .6rem; margin-top: .6rem; align-items: center; }
+    .btn-run {
+      background: var(--ok);
       color: #fff;
       border: none;
-      border-radius: 4px;
-      padding: .2rem .65rem;
-      font-size: .72rem;
+      border-radius: 6px;
+      padding: .45rem 1.1rem;
+      font-size: .82rem;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: .25rem;
-      transition: background .2s;
+      display: flex; align-items: center; gap: .4rem;
     }
-    .py-run-btn:hover { background: #388e3c; }
-    .py-run-btn:disabled { background: #555; cursor: not-allowed; }
-    .py-cell-body {
-      padding: .7rem 1rem .7rem 3.2rem;
-      position: relative;
+    .btn-run:hover { background: #155724; }
+    .btn-reset {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .45rem .9rem;
+      font-size: .8rem;
+      cursor: pointer;
     }
-    .py-cell-body::before {
-      content: 'In [ ]:';
-      position: absolute;
-      left: .8rem;
-      top: .75rem;
-      color: #6c7086;
-      font-family: 'Courier New', monospace;
+    .cell-output {
+      background: #0D1B2A;
+      border-radius: 6px;
+      padding: .7rem 1rem;
+      margin-top: .6rem;
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      color: #A8D8A8;
+      min-height: 40px;
+      white-space: pre-wrap;
+      display: none;
+    }
+    .cell-output.visible { display: block; }
+    .cell-hint { font-size: .76rem; color: var(--muted); margin-top: .3rem; }
+
+    /* ── XP PILLS ── */
+    .xp-pill {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .7rem;
+      font-weight: 800;
+      padding: .15rem .5rem;
+      border-radius: 99px;
+      margin-left: .4rem;
+    }
+    .xp-pill.small { font-size: .65rem; background: var(--brand); }
+
+    /* ── ACTIVITY BLOCKS ── */
+    .activity-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.4rem;
+      margin: .8rem 0;
+    }
+    .block-label {
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+    .block-ol { padding-left: 1.2rem; }
+    .block-ol li { margin-bottom: .4rem; font-size: .9rem; }
+
+    /* ── MISSION QUESTIONS ── */
+    .mission-q {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--brand);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      margin: .8rem 0;
+    }
+    .mission-q-header { font-size: .75rem; font-weight: 700; color: var(--brand); margin-bottom: .4rem; }
+    .mission-q textarea {
+      width: 100%; min-height: 80px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .6rem .8rem;
+      font-family: inherit; font-size: .88rem;
+      resize: vertical; outline: none;
+    }
+    .mission-q textarea:focus { border-color: var(--brand); }
+    .btn-verify {
+      margin-top: .5rem;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: .4rem 1rem;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-verify:hover { background: var(--brand-dark); }
+    .verify-result {
+      margin-top: .5rem;
+      font-size: .84rem;
+      padding: .5rem .8rem;
+      border-radius: 6px;
+      display: none;
+    }
+
+    /* ── QUIZ ── */
+    .quiz-q { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; margin: .8rem 0; }
+    .quiz-q-text { font-weight: 700; margin-bottom: .7rem; font-size: .93rem; }
+    .quiz-options { display: flex; flex-direction: column; gap: .4rem; }
+    .quiz-opt {
+      display: flex; align-items: center; gap: .6rem;
+      padding: .5rem .8rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .88rem;
+      transition: background .15s;
+    }
+    .quiz-opt:hover { background: var(--surface); }
+    .quiz-opt.correct { background: var(--ok-soft); border-color: var(--ok); }
+    .quiz-opt.wrong   { background: var(--danger-soft); border-color: var(--danger); }
+    .quiz-explanation { font-size: .8rem; color: var(--ok); margin-top: .5rem; display: none; }
+    .quiz-explanation.visible { display: block; }
+
+    /* ── SCORE PANEL ── */
+    .score-panel {
+      background: var(--brand);
+      color: #fff;
+      border-radius: var(--radius-lg);
+      padding: 1.4rem 1.8rem;
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+    .score-panel .score-big { font-size: 2.2rem; font-weight: 800; }
+    .score-panel .score-label { font-size: .85rem; opacity: .8; }
+
+    /* ── POINTS SUMMARY ── */
+    .pts-summary {
+      display: flex; flex-wrap: wrap; gap: .8rem;
+      margin: 1rem 0;
+    }
+    .pts-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: .6rem 1rem;
+      font-size: .83rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .pts-chip .pts-num { font-weight: 800; color: var(--brand); }
+
+    /* ── SOURCES ── */
+    .source-list { list-style: none; }
+    .source-list li {
+      padding: .5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .86rem;
+    }
+    .source-list li:last-child { border-bottom: none; }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: var(--brand-dark);
+      color: rgba(255,255,255,.65);
+      text-align: center;
+      padding: 1.2rem;
       font-size: .78rem;
     }
-    .py-cell-body.ran::before { content: 'In [*]:'; color: #89b4fa; }
-    .py-cell textarea {
-      width: 100%;
-      min-height: 70px;
-      background: transparent;
-      border: none;
-      color: #cdd6f4;
-      font-family: 'Courier New', monospace;
-      font-size: .85rem;
-      line-height: 1.6;
-      resize: vertical;
-      outline: none;
-      padding: 0;
-    }
-    .py-output {
-      display: none;
-      background: #0d0d1a;
-      color: #d4d4d4;
-      font-family: 'Courier New', monospace;
-      font-size: .82rem;
-      line-height: 1.6;
-      padding: .7rem 1rem;
-      max-height: 250px;
-      overflow-y: auto;
-      border-top: 1px solid #2a2a4a;
-    }
-    .py-output.visible { display: block; }
-    .py-output .py-err { color: #f48771; }
-    .py-ref-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: .3rem;
-      background: #e8f0fe;
-      color: #1a73e8;
-      border-radius: 6px;
-      padding: .1rem .55rem;
-      font-size: .72rem;
-      font-weight: 700;
-    }
-    .py-ref-note {
-      font-size: .8rem;
-      color: var(--muted);
-      background: var(--light-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: .6rem 1rem;
-      margin-bottom: 1rem;
-    }
-</style>
 
-  <script src="../js/supabase-config.js"></script>
-  <script src="../js/academic-rules.js"></script>
-  <script src="../js/academic-status-bar.js"></script>
-  <script src="../js/gamification-sdk.js"></script>
-  <script src="../js/celebration.js"></script>
-  <script src="../js/student-identicon.js"></script>
-  <script src="../js/week-auto-sync.js"></script>
-  <script src="../js/reading-tracker.js"></script>
-  <script src="../js/reading-xp-policy.js"></script>
+    /* ── PROGRESS WIDGET ── */
+    .progress-widget {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: .8rem 1.2rem;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem;
+    }
+    .progress-label { font-size: .82rem; color: var(--muted); font-weight: 600; }
+    .progress-val   { font-size: 1.1rem; font-weight: 800; color: var(--brand); }
+
+    /* ── PYODIDE STATUS ── */
+    .py-status { font-size: .75rem; color: var(--muted); font-style: italic; }
+
+    @media (max-width: 600px) {
+      .header-title { font-size: 1.4rem; }
+      .memo-kpis { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- HEADER -->
-    <header>
-      <div class="badge-module">TGA04 · Fundamentos de Computación para los Negocios · Semana 3 de 13</div>
-      <h1>🚦 Estructura Condicional Simple (SI-FSI)</h1>
-      <p>Selección simple · Condiciones compuestas · Alertas de retención · NeuroBiz S.A.S.</p>
-      <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar"></div></div>
-      <p class="xp-label">XP de sesión: <span id="xpCount">0</span> / 60 pts</p>
-    </header>
+<!-- ══════════════════════════════════════════════ HEADER -->
+<header class="site-header">
+  <p class="header-eyebrow">TGA04 · Fundamentos de Computación para los Negocios · Semana 3 de 13</p>
+  <h1 class="header-title">🚦 Estructura Condicional Simple <code style="font-size:.8em;background:rgba(255,255,255,.15);padding:.1em .4em;border-radius:6px;">SI / IF</code></h1>
+  <p class="header-sub">Decisiones automáticas · Excel <code>=SI()</code> · Python <code>if</code> · NeuroBiz S.A.S.</p>
+  <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar"></div></div>
+  <p class="xp-label" id="xpLabel">XP de sesión: 0 / 60 pts</p>
+</header>
 
-    <!-- NAV -->
-<nav>
+<!-- ══════════════════════════════════════════════ NAV -->
+<nav class="sticky-nav">
   <a href="#mision">🎯 Misión</a>
   <a href="#teoria">📚 Teoría</a>
-  <a href="#pseudocodigo">📝 Pseudocódigo</a>
+  <a href="#excel">📊 Excel SI()</a>
+  <a href="#python">🐍 Python</a>
+  <a href="#cairo">📝 Ref. Pseudocód.</a>
   <a href="#actividad">⚙️ Actividad</a>
   <a href="#hti">🏠 HTI</a>
-  <a href="#lab">🧪 Lab</a>
   <a href="#quiz">🎮 Quiz</a>
   <a href="#bib">📖 Fuentes</a>
 </nav>
 
+<!-- ══════════════════════════════════════════════ PAGE -->
+<main class="page">
 
-    <main>
-
-    <!-- PROGRESS TRACKER WIDGET -->
-<div id="pt-widget">
-  <div id="pt-header" onclick="ptToggle()">
-    <strong>📊 Mi Progreso TGA04</strong>
-    <button id="pt-toggle">▲</button>
+  <!-- PROGRESS -->
+  <div class="progress-widget">
+    <span class="progress-label">📊 Mi Progreso Semana 3</span>
+    <span class="progress-val" id="xpTotal">0 / 60 XP</span>
   </div>
-  <div id="pt-body">
-    <div id="pt-profile" style="margin-bottom:8px"></div>
-    <div id="pt-xp-bar-wrap"><div id="pt-xp-bar" style="width:0%"></div></div>
-    <div id="pt-xp-label"><span id="pt-semana-label">Semana 3</span><span id="pt-xp-count">0 XP</span></div>
-    <div id="pt-btns">
-      <button class="pt-btn" id="pt-btn-save" onclick="ptSyncCloud()" style="flex:1">☁️ Guardar</button>
-      <button class="pt-btn" onclick="(function(){var a=document.getElementById('pt-advanced');a.style.display=a.style.display==='block'?'none':'block'})()" style="width:32px;flex-shrink:0;padding:0;font-size:.8rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)">⚙️</button>
+
+  <!-- ══════════ MISIÓN -->
+  <section id="mision">
+    <h2 class="sec-title">📋 El Memorando — Tu Misión esta Semana</h2>
+
+    <div class="memo-card">
+      <p class="memo-header">Comunicado Interno · NeuroBiz S.A.S. · Gerencia Comercial</p>
+      <p class="memo-title">Para: Consultores Junior de Datos — Equipo TGA04<br>
+      De: Gerencia Comercial, NeuroBiz S.A.S.<br>
+      Asunto: Automatizar alertas de cumplimiento de meta de ventas</p>
+
+      <p class="memo-body">
+        La Gerencia Comercial necesita que el sistema emita una alerta automática <strong>cuando el cumplimiento
+        de meta de ventas de un asesor caiga por debajo del 70 %</strong>. Esta semana aprenderás a
+        construir esa lógica usando la estructura condicional simple:
+        <strong>SI … ENTONCES … FSI</strong> en pseudocódigo, <strong>=SI()</strong> en Excel y <strong>if</strong> en Python.
+      </p>
+
+      <!-- KPIs -->
+      <div class="memo-kpis">
+        <div class="kpi-chip alert">
+          <span class="icon">📉</span>
+          <span class="label">Cumplimiento actual</span>
+          <span class="value">65.0 %</span>
+        </div>
+        <div class="kpi-chip">
+          <span class="icon">🎯</span>
+          <span class="label">Meta mínima</span>
+          <span class="value">70.0 %</span>
+        </div>
+        <div class="kpi-chip">
+          <span class="icon">❌</span>
+          <span class="label">Ventas fallidas</span>
+          <span class="value">58</span>
+        </div>
+        <div class="kpi-chip alert">
+          <span class="icon">🚨</span>
+          <span class="label">Estado</span>
+          <span class="value">ALERTA</span>
+        </div>
+      </div>
+
+      <table class="meta-table">
+        <tr><td>LS_KEY</td><td><code>tga04_s3</code></td></tr>
+        <tr><td>XP máximo</td><td>60 XP</td></tr>
+        <tr><td>Pregunta central</td><td>¿Qué hace el sistema cuando la condición es verdadera, y qué cuando es falsa?</td></tr>
+        <tr><td>Analogía guía</td><td>Semáforo: SI está en rojo ENTONCES detenerse FSI</td></tr>
+        <tr><td>Herramientas</td><td>📊 Excel <code>=SI()</code> · 🐍 Python <code>if</code> · 📝 Pseudocódigo (referencia)</td></tr>
+      </table>
     </div>
-    <div id="pt-advanced">
-      <button class="pt-btn" onclick="ptExportCode()" style="width:100%;margin-bottom:3px;font-size:.72rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📋 Exportar respaldo</button>
-      <button class="pt-btn" onclick="ptImportCode()" style="width:100%;font-size:.72rem;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">📥 Cargar desde código</button>
+
+    <!-- IMAGEN 1 -->
+    <div class="img-placeholder">
+      <span class="img-icon"></span>
+      <strong>Analogía Estructura Condicional</strong>
+      <img src="semaforo_fondo_negro.png" alt="Analogía estructura condicional SI" style="max-width:100%; border-radius:6px; margin-top:1rem;">
     </div>
-    <div id="pt-msg"></div>
-  </div>
-</div>
+  </section>
 
+  <!-- ══════════ TEORÍA -->
+  <section id="teoria">
+    <h2 class="sec-title">📚 Marco Teórico</h2>
 
+    <h3 class="sec-sub">1. ¿Qué es una estructura condicional? 🟢 VIGENTE</h3>
+    <p>La estructura <strong>SI-FSI</strong> (o <strong>if</strong> en Python) permite ejecutar instrucciones
+    <em>solo cuando una condición es verdadera</em>. Si la condición resulta falsa, el algoritmo continúa
+    sin ejecutar ese bloque. Es la base de toda automatización de decisiones en negocios.</p>
 
-    <!-- ══ MISIÓN / MEMORANDO ══ -->
-<section id="mision" class="card">
-  <h2>📋 El Memorando — Tu Misión esta Semana</h2>
-  <div class="memo">
-    <strong>Para: Consultores Junior de Datos — Equipo TGA04<br>
-    De: Dirección Clínica, NeuroBiz S.A.S.<br>
-    Asunto: Diseñar una alerta automática por baja retención</strong>
-
-    La directora clínica solicita una alerta: <strong>si la tasa de retención cae por debajo del 70%</strong>,
-    el sistema debe advertirlo inmediatamente. Tu trabajo esta semana es escribir el algoritmo que detecta
-    esa situación usando la estructura condicional simple <strong>SI ... ENTONCES ... FSI</strong>.
-  </div>
-
-  <div class="bloom">🧠 RA1 continua + RA2 inicia · CE3 · Bloom: Comprender → Aplicar</div>
-
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-icon">📉</div>
-      <div class="kpi-name">Tasa actual</div>
-      <div class="kpi-val">65.0%</div>
+    <div class="callout callout-info">
+      <span class="ico">🚦</span>
+      <div><strong>Analogía del semáforo:</strong> SI el semáforo está en rojo ENTONCES detener el vehículo FSI.
+      Si está en verde, no hay instrucción especial: simplemente continúas.</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon">🎯</div>
-      <div class="kpi-name">Meta mínima</div>
-      <div class="kpi-val">70.0%</div>
+
+    <div class="callout callout-tip">
+      <span class="ico">💼</span>
+      <div><strong>En NeuroBiz:</strong> SI el cumplimiento del asesor es menor al 70 % ENTONCES enviar alerta a la gerencia FSI.
+      La acción ocurre <em>solo</em> cuando la condición se cumple.</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon">❌</div>
-      <div class="kpi-name">Sesiones fallidas</div>
-      <div class="kpi-val">58</div>
+
+    <h3 class="sec-sub">2. La misma idea, tres herramientas 🟢 VIGENTE</h3>
+    <p>El concepto de "si pasa X, haz Y" existe en todas las herramientas de análisis. La lógica no cambia; solo cambia cómo se escribe.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Herramienta</th><th>Sintaxis</th><th>Uso típico en gestión</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>📊 <strong>Excel</strong></td>
+          <td><code>=SI(condición, valor_si_V, valor_si_F)</code></td>
+          <td>Tableros, reportes, alertas automáticas en celdas</td>
+        </tr>
+        <tr>
+          <td>🐍 <strong>Python</strong></td>
+          <td><code>if condición: … else: …</code></td>
+          <td>Automatización, análisis masivo de datos, dashboards</td>
+        </tr>
+        <tr>
+          <td>📝 <strong>Pseudocódigo</strong></td>
+          <td><code>SI condición ENTONCES … FSI</code></td>
+          <td>Diseñar la lógica antes de escribir código (referencia)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sec-sub">3. Diagrama de flujo del SI simple 🟢 VIGENTE</h3>
+    <p>El rombo de decisión siempre tiene <strong>dos salidas</strong>: una para <em>Sí</em> y otra para <em>No</em>.
+    En el SI simple, la rama verdadera ejecuta acciones; la rama falsa continúa sin hacer nada adicional.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Elemento</th><th>Qué representa</th><th>Lectura correcta</th></tr></thead>
+      <tbody>
+        <tr><td>Rombo</td><td>Pregunta lógica</td><td>¿El cumplimiento es menor al 70 %?</td></tr>
+        <tr><td>Salida "Sí"</td><td>Bloque ENTONCES / if</td><td>Mostrar alerta en la celda / imprimir mensaje</td></tr>
+        <tr><td>Salida "No"</td><td>Continuación normal</td><td>No se muestra alerta; el asesor cumple</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sec-sub">4. Condiciones compuestas: Y / O (and / or) 🟢 VIGENTE</h3>
+    <p>Cuando el negocio necesita verificar dos cosas al mismo tiempo, se combinan condiciones.
+    <strong>Y / and</strong> exige que ambas sean verdaderas; <strong>O / or</strong> permite que una sola baste.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Condición</th><th>Interpretación gerencial</th><th>Resultado esperado</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>cumplimiento &lt; 70 Y ventas_fallidas &gt; 50</code></td>
+          <td>Alerta doble: bajo rendimiento y muchas fallas</td>
+          <td>Intervención urgente</td>
+        </tr>
+        <tr>
+          <td><code>region = "Costa" O region = "Andina"</code></td>
+          <td>Aplica para dos regiones</td>
+          <td>Basta una coincidencia</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sec-sub">5. Errores frecuentes al construir un SI 🟡 EVOLUCIONADO</h3>
+    <table class="data-table">
+      <thead><tr><th>Error</th><th>Qué cree el estudiante</th><th>Corrección</th></tr></thead>
+      <tbody>
+        <tr><td>Cerrar antes del bloque</td><td>Escribe el cierre antes de la acción</td><td>Primero condición → acción → cierre</td></tr>
+        <tr><td>Ignorar la rama "No"</td><td>Piensa que el rombo tiene una sola salida</td><td>Siempre etiquetar Sí / No</td></tr>
+        <tr><td>Confundir Y con O</td><td>Cree que basta una condición con Y</td><td>Y = ambas; O = al menos una</td></tr>
+        <tr><td>En Excel: olvidar separador</td><td>Escribe <code>=SI(A1&lt;70 "Alerta")</code></td><td>Usar punto y coma: <code>=SI(A1&lt;70;"Alerta";"")</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-warn">
+      <span class="ico">⚠️</span>
+      <div><strong>Pista importante:</strong> si sientes que "falta algo" cuando la condición es falsa (por ejemplo, mostrar un mensaje diferente), probablemente necesitas un SI-SINO / if-else. Eso se verá la próxima semana.</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon">🚨</div>
-      <div class="kpi-name">Estado</div>
-      <div class="kpi-val">ALERTA</div>
+  </section>
+
+  <!-- ══════════ EXCEL -->
+  <section id="excel">
+    <h2 class="sec-title">📊 Excel — Función <code>=SI()</code> aplicada a NeuroBiz</h2>
+
+    <p>En gestión administrativa, <strong>Excel es la primera herramienta</strong> donde aparece la lógica condicional.
+    La función <code>=SI()</code> tiene exactamente la misma estructura que el pseudocódigo: condición, resultado verdadero, resultado falso.</p>
+
+    <div class="callout callout-ok">
+      <span class="ico">📌</span>
+      <div>
+        <strong>Sintaxis completa:</strong><br>
+        <code>=SI( prueba_lógica ; valor_si_verdadero ; valor_si_falso )</code><br>
+        <span style="font-size:.82rem;color:var(--muted);">En inglés: <code>=IF( logical_test, value_if_true, value_if_false )</code></span>
+      </div>
     </div>
-  </div>
 
-  <table>
-    <tbody>
-      <tr><td><strong>LS_KEY</strong></td><td><code>tga04_s3</code></td></tr>
-      <tr><td><strong>XP máximo</strong></td><td>60 XP</td></tr>
-      <tr><td><strong>Pregunta central</strong></td><td>¿Qué hace el algoritmo cuando la condición es verdadera y qué hace cuando es falsa?</td></tr>
-      <tr><td><strong>Analogía guía</strong></td><td>Semáforo simple: SI está en rojo ENTONCES detenerse FSI</td></tr>
-    </tbody>
-  </table>
-</section>
+    <!-- IMAGEN 2 -->
+    <div class="img-placeholder">
+      <span class="img-icon"></s`pan>
+      <strong>Formula Excel SI</strong>
+      <img
+        src="Excel_condicion.png" alt="Ejemplo fórmula Excel SI" style="max-width:100%; border-radius:6px; margin-top:1rem;"
+      >
+    </div>
 
-<!-- ══ TEORÍA ══ -->
-<section id="teoria" class="card">
-  <h2>📚 Marco Teórico</h2>
+    <h3 class="sec-sub">Tabla de asesores NeuroBiz — Alerta de cumplimiento</h3>
+    <p>Así luciría la hoja de trabajo en Excel. La columna <strong>F (Estado)</strong> se calcula automáticamente con <code>=SI()</code>.</p>
 
-  <h3>1. Estructura condicional simple <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
-  <p>
-    La estructura <strong>SI-FSI</strong> permite ejecutar instrucciones <em>solo cuando una condición es verdadera</em>.
-    Si la condición resulta falsa, el algoritmo sigue su camino sin ejecutar ese bloque.
-  </p>
+    <div class="excel-wrap">
+      <div class="excel-toolbar">
+        <span>📊 NeuroBiz_Ventas_S3.xlsx</span>
+        <span class="fx-bar">fx &nbsp; =SI(E2&lt;70;"⚠️ ALERTA";"✅ Cumple")</span>
+      </div>
+      <div class="excel-grid">
+        <table class="excel-table">
+          <thead>
+            <tr>
+              <th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="header-row">
+              <td class="row-num">1</td>
+              <td>Asesor</td>
+              <td>Región</td>
+              <td>Ventas Logradas</td>
+              <td>Meta</td>
+              <td>Cumplimiento %</td>
+              <td>Estado <code>=SI()</code></td>
+            </tr>
+            <tr>
+              <td class="row-num">2</td>
+              <td>Carlos Mejía</td><td>Costa</td><td>420</td><td>600</td>
+              <td><code>=C2/D2*100</code> → <strong>70.0</strong></td>
+              <td class="formula">=SI(E2&lt;70;"⚠️ ALERTA";"✅ Cumple")</td>
+            </tr>
+            <tr>
+              <td class="row-num">3</td>
+              <td>Laura Torres</td><td>Andina</td><td>310</td><td>500</td>
+              <td>62.0</td>
+              <td class="result-warn">⚠️ ALERTA</td>
+            </tr>
+            <tr>
+              <td class="row-num">4</td>
+              <td>Miguel Pérez</td><td>Costa</td><td>530</td><td>600</td>
+              <td>88.3</td>
+              <td class="result-ok">✅ Cumple</td>
+            </tr>
+            <tr>
+              <td class="row-num">5</td>
+              <td>Sandra Ruiz</td><td>Pacífico</td><td>290</td><td>450</td>
+              <td>64.4</td>
+              <td class="result-warn">⚠️ ALERTA</td>
+            </tr>
+            <tr>
+              <td class="row-num">6</td>
+              <td>Jorge Díaz</td><td>Andina</td><td>480</td><td>500</td>
+              <td>96.0</td>
+              <td class="result-ok">✅ Cumple</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-  <div class="info-box tip">
-    <span class="icon">🚦</span>
-    <p><strong>Analogía de vida real:</strong> SI el semáforo está en rojo ENTONCES detenerse FSI.
-    Si está en verde, no hay instrucción especial: simplemente continúas.</p>
-  </div>
+    <div class="callout callout-tip">
+      <span class="ico">🧠</span>
+      <div>
+        <strong>Lee la fórmula en voz alta:</strong> <em>"SI el cumplimiento (E2) es menor que 70,
+        entonces escribe '⚠️ ALERTA', de lo contrario escribe '✅ Cumple'."</em><br>
+        Eso es exactamente lo que hace el algoritmo — no hay magia, solo una pregunta y dos respuestas posibles.
+      </div>
+    </div>
 
-  <div class="info-box cite">
-    <span class="icon">💼</span>
-    <p><strong>Analogía empresarial:</strong> SI el monto de la compra supera $1.000.000 ENTONCES aplicar 10% de descuento FSI.
-    La acción ocurre solo cuando la condición se cumple.</p>
-  </div>
+    <h3 class="sec-sub">SI() anidado — Tres categorías de desempeño</h3>
+    <p>Cuando necesitas más de dos resultados, puedes anidar un <code>=SI()</code> dentro de otro
+    (equivalente al SI-SINO-SI de la Semana 4). Por ahora, solo observa la lógica:</p>
 
-  <h3>2. Sintaxis Cairó <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
-  <p>
-    En la notación del curso, la estructura se escribe como <code>SI condición ENTONCES</code> ... <code>FSI</code>.
-    Es una manera clara de visualizar dónde comienza y dónde termina el bloque condicional.
-  </p>
+    <div class="excel-wrap">
+      <div class="excel-toolbar">
+        <span>📊 Clasificación de desempeño</span>
+        <span class="fx-bar">fx &nbsp; =SI(E2>=85;"🏆 Excelente";SI(E2>=70;"✅ Cumple";"⚠️ Alerta"))</span>
+      </div>
+      <div class="excel-grid">
+        <table class="excel-table">
+          <thead>
+            <tr><th></th><th>E — Cumplimiento %</th><th>G — Categoría</th></tr>
+          </thead>
+          <tbody>
+            <tr class="header-row"><td class="row-num">1</td><td>Cumplimiento %</td><td>Categoría de desempeño</td></tr>
+            <tr><td class="row-num">2</td><td>70.0</td><td class="result-ok">✅ Cumple</td></tr>
+            <tr><td class="row-num">3</td><td>62.0</td><td class="result-warn">⚠️ Alerta</td></tr>
+            <tr><td class="row-num">4</td><td>88.3</td><td class="result-ok">🏆 Excelente</td></tr>
+            <tr><td class="row-num">5</td><td>64.4</td><td class="result-warn">⚠️ Alerta</td></tr>
+            <tr><td class="row-num">6</td><td>96.0</td><td class="result-ok">🏆 Excelente</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-  <div class="info-box tip">
-    <span class="icon">📖</span>
-    <p><strong>¿Qué significan las siglas SI-FSI?</strong><br>
-    <code>SI</code> = "Si" (empieza la condición a evaluar) &nbsp;·&nbsp;
-    <code>ENTONCES</code> = "entonces, ejecuta esto" &nbsp;·&nbsp;
-    <code>FSI</code> = <strong>"Fin Si"</strong> (cierra el bloque — indica hasta dónde llega el SI)<br><br>
-    <strong>🐍 Equivalente en Python:</strong> <code>if condición:</code> — en Python <strong>no existe FSI</strong>
-    porque el cierre del bloque se indica con <strong>indentación</strong> (sangría de 4 espacios).
-    El concepto es idéntico; solo cambia la forma de escribirlo.
-    </p>
-  </div>
+    <h3 class="sec-sub">Calculadora interactiva de la función =SI()</h3>
+    <p>Simula lo que haría Excel con la fórmula de alerta. Cambia el porcentaje y observa el resultado.</p>
 
-  <div class="code-wrap">
-    <div class="code-title">🧱 Molde general — SI-FSI</div>
-    <pre>
-<span class="kw">SI</span> condicion <span class="kw">ENTONCES</span>
-  <span class="cm">{ instrucciones que solo ocurren si es VERDADERA }</span>
-<span class="kw">FSI</span>
-    </pre>
-  </div>
+    <div class="cell-card">
+      <div class="cell-header">
+        <span>📊 Simulador Excel =SI()</span>
+        <span class="lang-badge">Interactivo</span>
+      </div>
+      <div class="cell-body">
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;">
+          <div>
+            <label style="font-size:.82rem;font-weight:700;color:var(--muted);display:block;margin-bottom:.3rem;">Cumplimiento % del asesor</label>
+            <input type="number" id="simCumpl" value="65" min="0" max="100" step="0.5"
+              style="border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;font-size:.9rem;width:110px;">
+          </div>
+          <div>
+            <label style="font-size:.82rem;font-weight:700;color:var(--muted);display:block;margin-bottom:.3rem;">Meta mínima %</label>
+            <input type="number" id="simMeta" value="70" min="0" max="100" step="1"
+              style="border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;font-size:.9rem;width:110px;">
+          </div>
+          <div style="padding-top:1.4rem;">
+            <button class="btn-run" onclick="runExcelSim()">▶ Evaluar</button>
+          </div>
+        </div>
+        <div id="simOutput" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:.9rem;">
+          <div id="simFormula" style="font-family:var(--font-mono);font-size:.82rem;color:var(--brand);margin-bottom:.5rem;"></div>
+          <div id="simResult" style="font-size:1.1rem;font-weight:800;"></div>
+          <div id="simExplain" style="font-size:.82rem;color:var(--muted);margin-top:.4rem;"></div>
+        </div>
+      </div>
+    </div>
 
-  <h3>3. Diagrama de flujo del SI-FSI <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
-  <p>
-    El rombo de decisión siempre tiene <strong>dos salidas</strong>: una para <em>Sí</em> y otra para <em>No</em>.
-    En el SI-FSI simple, la rama verdadera ejecuta acciones; la rama falsa continúa sin hacer nada adicional.
-  </p>
-  <table>
-    <thead><tr><th>Elemento</th><th>Qué representa</th><th>Lectura correcta</th></tr></thead>
-    <tbody>
-      <tr><td>Rombo</td><td>Pregunta lógica</td><td>¿La tasa es menor que 70?</td></tr>
-      <tr><td>Salida “Sí”</td><td>Bloque ENTONCES</td><td>Mostrar alerta</td></tr>
-      <tr><td>Salida “No”</td><td>Continuación normal</td><td>No se muestra alerta</td></tr>
-    </tbody>
-  </table>
+    <h3 class="sec-sub">Condición compuesta en Excel con Y() y O()</h3>
+    <p>Excel también soporta condiciones múltiples dentro del <code>=SI()</code> usando las funciones <code>=Y()</code> y <code>=O()</code>:</p>
 
-  <h3>4. Condiciones compuestas con Y / O <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
-  <p>
-    Cuando el negocio necesita verificar dos cosas al mismo tiempo, se usan condiciones compuestas.
-    <code>Y</code> exige que ambas sean verdaderas; <code>O</code> permite que una sola baste.
-  </p>
-  <table>
-    <thead><tr><th>Condición</th><th>Interpretación</th><th>Resultado esperado</th></tr></thead>
-    <tbody>
-      <tr><td><code>tasa_retencion &lt; 70.0 Y sesiones_fallidas &gt; 50</code></td><td>Alerta doble</td><td>Más severa</td></tr>
-      <tr><td><code>tipo_terapia = "cognitiva" O tipo_terapia = "ocupacional"</code></td><td>Pertenece a uno de dos grupos</td><td>Basta una coincidencia</td></tr>
-    </tbody>
-  </table>
+    <div class="code-block">
+      <pre><span class="cmt">// Alerta doble: bajo cumplimiento Y muchas ventas fallidas</span>
+=SI(<span class="fn">Y</span>(E2&lt;70; F2&gt;50); <span class="str">"🚨 CRÍTICO"</span>; <span class="str">"OK"</span>)
 
-  <h3>5. ¿Cuándo usar SI-FSI y cuándo no? <span class="relevance-badge evo">🟡 EVOLUCIONADO</span></h3>
-  <p>
-    Usa <strong>SI-FSI</strong> cuando solo quieres reaccionar a un caso verdadero. Si necesitas un camino alterno
-    cuando la condición es falsa, en la Semana 4 aprenderás <strong>SI-SINO-FSI</strong>. En Python moderno,
-    la idea sigue vigente con <code>if:</code> y operadores <code>and</code>/<code>or</code>.
-  </p>
+<span class="cmt">// Aplica para Costa O Andina</span>
+=SI(<span class="fn">O</span>(B2=<span class="str">"Costa"</span>; B2=<span class="str">"Andina"</span>); <span class="str">"Región prioritaria"</span>; <span class="str">"Otra región"</span>)</pre>
+    </div>
+  </section>
 
-  <div class="info-box warn">
-    <span class="icon">⚠️</span>
-    <p><strong>Pista importante:</strong> si el estudiante siente que “falta algo” cuando la condición es falsa,
-    probablemente ya está necesitando un <code>SINO</code>. Eso se verá la próxima semana.</p>
-  </div>
+  <!-- ══════════ PYTHON -->
+  <section id="python">
+    <h2 class="sec-title">🐍 Python — if / elif / else aplicado a NeuroBiz</h2>
 
-  <h3>6. Errores frecuentes al leer un SI-FSI <span class="relevance-badge vig">🟢 VIGENTE</span></h3>
-  <table>
-    <thead><tr><th>Error</th><th>Qué cree el estudiante</th><th>Corrección docente</th></tr></thead>
-    <tbody>
-      <tr><td>Cerrar antes de tiempo</td><td>Escribe <code>FSI</code> antes del bloque ENTONCES</td><td>Primero condición, luego acción, al final cierre.</td></tr>
-      <tr><td>Ignorar la rama No</td><td>Piensa que el rombo solo tiene una salida</td><td>Siempre dibujar y nombrar Sí / No.</td></tr>
-      <tr><td>Adivinar la salida</td><td>No sigue el valor real de la condición</td><td>Hacer prueba de escritorio línea por línea.</td></tr>
-      <tr><td>Confundir Y con O</td><td>Cree que basta una sola condición</td><td>Comparar “ambas” vs “al menos una”.</td></tr>
-    </tbody>
-  </table>
-</section>
+    <p>Python extiende lo que Excel hace en una celda: puede procesar <strong>toda la base de asesores</strong> de forma automática,
+    generar reportes, enviar alertas masivas y conectarse a otras herramientas. La lógica es la misma; la escala es mayor.</p>
 
-<!-- ══ PSEUDOCÓDIGO ══ -->
-<section id="pseudocodigo" class="card">
-  <h2>📝 Pseudocódigo — Alertas con SI-FSI</h2>
-  <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">💡 <strong>Celdas interactivas:</strong> haz clic en <strong>▶ Ejecutar</strong>, ingresa los datos y observa cómo el algoritmo decide si mostrar o no la alerta según la condición.</p>
+    <!-- IMAGEN 3 -->
+    <div class="img-placeholder">
+      <span class="img-icon">🖼️</span>
+      <strong>IMAGEN SUGERIDA 3</strong>
+      Representar: pantalla de laptop mostrando una notificación o correo de alerta empresarial (tipo Outlook o panel de dashboard) que dice "⚠️ Alerta: Asesor bajo meta". Transmite la idea de que el código Python puede disparar alertas automáticas al sistema de gestión.
+    </div>
 
-  <h3>Alerta simple: SI la tasa es baja → mostrar alerta</h3>
-  <div class="colab-cell" id="cell-alerta">
-    <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-alerta')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span><span class="colab-cell-label">AlertaRetencionNeuroBiz</span></div>
-    <div class="colab-editor" contenteditable="true" spellcheck="false">
-<span class="kw">ALGORITMO</span> AlertaRetencionNeuroBiz
+    <div class="callout callout-info">
+      <span class="ico">📌</span>
+      <div>
+        <strong>Diferencias clave vs Excel:</strong><br>
+        • Python no usa <code>FSI</code> para cerrar — el bloque se cierra con <strong>indentación</strong> (4 espacios).<br>
+        • Python usa <code>and</code> / <code>or</code> en lugar de <code>Y()</code> / <code>O()</code>.<br>
+        • Python usa <code>==</code> para comparar igualdad (no <code>=</code> como en Excel).
+      </div>
+    </div>
+
+    <p style="font-size:.82rem;color:var(--muted);font-style:italic;" class="py-status" id="pyStatus">⏳ Iniciando motor Python (Pyodide)…</p>
+
+    <!-- CELDA 1 -->
+    <div class="cell-card">
+      <div class="cell-header">
+        <span>🐍 Celda 1 — Alerta simple de cumplimiento</span>
+        <span class="lang-badge">Python · Ejecutable</span>
+      </div>
+      <div class="cell-body">
+        <textarea id="py1" rows="18">
+# ── Alerta simple: if en Python ──
+# Equivalente a =SI(cumplimiento < 70; "ALERTA"; "Cumple") en Excel
+
+asesor = "Laura Torres"
+ventas_logradas = 310
+meta_ventas     = 500
+
+# Calcular cumplimiento (tipo REAL en pseudocódigo)
+cumplimiento = (ventas_logradas / meta_ventas) * 100
+
+print(f"=== NEUROBIZ S.A.S. — REPORTE DE CUMPLIMIENTO ===")
+print(f"Asesor: {asesor}")
+print(f"Ventas logradas: {ventas_logradas}  |  Meta: {meta_ventas}")
+print(f"Cumplimiento: {cumplimiento:.1f}%")
+print()
+
+META_MINIMA = 70.0   # constante del negocio
+
+if cumplimiento < META_MINIMA:
+    print("⚠️  ALERTA: cumplimiento por debajo de la meta")
+    print(f"   Faltan {META_MINIMA - cumplimiento:.1f} puntos porcentuales para llegar a {META_MINIMA}%")
+
+print("Análisis completado.")
+</textarea>
+        <div class="cell-actions">
+          <button class="btn-run" onclick="runPy('py1','out1')">▶ Ejecutar</button>
+          <button class="btn-reset" onclick="resetPy('py1',1)">↺ Restaurar</button>
+          <span style="font-size:.75rem;color:var(--muted)">Prueba: cambia ventas_logradas a 450 → el if no debe dispararse</span>
+        </div>
+        <div class="cell-output" id="out1"></div>
+      </div>
+    </div>
+
+    <!-- CELDA 2 -->
+    <div class="cell-card">
+      <div class="cell-header">
+        <span>🐍 Celda 2 — Alerta doble con condición compuesta</span>
+        <span class="lang-badge">Python · Ejecutable</span>
+      </div>
+      <div class="cell-body">
+        <textarea id="py2" rows="22">
+# ── Condición compuesta: and / or ──
+# Equivalente a =SI(Y(E2<70; F2>50); "CRÍTICO"; "OK") en Excel
+
+asesor         = "Sandra Ruiz"
+cumplimiento   = 64.4   # %
+ventas_fallidas = 58    # número de cierres perdidos
+
+print(f"=== NEUROBIZ — ANÁLISIS DOBLE ===")
+print(f"Asesor: {asesor}")
+print(f"Cumplimiento: {cumplimiento}%  |  Ventas fallidas: {ventas_fallidas}")
+print()
+
+# Condición compuesta: ambas deben ser verdaderas (and)
+if cumplimiento < 70 and ventas_fallidas > 50:
+    print("🚨 ALERTA CRÍTICA: bajo cumplimiento y alto número de fallas")
+    print("   Acción requerida: reunión de acompañamiento esta semana")
+
+# Condición simple adicional
+if cumplimiento >= 85:
+    print("🏆 Desempeño excelente — asesor candidato a incentivo")
+
+print("Monitoreo completado.")
+</textarea>
+        <div class="cell-actions">
+          <button class="btn-run" onclick="runPy('py2','out2')">▶ Ejecutar</button>
+          <button class="btn-reset" onclick="resetPy('py2',2)">↺ Restaurar</button>
+          <span style="font-size:.75rem;color:var(--muted)">Prueba: cambia cumplimiento a 88 → debe aparecer el mensaje de excelente</span>
+        </div>
+        <div class="cell-output" id="out2"></div>
+      </div>
+    </div>
+
+    <!-- CELDA 3 -->
+    <div class="cell-card">
+      <div class="cell-header">
+        <span>🐍 Celda 3 — Procesando varios asesores con un bucle</span>
+        <span class="lang-badge">Python · Ejecutable</span>
+      </div>
+      <div class="cell-body">
+        <textarea id="py3" rows="28">
+# ── Procesar toda la tabla de asesores ──
+# Aquí Python supera a Excel: analiza todos los registros de una vez
+
+asesores = [
+    {"nombre": "Carlos Mejía",  "region": "Costa",    "cumplimiento": 70.0},
+    {"nombre": "Laura Torres",  "region": "Andina",   "cumplimiento": 62.0},
+    {"nombre": "Miguel Pérez",  "region": "Costa",    "cumplimiento": 88.3},
+    {"nombre": "Sandra Ruiz",   "region": "Pacífico", "cumplimiento": 64.4},
+    {"nombre": "Jorge Díaz",    "region": "Andina",   "cumplimiento": 96.0},
+]
+
+META_MINIMA = 70.0
+
+print("=== NEUROBIZ — REPORTE GENERAL DE ASESORES ===")
+print(f"{'Asesor':<16} {'Región':<12} {'Cumpl.':>8}  Estado")
+print("-" * 52)
+
+alertas = 0
+for a in asesores:
+    if a["cumplimiento"] >= 85:
+        estado = "🏆 Excelente"
+    elif a["cumplimiento"] >= META_MINIMA:
+        estado = "✅ Cumple"
+    else:
+        estado = "⚠️ ALERTA"
+        alertas += 1
+    print(f"{a['nombre']:<16} {a['region']:<12} {a['cumplimiento']:>7.1f}%  {estado}")
+
+print("-" * 52)
+print(f"Total asesores en alerta: {alertas} / {len(asesores)}")
+</textarea>
+        <div class="cell-actions">
+          <button class="btn-run" onclick="runPy('py3','out3')">▶ Ejecutar</button>
+          <button class="btn-reset" onclick="resetPy('py3',3)">↺ Restaurar</button>
+          <span style="font-size:.75rem;color:var(--muted)">Aquí verás el poder real de Python: un solo if procesa todos los registros</span>
+        </div>
+        <div class="cell-output" id="out3"></div>
+      </div>
+    </div>
+
+    <!-- CELDA LIBRE -->
+    <div class="cell-card">
+      <div class="cell-header">
+        <span>✨ Celda Libre — Tu turno</span>
+        <span class="lang-badge">Python · Ejecutable</span>
+      </div>
+      <div class="cell-body">
+        <textarea id="py4" rows="16">
+# ── Celda libre ──
+# Ideas para practicar:
+# 1. Crea un if que clasifique un pedido según su monto
+#    (pequeño < 100.000 / mediano < 500.000 / grande >= 500.000)
+# 2. Evalúa si un empleado cumple los requisitos de bonificación
+#    (antigüedad > 2 años AND evaluación >= 80)
+# 3. Calcula el descuento de una factura según el valor total
+
+# Escribe tu código aquí:
+monto_pedido = 320000
+
+# Tu lógica if aquí...
+</textarea>
+        <div class="cell-actions">
+          <button class="btn-run" onclick="runPy('py4','out4')">▶ Ejecutar</button>
+          <button class="btn-reset" onclick="resetPy('py4',4)">↺ Restaurar</button>
+        </div>
+        <div class="cell-output" id="out4"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ REFERENCIA PSEUDOCÓDIGO (colapsada) -->
+  <section id="cairo">
+    <h2 class="sec-title">📝 Referencia: Pseudocódigo Cairó (SI-FSI)</h2>
+
+    <div class="callout callout-info">
+      <span class="ico">📖</span>
+      <div>El pseudocódigo es una <strong>herramienta de diseño</strong> — sirve para pensar la lógica antes de escribirla en Excel o Python.
+      No se ejecuta directamente en ningún sistema. Úsalo como borrador en papel o en el tablero.</div>
+    </div>
+
+    <details>
+      <summary>📝 Estructura general SI-FSI (Cairó) — ver referencia</summary>
+      <div class="details-body">
+        <div class="code-block">
+          <pre><span class="kw">SI</span> condicion <span class="kw">ENTONCES</span>
+  <span class="cmt">{ instrucciones que solo ocurren si la condición es VERDADERA }</span>
+<span class="kw">FSI</span></pre>
+        </div>
+        <p style="font-size:.86rem;margin-top:.6rem;">
+          <strong>FSI</strong> = "Fin Si" — indica dónde termina el bloque condicional.<br>
+          En Python no existe FSI porque el cierre se marca con indentación (4 espacios).
+        </p>
+      </div>
+    </details>
+
+    <details>
+      <summary>📝 AlertaCumplimientoNeuroBiz — pseudocódigo completo</summary>
+      <div class="details-body">
+        <div class="code-block">
+          <pre><span class="kw">ALGORITMO</span> AlertaCumplimientoNeuroBiz
 <span class="kw">VARIABLES</span>
-  tasa_retencion  : <span class="kw">REAL</span>
-  META_RETENCION  : <span class="kw">REAL</span>
+  cumplimiento   : <span class="kw">REAL</span>
+  META_MINIMA    : <span class="kw">REAL</span>
+  nombre_asesor  : <span class="kw">CADENA</span>
 <span class="kw">INICIO</span>
-  META_RETENCION = <span class="num">70.0</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"=== NEUROBIZ S.A.S. — ALERTA DE RETENCION ==="</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Ingrese la tasa de retencion actual (%):"</span>
-  <span class="fn">LEER</span> tasa_retencion
-  <span class="kw">SI</span> tasa_retencion < META_RETENCION <span class="kw">ENTONCES</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"⚠️ ALERTA: Tasa de retencion critica"</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"Tasa actual: "</span> + tasa_retencion + <span class="str">"%"</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"Meta minima: "</span> + META_RETENCION + <span class="str">"%"</span>
+  META_MINIMA ← <span class="num">70.0</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Nombre del asesor:"</span>
+  <span class="fn">LEER</span> nombre_asesor
+  <span class="fn">ESCRIBIR</span> <span class="str">"Cumplimiento de meta (%):"</span>
+  <span class="fn">LEER</span> cumplimiento
+
+  <span class="kw">SI</span> cumplimiento &lt; META_MINIMA <span class="kw">ENTONCES</span>
+    <span class="fn">ESCRIBIR</span> <span class="str">"⚠️ ALERTA: cumplimiento crítico"</span>
+    <span class="fn">ESCRIBIR</span> <span class="str">"Asesor: "</span> + nombre_asesor
+    <span class="fn">ESCRIBIR</span> <span class="str">"Actual: "</span> + cumplimiento + <span class="str">"% / Meta: "</span> + META_MINIMA + <span class="str">"%"</span>
   <span class="kw">FSI</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Analisis completado."</span>
-<span class="kw">FIN</span>
-    </div>
-    <div class="colab-output"><span class="out-info">🔍 Prueba con 65.0 (debe mostrar alerta) y con 82.0 (no debe mostrar alerta)...</span></div>
-  </div>
 
-  <h3 style="margin-top:1.5rem">Alerta doble: SI tasa baja Y muchas fallidas → alerta crítica</h3>
-  <div class="colab-cell" id="cell-doble">
-    <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-doble')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span><span class="colab-cell-label">AlertaDobleNeuroBiz</span></div>
-    <div class="colab-editor" contenteditable="true" spellcheck="false">
-<span class="kw">ALGORITMO</span> AlertaDobleNeuroBiz
+  <span class="fn">ESCRIBIR</span> <span class="str">"Análisis completado."</span>
+<span class="kw">FIN</span></pre>
+        </div>
+        <h4 style="margin-top:1rem;font-size:.88rem;color:var(--brand);">Prueba de escritorio</h4>
+        <table class="data-table">
+          <thead><tr><th>Caso</th><th>Entrada</th><th>¿Condición?</th><th>¿Qué imprime?</th></tr></thead>
+          <tbody>
+            <tr><td>Caso 1</td><td>cumplimiento = 65.0</td><td>Verdadera</td><td>Alerta + datos del asesor + "Análisis completado"</td></tr>
+            <tr><td>Caso 2</td><td>cumplimiento = 82.0</td><td>Falsa</td><td>Solo "Análisis completado"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>📝 AlertaDoble — condición compuesta Y</summary>
+      <div class="details-body">
+        <div class="code-block">
+          <pre><span class="kw">ALGORITMO</span> AlertaDobleNeuroBiz
 <span class="kw">VARIABLES</span>
-  tasa_retencion    : <span class="kw">REAL</span>
-  sesiones_fallidas : <span class="kw">ENTERO</span>
+  cumplimiento    : <span class="kw">REAL</span>
+  ventas_fallidas : <span class="kw">ENTERO</span>
 <span class="kw">INICIO</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"=== NEUROBIZ — ALERTA DOBLE ==="</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Tasa de retencion actual (%):"</span>
-  <span class="fn">LEER</span> tasa_retencion
-  <span class="fn">ESCRIBIR</span> <span class="str">"Cantidad de sesiones fallidas:"</span>
-  <span class="fn">LEER</span> sesiones_fallidas
-  <span class="kw">SI</span> tasa_retencion < <span class="num">70.0</span> <span class="kw">Y</span> sesiones_fallidas > <span class="num">50</span> <span class="kw">ENTONCES</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"🚨 ALERTA CRITICA: Intervencion urgente requerida"</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"Motivo: tasa baja ("</span> + tasa_retencion + <span class="str">"%) y muchas fallidas ("</span> + sesiones_fallidas + <span class="str">")"</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Cumplimiento de meta (%):"</span>
+  <span class="fn">LEER</span> cumplimiento
+  <span class="fn">ESCRIBIR</span> <span class="str">"Ventas fallidas este mes:"</span>
+  <span class="fn">LEER</span> ventas_fallidas
+
+  <span class="kw">SI</span> cumplimiento &lt; <span class="num">70.0</span> <span class="kw">Y</span> ventas_fallidas &gt; <span class="num">50</span> <span class="kw">ENTONCES</span>
+    <span class="fn">ESCRIBIR</span> <span class="str">"🚨 ALERTA CRÍTICA: intervención urgente"</span>
   <span class="kw">FSI</span>
   <span class="fn">ESCRIBIR</span> <span class="str">"Monitoreo completado."</span>
-<span class="kw">FIN</span>
+<span class="kw">FIN</span></pre>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ══════════ ACTIVIDAD PRESENCIAL -->
+  <section id="actividad">
+    <h2 class="sec-title">⚙️ Actividad Presencial</h2>
+
+    <div class="pts-summary">
+      <div class="pts-chip"><span>📋 Asistencia</span><span class="pts-num">+10 XP</span></div>
+      <div class="pts-chip"><span>🎮 Quiz (5 preguntas)</span><span class="pts-num">+25 XP</span></div>
+      <div class="pts-chip"><span>🎯 Misión NeuroBiz</span><span class="pts-num">+25 XP</span></div>
     </div>
-    <div class="colab-output"><span class="out-info">🔍 Prueba con tasa=65, fallidas=60 (debe alertar) y con tasa=80, fallidas=30 (no debe alertar)...</span></div>
-  </div>
 
-  <h3 style="margin-top:1.5rem">Prueba de escritorio guiada</h3>
-  <table><thead><tr><th>Caso</th><th>Dato de entrada</th><th>¿Condición?</th><th>¿Qué imprime?</th></tr></thead><tbody><tr><td>Caso 1</td><td><code>tasa = 65.0</code></td><td>Verdadera</td><td>Alerta + tasa + meta + "Análisis completado"</td></tr><tr><td>Caso 2</td><td><code>tasa = 82.0</code></td><td>Falsa</td><td>Solo "Análisis completado"</td></tr></tbody></table>
-
-  <div class="info-box brain" style="margin-top:1rem"><span class="icon">🧠</span><p><strong>Habilidad central:</strong> seguir el algoritmo línea por línea sin adivinar. La prueba de escritorio enseña a pensar como analista. <strong>Ejecuta las celdas de arriba con diferentes valores</strong> para ver cómo cambia el comportamiento.</p></div>
-
-  <div class="info-box cite"><span class="icon">🧩</span><p><strong>Regla de oro:</strong> primero calcula la condición, después decide si el bloque ENTONCES entra o se omite. Ese orden lógico evita "inventar" resultados.</p></div>
-</section>
-<!-- ══ ACTIVIDAD PRESENCIAL ══ -->
-<section id="actividad" class="card">
-  <h2>⚙️ Actividad Presencial</h2>
-
-  <div class="dojo-panel">
-    <h3>🏆 Puntos disponibles esta sesión</h3>
-    <div class="dojo-items">
-      <div class="dojo-item">📋 <span>Asistencia</span> <span class="pts">+10 XP</span></div>
-      <div class="dojo-item">🎮 <span>Quiz (5 preguntas)</span> <span class="pts">+25 XP</span></div>
-      <div class="dojo-item">🎯 <span>Misión NeuroBiz</span> <span class="pts">+25 XP</span></div>
-    </div>
-  </div>
-
-  <div class="activity">
-    <div class="activity-header presencial">⏱️ Bloque 1 — Entender el SI-FSI · <em style="font-weight:400;margin-left:.3rem">Bloom: Comprender</em></div>
-    <div class="activity-body">
-      <ol>
-        <li>Revisar la estructura general <code>SI ... ENTONCES ... FSI</code>.</li>
-        <li>Dibujar en el tablero el rombo con sus dos salidas: Sí y No.</li>
-        <li>Usar el ejemplo del semáforo para distinguir condición de acción.</li>
-        <li>Comparar con una política de descuento simple en una empresa.</li>
+    <div class="activity-block">
+      <p class="block-label">⏱️ Bloque 1 — Entender la estructura SI · Bloom: Comprender</p>
+      <ol class="block-ol">
+        <li>Revisar el memorando de la Gerencia Comercial y la tabla de KPIs.</li>
+        <li>Dibujar en el tablero el rombo de decisión con sus dos salidas: Sí / No.</li>
+        <li>Usar el ejemplo del semáforo y conectarlo con la alerta de cumplimiento de NeuroBiz.</li>
+        <li>Mostrar en el proyector la tabla de Excel con la columna <code>=SI()</code> y pedir a los estudiantes que lean la fórmula en voz alta.</li>
       </ol>
     </div>
-  </div>
 
-  <div class="activity">
-    <div class="activity-header presencial">⏱️ Bloque 2 — Prueba de escritorio · <em style="font-weight:400;margin-left:.3rem">Bloom: Comprender → Aplicar</em></div>
-    <div class="activity-body">
-      <ol>
-        <li>Ejecutar manualmente <code>AlertaRetencionNeuroBiz</code> con <code>65.0</code> y <code>82.0</code>.</li>
-        <li>Marcar qué líneas se ejecutan y cuáles se omiten.</li>
-        <li>Explicar en parejas por qué el bloque ENTONCES no corre cuando la condición es falsa.</li>
+    <div class="activity-block">
+      <p class="block-label">⏱️ Bloque 2 — Excel en vivo · Bloom: Comprender → Aplicar</p>
+      <ol class="block-ol">
+        <li>Abrir Excel (o Google Sheets) y construir la tabla de asesores de NeuroBiz desde cero.</li>
+        <li>Escribir juntos la fórmula <code>=SI(E2&lt;70;"⚠️ ALERTA";"✅ Cumple")</code> en la columna Estado.</li>
+        <li>Cambiar el valor de cumplimiento de un asesor y observar cómo cambia el resultado automáticamente.</li>
+        <li>Proponer en grupo: ¿cómo cambiarías la fórmula para agregar una categoría "🏆 Excelente"?</li>
       </ol>
     </div>
-  </div>
 
-  <div class="activity">
-    <div class="activity-header presencial">⏱️ Bloque 3 — Misión NeuroBiz · <em style="font-weight:400;margin-left:.3rem">Bloom: Aplicar</em></div>
-    <div class="activity-body">
-      <p><strong>🎯 Misión:</strong> construir una alerta útil para el negocio.</p>
+    <div class="activity-block">
+      <p class="block-label">⏱️ Bloque 3 — Misión NeuroBiz · Bloom: Aplicar</p>
+      <p style="font-size:.88rem;margin-bottom:.8rem;">Responde cada pregunta y haz clic en <strong>Verificar</strong> para obtener retroalimentación inmediata.</p>
 
-      <p style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">💡 <strong>Responde cada pregunta</strong> y obtén retroalimentación inmediata. +4 XP por respuesta completa.</p>
-
-      <div class="interactive-q" id="iq1">
-        <div class="iq-header"><span class="iq-num">1</span> <span class="iq-pts">+4 XP</span></div>
-        <p class="iq-question">Escribe un algoritmo <strong>SI-FSI</strong> que muestre un mensaje de reconocimiento si un terapeuta atiende más de 20 sesiones en la semana.</p>
-        <textarea class="iq-textarea" placeholder="Escribe el pseudocódigo completo con ALGORITMO, VARIABLES, INICIO, SI, ENTONCES, FSI, FIN..." minlength="30" id="iq1-ta"></textarea>
-        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq1')">🔍 Verificar respuesta</button></div>
-        <div class="iq-feedback" id="iq1-fb"></div>
+      <div class="mission-q">
+        <p class="mission-q-header">1 <span class="xp-pill">+5 XP</span> — Fórmula Excel</p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe la fórmula <code>=SI()</code> para clasificar el cumplimiento de la celda E2 en: "Excelente" si ≥85, "Cumple" si ≥70, "Alerta" si es menor. (Pista: SI anidado)</p>
+        <textarea placeholder="=SI(E2>=85; …; SI(E2>=70; …; …))"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, '=SI(E2>=85', 'm1r')">🔍 Verificar</button>
+        <div class="verify-result" id="m1r"></div>
       </div>
 
-      <div class="interactive-q" id="iq2">
-        <div class="iq-header"><span class="iq-num">2</span> <span class="iq-pts">+4 XP</span></div>
-        <p class="iq-question">Extiende la condición anterior usando <strong>Y</strong> para que además verifique que el tipo de terapia sea <code>"cognitiva"</code>.</p>
-        <textarea class="iq-textarea" placeholder="Escribe la condición compuesta con Y..." minlength="20" id="iq2-ta"></textarea>
-        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq2')">🔍 Verificar respuesta</button></div>
-        <div class="iq-feedback" id="iq2-fb"></div>
+      <div class="mission-q">
+        <p class="mission-q-header">2 <span class="xp-pill">+5 XP</span> — Python básico</p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe el bloque <code>if</code> en Python que imprima "⚠️ ALERTA" si <code>cumplimiento &lt; 70</code>. Recuerda la indentación.</p>
+        <textarea placeholder="if cumplimiento < 70:&#10;    print(...)"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, 'if cumplimiento', 'm2r')">🔍 Verificar</button>
+        <div class="verify-result" id="m2r"></div>
       </div>
 
-      <div class="interactive-q" id="iq3">
-        <div class="iq-header"><span class="iq-num">3</span> <span class="iq-pts">+4 XP</span></div>
-        <p class="iq-question">Describe la prueba de escritorio con dos casos: uno donde se cumplen ambas condiciones y otro donde falla una de ellas. ¿Qué imprime cada caso?</p>
-        <textarea class="iq-textarea" placeholder="Caso 1 (cumple): ... → imprime: ... | Caso 2 (no cumple): ... → imprime: ..." minlength="30" id="iq3-ta"></textarea>
-        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq3')">🔍 Verificar respuesta</button></div>
-        <div class="iq-feedback" id="iq3-fb"></div>
+      <div class="mission-q">
+        <p class="mission-q-header">3 <span class="xp-pill">+5 XP</span> — Condición compuesta</p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">¿Cómo escribirías en Excel la condición "cumplimiento menor a 70 Y ventas fallidas mayor a 50"? Usa la función <code>=Y()</code>.</p>
+        <textarea placeholder="=SI(Y(E2<70; F2>50); …; …)"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, 'Y(', 'm3r')">🔍 Verificar</button>
+        <div class="verify-result" id="m3r"></div>
       </div>
-      <div class="info-box tip">
-        <span class="icon">🧪</span>
-        <p><strong>Consejo:</strong> antes de escribir el algoritmo, formula la condición en español.
-        Si puedes decirla claramente, luego puedes traducirla a pseudocódigo.</p>
+
+      <div class="mission-q">
+        <p class="mission-q-header">4 <span class="xp-pill">+5 XP</span> — Prueba de escritorio</p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Para el algoritmo de alerta simple, describe qué imprime el sistema con <code>cumplimiento = 65</code> y qué imprime con <code>cumplimiento = 82</code>.</p>
+        <textarea placeholder="Con 65: … | Con 82: …"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, '', 'm4r')">🔍 Verificar</button>
+        <div class="verify-result" id="m4r"></div>
       </div>
+
+      <div class="mission-q">
+        <p class="mission-q-header">5 <span class="xp-pill">+5 XP</span> — Reflexión aplicada</p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">¿En qué situación real de tu carrera (gestión de personal, ventas, logística…) usarías una alerta condicional automática? Describe brevemente el caso.</p>
+        <textarea placeholder="En el área de… cuando… el sistema debería alertar si…"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, '', 'm5r')">🔍 Verificar</button>
+        <div class="verify-result" id="m5r"></div>
+      </div>
+
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ══ HTI ══ -->
-<section id="hti" class="card">
-  <h2>🏠 HTI — Trabajo Independiente</h2>
-  <p style="color:var(--muted);font-size:.88rem">La clave es practicar manualmente: seguir condiciones y anticipar salidas.</p>
+  <!-- ══════════ HTI -->
+  <section id="hti">
+    <h2 class="sec-title">🏠 HTI — Trabajo Independiente</h2>
+    <p style="margin-bottom:.8rem;">Consolida la lógica condicional antes de pasar a SI-SINO (Semana 4).</p>
 
-  <div class="activity">
-    <div class="activity-header hti-a">📚 HTI-A — Lectura y repaso</div>
-    <div class="activity-body">
-      <ol>
-        <li>Vuelve a leer la sección de teoría y observa la estructura del SI-FSI.</li>
-        <li>Dibuja un rombo y etiqueta ambas ramas: Sí / No.</li>
-        
-      <div class="interactive-q" id="iq4" style="margin-top:.8rem">
-        <div class="iq-header"><span class="iq-num">4</span> <span class="iq-pts">+4 XP</span></div>
-        <p class="iq-question">Resume en una frase: ¿cuándo usarías una condición simple (SI-FSI) en un algoritmo?</p>
-        <textarea class="iq-textarea" placeholder="Escribe tu resumen aquí..." minlength="15" id="iq4-ta"></textarea>
-        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq4')">🔍 Verificar respuesta</button></div>
-        <div class="iq-feedback" id="iq4-fb"></div>
-      </div>
+    <div class="activity-block">
+      <p class="block-label">📚 HTI-A — Lectura y observación</p>
+      <ol class="block-ol">
+        <li>Abre Google Sheets o Excel y replica la tabla de asesores NeuroBiz de esta semana.</li>
+        <li>Agrega la columna <code>=SI()</code> con la fórmula de alerta y verifica los resultados.</li>
+        <li>Dibuja en tu cuaderno el rombo de decisión con sus dos ramas y etiquétalas.</li>
       </ol>
     </div>
-  </div>
 
-  <div class="activity">
-    <div class="activity-header hti-b">✏️ HTI-B — Nuevo algoritmo SI-FSI</div>
-    <div class="activity-body">
-      <ol>
-        
-      <div class="interactive-q" id="iq5" style="margin-top:.8rem">
-        <div class="iq-header"><span class="iq-num">5</span> <span class="iq-pts">+4 XP</span></div>
-        <p class="iq-question">Escribe el algoritmo SI-FSI completo: si el terapeuta atendió más de 20 sesiones, mostrar mensaje de reconocimiento. Usa variables con nombre claro.</p>
-        <textarea class="iq-textarea" placeholder="ALGORITMO ReconocimientoTerapeuta
-VARIABLES
-  ..." minlength="30" id="iq5-ta"></textarea>
-        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq5')">🔍 Verificar respuesta</button></div>
-        <div class="iq-feedback" id="iq5-fb"></div>
+    <div class="activity-block">
+      <p class="block-label">✏️ HTI-B — Nueva fórmula y nuevo caso</p>
+
+      <div class="mission-q">
+        <p class="mission-q-header">HTI-1 <span class="xp-pill small">+4 XP</span></p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe en Excel la fórmula <code>=SI()</code> que muestre "🎁 Descuento 15%" si el monto de compra en B2 supera $500.000, o "" (vacío) si no.</p>
+        <textarea placeholder="=SI(B2>500000; …; …)"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, '500000', 'h1r')">🔍 Verificar</button>
+        <div class="verify-result" id="h1r"></div>
       </div>
-        <li>Usa variables con nombre claro y un mensaje de salida profesional.</li>
-      </ol>
+
+      <div class="mission-q">
+        <p class="mission-q-header">HTI-2 <span class="xp-pill small">+4 XP</span></p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe el equivalente en Python: <code>if monto &gt; 500000: print("Descuento 15%")</code>. ¿Por qué no se necesita <code>FSI</code>?</p>
+        <textarea placeholder="Porque en Python…"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, 'indentaci', 'h2r')">🔍 Verificar</button>
+        <div class="verify-result" id="h2r"></div>
+      </div>
+
+      <div class="mission-q">
+        <p class="mission-q-header">HTI-3 <span class="xp-pill small">+4 XP</span></p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">¿Cuál es la diferencia entre usar <code>=Y()</code> y <code>=O()</code> en Excel? Da un ejemplo de negocio para cada una.</p>
+        <textarea placeholder="Y(): ambas condiciones… Ejemplo: … | O(): al menos una… Ejemplo: …"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, '', 'h3r')">🔍 Verificar</button>
+        <div class="verify-result" id="h3r"></div>
+      </div>
+
+      <div class="mission-q">
+        <p class="mission-q-header">HTI-4 <span class="xp-pill small">+4 XP</span></p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">En la Celda 3 de Python (procesamiento masivo), ¿qué tendrías que cambiar para que el umbral de alerta sea 75% en lugar de 70%? ¿Y si quisieras agregar una cuarta categoría "🔴 Crítico" para menos del 50%?</p>
+        <textarea placeholder="Cambiaría… y agregaría…"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, '', 'h4r')">🔍 Verificar</button>
+        <div class="verify-result" id="h4r"></div>
+      </div>
+
     </div>
-  </div>
+  </section>
 
-  <div class="activity">
-    <div class="activity-header hti-b">🧠 HTI-C — Extensión con condición compuesta</div>
-    <div class="activity-body">
-      <ol>
-        
-      <div class="interactive-q" id="iq6" style="margin-top:.8rem">
-        <div class="iq-header"><span class="iq-num">6</span> <span class="iq-pts">+4 XP</span></div>
-        <p class="iq-question">Extiende el algoritmo anterior agregando la condición compuesta con <strong>Y</strong>: que el tipo de terapia sea <code>"cognitiva"</code>. Escribe la línea SI completa.</p>
-        <textarea class="iq-textarea" placeholder="SI sesiones_semana > 20 Y tipo_terapia = ..." minlength="20" id="iq6-ta"></textarea>
-        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq6')">🔍 Verificar respuesta</button></div>
-        <div class="iq-feedback" id="iq6-fb"></div>
-      </div>
-        
-      <div class="interactive-q" id="iq7" style="margin-top:.8rem">
-        <div class="iq-header"><span class="iq-num">7</span> <span class="iq-pts">+4 XP</span></div>
-        <p class="iq-question">Haz la prueba de escritorio: describe un caso donde se cumplan AMBAS condiciones y otro donde falle UNA de ellas. ¿Qué imprime cada uno?</p>
-        <textarea class="iq-textarea" placeholder="Caso A (cumple ambas): sesiones=25, terapia=cognitiva → imprime: ... | Caso B (falla una): ... → imprime: ..." minlength="30" id="iq7-ta"></textarea>
-        <div class="iq-actions"><button class="iq-btn" onclick="InteractiveQ.check('iq7')">🔍 Verificar respuesta</button></div>
-        <div class="iq-feedback" id="iq7-fb"></div>
-      </div>
-      </ol>
-    </div>
-  </div>
-</section>
-
-<!-- ══ LABORATORIO INTERACTIVO ══ -->
-<section id="lab" class="card">
-  <h2>🧪 Laboratorio Interactivo — Condicionales SI-FSI</h2>
-  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Practica escribiendo condiciones y observando cómo el algoritmo decide si ejecutar o no el bloque ENTONCES. +5 XP por cada celda ejecutada.</p>
-  <div class="lab-tabs">
-    <button class="lab-tab active" onclick="CairoLab.stb('tab-reconocimiento')">🏆 Reconocimiento</button>
-    <button class="lab-tab" onclick="CairoLab.stb('tab-descuento')">💰 Descuento</button>
-    <button class="lab-tab" onclick="CairoLab.stb('tab-libre3')">✨ Celda Libre</button>
-  </div>
-
-  <div class="lab-panel active" id="tab-reconocimiento">
-    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>Misión NeuroBiz:</strong> Algoritmo que reconoce a terapeutas con más de 20 sesiones. ¡Edítalo y prueba diferentes valores!</p>
-    <div class="colab-cell" id="cell-reconocimiento">
-      <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-reconocimiento')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div>
-      <div class="colab-editor" contenteditable="true" spellcheck="false">
-<span class="kw">ALGORITMO</span> ReconocimientoTerapeuta
-<span class="kw">VARIABLES</span>
-  sesiones_semana : <span class="kw">ENTERO</span>
-  nombre_terapeuta : <span class="kw">CADENA</span>
-<span class="kw">INICIO</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"=== NEUROBIZ — RECONOCIMIENTO DE TERAPEUTAS ==="</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Nombre del terapeuta:"</span>
-  <span class="fn">LEER</span> nombre_terapeuta
-  <span class="fn">ESCRIBIR</span> <span class="str">"Cuantas sesiones atendio esta semana?"</span>
-  <span class="fn">LEER</span> sesiones_semana
-  <span class="kw">SI</span> sesiones_semana > <span class="num">20</span> <span class="kw">ENTONCES</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"🌟 RECONOCIMIENTO: "</span> + nombre_terapeuta
-    <span class="fn">ESCRIBIR</span> <span class="str">"Ha atendido "</span> + sesiones_semana + <span class="str">" sesiones esta semana"</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"¡Excelente desempeño! Siga asi."</span>
-  <span class="kw">FSI</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Registro completado para "</span> + nombre_terapeuta
-<span class="kw">FIN</span>
-      </div>
-      <div class="colab-output"><span class="out-info">🔍 Prueba con 25 sesiones (debe mostrar reconocimiento) y con 15 (no debe mostrar)...</span></div>
-    </div>
-    <div class="step-indicator"><span id="rec-badge" style="font-size:.75rem"></span></div>
-  </div>
-
-  <div class="lab-panel" id="tab-descuento">
-    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>Extensión empresarial:</strong> Algoritmo de descuento por volumen de sesiones. Condición compuesta con Y.</p>
-    <div class="colab-cell" id="cell-descuento">
-      <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-descuento')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div>
-      <div class="colab-editor" contenteditable="true" spellcheck="false">
-<span class="kw">ALGORITMO</span> DescuentoVolumenNeuroBiz
-<span class="kw">VARIABLES</span>
-  total_sesiones     : <span class="kw">ENTERO</span>
-  tasa_retencion     : <span class="kw">REAL</span>
-  aplica_descuento   : <span class="kw">LOGICO</span>
-<span class="kw">INICIO</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"=== NEUROBIZ — EVALUACION DE DESCUENTO ==="</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Total de sesiones del mes:"</span>
-  <span class="fn">LEER</span> total_sesiones
-  <span class="fn">ESCRIBIR</span> <span class="str">"Tasa de retencion actual (%):"</span>
-  <span class="fn">LEER</span> tasa_retencion
-  aplica_descuento = total_sesiones > <span class="num">500</span> Y tasa_retencion > <span class="num">75</span>
-  <span class="kw">SI</span> aplica_descuento <span class="kw">ENTONCES</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"✅ DESCUENTO APROBADO: 15% por alto volumen y retencion"</span>
-  <span class="kw">FSI</span>
-  <span class="kw">SI</span> total_sesiones > <span class="num">500</span> Y tasa_retencion <= <span class="num">75</span> <span class="kw">ENTONCES</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"⚠️ Alto volumen pero retencion baja. Revisar antes de aprobar."</span>
-  <span class="kw">FSI</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Evaluacion completada."</span>
-<span class="kw">FIN</span>
-      </div>
-      <div class="colab-output"><span class="out-info">🔍 Prueba: 600 sesiones, 80% → descuento. 600 sesiones, 70% → revisión. 300 sesiones → sin descuento.</span></div>
-    </div>
-    <div class="step-indicator"><span id="desc-badge" style="font-size:.75rem"></span></div>
-  </div>
-
-  <div class="lab-panel" id="tab-libre3">
-    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem"><strong>✨ Celda Libre:</strong> Crea tu propio algoritmo con condiciones SI-FSI. Prueba con Y, O, y diferentes operadores.</p>
-    <div class="colab-cell" id="cell-libre3">
-      <div class="colab-toolbar"><button class="colab-run-btn" onclick="CairoLab.rc('cell-libre3')"><span class="spinner"></span><span class="btn-label">▶ Ejecutar</span></button><span class="colab-lang-badge">Cairó</span></div>
-      <div class="colab-editor" contenteditable="true" spellcheck="false">
-<span class="kw">ALGORITMO</span> MiCondicional
-<span class="kw">VARIABLES</span>
-  <span class="cm">{ Declara tus variables }</span>
-<span class="kw">INICIO</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Mi algoritmo con SI-FSI"</span>
-  <span class="cm">{ Escribe tus condiciones aqui }</span>
-<span class="kw">FIN</span>
-      </div>
-      <div class="colab-output"><span class="out-info">🔍 Escribe tu código y ejecuta...</span></div>
-    </div>
-  </div>
-
-  <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:#e8f5e9;border-radius:12px;border:1px solid #a5d6a7"><p style="margin:0;font-size:.85rem">🎯 <strong>¿Completaste los ejercicios?</strong> Has aplicado condiciones SI-FSI a problemas reales de negocio. +5 XP por cada celda ejecutada.</p></div>
-</section>
-<!-- ══ PYTHON REFERENCE SECTION — SEMANA 3 ══ -->
-<div class="py-section">
-  <h3>🐍 Python de Referencia — Semana 3</h3>
-  <div class="py-ref-note">
-    📌 <strong>Referencia:</strong> Estructuras de control <strong>SI-SINO-SI</strong> traducidas a <strong>if-elif-else</strong> en Python.
-    <span class="py-ref-badge">🐍 Python · Pyodide · No evaluado</span>
-  </div>
-  <div id="py-status" class="py-status">
-    ⏳ Iniciando motor Python (Pyodide)...
-  </div>
-  
-      <!-- Cell 1 -->
-      <div class="py-cell" id="py-cell-1">
-        <div class="py-cell-header">
-          <span class="py-cell-idx">[1]</span>
-          <button class="py-run-btn" onclick="runPyCell(1)" id="py-run-1">
-            ▶ Run
-          </button>
-        </div>
-        <div class="py-cell-body" id="py-body-1">
-          <textarea id="py-code-1" rows="6" spellcheck="false"># ── if / elif / else en Python ──
-# SI condición ENTONCES ... SINO ... FSI
-# se convierte en:
-# if condición:
-#     ...
-# elif otra_condición:
-#     ...
-# else:
-#     ...
-# Nota: Python usa indentación de 4 espacios
-
-calificacion = 78
-
-if calificacion &gt;= 90:
-    print(f"{calificacion} → Excelente")
-elif calificacion &gt;= 75:
-    print(f"{calificacion} → Bueno")
-elif calificacion &gt;= 60:
-    print(f"{calificacion} → Aceptable")
-else:
-    print(f"{calificacion} → Necesita mejora")
-
-# Operadores lógicos en condiciones
-edad = 34
-es_activo = True
-
-if edad &gt;= 18 and es_activo:
-    print("Adulto activo: puede ser atendido")
-else:
-    print("No cumple requisitos de atención")</textarea>
-        </div>
-        <div class="py-output" id="py-out-1"><pre></pre></div>
-      </div>
-      <!-- Cell 2 -->
-      <div class="py-cell" id="py-cell-2">
-        <div class="py-cell-header">
-          <span class="py-cell-idx">[2]</span>
-          <button class="py-run-btn" onclick="runPyCell(2)" id="py-run-2">
-            ▶ Run
-          </button>
-        </div>
-        <div class="py-cell-body" id="py-body-2">
-          <textarea id="py-code-2" rows="6" spellcheck="false"># ── Descuento progresivo (equivalente al ejercicio HTI) ──
-monto_compra = 250000
-
-if monto_compra &gt;= 500000:
-    descuento = 0.25
-    print(f"25% de descuento (compras ≥ $500.000)")
-elif monto_compra &gt;= 200000:
-    descuento = 0.15
-    print(f"15% de descuento (compras ≥ $200.000)")
-elif monto_compra &gt;= 100000:
-    descuento = 0.10
-    print(f"10% de descuento (compras ≥ $100.000)")
-else:
-    descuento = 0
-    print("Sin descuento (compras &lt; $100.000)")
-
-monto_final = monto_compra * (1 - descuento)
-print(f"\nMonto original: ${monto_compra:,.0f}")
-print(f"Descuento:     ${monto_compra * descuento:,.0f}")
-print(f"Monto final:   ${monto_final:,.0f}")</textarea>
-        </div>
-        <div class="py-output" id="py-out-2"><pre></pre></div>
-      </div>
-      <!-- Cell 3 -->
-      <div class="py-cell" id="py-cell-3">
-        <div class="py-cell-header">
-          <span class="py-cell-idx">[3]</span>
-          <button class="py-run-btn" onclick="runPyCell(3)" id="py-run-3">
-            ▶ Run
-          </button>
-        </div>
-        <div class="py-cell-body" id="py-body-3">
-          <textarea id="py-code-3" rows="6" spellcheck="false"># ── ✨ Celda libre — Condicionales ──
-# Escribe un algoritmo que clasifique algo
-# usando if / elif / else
-
-# Ideas:
-# - Clasificar edad de paciente (niño/adolescente/adulto/mayor)
-# - Calcular impuesto según rango de ingreso
-# - Determinar categoría de IMC (índice de masa corporal)
-
-# recuerda: Python usa indentación de 4 espacios
-# y NO usa SINO FSI — solo elif y else</textarea>
-        </div>
-        <div class="py-output" id="py-out-3"><pre></pre></div>
-      </div>
-  <div style="font-size:.78rem;color:var(--muted);margin-top:.5rem;">
-    ⚡ Cada ejecución cuenta para tu aprendizaje. Código ejecutado en tu navegador — sin servidor.
-  </div>
-</div>
-
-
-<!-- ══ QUIZ ══ -->
-<section id="quiz" class="card">
-  <h2>🎮 Quiz Interactivo — Semana 3</h2>
-  <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">5 preguntas · Haz clic en la respuesta correcta · <strong>5 XP</strong> por acierto</p>
-
-  <div class="quiz-box">
-    <h3>⚡ Quiz Semana 3 — Condicional simple SI-FSI</h3>
+  <!-- ══════════ QUIZ -->
+  <section id="quiz">
+    <h2 class="sec-title">🎮 Quiz Interactivo — Semana 3</h2>
+    <p style="margin-bottom:1rem;font-size:.9rem;">5 preguntas · Haz clic en la opción correcta · <strong>5 XP por acierto</strong></p>
 
     <div class="quiz-q">
-      <p>1. En un SI-FSI, si la condición es FALSA:</p>
-      <ol type="a">
-        <li>No se ejecuta el bloque ENTONCES</li>
-        <li>Se ejecuta de todas formas</li>
-        <li>El programa termina</li>
-        <li>Se repite la condición</li>
-      </ol>
-      <div class="quiz-answer">✅ a — El bloque ENTONCES solo se ejecuta si la condición es verdadera.</div>
+      <p class="quiz-q-text">1. En Excel, ¿cuál es la sintaxis correcta de la función condicional?</p>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">a) <code>=IF(condición; valor_V; valor_F)</code></div>
+        <div class="quiz-opt" onclick="answerQuiz(this,true,'q1e')">b) <code>=SI(condición; valor_si_verdadero; valor_si_falso)</code></div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">c) <code>=SI(condición; valor_si_verdadero)</code></div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">d) <code>=SIENTONCES(condición; valor_V)</code></div>
+      </div>
+      <p class="quiz-explanation" id="q1e">✅ Correcto. La función tiene tres argumentos separados por punto y coma: condición, resultado si verdadero, resultado si falso.</p>
     </div>
 
     <div class="quiz-q">
-      <p>2. ¿Cuántas flechas de salida tiene el rombo de decisión en un SI-FSI?</p>
-      <ol type="a">
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-      </ol>
-      <div class="quiz-answer">✅ b — Tiene dos salidas: Sí y No.</div>
+      <p class="quiz-q-text">2. En Python, ¿cómo se cierra un bloque <code>if</code>?</p>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q2e')">a) Con la palabra <code>FSI</code></div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q2e')">b) Con <code>END IF</code></div>
+        <div class="quiz-opt" onclick="answerQuiz(this,true,'q2e')">c) Con indentación — el bloque termina cuando desaparece la sangría de 4 espacios</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q2e')">d) Con una llave de cierre <code>}</code></div>
+      </div>
+      <p class="quiz-explanation" id="q2e">✅ Correcto. Python usa la indentación para delimitar bloques, no palabras clave de cierre.</p>
     </div>
 
     <div class="quiz-q">
-      <p>3. La condición compuesta <code>tasa &gt; 80 Y sesiones &gt; 100</code> es VERDADERA cuando:</p>
-      <ol type="a">
-        <li>Ambas condiciones son verdaderas</li>
-        <li>Al menos una es verdadera</li>
-        <li><code>tasa &gt; 80</code> es suficiente</li>
-        <li>Ninguna es verdadera</li>
-      </ol>
-      <div class="quiz-answer">✅ a — El operador Y exige que ambas partes se cumplan.</div>
+      <p class="quiz-q-text">3. La condición compuesta <code>=Y(E2&lt;70; F2&gt;50)</code> es VERDADERA cuando:</p>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,true,'q3e')">a) E2 es menor a 70 <strong>y además</strong> F2 es mayor a 50</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">b) E2 es menor a 70 <strong>o</strong> F2 es mayor a 50 (basta una)</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">c) Solo cuando E2 es menor a 70</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">d) Nunca — la función Y no existe en Excel</div>
+      </div>
+      <p class="quiz-explanation" id="q3e">✅ Correcto. <code>=Y()</code> exige que TODAS las condiciones sean verdaderas. Si una falla, el resultado es FALSO.</p>
     </div>
 
     <div class="quiz-q">
-      <p>4. ¿Qué instrucción cierra una estructura SI en notación Cairó?</p>
-      <ol type="a">
-        <li>FIN-SI</li>
-        <li>END</li>
-        <li>FSI</li>
-        <li>ELSE</li>
-      </ol>
-      <div class="quiz-answer">✅ c — La palabra de cierre es FSI.</div>
+      <p class="quiz-q-text">4. ¿Qué ventaja principal tiene Python sobre Excel para aplicar condicionales?</p>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">a) Python usa una sintaxis más sencilla que =SI()</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">b) Python no necesita condiciones — calcula automáticamente</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,true,'q4e')">c) Python puede procesar miles de registros de forma automática en un bucle, sin copiar la fórmula celda por celda</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">d) Python no tiene equivalente al SI anidado de Excel</div>
+      </div>
+      <p class="quiz-explanation" id="q4e">✅ Correcto. La diferencia de escala es la clave: Excel opera celda por celda; Python puede recorrer toda una tabla en segundos.</p>
     </div>
 
     <div class="quiz-q">
-      <p>5. En NeuroBiz: <code>SI es_activo = VERDADERO ENTONCES</code> — ¿qué tipo de dato se evalúa?</p>
-      <ol type="a">
-        <li>CADENA</li>
-        <li>ENTERO</li>
-        <li>REAL</li>
-        <li>LÓGICO</li>
-      </ol>
-      <div class="quiz-answer">✅ d — La condición evalúa un valor lógico: VERDADERO o FALSO.</div>
+      <p class="quiz-q-text">5. En un SI-FSI simple (sin SINO), ¿qué ocurre cuando la condición es FALSA?</p>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(this,true,'q5e')">a) El bloque ENTONCES se omite por completo y el algoritmo continúa</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q5e')">b) El programa termina con error</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q5e')">c) El bloque se ejecuta de todas formas</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q5e')">d) La condición se vuelve a evaluar hasta que sea verdadera</div>
+      </div>
+      <p class="quiz-explanation" id="q5e">✅ Correcto. En el SI simple no hay rama alternativa — el bloque ENTONCES solo corre cuando la condición es verdadera.</p>
     </div>
+  </section>
+
+  <!-- ══════════ FUENTES -->
+  <section id="bib">
+    <h2 class="sec-title">📖 Fuentes y Referencias</h2>
+    <ul class="source-list">
+      <li><strong>Cairó Battistutti, O. & Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em> (3ª ed.). Alfaomega. Sección de estructuras selectivas — base del pseudocódigo SI-FSI.</li>
+      <li><strong>Microsoft Support.</strong> Función SI en Excel — documentación oficial. Incluye sintaxis, ejemplos y SI anidado. <em>support.microsoft.com</em></li>
+      <li><strong>Python Software Foundation.</strong> (2024). <em>Python 3 Documentation — Control Flow</em>. docs.python.org. Referencia de if / elif / else y operadores lógicos.</li>
+      <li><strong>Gartner.</strong> Estadística ampliamente citada: la automatización de alertas basadas en reglas reduce el tiempo de respuesta gerencial hasta un 40 %. Idea aplicada al caso NeuroBiz.</li>
+      <li><strong>Harvard CS50 Business Professionals.</strong> (2024). Casos de toma de decisiones automatizadas en entornos empresariales — referencia pedagógica del enfoque de la semana.</li>
+    </ul>
+  </section>
+
+  <!-- SCORE -->
+  <div class="score-panel">
+    <p class="score-label">XP acumulados esta semana</p>
+    <p class="score-big" id="finalScore">0 / 60</p>
+    <p class="score-label" style="margin-top:.3rem;">4h presenciales + 5h trabajo independiente · Equivalencia: 9 horas</p>
   </div>
-</section>
 
-<!-- ══ BIBLIOGRAFÍA ══ -->
-<section id="bib" class="card">
-  <h2>📖 Fuentes y Referencias</h2>
-  <ul class="bib">
-    <li><strong>Cairó Battistutti, O. & Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em>. Sección de estructuras selectivas.</li>
-    <li><strong>Joyanes Aguilar, L.</strong> (2008). <em>Fundamentos de programación</em>. Capítulos de decisiones y lógica booleana.</li>
-    <li><strong>Microsoft Power Automate.</strong> Documentación de la acción <em>Condition</em>, útil para conectar SI-FSI con automatización empresarial.</li>
-    <li><strong>Harvard CS50 Business Professionals.</strong> Casos de toma de decisiones automatizadas en entornos empresariales.</li>
-  </ul>
-</section>
+</main>
 
+<!-- ══════════════════════════════════════════════ FOOTER -->
+<footer class="site-footer">
+  TGA04 · Fundamentos de Computación para los Negocios · IUB 2026 ·
+  Semana 3: Estructura Condicional Simple (SI / if) · Caso de estudio: NeuroBiz S.A.S. ·
+  Prof. Diego Domínguez
+</footer>
 
-    <div id="grade-panel" style="text-align:center; background:linear-gradient(135deg,#1E2843,#2d3a5e); color:#fff; border-radius:16px; padding:1.2rem 1.5rem; margin:0 0 2rem;">
-  <div style="font-size:.8rem; opacity:.65; text-transform:uppercase; letter-spacing:.08em; margin-bottom:.3rem;">📊 Nota acumulada</div>
-  <div style="font-size:2.4rem; font-weight:900; color:#FFDF2D; line-height:1;" id="liveGrade">0.0</div>
-  <div style="font-size:.9rem; opacity:.6;">de 5.0 posibles</div>
-  <div id="completion-extra" style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,.15);">
-    <div style="font-size:2rem; margin-bottom:.3rem;">🎉</div>
-    <p style="font-size:.9rem; opacity:.9; margin-bottom:.6rem;">¡Completaste el 100% de esta semana!</p>
-    <table style="margin:0 auto; font-size:.84rem; border-collapse:collapse;">
-      <tr>
-        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">🔢 XP acumulados:</td>
-        <td style="padding:.35rem .8rem; text-align:left; font-weight:700;" id="xpEarned">—</td>
-      </tr>
-      <tr>
-        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">⏱️ Equivalencia:</td>
-        <td style="padding:.35rem .8rem; text-align:left;">9 horas de trabajo</td>
-      </tr>
-      <tr>
-        <td style="padding:.35rem .8rem; text-align:right; opacity:.7;">📝 Nota final:</td>
-        <td style="padding:.35rem .8rem; text-align:left; font-weight:700; color:#FFDF2D;">5.0 / 5.0</td>
-      </tr>
-    </table>
-    <p style="font-size:.76rem; opacity:.5; margin-top:.5rem;">4h presenciales + 5h trabajo independiente</p>
-  </div>
-</div></main>
-
-    <footer>
-      TGA04 · Fundamentos de Computación para los Negocios · IUB 2026 · Semana 3: Estructura Condicional Simple (SI-FSI) · Caso de estudio: NeuroBiz S.A.S. · Prof. Diego Domínguez Tapia
-    </footer>
-
-    <!-- ══ PROGRESS TRACKER SCRIPT ══ -->
-<script id="pt-js">
-function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m])); }
-const PT = (function() {
-  const SEMANA    = 3;
-  const XP_MAX    = 60;
-  const LS_KEY    = "tga04_s3";
-  const LS_GLOBAL = "tga04_global";
-
-  let state = {
-    nombre: "", cc: "", id_estudiante: "", grupo: "", horario: "",
-    semana: SEMANA, xp: 0,
-    quiz_respuestas: {}, quiz_puntaje: 0,
-    hti_entregado: false, actividad_completada: false,
-    dispositivo: navigator.userAgent.substring(0, 80)
-  };
-
-  function load() {
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      if (raw) Object.assign(state, JSON.parse(raw));
-      const g = JSON.parse(localStorage.getItem(LS_GLOBAL) || "{}");
-      if (!state.nombre        && g.nombre)   state.nombre        = g.nombre;
-      if (!state.cc            && g.cc)        state.cc            = g.cc;
-      if (!state.id_estudiante && g.cc)        state.id_estudiante = g.cc;
-      if (!state.grupo         && g.grupo)     state.grupo         = g.grupo;
-      if (!state.horario       && g.horario)   state.horario       = g.horario;
-    } catch(e) {}
-  }
-
-  function save() {
-    localStorage.setItem(LS_KEY, JSON.stringify(state));
-    render();
-  }
-
-  function render() {
-    const bar   = document.getElementById("pt-xp-bar");
-    const cnt   = document.getElementById("pt-xp-count");
-    const lbl   = document.getElementById("pt-semana-label");
-    const hBar  = document.getElementById("xpBar");
-    const hCnt  = document.getElementById("xpCount");
-    const pct   = Math.min((state.xp / XP_MAX) * 100, 100);
-    if (bar)  bar.style.width  = pct + "%";
-    if (cnt)  cnt.textContent  = state.xp + " XP";
-    if (lbl)  lbl.textContent  = "Semana " + SEMANA;
-    if (hBar) hBar.style.width = pct + "%";
-    if (hCnt) hCnt.textContent = state.xp;
-  }
-
-  function addXP(pts, motivo) {
-    state.xp = Math.min(state.xp + pts, XP_MAX);
-    msg("✨ +" + pts + " XP — " + motivo, "lime");
-    save();
-  }
-
-  async function syncCloud() {
-    save();
-    const sbUrl = localStorage.getItem("tga04_supabase_url") || "";
-    const sbKey = localStorage.getItem("tga04_supabase_key") || "";
-    const offering = localStorage.getItem("tga04_course_code") || "TGA04-2026-2";
-    if (!sbUrl || !sbKey) { msg("⚠️ Supabase no configurado", "orange"); return; }
-    msg("⏳ Sincronizando…", "#fff9c4");
-    try {
-      const res = await fetch(sbUrl + "/rest/v1/rpc/upsert_weekly_progress", {
-        method: "POST",
-        headers: { "apikey": sbKey, "Authorization": "Bearer " + sbKey, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          p_offering_code: offering,
-          p_student_id: state.id_estudiante || state.cc || "desconocido",
-          p_student_name: state.nombre || "Anónimo",
-          p_semana: state.semana,
-          p_xp: state.xp || 0,
-          p_quiz_answers: state.quiz_respuestas || {},
-          p_quiz_score: state.quiz_puntaje || 0,
-          p_hti_done: !!(state.hti_entregado || state.hti_done),
-          p_activity_done: !!(state.actividad_completada || state.activity_done),
-          p_grupo: state.grupo || "",
-          p_horario: state.horario || ""
-        })
-      });
-      if (res.ok || res.status === 201) msg("✅ Guardado en Supabase ☁️", "lightgreen");
-      else { const t = await res.text(); msg("❌ Error " + res.status + " - " + t.substring(0,60), "salmon"); }
-    } catch(e) { msg("❌ Sin conexión. Guardado local.", "salmon"); }
-  }
-  function exportCode() {
-    save();
-    const code = btoa(encodeURIComponent(JSON.stringify(state)));
-    const ta = document.createElement("textarea");
-    ta.value = code;
-    document.body.appendChild(ta); ta.select(); navigator.clipboard.writeText(code);
-    document.body.removeChild(ta);
-    const a = document.createElement("a");
-    a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(code);
-    a.download = "progreso_tga04_s3_" + (state.id_estudiante || "est") + ".txt";
-    a.click();
-    msg("📋 ¡Código copiado!", "#fff9c4");
-  }
-
-  function importCode() {
-    const code = prompt("Pega tu código de progreso:");
-    if (!code) return;
-    try {
-      Object.assign(state, JSON.parse(decodeURIComponent(atob(code.trim()))));
-      save(); msg("✅ Progreso restaurado.", "lightgreen");
-    } catch(e) { msg("❌ Código inválido.", "salmon"); }
-  }
-
-  function toggle() {
-    const w = document.getElementById("pt-widget");
-    const t = document.getElementById("pt-toggle");
-    if (w) w.classList.toggle("collapsed");
-    if (t) t.textContent = w && w.classList.contains("collapsed") ? "▼" : "▲";
-  }
-
-  function msg(text, color) {
-    const el = document.getElementById("pt-msg");
-    if (!el) return;
-    el.textContent = text; el.style.color = color || "#fff";
-    setTimeout(() => { if (el.textContent === text) el.textContent = ""; }, 4000);
-  }
-
-  function init() {
-    load(); render();
-    // XP por visitar (una vez)
-    if (!localStorage.getItem("tga04_visited_s3")) {
-      localStorage.setItem("tga04_visited_s3", "1");
-      addXP(10, "Asistencia Semana 3 ✅");
-    }
-    // Hacer quiz interactivo
-    document.querySelectorAll(".quiz-q").forEach((qEl, qi) => {
-      const answers   = qEl.querySelectorAll("li");
-      const answerEl  = qEl.querySelector(".quiz-answer");
-      const correctTxt = answerEl ? answerEl.textContent : "";
-      const m = correctTxt.match(/^✅\s*([a-d])/i);
-      const correctIdx = m ? ["a","b","c","d"].indexOf(m[1].toLowerCase()) : -1;
-
-      answers.forEach((li, ai) => {
-        li.addEventListener("click", () => {
-          const key = "q" + qi;
-          if (state.quiz_respuestas[key] !== undefined) return;
-          answers.forEach(a => { a.dataset.answered = "1"; });
-          if (ai === correctIdx) {
-            li.style.background = "#2e7d32"; li.style.color = "#fff";
-            addXP(5, "Respuesta correcta Q" + (qi+1));
-            state.quiz_puntaje = (state.quiz_puntaje || 0) + 1;
-          } else {
-            li.style.background = "#c62828"; li.style.color = "#fff";
-            if (correctIdx >= 0) { answers[correctIdx].style.background = "#2e7d32"; answers[correctIdx].style.color = "#fff"; }
-          }
-          state.quiz_respuestas[key] = ai;
-          if (answerEl) answerEl.style.display = "block";
-          save();syncCloud();
-        });
-      });
-
-      // Restaurar estado previo
-      const prev = state.quiz_respuestas["q" + qi];
-      if (prev !== undefined) {
-        answers.forEach(a => { a.dataset.answered = "1"; });
-        if (prev === correctIdx && correctIdx >= 0) {
-          answers[prev].style.background = "#2e7d32"; answers[prev].style.color = "#fff";
-        } else {
-          if (prev < answers.length) { answers[prev].style.background = "#c62828"; answers[prev].style.color = "#fff"; }
-          if (correctIdx >= 0) { answers[correctIdx].style.background = "#2e7d32"; answers[correctIdx].style.color = "#fff"; }
-        }
-        if (answerEl) answerEl.style.display = "block";
-      }
-    });
-  }
-
-  return { init, addXP, save, sync: syncCloud, export: exportCode, import: importCode, toggle, state: () => state };
-})();
-
-function ptSyncCloud()  { PT.sync(); }
-function ptExportCode() { PT.export(); }
-function ptImportCode() { PT.import(); }
-function ptToggle()     { PT.toggle(); }
-
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", PT.init);
-else PT.init();
-</script>
-
-
-
-    <!-- ══ WELCOME MODAL (CC lookup) ══ -->
-<div id="pt-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="pt-modal-title">
-  <div id="pt-modal-box">
-    <h2 id="pt-modal-title">👋 ¡Bienvenido a TGA04!</h2>
-    <p class="sub">NeuroBiz S.A.S. · Fundamentos de Computación para los Negocios</p>
-
-    <!-- PASO 1: Cédula -->
-    <div id="pt-step1" class="pt-step">
-      <div class="field">
-        <label for="pt-modal-cc">Número de cédula / documento *</label>
-        <div style="display:flex;gap:.5rem">
-          <input id="pt-modal-cc" type="tel" inputmode="numeric" pattern="[0-9]*"
-            placeholder="Ej: 1043158867" autocomplete="off"
-            onkeydown="if(event.key==='Enter')ptSearchCC()" />
-          <button id="pt-modal-btn-search" onclick="ptSearchCC()">Buscar →</button>
-        </div>
-      </div>
-      <div id="pt-modal-error"></div>
-      <p id="pt-modal-xp">🔒 Tu cédula identifica tu progreso de forma segura — no se comparte.</p>
-    </div>
-
-    <!-- PASO 2A: Encontrado -->
-    <div id="pt-step2a" class="pt-step" style="display:none">
-      <div class="pt-found-card">
-        <div class="pt-fc-name" id="pt-fc-name">—</div>
-        <div class="pt-fc-meta" id="pt-fc-meta">—</div>
-      </div>
-      <button id="pt-modal-btn" onclick="ptConfirmFound()">¡Empezar! 🚀</button>
-      <button class="pt-link-btn" onclick="ptBackToCC()">← No soy yo — volver a buscar</button>
-      <div id="pt-modal-error2"></div>
-    </div>
-
-    <!-- PASO 2B: No encontrado -->
-    <div id="pt-step2b" class="pt-step" style="display:none">
-      <p style="font-size:.82rem;opacity:.75;margin-bottom:1rem;background:rgba(255,255,255,.08);border-radius:8px;padding:.6rem .8rem">
-        ⚠️ No encontramos tu cédula en la lista del grupo.<br>
-        Completa tus datos manualmente. El docente podrá importarte en la próxima clase.
-      </p>
-      <div class="field">
-        <label for="pt-modal-nombre">Tu nombre completo *</label>
-        <input id="pt-modal-nombre" type="text" placeholder="Ej: María García López"
-          autocomplete="name" onkeydown="if(event.key==='Enter')ptModalSetupManual()" />
-      </div>
-      <div class="field">
-        <label for="pt-modal-grupo">Grupo / Paralelo</label>
-        <input id="pt-modal-grupo" type="text" placeholder="Ej: 7_GA_G1" />
-      </div>
-      <button id="pt-modal-btn" onclick="ptModalSetupManual()">Continuar →</button>
-      <button class="pt-link-btn" onclick="ptBackToCC()">← Volver a ingresar cédula</button>
-      <div id="pt-modal-error3"></div>
-    </div>
-  </div>
-</div>
-
-<script id="modal-js">
-(function() {
-  function shouldShowModal() {
-    try { var g = JSON.parse(localStorage.getItem("tga04_global") || "{}"); return !g.cc || String(g.cc).trim().length < 3; }
-    catch(e) { return true; }
-  }
-  function showStep(name) {
-    ["pt-step1","pt-step2a","pt-step2b"].forEach(function(id){
-      var el = document.getElementById(id);
-      if (el) el.style.display = (id === name) ? "block" : "none";
-    });
-  }
-  window.showStep = showStep;
-  function showModal() {
-    var overlay = document.getElementById("pt-overlay");
-    if (overlay) overlay.style.display = "flex";
-    showStep("pt-step1");
-    try {
-      var g = JSON.parse(localStorage.getItem("tga04_global") || "{}");
-      if (g.cc) { var i = document.getElementById("pt-modal-cc"); if (i) i.value = g.cc; }
-    } catch(e) {}
-    var inp = document.getElementById("pt-modal-cc");
-    if (inp) setTimeout(function(){ inp.focus(); }, 100);
-  }
-  function closeModal() {
-    var overlay = document.getElementById("pt-overlay");
-    if (overlay) {
-      overlay.style.opacity = "0"; overlay.style.transition = "opacity .2s";
-      setTimeout(function(){ overlay.style.display = "none"; overlay.style.opacity = ""; }, 200);
-    }
-  }
-  function getStudents() {
-    try { return JSON.parse(localStorage.getItem("tga04_students_v1") || "[]"); }
-    catch(e) { return []; }
-  }
-  function saveProfile(cc, nombre, grupo, horario) {
-    var profile = {};
-    try { profile = JSON.parse(localStorage.getItem("tga04_global") || "{}"); } catch(e) {}
-    profile.cc = cc; profile.nombre = nombre;
-    profile.grupo   = grupo   || profile.grupo   || "";
-    profile.horario = horario || profile.horario || "";
-    profile.id_estudiante = cc;
-    localStorage.setItem("tga04_global", JSON.stringify(profile));
-    if (typeof PT !== "undefined" && typeof PT.addXP === "function") {
-      setTimeout(function(){ PT.sync && PT.sync(); }, 800);
-    }
-    closeModal();
-  }
-
-  window.ptSearchCC = function() {
-    var ccInp = document.getElementById("pt-modal-cc");
-    var errEl = document.getElementById("pt-modal-error");
-    var cc    = ccInp ? ccInp.value.trim().replace(/\D/g,"") : "";
-    if (!cc || cc.length < 5) {
-      if (errEl) errEl.textContent = "Ingresa tu número de cédula (mínimo 5 dígitos).";
-      if (ccInp) ccInp.focus(); return;
-    }
-    if (errEl) errEl.textContent = "";
-
-    // 1. Buscar en localStorage
-    var students = getStudents();
-    var found = students.find(function(s){ return String(s.cc) === cc; });
-    if (found) {
-      var nameEl = document.getElementById("pt-fc-name");
-      var metaEl = document.getElementById("pt-fc-meta");
-      if (nameEl) nameEl.textContent = "✅ " + found.name;
-      if (metaEl) metaEl.innerHTML =
-        (found.grupo   ? "📚 Grupo: <strong>" + esc(found.grupo) + "</strong>" : "") +
-        (found.horario ? " &nbsp;·&nbsp; ⏰ " + esc(found.horario) : "");
-      nameEl.dataset.cc = cc; nameEl.dataset.nombre = found.name;
-      nameEl.dataset.grupo = found.grupo || ""; nameEl.dataset.horario = found.horario || "";
-      window.showStep("pt-step2a");
-      var btn = document.getElementById("pt-modal-btn");
-      if (btn) setTimeout(function(){ btn.focus(); }, 100);
-      return;
-    }
-
-    // 2. Buscar en Supabase unificado (v_legacy_students)
-    var sUrl = localStorage.getItem("tga04_supabase_url");
-    var sKey = localStorage.getItem("tga04_supabase_key");
-    if (sUrl && sKey) {
-      if (errEl) errEl.textContent = "⏳ Buscando…";
-      var offering = window.OFFERING_CODE || "TGA04-2026-2";
-      fetch(sUrl + "/rest/v1/v_legacy_students?cc=eq." + encodeURIComponent(cc)
-          + "&offering_code=eq." + encodeURIComponent(offering) + "&limit=1", {
-        headers: { "apikey": sKey, "Authorization": "Bearer " + sKey }
-      }).then(function(r){ return r.json(); })
-        .then(function(rows){
-          if (errEl) errEl.textContent = "";
-          if (rows && rows.length) {
-            var r = rows[0];
-            var nameEl = document.getElementById("pt-fc-name");
-            var metaEl = document.getElementById("pt-fc-meta");
-            if (nameEl) nameEl.textContent = "✅ " + r.name;
-            if (metaEl) metaEl.innerHTML =
-              (r.grupo   ? "📚 Grupo: <strong>" + esc(r.grupo) + "</strong>" : "") +
-              (r.horario ? " &nbsp;·&nbsp; ⏰ " + esc(r.horario) : "");
-            nameEl.dataset.cc = cc; nameEl.dataset.nombre = r.name;
-            nameEl.dataset.grupo = r.grupo || ""; nameEl.dataset.horario = r.horario || "";
-            window.showStep("pt-step2a");
-          } else {
-            var ni = document.getElementById("pt-modal-nombre");
-            if (ni) ni.dataset.cc = cc;
-            window.showStep("pt-step2b");
-            if (ni) setTimeout(function(){ ni.focus(); }, 100);
-          }
-        }).catch(function(){
-          var ni = document.getElementById("pt-modal-nombre");
-          if (ni) ni.dataset.cc = cc;
-          window.showStep("pt-step2b");
-          if (ni) setTimeout(function(){ ni.focus(); }, 100);
-        });
-      return;
-    }
-
-    // 3. Manual
-    var ni = document.getElementById("pt-modal-nombre");
-    if (ni) ni.dataset.cc = cc;
-    window.showStep("pt-step2b");
-    if (ni) setTimeout(function(){ ni.focus(); }, 100);
-  };
-
-  window.ptConfirmFound = function() {
-    var nameEl  = document.getElementById("pt-fc-name");
-    var cc      = nameEl ? nameEl.dataset.cc      : "";
-    var nombre  = nameEl ? nameEl.dataset.nombre  : "";
-    var grupo   = nameEl ? nameEl.dataset.grupo   : "";
-    var horario = nameEl ? nameEl.dataset.horario : "";
-    if (!cc || !nombre) { var e2 = document.getElementById("pt-modal-error2"); if (e2) e2.textContent = "Error al leer datos. Intenta de nuevo."; return; }
-    saveProfile(cc, nombre, grupo, horario);
-  };
-
-  window.ptModalSetupManual = function() {
-    var ni    = document.getElementById("pt-modal-nombre");
-    var gi    = document.getElementById("pt-modal-grupo");
-    var ccInp = document.getElementById("pt-modal-cc");
-    var errEl = document.getElementById("pt-modal-error3");
-    var nombre = ni ? ni.value.trim() : "";
-    var grupo  = gi ? gi.value.trim() : "";
-    var cc     = ccInp ? ccInp.value.trim().replace(/\D/g,"") : "";
-    if (!nombre || nombre.length < 3) {
-      if (errEl) errEl.textContent = "Por favor escribe tu nombre completo (mínimo 3 caracteres).";
-      if (ni) ni.focus(); return;
-    }
-    if (!cc) cc = "MANUAL_" + Date.now();
-    saveProfile(cc, nombre, grupo, "");
-  };
-
-  window.ptBackToCC = function() {
-    window.showStep("pt-step1");
-    var inp = document.getElementById("pt-modal-cc");
-    if (inp) setTimeout(function(){ inp.focus(); }, 100);
-  };
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function(){
-      // Si hay cc almacenada, verificar contra Supabase antes de mostrar modal
-      try {
-        var g = JSON.parse(localStorage.getItem("tga04_global") || "{}");
-        if (g && g.cc && String(g.cc).trim().length >= 5) {
-          var sUrl = localStorage.getItem("tga04_supabase_url");
-          var sKey = localStorage.getItem("tga04_supabase_key");
-          var offering = window.OFFERING_CODE || "TGA04-2026-2";
-          if (sUrl && sKey) {
-            fetch(sUrl + "/rest/v1/v_legacy_students?cc=eq." + encodeURIComponent(g.cc)
-                + "&offering_code=eq." + encodeURIComponent(offering) + "&limit=1", {
-              headers: { "apikey": sKey, "Authorization": "Bearer " + sKey }
-            }).then(function(r){ return r.json(); })
-              .then(function(rows){
-                if (rows && rows.length) {
-                  var overlay = document.getElementById("pt-overlay");
-                  if (overlay) overlay.style.display = "none";
-                } else {
-                  if (shouldShowModal()) showModal();
-                }
-              }).catch(function(){
-                if (shouldShowModal()) showModal();
-              });
-            return;
-          }
-        }
-      } catch(e) {}
-      if (shouldShowModal()) showModal();
-    });
-  } else {
-    if (shouldShowModal()) showModal();
-  }
-})();
-</script>
-
+<!-- ══════════════════════════════════════════════ SCRIPTS -->
 <script>
-(function(){
-  var __done = false;
-  var __xpMax = 0;
+  /* ── XP SYSTEM ── */
+  let xpTotal = 0;
+  const XP_MAX = 60;
 
-  // Extract XP_MAX from the page
-  var el = document.getElementById('xpCount');
-  if (el && el.parentNode) {
-    var txt = el.parentNode.textContent || '';
-    var m = txt.match(/\/(\d+)/);
-    if (m) __xpMax = parseInt(m[1], 10);
+  function addXP(pts) {
+    xpTotal = Math.min(xpTotal + pts, XP_MAX);
+    document.getElementById('xpTotal').textContent = xpTotal + ' / ' + XP_MAX + ' XP';
+    document.getElementById('xpLabel').textContent = 'XP de sesión: ' + xpTotal + ' / ' + XP_MAX + ' pts';
+    document.getElementById('xpBar').style.width = (xpTotal / XP_MAX * 100) + '%';
+    document.getElementById('finalScore').textContent = xpTotal + ' / ' + XP_MAX;
   }
 
-  setInterval(function(){
-    var bar = document.getElementById('xpBar');
-    if (!bar) return;
-    var w = parseFloat(bar.style.width) || 0;
-    var grade = (w / 100) * 5;
-    var g = document.getElementById('liveGrade');
-    if (g) g.textContent = grade.toFixed(1);
+  /* ── EXCEL SIMULATOR ── */
+  function runExcelSim() {
+    const c = parseFloat(document.getElementById('simCumpl').value) || 0;
+    const m = parseFloat(document.getElementById('simMeta').value) || 70;
+    const out = document.getElementById('simOutput');
+    const formula = document.getElementById('simFormula');
+    const result  = document.getElementById('simResult');
+    const explain = document.getElementById('simExplain');
 
-    if (w >= 100 && !__done) {
-      __done = true;
-      var extra = document.getElementById('completion-extra');
-      if (extra) extra.style.display = 'block';
-      var xpEl = document.getElementById('xpEarned');
-      if (xpEl && __xpMax > 0) {
-        xpEl.textContent = __xpMax + ' pts  (' + __xpMax + '/' + __xpMax + ')';
-      }
+    out.style.display = 'block';
+    formula.textContent = `=SI(E2<${m};"⚠️ ALERTA";"✅ Cumple")   →  evaluando: ${c} < ${m} = ${c < m}`;
+
+    if (c < m) {
+      result.textContent  = '⚠️ ALERTA';
+      result.style.color  = 'var(--danger)';
+      explain.textContent = `La condición (${c} < ${m}) es VERDADERA → se muestra el primer valor.`;
+    } else {
+      result.textContent  = '✅ Cumple';
+      result.style.color  = 'var(--ok)';
+      explain.textContent = `La condición (${c} < ${m}) es FALSA → se muestra el segundo valor.`;
     }
-  }, 800);
-})();
-</script>
-
-
-<!-- ══ CAIRO INTERPRETER + SI-FSI + INTERACTIVE Q ══ -->
-<script>
-!function(){"use strict";
-// ── CAIRO INTERPRETER WITH SI-FSI SUPPORT ──
-var I=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;this.skipUntilFSI=false;};
-I.prototype.reset=function(){this.v={};this.o=[];this.l=[];this.p=0;this.r=false;this.a=false;this.iv=null;this.skipUntilFSI=false;};
-I.prototype.tok=function(l){l=l.replace(/\{[^}]*\}/g,'').trim();if(!l)return[];var t=[],re=/"([^"]*)"|(\d+\.?\d*)|(ALGORITMO|FIN|VARIABLES|INICIO|LEER|ESCRIBIR|CADENA|ENTERO|REAL|BOOLEANO|LOGICO|SI|ENTONCES|FSI|Y|O|NO)|([a-zA-Z_][a-zA-Z0-9_]*)|([+\-*\/=()<>!])|(:)/g,m;while((m=re.exec(l))!==null){if(m[1]!==undefined)t.push({ty:'S',v:m[1]});else if(m[2]!==undefined)t.push({ty:'N',v:parseFloat(m[2])});else if(m[3]!==undefined)t.push({ty:'K',v:m[3]});else if(m[4]!==undefined)t.push({ty:'I',v:m[4]});else if(m[5]!==undefined)t.push({ty:'O',v:m[5]});}return t;};
-I.prototype.gv=function(t){if(t.ty==='N')return t.v;if(t.ty==='S')return t.v;if(t.ty==='I'){if(t.v in this.v){var v=this.v[t.v];if(typeof v==='string'){var n=parseFloat(v);return isNaN(n)?v:n;}return v;}return 0;}return t.v||0;};
-I.prototype.evalCond=function(t,i){var j=i,left=null;
-function getV(){if(j>=t.length)return null;var tk=t[j];if(tk.ty==='K'&&(tk.v==='Y'||tk.v==='O'||tk.v==='ENTONCES'))return null;j++;if(tk.ty==='K'&&tk.v==='NO'){var inner=getV();return inner===null?null:!inner;}return this.gv(tk);}
-left=this.gv(t[j]);j++;if(left===null||left===undefined)return[false,j];
-while(j<t.length){var op=t[j];if(op.ty==='K'&&op.v==='ENTONCES')break;if(op.ty==='K'&&(op.v==='Y'||op.v==='O')){var opv=op.v;j++;var right=this.gv(t[j]);j++;if(opv==='Y')left=left&&right;else left=left||right;continue;}
-if(op.ty==='O'&&['>','<','>=','<=','='].indexOf(op.v)>=0){var ovv=op.v;j++;if(j>=t.length)break;var rr=this.gv(t[j]);j++;if(ovv==='>')left=left>rr;else if(ovv==='<')left=left<rr;else if(ovv==='>=')left=left>=rr;else if(ovv==='<=')left=left<=rr;else if(ovv==='=')left=left==rr;continue;}
-if(op.ty==='K'&&op.v==='ENTONCES')break;
-if(op.ty==='O'&&op.v==='!'){j++;left=!left;continue;}
-break;}
-return[left,j];};
-I.prototype.exe=function(l){var t=this.tok(l);if(t.length===0)return null;
-// Handle SI-FSI skip mode
-if(this.skipUntilFSI){if(t.length===1&&t[0].ty==='K'&&t[0].v==='FSI'){this.o.push({ty:'W',v:'[FSI: fin del bloque condicional]'});this.skipUntilFSI=false;return null;}this.o.push({ty:'W',v:'... (omitido: condicion falsa)'});return null;}
-var f=t[0];
-// ESCRIBIR
-if(f.ty==='K'&&f.v==='ESCRIBIR'){var r=this.eval(t,1);this.o.push({ty:'W',v:String(r[0])});return null;}
-// LEER
-if(f.ty==='K'&&f.v==='LEER'){if(t.length<2||t[1].ty!=='I'){this.o.push({ty:'E',v:'Error: LEER necesita variable'});return null;}return{ty:'R',v:t[1].v};}
-// SI condicion ENTONCES
-if(f.ty==='K'&&f.v==='SI'){var cr=this.evalCond(t,1);var cond=cr[0];this.o.push({ty:'W',v:'[SI condicion: '+(cond?'VERDADERA → ejecuta bloque ENTONCES':'FALSA → omite bloque ENTONCES')+']'});if(!cond)this.skipUntilFSI=true;return null;}
-// FSI (standalone, when not skipping)
-if(f.ty==='K'&&f.v==='FSI'){this.skipUntilFSI=false;return null;}
-// Variable assignment
-if(f.ty==='I'&&t.length>=2&&t[1].ty==='O'&&t[1].v==='='){var vn=f.v;var vl=this.eval(t,2);this.v[vn]=vl[0];return null;}
-if(f.ty==='K')return null;return null;};
-I.prototype.eval=function(t,i){var j=i;if(j>=t.length)return[0,j];var l=this.gv(t[j]);j++;while(j<t.length){var o=t[j];if(o.ty!=='O'||['+','-','*','/','>','<','>=','<='].indexOf(o.v)===-1)break;var ov=o.v;j++;if(j>=t.length)break;var r=this.gv(t[j]);j++;if(ov==='+'){if(typeof l==='string'||typeof r==='string')l=String(l)+String(r);else l=l+r;}else if(ov==='-')l=l-r;else if(ov==='*')l=l*r;else if(ov==='/')l=r!==0?l/r:0;else if(ov==='>')l=l>r;else if(ov==='<')l=l<r;else if(ov==='>=')l=l>=r;else if(ov==='<=')l=l<=r;}return[l,j];};
-I.prototype.parse=function(p){if(typeof p==='string'&&p.indexOf('<')!==-1){var d=document.createElement('div');d.innerHTML=p;p=d.textContent||d.innerText||'';}return p.split(String.fromCharCode(10)).map(function(l){return l.trim();}).filter(function(l){return l.length>0;});};
-I.prototype.run=function(p){this.reset();this.l=this.parse(p);this.r=true;return this.sa();};
-I.prototype.sa=function(){while(this.p<this.l.length&&this.r){var l=this.l[this.p];var r=this.exe(l);this.p++;if(r&&r.ty==='R'){this.a=true;this.iv=r.v;return{p:true,v:r.v,o:this.o.slice()};}}this.r=false;return{p:false,o:this.o.slice()};};
-I.prototype.pi=function(v){if(!this.a)return null;var n=parseFloat(v);this.v[this.iv]=isNaN(n)?v:n;this.a=false;this.iv=null;return this.sa();};
-
-var L={ip:new I(),cc:{},xa:{},ge:function(id){var c=document.getElementById(id);if(!c)return'';var e=c.querySelector('.colab-editor');return e?(e.textContent||e.innerText||''):'';},go:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-output'):null;},gb:function(id){var c=document.getElementById(id);return c?c.querySelector('.colab-run-btn'):null;},rc:function(id){var s=this,cl=document.getElementById(id),ou=s.go(id),bt=s.gb(id);if(!cl||!ou)return;cl.classList.add('running');cl.classList.remove('success','error');if(bt)bt.classList.add('running');ou.classList.add('visible');ou.innerHTML='<span class="out-info">Ejecutando...</span>';var pg=s.ge(id);var rs=s.ip.run(pg);
-function pr(r){var h='';if(r.o){for(var i=0;i<r.o.length;i++){var e=r.o[i];if(e.ty==='W')h+='<span class="out-value">'+s.es(e.v)+'</span>\n';else if(e.ty==='E')h+='<span class="out-error">'+s.es(e.v)+'</span>\n';}}
-function ct(r2){if(!r2||!r2.p){h+='<span class="out-info">Ejecucion completada.</span>\n';ou.innerHTML=h||'<span class="out-info">Sin salida.</span>';cl.classList.remove('running');cl.classList.add('success');if(bt)bt.classList.remove('running');s.cc[id]=true;s.ax(id);s.ub();s.sp();return;}
-var inp=prompt('[ENTRADA] '+r2.v+' = ?\n\nEscribe un valor:');if(inp===null){h+='<span class="out-error">Cancelado.</span>\n';ou.innerHTML=h;cl.classList.remove('running');cl.classList.add('error');if(bt)bt.classList.remove('running');return;}
-h+='<span class="out-input">'+s.es(r2.v)+' ← '+s.es(inp)+'</span>\n';ou.innerHTML=h+'<span class="out-info">Continuando...</span>';
-setTimeout(function(){var nr=s.ip.pi(inp);if(nr&&nr.o){var ol=r.o?r.o.length:0;var no=nr.o.slice(ol);for(var j=0;j<no.length;j++){var ne=no[j];if(ne.ty==='W')h+='<span class="out-value">'+s.es(ne.v)+'</span>\n';else if(ne.ty==='E')h+='<span class="out-error">'+s.es(ne.v)+'</span>\n';}}ct(nr);},150);}
-ct(r);}
-pr(rs);},ax:function(id){if(this.xa[id])return;this.xa[id]=true;var m={'cell-alerta':{p:5,l:'Alerta simple SI-FSI'},'cell-doble':{p:5,l:'Alerta doble Y'},'cell-reconocimiento':{p:5,l:'Reconocimiento terapeuta'},'cell-descuento':{p:5,l:'Descuento por volumen'},'cell-libre3':{p:3,l:'Celda Libre'}};var a=m[id];if(a&&typeof PT!=='undefined'&&PT.addXP){PT.addXP(a.p,a.l);this.st('+'+a.p+' XP — '+a.l);}},ub:function(){var b={'rec-badge':this.cc['cell-reconocimiento'],'desc-badge':this.cc['cell-descuento']};for(var id in b){if(!b.hasOwnProperty(id))continue;var el=document.getElementById(id);if(el&&b[id])el.innerHTML='<span class="lab-challenge-done">Completado</span>';}},sp:function(){if(typeof PT==='undefined')return;if(this.cc['cell-reconocimiento']&&this.cc['cell-descuento']&&!this._lm){this._lm=true;PT.save();}},stb:function(id){var ts=document.querySelectorAll('.lab-tab');for(var i=0;i<ts.length;i++)ts[i].classList.remove('active');var ps=document.querySelectorAll('.lab-panel');for(var j=0;j<ps.length;j++)ps[j].classList.remove('active');var bs=document.querySelectorAll('.lab-tab');for(var k=0;k<bs.length;k++){if(bs[k].getAttribute('onclick')&&bs[k].getAttribute('onclick').indexOf(id)!==-1)bs[k].classList.add('active');}var pn=document.getElementById(id);if(pn)pn.classList.add('active');},es:function(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;},st:function(m){var t=document.createElement('div');t.className='xp-toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);}};
-window.CairoLab=L;
-
-// ── INTERACTIVE Q ENGINE (Semana 3: SI-FSI) ──
-var IQ=(function(){
-var a={},xa={};
-try{var s=JSON.parse(localStorage.getItem('tga04_s3_iq')||'{}');a=s.a||{};xa=s.xa||{};}catch(e){}
-function sv(){try{localStorage.setItem('tga04_s3_iq',JSON.stringify({a:a,xa:xa}));}catch(e){}}
-function nm(s){return s.toLowerCase().replace(/[áàäâ]/g,'a').replace(/[éèëê]/g,'e').replace(/[íìïî]/g,'i').replace(/[óòöô]/g,'o').replace(/[úùüû]/g,'u').replace(/[ñ]/g,'n').replace(/[^a-z0-9 ]/g,' ');}
-var rub={
-iq1:{kw:['SI','ENTONCES','FSI','sesiones','20','LEER','ESCRIBIR','reconocimiento','mensaje','terapeuta','semana','>','condicion','VARIABLES','INICIO','FIN'],
-fb:{full:'¡Excelente! Escribiste un algoritmo SI-FSI completo. La estructura correcta: declarar variable <code>sesiones_semana</code>, LEER el valor, y usar <code>SI sesiones_semana > 20 ENTONCES</code> para mostrar el reconocimiento. El FSI cierra la condición.',
-partial:'¡Bien! Te falta completar algunos elementos. Recuerda: necesitas declarar las variables, usar LEER para obtener el dato, escribir <code>SI sesiones_semana > 20 ENTONCES</code> para la condición, el mensaje de reconocimiento dentro del bloque, y cerrar con FSI.',
-wrong:'La estructura es: <code>SI sesiones_semana > 20 ENTONCES</code> → mensaje de reconocimiento → <code>FSI</code>. Declara las variables primero, usa LEER para los datos, y recuerda que FSI es el cierre obligatorio de la condición.'}},
-iq2:{kw:['Y','cognitiva','tipo_terapia','condicion','compuesta','SI','ENTONCES','>','20','sesiones','ambas','extender'],
-fb:{full:'¡Correcto! La condición compuesta es: <code>SI sesiones_semana > 20 Y tipo_terapia = "cognitiva" ENTONCES</code>. El operador Y exige que AMBAS condiciones sean verdaderas para ejecutar el bloque.',
-partial:'Cerca. La condición compuesta usa Y: <code>SI sesiones_semana > 20 Y tipo_terapia = "cognitiva" ENTONCES</code>. Recuerda que Y significa que ambas partes deben cumplirse. Si usas O, basta con una sola.',
-wrong:'Para combinar condiciones usa Y: <code>SI sesiones_semana > 20 Y tipo_terapia = "cognitiva" ENTONCES</code>. Y exige AMBAS verdaderas. O permitiría que bastara una sola (no es lo que pide el ejercicio).'}},
-iq3:{kw:['caso','prueba','escritorio','cumple','falla','imprime','reconocimiento','condicion','verdadera','falsa','FSI','bloque','ENTONCES','25','15','cognitiva','ocupacional'],
-fb:{full:'¡Perfecta prueba de escritorio! Caso 1 (cumple ambas): sesiones=25, terapia="cognitiva" → imprime el reconocimiento. Caso 2 (falla una): sesiones=25, terapia="ocupacional" → no imprime nada (el bloque ENTONCES se omite porque Y exige ambas).',
-partial:'Buen análisis. En la prueba de escritorio: si AMBAS condiciones son verdaderas (sesiones>20 Y terapia=cognitiva), se ejecuta el reconocimiento. Si UNA falla (ej: terapia=ocupacional), el bloque ENTONCES se omite completamente.',
-wrong:'Ejemplo: Caso A → sesiones=25, terapia="cognitiva" → SI se ejecuta (ambas cumplen). Caso B → sesiones=25, terapia="ocupacional" → NO se ejecuta (Y exige ambas). La prueba de escritorio verifica línea por línea qué se imprime en cada caso.'}},
-iq4:{kw:['cuando','condicion','verdadera','SI','FSI','decisión','reaccionar','sola','una','camino','único','simple','evaluar','depende','situación'],
-fb:{full:'¡Excelente resumen! Usas SI-FSI cuando necesitas que el algoritmo <strong>reaccione solo si una condición es verdadera</strong>, sin hacer nada especial cuando es falsa. Es una decisión de un solo camino.',
-partial:'Buena dirección. Un SI-FSI se usa cuando quieres ejecutar una acción <strong>solo si se cumple una condición</strong>. Si la condición es falsa, el algoritmo simplemente continúa sin hacer nada especial.',
-wrong:'Un SI-FSI se usa cuando necesitas: "SI pasa esto, ENTONCES haz esto otro". Si la condición no se cumple, simplemente se omite el bloque. Ejemplo: "SI la tasa es menor a 70, ENTONCES mostrar alerta". Si no, seguir normal.'}},
-iq5:{kw:['ALGORITMO','VARIABLES','INICIO','SI','ENTONCES','FSI','FIN','sesiones','20','LEER','ESCRIBIR','reconocimiento','terapeuta','>'],
-fb:{full:'¡Algoritmo completo y correcto! Estructura: <code>ALGORITMO</code> → <code>VARIABLES</code> → <code>INICIO</code> → <code>LEER</code> → <code>SI condicion ENTONCES</code> → mensaje → <code>FSI</code> → <code>FIN</code>. El reconocimiento solo aparece si sesiones > 20.',
-partial:'¡Buena estructura! Verifica que tengas: declaración de variables, LEER el dato, la línea <code>SI sesiones_semana > 20 ENTONCES</code>, el mensaje de reconocimiento dentro del bloque, y <code>FSI</code> para cerrar.',
-wrong:'Estructura mínima: <code>ALGORITMO Reconocimiento</code> → <code>VARIABLES sesiones_semana:ENTERO</code> → <code>INICIO</code> → <code>LEER sesiones_semana</code> → <code>SI sesiones_semana > 20 ENTONCES</code> → <code>ESCRIBIR "Reconocimiento"</code> → <code>FSI</code> → <code>FIN</code>.'}},
-iq6:{kw:['SI','Y','cognitiva','tipo_terapia','>','20','ENTONCES','sesiones','condicion','compuesta','ambas'],
-fb:{full:'¡Correcto! La línea es: <code>SI sesiones_semana > 20 Y tipo_terapia = "cognitiva" ENTONCES</code>. El operador Y exige que ambas condiciones sean verdaderas simultáneamente.',
-partial:'Cerca. La sintaxis es: <code>SI sesiones_semana > 20 Y tipo_terapia = "cognitiva" ENTONCES</code>. Recuerda que Y va entre las dos condiciones que deben cumplirse.',
-wrong:'La condición compuesta se escribe: <code>SI sesiones_semana > 20 Y tipo_terapia = "cognitiva" ENTONCES</code>. Y conecta las dos condiciones que deben ser verdaderas al mismo tiempo.'}},
-iq7:{kw:['caso','prueba','escritorio','cumple','falla','imprime','reconocimiento','25','cognitiva','ocupacional','condicion','Y','ambas'],
-fb:{full:'¡Prueba perfecta! Caso A (cumple ambas): sesiones=25, terapia="cognitiva" → imprime reconocimiento. Caso B (falla terapia): sesiones=25, terapia="ocupacional" → no imprime nada porque Y exige ambas. El bloque ENTONCES se salta completamente.',
-partial:'Buen análisis. Recuerda: con Y, si UNA condición falla, todo el bloque ENTONCES se omite. Caso que cumple: sesiones=25, terapia="cognitiva". Caso que falla: sesiones=25, terapia="ocupacional" (falla la segunda condición).',
-wrong:'Prueba de escritorio: Caso 1 → sesiones=25, terapia="cognitiva" → ambas verdaderas → se ejecuta el reconocimiento. Caso 2 → sesiones=25, terapia="ocupacional" → segunda falsa → Y falla → no se ejecuta nada del bloque ENTONCES.'}}
-};
-function ck(id){var r=rub[id];if(!r)return;var ta=document.getElementById(id+'-ta'),fb=document.getElementById(id+'-fb'),iq=document.getElementById(id),btn=iq?iq.querySelector('.iq-btn'):null;if(!ta||!fb||!iq)return;var ans=ta.value.trim();if(ans.length<15){fb.className='iq-feedback error show';fb.innerHTML='Escribe una respuesta mas completa.';iq.className='interactive-q wrong';return;}
-var w=nm(ans).split(/\s+/),mt=[];
-for(var i=0;i<r.kw.length;i++){var kw=r.kw[i],kn=nm(kw),fd=false;for(var j=0;j<w.length;j++){if(w[j]===kn||(w[j].length>=4&&w[j].indexOf(kn)>=0)||(w[j].length>=4&&kn.indexOf(w[j])>=0)){fd=true;break;}}if(fd)mt.push(kw);}
-var ratio=mt.length/r.kw.length,fc,ft;
-if(ratio>=0.20){fc='success';ft=r.fb.full;iq.className='interactive-q answered';}else if(ratio>=0.08){fc='partial';ft=r.fb.partial;iq.className='interactive-q partial';}else{fc='error';ft=r.fb.wrong;iq.className='interactive-q wrong';}
-fb.className='iq-feedback '+fc+' show';fb.innerHTML=ft;
-var kh='<div class="iq-keywords">';for(var k=0;k<mt.length;k++)kh+='<span class="iq-kw matched">✓ '+mt[k]+'</span>';kh+='</div>';fb.innerHTML+=kh;
-if(!xa[id]&&ratio>=0.08){xa[id]=true;a[id]=ratio>=0.20?'full':'partial';if(typeof PT!=='undefined'&&PT.addXP){var pts=ratio>=0.20?4:2,lb='Pregunta '+id.replace('iq','')+(ratio>=0.20?' (completa)':' (parcial)');PT.addXP(pts,lb);var pe=iq.querySelector('.iq-pts');if(pe){pe.textContent='+'+pts+' XP';pe.classList.add('earned');}if(typeof CairoLab!=='undefined'&&CairoLab.st)CairoLab.st('+'+pts+' XP — '+lb);}}else if(xa[id]){var pe2=iq.querySelector('.iq-pts');if(pe2&&a[id]){var pp=a[id]==='full'?4:2;pe2.textContent='+'+pp+' XP';pe2.classList.add('earned');}}
-if(btn)btn.disabled=true;a[id]=a[id]||(ratio>=0.20?'full':'partial');sv();}
-function rst(){for(var id in a){if(!a.hasOwnProperty(id))continue;var iq=document.getElementById(id),pe=iq?iq.querySelector('.iq-pts'):null;if(pe){pe.textContent='+'+(a[id]==='full'?4:2)+' XP';pe.classList.add('earned');}var btn=iq?iq.querySelector('.iq-btn'):null;if(btn)btn.disabled=true;if(iq)iq.className='interactive-q '+(a[id]==='full'?'answered':'partial');}}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rst);else rst();
-return{check:ck};
-})();
-window.InteractiveQ=IQ;
-}();
-</script>
-
-<!-- ══ PYODIDE PYTHON REFERENCE ENGINE ══ -->
-<script>
-// ── State ──────────────────────────────────────────────────────
-var pyReady = false;
-var pyLoading = false;
-var pyodide = null;
-
-function pySetStatus(msg, ready) {
-  var el = document.getElementById('py-status');
-  if (!el) return;
-  el.textContent = msg;
-  if (ready) el.classList.add('ready');
-  else el.classList.remove('ready');
-}
-
-function pyDisableBtns(disabled) {
-  for (var i = 1; i <= 4; i++) {
-    var btn = document.getElementById('py-run-' + i);
-    if (btn) btn.disabled = disabled;
   }
-}
 
-async function initPyodide() {
-  if (pyReady || pyLoading) return;
-  pyLoading = true;
-  pyDisableBtns(true);
-  pySetStatus('⏳ Cargando motor Python (Pyodide v0.24.1)...');
+  /* ── PYODIDE ── */
+  let pyReady = false;
+  const pyDefaults = {};
 
-  try {
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
-    await new Promise(function(resolve, reject) {
-      script.onload = resolve;
-      script.onerror = function() { reject(new Error('No se pudo cargar Pyodide')); };
-      document.head.appendChild(script);
-    });
+  // Capture defaults on load
+  document.querySelectorAll('textarea[id^="py"]').forEach(ta => {
+    pyDefaults[ta.id] = ta.value;
+  });
 
-    if (typeof window.loadPyodide !== 'function') {
-      throw new Error('loadPyodide no está definido');
-    }
+  function resetPy(id, n) {
+    document.getElementById(id).value = pyDefaults[id];
+    const out = document.getElementById('out' + n);
+    out.classList.remove('visible');
+    out.textContent = '';
+  }
 
-    pyodide = await window.loadPyodide({
-      indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'
-    });
-
+  async function loadPyodide() {
+    if (typeof loadPyodide !== 'undefined' && pyReady) return;
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js';
+    document.head.appendChild(s);
+    await new Promise(r => s.onload = r);
+    window._pyodide = await window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.25.1/full/' });
     pyReady = true;
-    pyLoading = false;
-    pyDisableBtns(false);
-    pySetStatus('✅ Python listo — presiona ▶ para ejecutar', true);
-
-    // expose runner
-    window._pyodideRunner = function(code) {
-      return pyodide.runPythonAsync(code)
-        .then(function(out) { return { output: out }; })
-        .catch(function(err) { return { output: '', error: err.message || String(err) }; });
-    };
-  } catch(err) {
-    console.error('Pyodide load error:', err);
-    pyLoading = false;
-    pyReady = false;
-    pySetStatus('⚠️ Pyodide no disponible: ' + err.message);
-    pyDisableBtns(false);
-  }
-}
-
-// Auto-init on page load
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initPyodide);
-} else {
-  setTimeout(initPyodide, 500); // small delay to not compete with other onload
-}
-
-// ── runPyCell(n) ───────────────────────────────────────────────
-window.runPyCell = async function(n) {
-  if (!pyReady) {
-    if (!pyLoading) { pySetStatus('⏳ Cargando Python...'); initPyodide(); }
-    else pySetStatus('⏳ Python cargando, espera...');
-    return;
+    document.getElementById('pyStatus').textContent = '✅ Python listo — puedes ejecutar las celdas';
   }
 
-  var codeArea = document.getElementById('py-code-' + n);
-  var outDiv   = document.getElementById('py-out-' + n);
-  var bodyDiv  = document.getElementById('py-body-' + n);
-  var runBtn   = document.getElementById('py-run-' + n);
+  loadPyodide();
 
-  if (!codeArea || !outDiv) return;
-  var code = codeArea.value;
-  if (!code.trim()) return;
+  async function runPy(taId, outId) {
+    const code = document.getElementById(taId).value;
+    const outEl = document.getElementById(outId);
+    outEl.classList.add('visible');
+    outEl.textContent = '⏳ Ejecutando…';
 
-  if (runBtn) { runBtn.textContent = '⏳...'; runBtn.disabled = true; }
-  outDiv.classList.add('visible');
-  outDiv.querySelector('pre').textContent = '';
-  if (bodyDiv) bodyDiv.classList.add('ran');
+    try {
+      if (!pyReady) { await loadPyodide(); }
+      let captured = '';
+      window._pyodide.globals.set('_captured', '');
+      await window._pyodide.runPythonAsync(`
+import sys, io
+_buf = io.StringIO()
+sys.stdout = _buf
+try:
+${code.split('\n').map(l => '    ' + l).join('\n')}
+except Exception as e:
+    print(f"Error: {e}")
+sys.stdout = sys.__stdout__
+import js
+js.window._capturedPy = _buf.getvalue()
+`);
+      captured = window._capturedPy || '';
+      outEl.textContent = captured || '(sin salida)';
+      addXP(2);
+    } catch(e) {
+      outEl.textContent = '❌ Error: ' + e.message;
+    }
+  }
 
-  try {
-    if (!pyodide || typeof pyodide.setStdout !== 'function') {
-      pyReady = false;
-      throw new Error('Pyodide no listo. Recarga la página.');
+  /* ── QUIZ ── */
+  function answerQuiz(el, correct, explainId) {
+    const parent = el.closest('.quiz-q');
+    if (parent.dataset.answered) return;
+    parent.dataset.answered = '1';
+    parent.querySelectorAll('.quiz-opt').forEach(o => o.style.pointerEvents = 'none');
+    el.classList.add(correct ? 'correct' : 'wrong');
+    const exp = document.getElementById(explainId);
+    if (exp) exp.classList.add('visible');
+    if (correct) addXP(5);
+  }
+
+  /* ── MISSION VERIFY ── */
+  function verifyQ(btn, keyword, resultId) {
+    const ta = btn.previousElementSibling;
+    const res = document.getElementById(resultId);
+    const val = ta.value.trim();
+
+    if (!val) {
+      res.style.display = 'block';
+      res.style.background = 'var(--warn-soft)';
+      res.style.color = 'var(--warn)';
+      res.textContent = '⚠️ Escribe tu respuesta antes de verificar.';
+      return;
     }
 
-    var output = '';
-    pyodide.setStdout({ batched: function(t) { output += t; } });
-    pyodide.setStderr({ batched: function(t) { output += t; } });
-
-    await pyodide.runPythonAsync(code);
-
-    var pre = outDiv.querySelector('pre');
-    pre.textContent = output || '(sin salida)';
-    pre.className = '';
-  } catch(err) {
-    var pre = outDiv.querySelector('pre');
-    pre.textContent = 'Error: ' + (err.message || String(err));
-    pre.className = 'py-err';
+    const ok = keyword === '' || val.toLowerCase().includes(keyword.toLowerCase());
+    res.style.display = 'block';
+    if (ok) {
+      res.style.background = 'var(--ok-soft)';
+      res.style.color = 'var(--ok)';
+      res.textContent = '✅ ¡Bien! Tu respuesta tiene los elementos clave. Revísala con el docente para confirmación final.';
+      addXP(3);
+    } else {
+      res.style.background = 'var(--danger-soft)';
+      res.style.color = 'var(--danger)';
+      res.textContent = '🔍 Revisa tu respuesta — parece que falta un elemento clave. Consulta la sección de teoría o Excel.';
+    }
   }
-
-  if (runBtn) { runBtn.textContent = '▶ Run'; runBtn.disabled = false; }
-};
 </script>
+
 </body>
 </html>
