@@ -540,15 +540,14 @@
     <h2 class="sec-title">📋 El Memorando — Tu Misión esta Semana</h2>
 
     <div class="memo-card">
-      <p class="memo-header">Solicitud de consultoría · Expendio de fábrica · Planta Bimbo Soledad (Atlántico)</p>
-      <p class="memo-title">Para: Consultores Junior de Datos — NeuroBiz S.A.S. · Equipo TGA04<br>
-      De: Administración del expendio de fábrica<br>
+      <p class="memo-header">Caso académico simulado · Expendio de fábrica Bimbo · Soledad (Atlántico)</p>
+      <p class="memo-title">Para: Estudiantes de TGA04 · Fundamentos de Computación para los Negocios<br>
+      Contexto: Simulación académica de decisiones de inventario<br>
       Asunto: Decidir automáticamente qué se vende, qué se rebaja y qué se retira</p>
 
       <p class="memo-body">
-        A la salida de la planta funciona un <strong>expendio de fábrica</strong>: allí llegan productos de panadería que
-        ya no alcanzan a viajar a los supermercados porque les quedan pocos días de vida útil, y se venden más baratos.
-        Cada mañana alguien revisa paquete por paquete la fecha de vencimiento y decide a mano. Se equivocan, y se pierde dinero.
+        Imagina un <strong>expendio de fábrica</strong> en Soledad: allí se ofrecen productos de panadería próximos a vencer a precios rebajados.
+        En este escenario simulado, cada mañana se revisa la fecha de vencimiento de cada producto para decidir su movimiento. Una decisión equivocada puede generar pérdidas.
       </p>
       <p class="memo-body">
         El <strong>movimiento del inventario</strong> depende de los productos próximos a vencer: cada uno obliga a decidir si se
@@ -586,7 +585,7 @@
         <tr><td>Pregunta central</td><td>¿Qué hace el sistema cuando la condición es verdadera, y qué cuando es falsa? ¿Y de dónde sale la condición?</td></tr>
         <tr><td>Analogía guía</td><td>Semáforo: SI está en rojo ENTONCES detenerse FSI · SI el producto venció ENTONCES retirarlo FSI</td></tr>
         <tr><td>Herramientas</td><td>📊 Excel <code>=SI()</code> · 🐍 Python <code>if</code> · 📝 Pseudocódigo (referencia)</td></tr>
-        <tr><td>Nota</td><td>Caso académico con datos simulados. No representa información interna de Grupo Bimbo.</td></tr>
+        <tr><td>Nota</td><td>Caso académico inspirado en un expendio de fábrica Bimbo, con datos simulados. No representa información interna ni una solicitud oficial de Grupo Bimbo.</td></tr>
       </table>
     </div>
 
@@ -601,7 +600,7 @@
   <section id="teoria">
     <h2 class="sec-title">📚 Marco Teórico</h2>
 
-    <h3 class="sec-sub">1. ¿Qué es una estructura condicional? 🟢 VIGENTE</h3>
+    <h3 class="sec-sub">1. ¿Qué es una estructura condicional?</h3>
     <p>La estructura <strong>SI-FSI</strong> (o <code>if</code> en Python) permite ejecutar instrucciones
     <strong>solo cuando una condición es verdadera</strong>. Si la condición resulta falsa, el algoritmo continúa
     sin ejecutar ese bloque. Es la base de toda automatización de decisiones en negocios.</p>
@@ -617,7 +616,7 @@
       La acción ocurre <strong>solo</strong> cuando la condición se cumple; si el producto está vigente, sigue en venta.</div>
     </div>
 
-    <h3 class="sec-sub">2. La variable clave: días para vencer 🟢 VIGENTE</h3>
+    <h3 class="sec-sub">2. La variable clave: días para vencer</h3>
     <p>Toda la decisión depende de un número: <strong>días para vencer = fecha de vencimiento − fecha de hoy</strong>.</p>
     <table class="data-table">
       <thead><tr><th>Días para vencer</th><th>Qué significa</th><th>Decisión del expendio</th></tr></thead>
@@ -630,7 +629,7 @@
     <p style="font-size:.85rem;color:var(--muted);">El umbral de 3 días es una <strong>decisión de gerencia</strong>, no una ley: en la sección de Python simularás otros valores.
     El 0, en cambio, sí lo fija la norma.</p>
 
-    <h3 class="sec-sub">3. Movimiento de inventario: decisiones con lo próximo a vencer 🟢 VIGENTE</h3>
+    <h3 class="sec-sub">3. Movimiento de inventario: decisiones con lo próximo a vencer</h3>
     <p>En un expendio, el inventario no solo se cuenta: <strong>se mueve</strong>. Y lo que más urge mover es lo que está más cerca de su fecha.
     Por eso se usa el criterio <strong>FEFO</strong> (<em>First Expired, First Out</em>): <strong>primero en vencer, primero en salir</strong>.
     Cada decisión de movimiento es, en el fondo, un SI:</p>
@@ -650,7 +649,7 @@
       Decidir <em>cuándo</em> rebajar y <em>cuánto</em> es un equilibrio entre ingreso y desperdicio, y lo vas a simular en Python.</div>
     </div>
 
-    <h3 class="sec-sub">4. Condiciones compuestas: Y / O (and / or) 🟢 VIGENTE</h3>
+    <h3 class="sec-sub">4. Condiciones compuestas: Y / O (and / or)</h3>
     <p><strong>Y / and</strong> exige que ambas sean verdaderas; <strong>O / or</strong> permite que una sola baste.</p>
     <table class="data-table">
       <thead><tr><th>Condición</th><th>Interpretación gerencial</th><th>Resultado esperado</th></tr></thead>
@@ -661,7 +660,7 @@
       </tbody>
     </table>
 
-    <h3 class="sec-sub">5. Errores frecuentes al construir un SI 🟡 EVOLUCIONADO</h3>
+    <h3 class="sec-sub">5. Errores frecuentes al construir un SI</h3>
     <table class="data-table">
       <thead><tr><th>Error</th><th>Qué cree el estudiante</th><th>Corrección</th></tr></thead>
       <tbody>
@@ -673,7 +672,7 @@
       </tbody>
     </table>
 
-    <h3 class="sec-sub">6. ¿Excel o Python? Una decisión, no una competencia 🟢 VIGENTE</h3>
+    <h3 class="sec-sub">6. ¿Excel o Python? Una decisión, no una competencia</h3>
     <p>La lógica del SI es la misma en ambas herramientas. Lo que cambia es <strong>para qué trabajo</strong> sirve mejor cada una.
     Un buen administrador no elige por costumbre: elige por el tamaño, la frecuencia y el riesgo de la tarea.</p>
     <table class="data-table">
@@ -1400,7 +1399,7 @@ precio = 8900
 <!-- ══════════════════════════════════════════════ FOOTER -->
 <footer class="site-footer">
   TGA04 · Fundamentos de Computación para los Negocios · IUB 2026 ·
-  Semana 3: Estructura Condicional Simple (SI / if) · Caso de estudio: Expendio de fábrica Bimbo Soledad (datos simulados) · Consultora: NeuroBiz S.A.S. ·
+  Semana 3: Estructura Condicional Simple (SI / if) · Caso académico: Expendio de fábrica Bimbo Soledad (datos simulados) ·
   Prof. Diego Domínguez
 </footer>
 
