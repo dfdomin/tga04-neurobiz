@@ -508,7 +508,7 @@
 <header class="site-header">
   <p class="header-eyebrow">TGA04 · Fundamentos de Computación para los Negocios · Semana 3 de 13</p>
   <h1 class="header-title">🚦 Estructura Condicional Simple <code style="font-size:.8em;background:rgba(255,255,255,.15);padding:.1em .4em;border-radius:6px;">SI / IF</code></h1>
-  <p class="header-sub">Decisiones automáticas · Excel <code>=SI()</code> · Python <code>if</code> · NeuroBiz S.A.S.</p>
+  <p class="header-sub">Decisiones automáticas · Excel <code>=SI()</code> · Python <code>if</code> · Caso: Expendio de fábrica Bimbo Soledad</p>
   <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar"></div></div>
   <p class="xp-label" id="xpLabel">XP de sesión: 0 / 60 pts</p>
 </header>
@@ -540,52 +540,56 @@
     <h2 class="sec-title">📋 El Memorando — Tu Misión esta Semana</h2>
 
     <div class="memo-card">
-      <p class="memo-header">Comunicado Interno · NeuroBiz S.A.S. · Gerencia Comercial</p>
-      <p class="memo-title">Para: Consultores Junior de Datos — Equipo TGA04<br>
-      De: Gerencia Comercial, NeuroBiz S.A.S.<br>
-      Asunto: Automatizar alertas de cumplimiento de meta de ventas</p>
+      <p class="memo-header">Solicitud de consultoría · Expendio de fábrica · Planta Bimbo Soledad (Atlántico)</p>
+      <p class="memo-title">Para: Consultores Junior de Datos — NeuroBiz S.A.S. · Equipo TGA04<br>
+      De: Administración del expendio de fábrica<br>
+      Asunto: Decidir automáticamente qué se vende, qué se rebaja y qué se retira</p>
 
       <p class="memo-body">
-        La Gerencia Comercial necesita que el sistema emita una alerta automática <strong>cuando el cumplimiento
-        de meta de ventas de un asesor caiga por debajo del 70 %</strong>. Esta semana aprenderás a
-        construir esa lógica usando la estructura condicional simple:
-        <strong>SI … ENTONCES … FSI</strong> en pseudocódigo, <strong>=SI()</strong> en Excel y <strong>if</strong> en Python.
+        A la salida de la planta funciona un <strong>expendio de fábrica</strong>: allí llegan productos de panadería que
+        ya no alcanzan a viajar a los supermercados porque les quedan pocos días de vida útil, y se venden más baratos.
+        Cada mañana alguien revisa paquete por paquete la fecha de vencimiento y decide a mano. Se equivocan, y se pierde dinero.
+      </p>
+      <p class="memo-body">
+        Además, en la fila del expendio se repite una frase: <em>"si no han pasado X días después de la fecha, todavía se puede vender"</em>.
+        Antes de convertir cualquier regla en fórmula, la administración pide a NeuroBiz <strong>verificar si esa regla existe</strong>.
+        Tu misión: construir la decisión con <strong>=SI()</strong> en Excel y con <strong>if</strong> en Python,
+        y <strong>decidir cuál herramienta conviene</strong> para cada tarea.
       </p>
 
-      <!-- KPIs -->
       <div class="memo-kpis">
-        <div class="kpi-chip alert">
-          <span class="icon">📉</span>
-          <span class="label">Cumplimiento actual</span>
-          <span class="value">65.0 %</span>
+        <div class="kpi-chip">
+          <span class="icon">📦</span>
+          <span class="label">Referencias en inventario</span>
+          <span class="value">12</span>
         </div>
         <div class="kpi-chip">
-          <span class="icon">🎯</span>
-          <span class="label">Meta mínima</span>
-          <span class="value">70.0 %</span>
-        </div>
-        <div class="kpi-chip">
-          <span class="icon">❌</span>
-          <span class="label">Ventas fallidas</span>
-          <span class="value">58</span>
+          <span class="icon">🏷️</span>
+          <span class="label">Vencen en ≤ 3 días</span>
+          <span class="value">6</span>
         </div>
         <div class="kpi-chip alert">
-          <span class="icon">🚨</span>
-          <span class="label">Estado</span>
-          <span class="value">ALERTA</span>
+          <span class="icon">🚫</span>
+          <span class="label">Ya vencidos</span>
+          <span class="value">3</span>
+        </div>
+        <div class="kpi-chip alert">
+          <span class="icon">💸</span>
+          <span class="label">Valor perdido</span>
+          <span class="value">$267.200</span>
         </div>
       </div>
 
       <table class="meta-table">
         <tr><td>LS_KEY</td><td><code>tga04_s3</code></td></tr>
         <tr><td>XP máximo</td><td>60 XP</td></tr>
-        <tr><td>Pregunta central</td><td>¿Qué hace el sistema cuando la condición es verdadera, y qué cuando es falsa?</td></tr>
-        <tr><td>Analogía guía</td><td>Semáforo: SI está en rojo ENTONCES detenerse FSI</td></tr>
+        <tr><td>Pregunta central</td><td>¿Qué hace el sistema cuando la condición es verdadera, y qué cuando es falsa? ¿Y de dónde sale la condición?</td></tr>
+        <tr><td>Analogía guía</td><td>Semáforo: SI está en rojo ENTONCES detenerse FSI · SI el producto venció ENTONCES retirarlo FSI</td></tr>
         <tr><td>Herramientas</td><td>📊 Excel <code>=SI()</code> · 🐍 Python <code>if</code> · 📝 Pseudocódigo (referencia)</td></tr>
+        <tr><td>Nota</td><td>Caso académico con datos simulados. No representa información interna de Grupo Bimbo.</td></tr>
       </table>
     </div>
 
-    <!-- IMAGEN 1 -->
     <div class="img-placeholder">
       <span class="img-icon"></span>
       <strong>Analogía Estructura Condicional</strong>
@@ -598,8 +602,8 @@
     <h2 class="sec-title">📚 Marco Teórico</h2>
 
     <h3 class="sec-sub">1. ¿Qué es una estructura condicional? 🟢 VIGENTE</h3>
-    <p>La estructura <strong>SI-FSI</strong> (o <strong>if</strong> en Python) permite ejecutar instrucciones
-    <em>solo cuando una condición es verdadera</em>. Si la condición resulta falsa, el algoritmo continúa
+    <p>La estructura <strong>SI-FSI</strong> (o <code>if</code> en Python) permite ejecutar instrucciones
+    <strong>solo cuando una condición es verdadera</strong>. Si la condición resulta falsa, el algoritmo continúa
     sin ejecutar ese bloque. Es la base de toda automatización de decisiones en negocios.</p>
 
     <div class="callout callout-info">
@@ -607,69 +611,60 @@
       <div><strong>Analogía del semáforo:</strong> SI el semáforo está en rojo ENTONCES detener el vehículo FSI.
       Si está en verde, no hay instrucción especial: simplemente continúas.</div>
     </div>
-
-    <div class="callout callout-tip">
-      <span class="ico">💼</span>
-      <div><strong>En NeuroBiz:</strong> SI el cumplimiento del asesor es menor al 70 % ENTONCES enviar alerta a la gerencia FSI.
-      La acción ocurre <em>solo</em> cuando la condición se cumple.</div>
+    <div class="callout callout-ok">
+      <span class="ico">🍞</span>
+      <div><strong>En el expendio:</strong> SI los días para vencer son menores que 0 ENTONCES retirar el producto de la vitrina FSI.
+      La acción ocurre <strong>solo</strong> cuando la condición se cumple; si el producto está vigente, sigue en venta.</div>
     </div>
 
-    <h3 class="sec-sub">2. La misma idea, tres herramientas 🟢 VIGENTE</h3>
-    <p>El concepto de "si pasa X, haz Y" existe en todas las herramientas de análisis. La lógica no cambia; solo cambia cómo se escribe.</p>
-
+    <h3 class="sec-sub">2. La variable clave: días para vencer 🟢 VIGENTE</h3>
+    <p>Toda la decisión depende de un número: <strong>días para vencer = fecha de vencimiento − fecha de hoy</strong>.</p>
     <table class="data-table">
-      <thead>
-        <tr><th>Herramienta</th><th>Sintaxis</th><th>Uso típico en gestión</th></tr>
-      </thead>
+      <thead><tr><th>Días para vencer</th><th>Qué significa</th><th>Decisión del expendio</th></tr></thead>
       <tbody>
-        <tr>
-          <td>📊 <strong>Excel</strong></td>
-          <td><code>=SI(condición, valor_si_V, valor_si_F)</code></td>
-          <td>Tableros, reportes, alertas automáticas en celdas</td>
-        </tr>
-        <tr>
-          <td>🐍 <strong>Python</strong></td>
-          <td><code>if condición: … else: …</code></td>
-          <td>Automatización, análisis masivo de datos, dashboards</td>
-        </tr>
-        <tr>
-          <td>📝 <strong>Pseudocódigo</strong></td>
-          <td><code>SI condición ENTONCES … FSI</code></td>
-          <td>Diseñar la lógica antes de escribir código (referencia)</td>
-        </tr>
+        <tr><td>Mayor que 3</td><td>Producto con vida útil suficiente</td><td>✅ Precio normal</td></tr>
+        <tr><td>Entre 0 y 3</td><td>Próximo a vencer (0 = vence hoy y aún se puede vender hoy)</td><td>🏷️ Rebajar o evaluar donación</td></tr>
+        <tr><td>Menor que 0</td><td>La fecha ya pasó</td><td>🚫 Retirar: no es comercializable</td></tr>
       </tbody>
     </table>
+    <p style="font-size:.85rem;color:var(--muted);">El umbral de 3 días es una <strong>decisión de gerencia</strong>, no una ley: en la sección de Python simularás otros valores.
+    El 0, en cambio, sí lo fija la norma.</p>
 
-    <h3 class="sec-sub">3. Diagrama de flujo del SI simple 🟢 VIGENTE</h3>
-    <p>El rombo de decisión siempre tiene <strong>dos salidas</strong>: una para <em>Sí</em> y otra para <em>No</em>.
-    En el SI simple, la rama verdadera ejecuta acciones; la rama falsa continúa sin hacer nada adicional.</p>
-
+    <h3 class="sec-sub">3. 🔎 Investigación: ¿existe la "regla de los X días después"? 🟢 VIGENTE</h3>
+    <p>Antes de escribir una condición hay que preguntarse <strong>de dónde sale</strong>. NeuroBiz revisó la norma colombiana de rotulado de alimentos y esto encontró:</p>
     <table class="data-table">
-      <thead><tr><th>Elemento</th><th>Qué representa</th><th>Lectura correcta</th></tr></thead>
+      <thead><tr><th>Lo que dice la etiqueta</th><th>Qué significa</th><th>¿Se puede vender después?</th></tr></thead>
       <tbody>
-        <tr><td>Rombo</td><td>Pregunta lógica</td><td>¿El cumplimiento es menor al 70 %?</td></tr>
-        <tr><td>Salida "Sí"</td><td>Bloque ENTONCES / if</td><td>Mostrar alerta en la celda / imprimir mensaje</td></tr>
-        <tr><td>Salida "No"</td><td>Continuación normal</td><td>No se muestra alerta; el asesor cumple</td></tr>
+        <tr><td><strong>"Fecha de vencimiento"</strong> o <strong>"Vence"</strong></td>
+            <td>Después de esa fecha el producto probablemente ya no tiene los atributos de calidad que el consumidor espera.</td>
+            <td>❌ No. Deja de ser comercializable.</td></tr>
+        <tr><td><strong>"Consumir preferentemente antes de"</strong></td>
+            <td>Hasta esa fecha el fabricante garantiza la calidad; después el alimento <em>puede</em> seguir siendo satisfactorio.</td>
+            <td>❌ Tampoco. La norma dice que ya no se considera comercializable.</td></tr>
       </tbody>
     </table>
+    <ul style="font-size:.9rem;margin:.6rem 0 0 1.2rem;">
+      <li><strong>No se encontró</strong> ninguna norma colombiana ni estándar de la industria que autorice vender un alimento envasado "X días" después de su fecha.</li>
+      <li>El INVIMA ha conceptuado que <strong>no existe un trámite para ampliar la vida útil</strong> de un alimento ya rotulado, y que cambiar o re-etiquetar la fecha se trata como <strong>adulteración</strong>.</li>
+      <li>El mito probablemente nace de la fecha de "consumo preferente": en casa, el consumidor puede juzgar si un pan sin moho todavía le sirve. Pero esa es una decisión del consumidor, <strong>no una regla de venta</strong>.</li>
+      <li>La norma exime de fecha a los productos de panadería que normalmente se consumen dentro de las 24 horas siguientes a su fabricación (el pan del día sin empaque). El pan tajado empacado sí la lleva.</li>
+      <li>Para lo que está por vencer existe una salida legal: <strong>donarlo a un banco de alimentos antes de la fecha</strong> (Ley 1990 de 2019), con beneficios tributarios ampliados por la Ley 2380 de 2024.</li>
+    </ul>
+    <div class="callout callout-warn">
+      <span class="ico">⚖️</span>
+      <div><strong>Conclusión para el algoritmo:</strong> la condición de retiro es <code>dias_para_vencer &lt; 0</code>, sin tolerancia.
+      Un rumor repetido en la fila no es una regla de negocio. Si alguien propone <code>=SI(C2&lt;-5;"Retirar";"Vendible")</code>,
+      la fórmula funciona perfectamente… y automatiza una infracción.</div>
+    </div>
 
     <h3 class="sec-sub">4. Condiciones compuestas: Y / O (and / or) 🟢 VIGENTE</h3>
-    <p>Cuando el negocio necesita verificar dos cosas al mismo tiempo, se combinan condiciones.
-    <strong>Y / and</strong> exige que ambas sean verdaderas; <strong>O / or</strong> permite que una sola baste.</p>
-
+    <p><strong>Y / and</strong> exige que ambas sean verdaderas; <strong>O / or</strong> permite que una sola baste.</p>
     <table class="data-table">
       <thead><tr><th>Condición</th><th>Interpretación gerencial</th><th>Resultado esperado</th></tr></thead>
       <tbody>
-        <tr>
-          <td><code>cumplimiento &lt; 70 Y ventas_fallidas &gt; 50</code></td>
-          <td>Alerta doble: bajo rendimiento y muchas fallas</td>
-          <td>Intervención urgente</td>
-        </tr>
-        <tr>
-          <td><code>region = "Costa" O region = "Andina"</code></td>
-          <td>Aplica para dos regiones</td>
-          <td>Basta una coincidencia</td>
-        </tr>
+        <tr><td><code>dias &gt;= 0 Y dias &lt;= 3</code></td><td>Vigente pero próximo a vencer</td><td>Rebajar precio</td></tr>
+        <tr><td><code>dias &lt;= 3 Y unidades &gt; 20</code></td><td>Muchas unidades sin tiempo para venderlas</td><td>Evaluar donación antes de la fecha</td></tr>
+        <tr><td><code>categoria = "Pan tajado" O categoria = "Ponqué"</code></td><td>Aplica a dos líneas de producto</td><td>Basta una coincidencia</td></tr>
       </tbody>
     </table>
 
@@ -677,22 +672,44 @@
     <table class="data-table">
       <thead><tr><th>Error</th><th>Qué cree el estudiante</th><th>Corrección</th></tr></thead>
       <tbody>
-        <tr><td>Cerrar antes del bloque</td><td>Escribe el cierre antes de la acción</td><td>Primero condición → acción → cierre</td></tr>
+        <tr><td>Usar <code>&lt;=</code> en vez de <code>&lt;</code></td><td>"Vence hoy" ya está vencido</td><td>Con 0 días aún se vende hoy: la condición de retiro es <code>&lt; 0</code></td></tr>
         <tr><td>Ignorar la rama "No"</td><td>Piensa que el rombo tiene una sola salida</td><td>Siempre etiquetar Sí / No</td></tr>
         <tr><td>Confundir Y con O</td><td>Cree que basta una condición con Y</td><td>Y = ambas; O = al menos una</td></tr>
-        <tr><td>En Excel: olvidar separador</td><td>Escribe <code>=SI(A1&lt;70 "Alerta")</code></td><td>Usar punto y coma: <code>=SI(A1&lt;70;"Alerta";"")</code></td></tr>
+        <tr><td>Condición sin fuente</td><td>"Todo el mundo lo hace así"</td><td>Verificar la regla antes de automatizarla</td></tr>
+        <tr><td>En Excel: olvidar separador</td><td>Escribe <code>=SI(C2&lt;0 "Retirar")</code></td><td>Usar punto y coma: <code>=SI(C2&lt;0;"Retirar";"")</code></td></tr>
       </tbody>
     </table>
 
+    <h3 class="sec-sub">6. ¿Excel o Python? Una decisión, no una competencia 🟢 VIGENTE</h3>
+    <p>La lógica del SI es la misma en ambas herramientas. Lo que cambia es <strong>para qué trabajo</strong> sirve mejor cada una.
+    Un buen administrador no elige por costumbre: elige por el tamaño, la frecuencia y el riesgo de la tarea.</p>
+    <table class="data-table">
+      <thead><tr><th>Si la tarea es…</th><th>📊 Excel brilla cuando…</th><th>🐍 Python brilla cuando…</th></tr></thead>
+      <tbody>
+        <tr><td>Tamaño</td><td>Son decenas de filas que quieres ver de un vistazo</td><td>Son cientos o miles de referencias, o varios archivos</td></tr>
+        <tr><td>Frecuencia</td><td>Se hace una vez o de vez en cuando</td><td>Se repite cada mañana: se escribe una vez y se ejecuta siempre igual</td></tr>
+        <tr><td>Fechas</td><td><code>HOY()</code> y resta de celdas</td><td><code>date.today()</code> y resta de fechas, igual de simple y sin copiar fórmulas</td></tr>
+        <tr><td>Comparar políticas</td><td>Una política por hoja</td><td>Decenas de escenarios en un segundo con un bucle</td></tr>
+        <tr><td>Errores humanos</td><td>Una fórmula arrastrada mal pasa desapercibida</td><td>La misma regla se aplica idéntica a todas las filas</td></tr>
+        <tr><td>Compartir</td><td>Todos en la oficina lo pueden abrir</td><td>Genera el reporte o la lista de retiro lista para enviar</td></tr>
+      </tbody>
+    </table>
+    <div class="callout callout-tip">
+      <span class="ico">🧭</span>
+      <div><strong>Regla práctica:</strong> diseña y prueba la regla en Excel con pocas filas; cuando la decisión se repite
+      todos los días o necesitas comparar escenarios, llévala a Python. No es "Excel o Python": es Excel <em>y luego</em> Python.</div>
+    </div>
+
     <div class="callout callout-warn">
       <span class="ico">⚠️</span>
-      <div><strong>Pista importante:</strong> si sientes que "falta algo" cuando la condición es falsa (por ejemplo, mostrar un mensaje diferente), probablemente necesitas un SI-SINO / if-else. Eso se verá la próxima semana.</div>
+      <div><strong>Pista importante:</strong> si sientes que "falta algo" cuando la condición es falsa (por ejemplo, mostrar un mensaje diferente),
+      probablemente necesitas un SI-SINO / if-else. Eso se verá la próxima semana.</div>
     </div>
   </section>
 
   <!-- ══════════ EXCEL -->
   <section id="excel">
-    <h2 class="sec-title">📊 Excel — Función <code>=SI()</code> aplicada a NeuroBiz</h2>
+    <h2 class="sec-title">📊 Excel — Función <code>=SI()</code> aplicada al expendio</h2>
 
     <p>En gestión administrativa, <strong>Excel es la primera herramienta</strong> donde aparece la lógica condicional.
     La función <code>=SI()</code> tiene exactamente la misma estructura que el pseudocódigo: condición, resultado verdadero, resultado falso.</p>
@@ -706,76 +723,48 @@
       </div>
     </div>
 
-    <!-- IMAGEN 2 -->
     <div class="img-placeholder">
       <span class="img-icon">📊</span>
-      <strong>Fórmula Excel SI</strong>
-      <img
-        src="Formula_Excel_condicional.png" alt="Ejemplo fórmula Excel SI" style="max-width:100%; border-radius:6px; margin-top:1rem;"
-      >
+      <strong>Anatomía de la función SI (ejemplo genérico)</strong>
+      <img src="Formula_Excel_condicional.png" alt="Partes de la función SI en Excel: condición, valor si verdadero, valor si falso" style="max-width:100%; border-radius:6px; margin-top:1rem;">
       <p style="margin-top:.8rem; text-align:center;">
-        <a href="NeuroBiz_Ventas_S3.xlsx" download
+        <a href="Expendio_Soledad_S3.xlsx" download
            style="display:inline-block; background:var(--ok); color:#fff; padding:.5rem 1.2rem; border-radius:6px; text-decoration:none; font-weight:700; font-size:.85rem;">
-          📥 Descargar Excel (valores, sin fórmulas)
+          📥 Descargar inventario del expendio (valores, sin fórmulas)
         </a>
       </p>
     </div>
 
-    <h3 class="sec-sub">Tabla de asesores NeuroBiz — Alerta de cumplimiento</h3>
-    <p>Así luciría la hoja de trabajo en Excel. La columna <strong>F (Estado)</strong> se calcula automáticamente con <code>=SI()</code>.</p>
+    <h3 class="sec-sub">Inventario del expendio — Alerta de retiro</h3>
+    <p>La celda <strong>K1</strong> guarda la fecha de corte del conteo (06/11/2026). La columna <strong>C</strong> calcula los días para vencer
+    y la columna <strong>F</strong> decide con <code>=SI()</code>. En la vida real, K1 sería <code>=HOY()</code>.</p>
 
     <div class="excel-wrap">
       <div class="excel-toolbar">
-        <span>📊 NeuroBiz_Ventas_S3.xlsx</span>
-        <span class="fx-bar">fx &nbsp; =SI(E2&lt;70;"⚠️ ALERTA";"✅ Cumple")</span>
+        <span>📊 Expendio_Soledad_S3.xlsx</span>
+        <span class="fx-bar">fx &nbsp; =SI(C2&lt;0;"🚫 RETIRAR";"✅ Vendible")</span>
       </div>
       <div class="excel-grid">
         <table class="excel-table">
           <thead>
-            <tr>
-              <th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th>
-            </tr>
+            <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
           </thead>
           <tbody>
             <tr class="header-row">
               <td class="row-num">1</td>
-              <td>Asesor</td>
-              <td>Región</td>
-              <td>Ventas Logradas</td>
-              <td>Meta</td>
-              <td>Cumplimiento %</td>
+              <td>Producto</td><td>Vence</td><td>Días para vencer</td><td>Unidades</td><td>Precio</td>
               <td>Estado <code>=SI()</code></td>
             </tr>
             <tr>
               <td class="row-num">2</td>
-              <td>Carlos Mejía</td><td>Costa</td><td>420</td><td>600</td>
-              <td><code>=C2/D2*100</code> → <strong>70.0</strong></td>
-              <td class="formula">=SI(E2&lt;70;"⚠️ ALERTA";"✅ Cumple")</td>
+              <td>Pan para hamburguesa x6</td><td>05/11/2026</td>
+              <td><code>=B2-$K$1</code> → <strong>-1</strong></td><td>15</td><td>7.200</td>
+              <td class="formula">=SI(C2&lt;0;"🚫 RETIRAR";"✅ Vendible")</td>
             </tr>
-            <tr>
-              <td class="row-num">3</td>
-              <td>Laura Torres</td><td>Andina</td><td>310</td><td>500</td>
-              <td>62.0</td>
-              <td class="result-warn">⚠️ ALERTA</td>
-            </tr>
-            <tr>
-              <td class="row-num">4</td>
-              <td>Miguel Pérez</td><td>Costa</td><td>530</td><td>600</td>
-              <td>88.3</td>
-              <td class="result-ok">✅ Cumple</td>
-            </tr>
-            <tr>
-              <td class="row-num">5</td>
-              <td>Sandra Ruiz</td><td>Pacífico</td><td>290</td><td>450</td>
-              <td>64.4</td>
-              <td class="result-warn">⚠️ ALERTA</td>
-            </tr>
-            <tr>
-              <td class="row-num">6</td>
-              <td>Jorge Díaz</td><td>Andina</td><td>480</td><td>500</td>
-              <td>96.0</td>
-              <td class="result-ok">✅ Cumple</td>
-            </tr>
+            <tr><td class="row-num">3</td><td>Mantecadas x6</td><td>06/11/2026</td><td>0</td><td>30</td><td>6.300</td><td class="result-ok">✅ Vendible</td></tr>
+            <tr><td class="row-num">4</td><td>Pan tajado integral</td><td>08/11/2026</td><td>2</td><td>25</td><td>8.200</td><td class="result-ok">✅ Vendible</td></tr>
+            <tr><td class="row-num">5</td><td>Ponqué tajado</td><td>03/11/2026</td><td>-3</td><td>10</td><td>8.900</td><td class="result-warn">🚫 RETIRAR</td></tr>
+            <tr><td class="row-num">6</td><td>Pan tajado blanco 600 g</td><td>12/11/2026</td><td>6</td><td>40</td><td>7.500</td><td class="result-ok">✅ Vendible</td></tr>
           </tbody>
         </table>
       </div>
@@ -784,40 +773,38 @@
     <div class="callout callout-tip">
       <span class="ico">🧠</span>
       <div>
-        <strong>Lee la fórmula en voz alta:</strong> <em>"SI el cumplimiento (E2) es menor que 70,
-        entonces escribe '⚠️ ALERTA', de lo contrario escribe '✅ Cumple'."</em><br>
-        Eso es exactamente lo que hace el algoritmo — no hay magia, solo una pregunta y dos respuestas posibles.
+        <strong>Lee la fórmula en voz alta:</strong> <em>"SI los días para vencer (C2) son menores que 0,
+        entonces escribe '🚫 RETIRAR', de lo contrario escribe '✅ Vendible'."</em><br>
+        Fíjate en las Mantecadas: vencen hoy (0 días) y siguen siendo vendibles <strong>hoy</strong>. Mañana ya no.
       </div>
     </div>
 
-    <h3 class="sec-sub">SI() anidado — Tres categorías de desempeño</h3>
+    <h3 class="sec-sub">SI() anidado — Tres decisiones de precio</h3>
     <p>Cuando necesitas más de dos resultados, puedes anidar un <code>=SI()</code> dentro de otro
     (equivalente al SI-SINO-SI de la Semana 4). Por ahora, solo observa la lógica:</p>
 
     <div class="excel-wrap">
       <div class="excel-toolbar">
-        <span>📊 Clasificación de desempeño</span>
-        <span class="fx-bar">fx &nbsp; =SI(E2>=85;"🏆 Excelente";SI(E2>=70;"✅ Cumple";"⚠️ Alerta"))</span>
+        <span>📊 Decisión de precio</span>
+        <span class="fx-bar">fx &nbsp; =SI(C2&lt;0;"🚫 Retirar";SI(C2&lt;=3;"🏷️ Rebajar 30%";"✅ Precio normal"))</span>
       </div>
       <div class="excel-grid">
         <table class="excel-table">
-          <thead>
-            <tr><th></th><th>E — Cumplimiento %</th><th>G — Categoría</th></tr>
-          </thead>
+          <thead><tr><th></th><th>C — Días para vencer</th><th>G — Decisión</th></tr></thead>
           <tbody>
-            <tr class="header-row"><td class="row-num">1</td><td>Cumplimiento %</td><td>Categoría de desempeño</td></tr>
-            <tr><td class="row-num">2</td><td>70.0</td><td class="result-ok">✅ Cumple</td></tr>
-            <tr><td class="row-num">3</td><td>62.0</td><td class="result-warn">⚠️ Alerta</td></tr>
-            <tr><td class="row-num">4</td><td>88.3</td><td class="result-ok">🏆 Excelente</td></tr>
-            <tr><td class="row-num">5</td><td>64.4</td><td class="result-warn">⚠️ Alerta</td></tr>
-            <tr><td class="row-num">6</td><td>96.0</td><td class="result-ok">🏆 Excelente</td></tr>
+            <tr class="header-row"><td class="row-num">1</td><td>Días para vencer</td><td>Decisión de precio</td></tr>
+            <tr><td class="row-num">2</td><td>-1</td><td class="result-warn">🚫 Retirar</td></tr>
+            <tr><td class="row-num">3</td><td>0</td><td class="result-ok">🏷️ Rebajar 30%</td></tr>
+            <tr><td class="row-num">4</td><td>2</td><td class="result-ok">🏷️ Rebajar 30%</td></tr>
+            <tr><td class="row-num">5</td><td>-3</td><td class="result-warn">🚫 Retirar</td></tr>
+            <tr><td class="row-num">6</td><td>6</td><td class="result-ok">✅ Precio normal</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
     <h3 class="sec-sub">Calculadora interactiva de la función =SI()</h3>
-    <p>Simula lo que haría Excel con la fórmula de alerta. Cambia el porcentaje y observa el resultado.</p>
+    <p>Simula lo que haría Excel. Cambia los días para vencer (prueba con 0, con -1 y con -5) y el umbral de rebaja.</p>
 
     <div class="cell-card">
       <div class="cell-header">
@@ -827,13 +814,13 @@
       <div class="cell-body">
         <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;">
           <div>
-            <label style="font-size:.82rem;font-weight:700;color:var(--muted);display:block;margin-bottom:.3rem;">Cumplimiento % del asesor</label>
-            <input type="number" id="simCumpl" value="65" min="0" max="100" step="0.5"
+            <label style="font-size:.82rem;font-weight:700;color:var(--muted);display:block;margin-bottom:.3rem;">Días para vencer</label>
+            <input type="number" id="simDias" value="-2" min="-30" max="60" step="1"
               style="border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;font-size:.9rem;width:110px;">
           </div>
           <div>
-            <label style="font-size:.82rem;font-weight:700;color:var(--muted);display:block;margin-bottom:.3rem;">Meta mínima %</label>
-            <input type="number" id="simMeta" value="70" min="0" max="100" step="1"
+            <label style="font-size:.82rem;font-weight:700;color:var(--muted);display:block;margin-bottom:.3rem;">Umbral de rebaja (días)</label>
+            <input type="number" id="simUmbral" value="3" min="0" max="15" step="1"
               style="border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;font-size:.9rem;width:110px;">
           </div>
           <div style="padding-top:1.4rem;">
@@ -852,30 +839,21 @@
     <p>Excel también soporta condiciones múltiples dentro del <code>=SI()</code> usando las funciones <code>=Y()</code> y <code>=O()</code>:</p>
 
     <div class="code-block">
-      <pre><span class="cmt">// Alerta doble: bajo cumplimiento Y muchas ventas fallidas</span>
-=SI(<span class="fn">Y</span>(E2&lt;70; F2&gt;50); <span class="str">"🚨 CRÍTICO"</span>; <span class="str">"OK"</span>)
+      <pre><span class="cmt">// Próximo a vencer Y con muchas unidades: plan especial</span>
+=SI(<span class="fn">Y</span>(C2&gt;=0; C2&lt;=3; D2&gt;20); <span class="str">"📦 Evaluar donación"</span>; <span class="str">""</span>)
 
-<span class="cmt">// Aplica para Costa O Andina</span>
-=SI(<span class="fn">O</span>(B2=<span class="str">"Costa"</span>; B2=<span class="str">"Andina"</span>); <span class="str">"Región prioritaria"</span>; <span class="str">"Otra región"</span>)</pre>
+<span class="cmt">// Aplica a pan tajado O ponqué</span>
+=SI(<span class="fn">O</span>(H2=<span class="str">"Pan tajado"</span>; H2=<span class="str">"Ponqué"</span>); <span class="str">"Línea prioritaria"</span>; <span class="str">"Otra línea"</span>)</pre>
     </div>
   </section>
 
   <!-- ══════════ PYTHON -->
   <section id="python">
-    <h2 class="sec-title">🐍 Python — if / elif / else aplicado a NeuroBiz</h2>
+    <h2 class="sec-title">🐍 Python — if aplicado al expendio</h2>
 
-    <p>Python extiende lo que Excel hace en una celda: puede procesar <strong>toda la base de asesores</strong> de forma automática,
-    generar reportes, enviar alertas masivas y conectarse a otras herramientas. La lógica es la misma; la escala es mayor.</p>
-
-    <!-- IMAGEN 3 -->
-    <div class="img-placeholder">
-      <span class="img-icon">🖼️</span>
-      <strong>Alerta automática desde Python al sistema de gestión</strong>
-      <img
-        src="alerta_asesor_meta.png" alt="Notificación de alerta empresarial generada por Python — Asesor bajo meta"
-        style="max-width:100%; border-radius:6px; margin-top:1rem;"
-      >
-    </div>
+    <p>Excel te ayudó a <strong>diseñar</strong> la regla. Python la convierte en una <strong>rutina</strong>: el mismo código revisa
+    todo el inventario cada mañana, resta fechas sin arrastrar fórmulas y te permite <strong>comparar políticas</strong> antes de aplicarlas.
+    Aquí no compites contra Excel: tomas decisiones que en una hoja de cálculo serían lentas o propensas a error.</p>
 
     <div class="callout callout-info">
       <span class="ico">📌</span>
@@ -883,167 +861,243 @@
         <strong>Diferencias clave vs Excel:</strong><br>
         • Python no usa <code>FSI</code> para cerrar — el bloque se cierra con <strong>indentación</strong> (4 espacios).<br>
         • Python usa <code>and</code> / <code>or</code> en lugar de <code>Y()</code> / <code>O()</code>.<br>
-        • Python usa <code>==</code> para comparar igualdad (no <code>=</code> como en Excel).
+        • Python usa <code>==</code> para comparar igualdad (no <code>=</code> como en Excel).<br>
+        • Python resta fechas directamente: <code>(vence - hoy).days</code> da los días para vencer.
       </div>
     </div>
 
     <p style="font-size:.82rem;color:var(--muted);font-style:italic;" class="py-status" id="pyStatus">⏳ Iniciando motor Python (Pyodide)…</p>
 
-    <!-- CELDA 1 -->
     <div class="cell-card">
       <div class="cell-header">
-        <span>🐍 Celda 1 — Alerta simple de cumplimiento</span>
+        <span>🐍 Celda 1 — Alerta simple de retiro</span>
         <span class="lang-badge">Python · Ejecutable</span>
       </div>
       <div class="cell-body">
-        <textarea id="py1" rows="18">
+        <textarea id="py1" rows="22">
 # ── Alerta simple: if en Python ──
-# Equivalente a =SI(cumplimiento < 70; "ALERTA"; "Cumple") en Excel
+# Equivalente a =SI(C2&lt;0; "🚫 RETIRAR"; "✅ Vendible") en Excel
+from datetime import date
 
-asesor = "Laura Torres"
-ventas_logradas = 310
-meta_ventas     = 500
+producto          = "Pan para hamburguesa x6"
+fecha_vencimiento = date(2026, 11, 5)
+FECHA_CORTE       = date(2026, 11, 6)   # día del conteo de inventario
 
-# Calcular cumplimiento (tipo REAL en pseudocódigo)
-cumplimiento = (ventas_logradas / meta_ventas) * 100
+# Python resta fechas directamente: el resultado son días
+dias_para_vencer = (fecha_vencimiento - FECHA_CORTE).days
 
-print(f"=== NEUROBIZ S.A.S. — REPORTE DE CUMPLIMIENTO ===")
-print(f"Asesor: {asesor}")
-print(f"Ventas logradas: {ventas_logradas}  |  Meta: {meta_ventas}")
-print(f"Cumplimiento: {cumplimiento:.1f}%")
+print("=== EXPENDIO DE FÁBRICA · SOLEDAD ===")
+print(f"Producto: {producto}")
+print(f"Vence: {fecha_vencimiento}  |  Corte: {FECHA_CORTE}")
+print(f"Días para vencer: {dias_para_vencer}")
 print()
 
-META_MINIMA = 70.0   # constante del negocio
+if dias_para_vencer &lt; 0:
+    print("🚫 RETIRAR DE LA VITRINA: producto vencido")
+    print("   Ya no es comercializable (Res. 5109 de 2005, art. 3)")
 
-if cumplimiento < META_MINIMA:
-    print("⚠️  ALERTA: cumplimiento por debajo de la meta")
-    print(f"   Faltan {META_MINIMA - cumplimiento:.1f} puntos porcentuales para llegar a {META_MINIMA}%")
-
-print("Análisis completado.")
+print("Revisión completada.")
 </textarea>
         <div class="cell-actions">
           <button class="btn-run" onclick="runPy('py1','out1')">▶ Ejecutar</button>
           <button class="btn-reset" onclick="resetPy('py1',1)">↺ Restaurar</button>
-          <span style="font-size:.75rem;color:var(--muted)">Prueba: cambia ventas_logradas a 450 → el if no debe dispararse</span>
+          <span style="font-size:.75rem;color:var(--muted)">Prueba: cambia la fecha de vencimiento a date(2026, 11, 6) → el if no debe dispararse</span>
         </div>
         <div class="cell-output" id="out1"></div>
       </div>
     </div>
 
-    <!-- CELDA 2 -->
     <div class="cell-card">
       <div class="cell-header">
-        <span>🐍 Celda 2 — Alerta doble con condición compuesta</span>
+        <span>🐍 Celda 2 — Condiciones compuestas y la «regla del rumor»</span>
         <span class="lang-badge">Python · Ejecutable</span>
       </div>
       <div class="cell-body">
-        <textarea id="py2" rows="22">
-# ── Condición compuesta: and / or ──
-# Equivalente a =SI(Y(E2<70; F2>50); "CRÍTICO"; "OK") en Excel
+        <textarea id="py2" rows="30">
+# ── Condición compuesta: and ──
+# Equivalente a =SI(Y(C2&gt;=0; C2&lt;=3; D2&gt;20); "📦 Plan especial"; "") en Excel
 
-asesor         = "Sandra Ruiz"
-cumplimiento   = 64.4   # %
-ventas_fallidas = 58    # número de cierres perdidos
+producto         = "Mantecadas x6"
+dias_para_vencer = 0      # vence HOY: todavía se puede vender hoy
+unidades         = 30
+precio           = 6300   # COP por paquete
 
-print(f"=== NEUROBIZ — ANÁLISIS DOBLE ===")
-print(f"Asesor: {asesor}")
-print(f"Cumplimiento: {cumplimiento}%  |  Ventas fallidas: {ventas_fallidas}")
+print("=== EXPENDIO SOLEDAD — PRODUCTO EN RIESGO ===")
+print(f"{producto}: vence en {dias_para_vencer} días · {unidades} unidades")
 print()
 
-# Condición compuesta: ambas deben ser verdaderas (and)
-if cumplimiento < 70 and ventas_fallidas > 50:
-    print("🚨 ALERTA CRÍTICA: bajo cumplimiento y alto número de fallas")
-    print("   Acción requerida: reunión de acompañamiento esta semana")
+# 1) Próximo a vencer (entre 0 y 3 días): rebajar
+if dias_para_vencer &gt;= 0 and dias_para_vencer &lt;= 3:
+    print("🏷️  Aplicar descuento del 30 %")
+    print(f"   Precio con descuento: ${precio * 0.70:,.0f}")
 
-# Condición simple adicional
-if cumplimiento >= 85:
-    print("🏆 Desempeño excelente — asesor candidato a incentivo")
+# 2) Próximo a vencer Y con muchas unidades: plan especial
+if dias_para_vencer &gt;= 0 and dias_para_vencer &lt;= 3 and unidades &gt; 20:
+    print("📦 Demasiadas unidades para vender a tiempo:")
+    print("   evaluar donación a un banco de alimentos ANTES de la fecha")
 
-print("Monitoreo completado.")
+# 3) La "regla del rumor": ¿y si ya venció hace poco?
+REGLA_RUMOR = 5   # "si no han pasado 5 días, todavía sirve"
+if dias_para_vencer &lt; 0 and dias_para_vencer &gt;= -REGLA_RUMOR:
+    print("⛔ El rumor diría 'todavía sirve', pero la norma dice: NO se vende")
+
+print("Análisis completado.")
 </textarea>
         <div class="cell-actions">
           <button class="btn-run" onclick="runPy('py2','out2')">▶ Ejecutar</button>
           <button class="btn-reset" onclick="resetPy('py2',2)">↺ Restaurar</button>
-          <span style="font-size:.75rem;color:var(--muted)">Prueba: cambia cumplimiento a 88 → debe aparecer el mensaje de excelente</span>
+          <span style="font-size:.75rem;color:var(--muted)">Prueba: dias_para_vencer = -3 → ¿qué responde el sistema al rumor? Luego unidades = 10</span>
         </div>
         <div class="cell-output" id="out2"></div>
       </div>
     </div>
 
-    <!-- CELDA 3 -->
     <div class="cell-card">
       <div class="cell-header">
-        <span>🐍 Celda 3 — Procesando varios asesores con un bucle</span>
+        <span>🐍 Celda 3 — Revisar todo el inventario de una vez</span>
         <span class="lang-badge">Python · Ejecutable</span>
       </div>
       <div class="cell-body">
-        <textarea id="py3" rows="28">
-# ── Procesar toda la tabla de asesores ──
-# Aquí Python supera a Excel: analiza todos los registros de una vez
+        <textarea id="py3" rows="44">
+# ── Revisar TODO el inventario del expendio ──
+# En Excel copiarías la fórmula fila por fila; aquí un solo if recorre todo
+from datetime import date
 
-asesores = [
-    {"nombre": "Carlos Mejía",  "region": "Costa",    "cumplimiento": 70.0},
-    {"nombre": "Laura Torres",  "region": "Andina",   "cumplimiento": 62.0},
-    {"nombre": "Miguel Pérez",  "region": "Costa",    "cumplimiento": 88.3},
-    {"nombre": "Sandra Ruiz",   "region": "Pacífico", "cumplimiento": 64.4},
-    {"nombre": "Jorge Díaz",    "region": "Andina",   "cumplimiento": 96.0},
+FECHA_CORTE = date(2026, 11, 6)   # prueba: cámbialo por date.today()
+UMBRAL_DESC = 3                   # días: desde aquí se rebaja
+DESCUENTO   = 0.30
+
+inventario = [
+    # (producto, vence, unidades, precio COP)
+    ("Pan tajado blanco 600 g",  date(2026, 11, 12), 40, 7500),
+    ("Pan tajado integral",      date(2026, 11,  8), 25, 8200),
+    ("Pan artesanal",            date(2026, 11,  7), 12, 9500),
+    ("Mantecadas x6",            date(2026, 11,  6), 30, 6300),
+    ("Tostadas",                 date(2026, 11, 26), 18, 5800),
+    ("Pan para perros x8",       date(2026, 11,  9), 22, 6900),
+    ("Pan para hamburguesa x6",  date(2026, 11,  5), 15, 7200),
+    ("Ponqué tajado",            date(2026, 11,  3), 10, 8900),
+    ("Roscón de arequipe",       date(2026, 11,  8), 35, 4200),
+    ("Pan mini tajado",          date(2026, 11, 10), 28, 3900),
+    ("Brownie x4",               date(2026, 11,  4),  9, 7800),
+    ("Pan blanco familiar",      date(2026, 11,  7), 20, 9900),
 ]
 
-META_MINIMA = 70.0
-
-print("=== NEUROBIZ — REPORTE GENERAL DE ASESORES ===")
-print(f"{'Asesor':<16} {'Región':<12} {'Cumpl.':>8}  Estado")
+print(f"=== INVENTARIO EXPENDIO SOLEDAD · corte {FECHA_CORTE} ===")
+print(f"{'Producto':&lt;25}{'Días':&gt;5}  Estado")
 print("-" * 52)
 
-alertas = 0
-for a in asesores:
-    if a["cumplimiento"] >= 85:
-        estado = "🏆 Excelente"
-    elif a["cumplimiento"] >= META_MINIMA:
-        estado = "✅ Cumple"
-    else:
-        estado = "⚠️ ALERTA"
-        alertas += 1
-    print(f"{a['nombre']:<16} {a['region']:<12} {a['cumplimiento']:>7.1f}%  {estado}")
+retirar, rebajar = 0, 0
+valor_perdido = 0
+for producto, vence, unidades, precio in inventario:
+    dias = (vence - FECHA_CORTE).days
+    estado = "✅ Precio normal"
+    if dias &lt;= UMBRAL_DESC:
+        estado = f"🏷️ Rebajar {DESCUENTO:.0%}"
+    if dias &lt; 0:
+        estado = "🚫 RETIRAR"
+    print(f"{producto:&lt;25}{dias:&gt;5}  {estado}")
+    if dias &lt; 0:
+        retirar += 1
+        valor_perdido += unidades * precio
+    if dias &gt;= 0 and dias &lt;= UMBRAL_DESC:
+        rebajar += 1
 
 print("-" * 52)
-print(f"Total asesores en alerta: {alertas} / {len(asesores)}")
+print(f"Para retirar: {retirar} · Para rebajar: {rebajar} · de {len(inventario)}")
+print(f"Valor que ya se perdió por vencimiento: ${valor_perdido:,.0f}")
 </textarea>
         <div class="cell-actions">
           <button class="btn-run" onclick="runPy('py3','out3')">▶ Ejecutar</button>
           <button class="btn-reset" onclick="resetPy('py3',3)">↺ Restaurar</button>
-          <span style="font-size:.75rem;color:var(--muted)">Aquí verás el poder real de Python: un solo if procesa todos los registros</span>
+          <span style="font-size:.75rem;color:var(--muted)">Cambia UMBRAL_DESC a 1 y a 5: ¿cuántos productos cambian de estado?</span>
         </div>
         <div class="cell-output" id="out3"></div>
       </div>
     </div>
 
-    <!-- CELDA LIBRE -->
+    <div class="cell-card">
+      <div class="cell-header">
+        <span>🐍 Celda 4 — Simulador de políticas: tú decides</span>
+        <span class="lang-badge">Python · Ejecutable</span>
+      </div>
+      <div class="cell-body">
+        <textarea id="py4" rows="38">
+# ── Simulador de políticas: TÚ decides ──
+# Pregunta gerencial: ¿desde cuántos días antes rebajo, y cuánto?
+# Supuestos del caso (puedes cambiarlos):
+#  · Con descuento se vende más: 20 % → 80 %, 30 % → 90 %, 40 % → 97 %.
+#  · Sin descuento, si vence en 3 días o menos, solo se vende el 40 %.
+#  · Si faltan más de 3 días, se vende el 95 % a precio normal.
+
+inventario = [  # (días para vencer, unidades, precio) — vigentes
+    (6, 40, 7500), (2, 25, 8200), (1, 12, 9500), (0, 30, 6300),
+    (20, 18, 5800), (3, 22, 6900), (2, 35, 4200), (4, 28, 3900),
+    (1, 20, 9900),
+]
+
+def simular(umbral, descuento):
+    ingreso, desperdicio = 0, 0
+    for dias, unidades, precio in inventario:
+        venta = 0.95
+        if dias &lt;= 3:
+            venta = 0.40
+        if dias &lt;= umbral:
+            venta = 0.60 + descuento
+            if venta &gt; 0.97:
+                venta = 0.97
+            precio = precio * (1 - descuento)
+        ingreso += unidades * venta * precio
+        desperdicio += unidades * (1 - venta)
+    return ingreso, desperdicio
+
+print(f"{'Umbral':&gt;7}{'Desc.':&gt;7}{'Ingreso esperado':&gt;19}{'Unid. perdidas':&gt;16}")
+print("-" * 49)
+for umbral in [1, 2, 3, 4, 5]:
+    for descuento in [0.20, 0.30, 0.40]:
+        ingreso, perdidas = simular(umbral, descuento)
+        print(f"{umbral:&gt;5} d{descuento:&gt;7.0%}{ingreso:&gt;19,.0f}{perdidas:&gt;16.0f}")
+
+# 15 escenarios en un segundo. En Excel: 15 copias de la hoja
+# o una "tabla de datos". ¿Cuál política eliges y por qué?
+</textarea>
+        <div class="cell-actions">
+          <button class="btn-run" onclick="runPy('py4','out4')">▶ Ejecutar</button>
+          <button class="btn-reset" onclick="resetPy('py4',4)">↺ Restaurar</button>
+          <span style="font-size:.75rem;color:var(--muted)">Elige una fila de la tabla y defiéndela: ¿priorizas ingreso o menos desperdicio?</span>
+        </div>
+        <div class="cell-output" id="out4"></div>
+      </div>
+    </div>
+
     <div class="cell-card">
       <div class="cell-header">
         <span>✨ Celda Libre — Tu turno</span>
         <span class="lang-badge">Python · Ejecutable</span>
       </div>
       <div class="cell-body">
-        <textarea id="py4" rows="16">
-# ── Celda libre ──
+        <textarea id="py5" rows="18">
+# ── Celda libre: tu propia regla ──
 # Ideas para practicar:
-# 1. Crea un if que clasifique un pedido según su monto
-#    (pequeño < 100.000 / mediano < 500.000 / grande >= 500.000)
-# 2. Evalúa si un empleado cumple los requisitos de bonificación
-#    (antigüedad > 2 años AND evaluación >= 80)
-# 3. Calcula el descuento de una factura según el valor total
+# 1. Si el producto es de la línea "Ponqué" y vence en 2 días o menos,
+#    imprime "Ubicar en la vitrina de la entrada".
+# 2. Si las unidades a retirar valen más de $100.000,
+#    imprime una alerta para el jefe de planta.
+# 3. Pregunta tu propia: ¿qué otra decisión del expendio automatizarías?
 
 # Escribe tu código aquí:
-monto_pedido = 320000
+producto = "Ponqué tajado"
+dias_para_vencer = 2
+unidades = 14
+precio = 8900
 
 # Tu lógica if aquí...
 </textarea>
         <div class="cell-actions">
-          <button class="btn-run" onclick="runPy('py4','out4')">▶ Ejecutar</button>
-          <button class="btn-reset" onclick="resetPy('py4',4)">↺ Restaurar</button>
-        </div>
-        <div class="cell-output" id="out4"></div>
+          <button class="btn-run" onclick="runPy('py5','out5')">▶ Ejecutar</button>
+          <button class="btn-reset" onclick="resetPy('py5',5)">↺ Restaurar</button>
+                  </div>
+        <div class="cell-output" id="out5"></div>
       </div>
     </div>
   </section>
@@ -1074,59 +1128,54 @@ monto_pedido = 320000
     </details>
 
     <details>
-      <summary>📝 AlertaCumplimientoNeuroBiz — pseudocódigo completo</summary>
+      <summary>📝 AlertaRetiroExpendio — pseudocódigo completo</summary>
       <div class="details-body">
         <div class="code-block">
-          <pre><span class="kw">ALGORITMO</span> AlertaCumplimientoNeuroBiz
+          <pre><span class="kw">ALGORITMO</span> AlertaRetiroExpendio
 <span class="kw">VARIABLES</span>
-  cumplimiento   : <span class="kw">REAL</span>
-  META_MINIMA    : <span class="kw">REAL</span>
-  nombre_asesor  : <span class="kw">CADENA</span>
+  producto          : <span class="kw">CADENA</span>
+  dias_para_vencer  : <span class="kw">ENTERO</span>
 <span class="kw">INICIO</span>
-  META_MINIMA ← <span class="num">70.0</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Nombre del asesor:"</span>
-  <span class="fn">LEER</span> nombre_asesor
-  <span class="fn">ESCRIBIR</span> <span class="str">"Cumplimiento de meta (%):"</span>
-  <span class="fn">LEER</span> cumplimiento
+  <span class="fn">ESCRIBIR</span> <span class="str">"Nombre del producto:"</span>
+  <span class="fn">LEER</span> producto
+  <span class="fn">ESCRIBIR</span> <span class="str">"Días para vencer:"</span>
+  <span class="fn">LEER</span> dias_para_vencer
 
-  <span class="kw">SI</span> cumplimiento &lt; META_MINIMA <span class="kw">ENTONCES</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"⚠️ ALERTA: cumplimiento crítico"</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"Asesor: "</span> + nombre_asesor
-    <span class="fn">ESCRIBIR</span> <span class="str">"Actual: "</span> + cumplimiento + <span class="str">"% / Meta: "</span> + META_MINIMA + <span class="str">"%"</span>
+  <span class="kw">SI</span> dias_para_vencer &lt; <span class="num">0</span> <span class="kw">ENTONCES</span>
+    <span class="fn">ESCRIBIR</span> <span class="str">"🚫 RETIRAR: producto vencido"</span>
+    <span class="fn">ESCRIBIR</span> <span class="str">"Producto: "</span> + producto
   <span class="kw">FSI</span>
 
-  <span class="fn">ESCRIBIR</span> <span class="str">"Análisis completado."</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Revisión completada."</span>
 <span class="kw">FIN</span></pre>
         </div>
         <h4 style="margin-top:1rem;font-size:.88rem;color:var(--brand);">Prueba de escritorio</h4>
         <table class="data-table">
           <thead><tr><th>Caso</th><th>Entrada</th><th>¿Condición?</th><th>¿Qué imprime?</th></tr></thead>
           <tbody>
-            <tr><td>Caso 1</td><td>cumplimiento = 65.0</td><td>Verdadera</td><td>Alerta + datos del asesor + "Análisis completado"</td></tr>
-            <tr><td>Caso 2</td><td>cumplimiento = 82.0</td><td>Falsa</td><td>Solo "Análisis completado"</td></tr>
+            <tr><td>Caso 1</td><td>dias_para_vencer = -2</td><td>Verdadera</td><td>Alerta de retiro + producto + "Revisión completada"</td></tr>
+            <tr><td>Caso 2</td><td>dias_para_vencer = 0</td><td>Falsa</td><td>Solo "Revisión completada" (vence hoy: aún se vende hoy)</td></tr>
           </tbody>
         </table>
       </div>
     </details>
 
     <details>
-      <summary>📝 AlertaDoble — condición compuesta Y</summary>
+      <summary>📝 PlanEspecial — condición compuesta Y</summary>
       <div class="details-body">
         <div class="code-block">
-          <pre><span class="kw">ALGORITMO</span> AlertaDobleNeuroBiz
+          <pre><span class="kw">ALGORITMO</span> PlanEspecialExpendio
 <span class="kw">VARIABLES</span>
-  cumplimiento    : <span class="kw">REAL</span>
-  ventas_fallidas : <span class="kw">ENTERO</span>
+  dias_para_vencer : <span class="kw">ENTERO</span>
+  unidades         : <span class="kw">ENTERO</span>
 <span class="kw">INICIO</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Cumplimiento de meta (%):"</span>
-  <span class="fn">LEER</span> cumplimiento
-  <span class="fn">ESCRIBIR</span> <span class="str">"Ventas fallidas este mes:"</span>
-  <span class="fn">LEER</span> ventas_fallidas
+  <span class="fn">LEER</span> dias_para_vencer
+  <span class="fn">LEER</span> unidades
 
-  <span class="kw">SI</span> cumplimiento &lt; <span class="num">70.0</span> <span class="kw">Y</span> ventas_fallidas &gt; <span class="num">50</span> <span class="kw">ENTONCES</span>
-    <span class="fn">ESCRIBIR</span> <span class="str">"🚨 ALERTA CRÍTICA: intervención urgente"</span>
+  <span class="kw">SI</span> dias_para_vencer &gt;= <span class="num">0</span> <span class="kw">Y</span> dias_para_vencer &lt;= <span class="num">3</span> <span class="kw">Y</span> unidades &gt; <span class="num">20</span> <span class="kw">ENTONCES</span>
+    <span class="fn">ESCRIBIR</span> <span class="str">"📦 Evaluar donación antes de la fecha"</span>
   <span class="kw">FSI</span>
-  <span class="fn">ESCRIBIR</span> <span class="str">"Monitoreo completado."</span>
+  <span class="fn">ESCRIBIR</span> <span class="str">"Análisis completado."</span>
 <span class="kw">FIN</span></pre>
         </div>
       </div>
@@ -1140,73 +1189,84 @@ monto_pedido = 320000
     <div class="pts-summary">
       <div class="pts-chip"><span>📋 Asistencia</span><span class="pts-num">+10 XP</span></div>
       <div class="pts-chip"><span>🎮 Quiz (5 preguntas)</span><span class="pts-num">+25 XP</span></div>
-      <div class="pts-chip"><span>🎯 Misión NeuroBiz</span><span class="pts-num">+25 XP</span></div>
+      <div class="pts-chip"><span>🎯 Misión Expendio</span><span class="pts-num">+25 XP</span></div>
     </div>
 
     <div class="activity-block">
       <p class="block-label">⏱️ Bloque 1 — Entender la estructura SI · Bloom: Comprender</p>
       <ol class="block-ol">
-        <li>Revisar el memorando de la Gerencia Comercial y la tabla de KPIs.</li>
-        <li>Dibujar en el tablero el rombo de decisión con sus dos salidas: Sí / No.</li>
-        <li>Usar el ejemplo del semáforo y conectarlo con la alerta de cumplimiento de NeuroBiz.</li>
-        <li>Mostrar en el proyector la tabla de Excel con la columna <code>=SI()</code> y pedir a los estudiantes que lean la fórmula en voz alta.</li>
+        <li>Leer el memorando del expendio de fábrica y los KPIs.</li>
+        <li>Pregunta abierta al grupo: <em>"¿Alguien ha comprado en el expendio? ¿Qué ha escuchado sobre los días después del vencimiento?"</em> Anotar las respuestas en el tablero sin corregirlas todavía.</li>
+        <li>Dibujar el rombo de decisión <code>¿dias_para_vencer &lt; 0?</code> con sus dos salidas: Sí / No.</li>
+        <li>Revisar la sección 3 de teoría y contrastar con lo anotado: ¿qué respuestas eran rumor y cuáles norma?</li>
       </ol>
     </div>
 
     <div class="activity-block">
       <p class="block-label">⏱️ Bloque 2 — Excel en vivo · Bloom: Comprender → Aplicar</p>
       <ol class="block-ol">
-        <li>Abrir Excel (o Google Sheets) y construir la tabla de asesores de NeuroBiz desde cero.</li>
-        <li>Escribir juntos la fórmula <code>=SI(E2&lt;70;"⚠️ ALERTA";"✅ Cumple")</code> en la columna Estado.</li>
-        <li>Cambiar el valor de cumplimiento de un asesor y observar cómo cambia el resultado automáticamente.</li>
-        <li>Proponer en grupo: ¿cómo cambiarías la fórmula para agregar una categoría "🏆 Excelente"?</li>
+        <li>Abrir el archivo <code>Expendio_Soledad_S3.xlsx</code>; revisar la fecha de corte en K1.</li>
+        <li>Calcular <code>=B2-$K$1</code> en la columna C y explicar por qué se usa <code>$</code>.</li>
+        <li>Escribir juntos <code>=SI(C2&lt;0;"🚫 RETIRAR";"✅ Vendible")</code> y arrastrar.</li>
+        <li>Cambiar K1 a una fecha dos días después: ¿cuántos productos pasan a RETIRAR?</li>
       </ol>
     </div>
 
     <div class="activity-block">
-      <p class="block-label">⏱️ Bloque 3 — Misión NeuroBiz · Bloom: Aplicar</p>
+      <p class="block-label">⏱️ Bloque 3 — Python decide · Bloom: Aplicar → Evaluar</p>
+      <ol class="block-ol">
+        <li>Ejecutar la Celda 3 y comparar con la hoja de Excel: mismo resultado, sin arrastrar fórmulas.</li>
+        <li>En grupos, ejecutar la Celda 4 y escoger una política (umbral y descuento). Cada grupo la defiende en 1 minuto.</li>
+        <li>Debate: ¿qué pasa si mañana el inventario tiene 1.800 referencias y hay que decidir antes de abrir a las 7:00 a. m.?</li>
+      </ol>
+    </div>
+
+    <div class="activity-block">
+      <p class="block-label">⏱️ Bloque 4 — Misión Expendio · Bloom: Aplicar</p>
       <p style="font-size:.88rem;margin-bottom:.8rem;">Responde cada pregunta y haz clic en <strong>Verificar</strong> para obtener retroalimentación inmediata.</p>
 
       <div class="mission-q">
         <p class="mission-q-header">1 <span class="xp-pill">+5 XP</span> — Fórmula Excel</p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe la fórmula <code>=SI()</code> para clasificar el cumplimiento de la celda E2 en: "Excelente" si ≥85, "Cumple" si ≥70, "Alerta" si es menor. (Pista: SI anidado)</p>
-        <textarea placeholder="=SI(E2>=85; …; SI(E2>=70; …; …))"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, '=SI(E2>=85', 'm1r')">🔍 Verificar</button>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe la fórmula <code>=SI()</code> anidada que decida con los días de C2: "Retirar" si es menor que 0, "Rebajar" si es menor o igual a 3, "Precio normal" en otro caso.</p>
+        <textarea placeholder="=SI(C2<0; …; SI(C2<=3; …; …))"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, '=SI(C2<0', 'm1r')">🔍 Verificar</button>
         <div class="verify-result" id="m1r"></div>
       </div>
 
       <div class="mission-q">
         <p class="mission-q-header">2 <span class="xp-pill">+5 XP</span> — Python básico</p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe el bloque <code>if</code> en Python que imprima "⚠️ ALERTA" si <code>cumplimiento &lt; 70</code>. Recuerda la indentación.</p>
-        <textarea placeholder="if cumplimiento < 70:&#10;    print(...)"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, 'if cumplimiento', 'm2r')">🔍 Verificar</button>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe el bloque <code>if</code> en Python que imprima "🚫 RETIRAR" si <code>dias_para_vencer &lt; 0</code>. Recuerda la indentación.</p>
+        <textarea placeholder="if dias_para_vencer < 0:&#10;    print(...)"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, 'if dias', 'm2r')">🔍 Verificar</button>
         <div class="verify-result" id="m2r"></div>
       </div>
 
       <div class="mission-q">
         <p class="mission-q-header">3 <span class="xp-pill">+5 XP</span> — Condición compuesta</p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">¿Cómo escribirías en Excel la condición "cumplimiento menor a 70 Y ventas fallidas mayor a 50"? Usa la función <code>=Y()</code>.</p>
-        <textarea placeholder="=SI(Y(E2<70; F2>50); …; …)"></textarea>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">¿Cómo escribirías en Excel "vence entre 0 y 3 días Y tiene más de 20 unidades"? Usa la función <code>=Y()</code>.</p>
+        <textarea placeholder="=SI(Y(C2>=0; C2<=3; D2>20); …; …)"></textarea>
         <button class="btn-verify" onclick="verifyQ(this, 'Y(', 'm3r')">🔍 Verificar</button>
         <div class="verify-result" id="m3r"></div>
       </div>
 
       <div class="mission-q">
-        <p class="mission-q-header">4 <span class="xp-pill">+5 XP</span> — Prueba de escritorio</p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Para el algoritmo de alerta simple, describe qué imprime el sistema con <code>cumplimiento = 65</code> y qué imprime con <code>cumplimiento = 82</code>.</p>
-        <textarea placeholder="Con 65: … | Con 82: …"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, '', 'm4r')">🔍 Verificar</button>
+        <p class="mission-q-header">4 <span class="xp-pill">+5 XP</span> — Prueba de escritorio y el rumor</p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Con <code>=SI(C2&lt;0;"RETIRAR";"Vendible")</code>, ¿qué muestra Excel con C2 = 0 y con C2 = -2?
+        Un vendedor propone cambiarla por <code>=SI(C2&lt;-5;"RETIRAR";"Vendible")</code>. ¿Qué mostraría con C2 = -2 y por qué no debes aceptarla?</p>
+        <textarea placeholder="Con 0: … | Con -2: … | La propuesta del vendedor…"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, 'vendible', 'm4r')">🔍 Verificar</button>
         <div class="verify-result" id="m4r"></div>
       </div>
 
       <div class="mission-q">
-        <p class="mission-q-header">5 <span class="xp-pill">+5 XP</span> — Reflexión aplicada</p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">¿En qué situación real de tu carrera (gestión de personal, ventas, logística…) usarías una alerta condicional automática? Describe brevemente el caso.</p>
-        <textarea placeholder="En el área de… cuando… el sistema debería alertar si…"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, '', 'm5r')">🔍 Verificar</button>
+        <p class="mission-q-header">5 <span class="xp-pill">+5 XP</span> — Decisión de herramienta</p>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Para cada tarea elige Excel o Python y justifica con un criterio de la sección 6:
+        (a) revisar hoy las 12 referencias del ejemplo; (b) generar cada mañana la lista de retiro de 1.800 referencias;
+        (c) comparar 15 políticas de descuento antes de la reunión con el jefe de planta.</p>
+        <textarea placeholder="(a) … porque … | (b) … porque … | (c) … porque …"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, 'python', 'm5r')">🔍 Verificar</button>
         <div class="verify-result" id="m5r"></div>
       </div>
-
     </div>
   </section>
 
@@ -1216,49 +1276,50 @@ monto_pedido = 320000
     <p style="margin-bottom:.8rem;">Consolida la lógica condicional antes de pasar a SI-SINO (Semana 4).</p>
 
     <div class="activity-block">
-      <p class="block-label">📚 HTI-A — Lectura y observación</p>
+      <p class="block-label">📚 HTI-A — Observación de campo</p>
       <ol class="block-ol">
-        <li>Abre Google Sheets o Excel y replica la tabla de asesores NeuroBiz de esta semana.</li>
-        <li>Agrega la columna <code>=SI()</code> con la fórmula de alerta y verifica los resultados.</li>
-        <li>Dibuja en tu cuaderno el rombo de decisión con sus dos ramas y etiquétalas.</li>
+        <li>Si te queda cerca, visita un expendio de fábrica o la sección de "próximos a vencer" de un supermercado. Si no, revisa los empaques de pan que tengas en casa.</li>
+        <li>Anota de 3 productos: nombre, qué dice la etiqueta ("Vence" o "Consumir preferentemente antes de"), fecha y precio.</li>
+        <li>Sin datos personales ni fotos de personas. Solo productos y etiquetas.</li>
       </ol>
     </div>
 
     <div class="activity-block">
-      <p class="block-label">✏️ HTI-B — Nueva fórmula y nuevo caso</p>
+      <p class="block-label">✏️ HTI-B — Nueva fórmula y nueva decisión</p>
 
       <div class="mission-q">
         <p class="mission-q-header">HTI-1 <span class="xp-pill small">+4 XP</span></p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe en Excel la fórmula <code>=SI()</code> que muestre "🎁 Descuento 15%" si el monto de compra en B2 supera $500.000, o "" (vacío) si no.</p>
-        <textarea placeholder="=SI(B2>500000; …; …)"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, '500000', 'h1r')">🔍 Verificar</button>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe en Excel la fórmula que muestre "📦 Evaluar donación" si C2 está entre 0 y 2 días Y D2 tiene más de 20 unidades, o "" (vacío) si no.</p>
+        <textarea placeholder="=SI(Y(…; …; …); …; …)"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, 'Y(', 'h1r')">🔍 Verificar</button>
         <div class="verify-result" id="h1r"></div>
       </div>
 
       <div class="mission-q">
         <p class="mission-q-header">HTI-2 <span class="xp-pill small">+4 XP</span></p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe el equivalente en Python: <code>if monto &gt; 500000: print("Descuento 15%")</code>. ¿Por qué no se necesita <code>FSI</code>?</p>
-        <textarea placeholder="Porque en Python…"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, 'indentaci', 'h2r')">🔍 Verificar</button>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe el equivalente en Python de HTI-1 usando <code>and</code>. ¿Por qué no se necesita <code>FSI</code>?</p>
+        <textarea placeholder="if … and … and …:&#10;    print(…)&#10;No se necesita FSI porque…"></textarea>
+        <button class="btn-verify" onclick="verifyQ(this, 'and', 'h2r')">🔍 Verificar</button>
         <div class="verify-result" id="h2r"></div>
       </div>
 
       <div class="mission-q">
         <p class="mission-q-header">HTI-3 <span class="xp-pill small">+4 XP</span></p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">¿Cuál es la diferencia entre usar <code>=Y()</code> y <code>=O()</code> en Excel? Da un ejemplo de negocio para cada una.</p>
-        <textarea placeholder="Y(): ambas condiciones… Ejemplo: … | O(): al menos una… Ejemplo: …"></textarea>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">En la Celda 4, cambia los supuestos (por ejemplo, que sin descuento solo se venda el 30 %). ¿Cambia tu política elegida?
+        Escribe la política que recomendarías al expendio (umbral y descuento) y qué cifra de la tabla la respalda.</p>
+        <textarea placeholder="Recomiendo rebajar desde … días con … % porque la tabla muestra…"></textarea>
         <button class="btn-verify" onclick="verifyQ(this, '', 'h3r')">🔍 Verificar</button>
         <div class="verify-result" id="h3r"></div>
       </div>
 
       <div class="mission-q">
         <p class="mission-q-header">HTI-4 <span class="xp-pill small">+4 XP</span></p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">En la Celda 3 de Python (procesamiento masivo), ¿qué tendrías que cambiar para que el umbral de alerta sea 75% en lugar de 70%? ¿Y si quisieras agregar una cuarta categoría "🔴 Crítico" para menos del 50%?</p>
-        <textarea placeholder="Cambiaría… y agregaría…"></textarea>
+        <p style="font-size:.88rem;margin-bottom:.5rem;">Con los 3 productos que observaste en HTI-A, agrégalos a la lista <code>inventario</code> de la Celda 3, cambia <code>FECHA_CORTE</code> por <code>date.today()</code> y ejecuta.
+        ¿Qué decidió el programa para cada uno? ¿Coincide con lo que viste en la tienda?</p>
+        <textarea placeholder="Producto 1: … → … | Producto 2: … | Producto 3: … | Coincide / no coincide porque…"></textarea>
         <button class="btn-verify" onclick="verifyQ(this, '', 'h4r')">🔍 Verificar</button>
         <div class="verify-result" id="h4r"></div>
       </div>
-
     </div>
   </section>
 
@@ -1268,14 +1329,14 @@ monto_pedido = 320000
     <p style="margin-bottom:1rem;font-size:.9rem;">5 preguntas · Haz clic en la opción correcta · <strong>5 XP por acierto</strong></p>
 
     <div class="quiz-q">
-      <p class="quiz-q-text">1. En Excel, ¿cuál es la sintaxis correcta de la función condicional?</p>
+      <p class="quiz-q-text">1. ¿Cuál fórmula marca para retiro un producto cuyos días para vencer están en C2?</p>
       <div class="quiz-options">
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">a) <code>=IF(condición; valor_V; valor_F)</code></div>
-        <div class="quiz-opt" onclick="answerQuiz(this,true,'q1e')">b) <code>=SI(condición; valor_si_verdadero; valor_si_falso)</code></div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">c) <code>=SI(condición; valor_si_verdadero)</code></div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">d) <code>=SIENTONCES(condición; valor_V)</code></div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">a) <code>=SI(C2&lt;=0;"RETIRAR";"Vendible")</code></div>
+        <div class="quiz-opt" onclick="answerQuiz(this,true,'q1e')">b) <code>=SI(C2&lt;0;"RETIRAR";"Vendible")</code></div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">c) <code>=SI(C2&lt;0;"RETIRAR")"Vendible"</code></div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">d) <code>=SI(C2&lt;-3;"RETIRAR";"Vendible")</code></div>
       </div>
-      <p class="quiz-explanation" id="q1e">✅ Correcto. La función tiene tres argumentos separados por punto y coma: condición, resultado si verdadero, resultado si falso.</p>
+      <p class="quiz-explanation" id="q1e">✅ Correcto. Con 0 días el producto vence hoy y aún se vende hoy; con -1 ya pasó su fecha. La opción (d) automatiza el rumor: vendería productos vencidos.</p>
     </div>
 
     <div class="quiz-q">
@@ -1290,36 +1351,36 @@ monto_pedido = 320000
     </div>
 
     <div class="quiz-q">
-      <p class="quiz-q-text">3. La condición compuesta <code>=Y(E2&lt;70; F2&gt;50)</code> es VERDADERA cuando:</p>
+      <p class="quiz-q-text">3. La condición <code>=Y(C2&lt;=3; D2&gt;20)</code> es VERDADERA cuando:</p>
       <div class="quiz-options">
-        <div class="quiz-opt" onclick="answerQuiz(this,true,'q3e')">a) E2 es menor a 70 <strong>y además</strong> F2 es mayor a 50</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">b) E2 es menor a 70 <strong>o</strong> F2 es mayor a 50 (basta una)</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">c) Solo cuando E2 es menor a 70</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,true,'q3e')">a) Faltan 3 días o menos <strong>y además</strong> hay más de 20 unidades</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">b) Faltan 3 días o menos <strong>o</strong> hay más de 20 unidades (basta una)</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">c) Solo cuando faltan 3 días o menos</div>
         <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">d) Nunca — la función Y no existe en Excel</div>
       </div>
       <p class="quiz-explanation" id="q3e">✅ Correcto. <code>=Y()</code> exige que TODAS las condiciones sean verdaderas. Si una falla, el resultado es FALSO.</p>
     </div>
 
     <div class="quiz-q">
-      <p class="quiz-q-text">4. ¿Qué ventaja principal tiene Python sobre Excel para aplicar condicionales?</p>
+      <p class="quiz-q-text">4. El expendio debe, cada mañana antes de abrir, revisar 1.800 referencias y comparar varias políticas de descuento. ¿Qué decisión de herramienta es más sensata?</p>
       <div class="quiz-options">
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">a) Python usa una sintaxis más sencilla que =SI()</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">b) Python no necesita condiciones — calcula automáticamente</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,true,'q4e')">c) Python puede procesar miles de registros de forma automática en un bucle, sin copiar la fórmula celda por celda</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">d) Python no tiene equivalente al SI anidado de Excel</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">a) Excel, porque Python solo sirve para programadores</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,true,'q4e')">b) Diseñar la regla en Excel con pocas filas y automatizar la revisión diaria y los escenarios en Python</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">c) Revisar a mano, porque las fórmulas pueden fallar</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">d) Python, porque su lógica condicional es distinta a la de Excel</div>
       </div>
-      <p class="quiz-explanation" id="q4e">✅ Correcto. La diferencia de escala es la clave: Excel opera celda por celda; Python puede recorrer toda una tabla en segundos.</p>
+      <p class="quiz-explanation" id="q4e">✅ Correcto. La lógica es la misma; lo que cambia es la escala y la frecuencia. Una tarea diaria, grande y con escenarios es terreno de Python.</p>
     </div>
 
     <div class="quiz-q">
-      <p class="quiz-q-text">5. En un SI-FSI simple (sin SINO), ¿qué ocurre cuando la condición es FALSA?</p>
+      <p class="quiz-q-text">5. Según la norma colombiana de rotulado, ¿qué pasa con un pan empacado cuya etiqueta dice "Consumir preferentemente antes de" y esa fecha ya pasó hace 2 días?</p>
       <div class="quiz-options">
-        <div class="quiz-opt" onclick="answerQuiz(this,true,'q5e')">a) El bloque ENTONCES se omite por completo y el algoritmo continúa</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q5e')">b) El programa termina con error</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q5e')">c) El bloque se ejecuta de todas formas</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q5e')">d) La condición se vuelve a evaluar hasta que sea verdadera</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q5e')">a) Se puede vender hasta 5 días después</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q5e')">b) Se puede vender si se le cambia la etiqueta</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,true,'q5e')">c) Ya no se considera comercializable, aunque podría seguir siendo satisfactorio para quien ya lo compró</div>
+        <div class="quiz-opt" onclick="answerQuiz(this,false,'q5e')">d) Solo importa la fecha si el producto dice "Vence"</div>
       </div>
-      <p class="quiz-explanation" id="q5e">✅ Correcto. En el SI simple no hay rama alternativa — el bloque ENTONCES solo corre cuando la condición es verdadera.</p>
+      <p class="quiz-explanation" id="q5e">✅ Correcto. La Resolución 5109 de 2005 trata ambas fechas como el límite de comercialización. Cambiar la fecha se considera adulteración.</p>
     </div>
   </section>
 
@@ -1327,11 +1388,13 @@ monto_pedido = 320000
   <section id="bib">
     <h2 class="sec-title">📖 Fuentes y Referencias</h2>
     <ul class="source-list">
-      <li><strong>Cairó Battistutti, O. & Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em> (3ª ed.). Alfaomega. Sección de estructuras selectivas — base del pseudocódigo SI-FSI.</li>
-      <li><strong>Microsoft Support.</strong> Función SI en Excel — documentación oficial. Incluye sintaxis, ejemplos y SI anidado. <em>support.microsoft.com</em></li>
-      <li><strong>Python Software Foundation.</strong> (2024). <em>Python 3 Documentation — Control Flow</em>. docs.python.org. Referencia de if / elif / else y operadores lógicos.</li>
-      <li><strong>Gartner.</strong> Estadística ampliamente citada: la automatización de alertas basadas en reglas reduce el tiempo de respuesta gerencial hasta un 40 %. Idea aplicada al caso NeuroBiz.</li>
-      <li><strong>Harvard CS50 Business Professionals.</strong> (2024). Casos de toma de decisiones automatizadas en entornos empresariales — referencia pedagógica del enfoque de la semana.</li>
+      <li><strong>Ministerio de la Protección Social.</strong> (2005). <em>Resolución 5109 de 2005 — Reglamento técnico de rotulado de alimentos envasados</em>. Art. 3 (definiciones de fecha de vencimiento y de duración mínima) y numeral 5.6 (marcado de fechas). <a href="https://www.invima.gov.co/biblioteca/resolucion-005109-2005-requisitos-rotulado-alimentos" target="_blank" rel="noopener">invima.gov.co</a></li>
+      <li><strong>INVIMA.</strong> (2022). <em>Concepto 0000093 de 2022</em> — sobre ampliación de vida útil y modificación de fechas de vencimiento. <a href="https://normograma.invima.gov.co/compilacion/docs/concepto_invima_0000093_2022.htm" target="_blank" rel="noopener">normograma.invima.gov.co</a></li>
+      <li><strong>Congreso de Colombia.</strong> (2019). <em>Ley 1990 de 2019 — Política para prevenir la pérdida y el desperdicio de alimentos</em>. <a href="https://www.icbf.gov.co/cargues/avance/compilacion/docs/ley_1990_2019.htm" target="_blank" rel="noopener">icbf.gov.co</a></li>
+      <li><strong>Congreso de Colombia.</strong> (2024). <em>Ley 2380 de 2024</em> — incentivos a la donación de alimentos a bancos de alimentos.</li>
+      <li><strong>Cairó Battistutti, O. &amp; Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em> (3ª ed.). Alfaomega. Estructuras selectivas — base del pseudocódigo SI-FSI.</li>
+      <li><strong>Microsoft Support.</strong> Función SI y función HOY en Excel — documentación oficial. <em>support.microsoft.com</em></li>
+      <li><strong>Python Software Foundation.</strong> <em>Python 3 Documentation — Control Flow</em> y módulo <code>datetime</code>. docs.python.org</li>
     </ul>
   </section>
 
@@ -1347,7 +1410,7 @@ monto_pedido = 320000
 <!-- ══════════════════════════════════════════════ FOOTER -->
 <footer class="site-footer">
   TGA04 · Fundamentos de Computación para los Negocios · IUB 2026 ·
-  Semana 3: Estructura Condicional Simple (SI / if) · Caso de estudio: NeuroBiz S.A.S. ·
+  Semana 3: Estructura Condicional Simple (SI / if) · Caso de estudio: Expendio de fábrica Bimbo Soledad (datos simulados) · Consultora: NeuroBiz S.A.S. ·
   Prof. Diego Domínguez
 </footer>
 
@@ -1367,24 +1430,30 @@ monto_pedido = 320000
 
   /* ── EXCEL SIMULATOR ── */
   function runExcelSim() {
-    const c = parseFloat(document.getElementById('simCumpl').value) || 0;
-    const m = parseFloat(document.getElementById('simMeta').value) || 70;
+    const d = parseInt(document.getElementById('simDias').value, 10);
+    const u = parseInt(document.getElementById('simUmbral').value, 10);
+    const dias = isNaN(d) ? 0 : d;
+    const umbral = isNaN(u) ? 3 : u;
     const out = document.getElementById('simOutput');
     const formula = document.getElementById('simFormula');
     const result  = document.getElementById('simResult');
     const explain = document.getElementById('simExplain');
 
     out.style.display = 'block';
-    formula.textContent = `=SI(E2<${m};"⚠️ ALERTA";"✅ Cumple")   →  evaluando: ${c} < ${m} = ${c < m}`;
+    formula.textContent = `=SI(C2<0;"🚫 Retirar";SI(C2<=${umbral};"🏷️ Rebajar";"✅ Precio normal"))   →  C2 = ${dias}`;
 
-    if (c < m) {
-      result.textContent  = '⚠️ ALERTA';
+    if (dias < 0) {
+      result.textContent  = '🚫 Retirar';
       result.style.color  = 'var(--danger)';
-      explain.textContent = `La condición (${c} < ${m}) es VERDADERA → se muestra el primer valor.`;
+      explain.textContent = `(${dias} < 0) es VERDADERA: el producto ya pasó su fecha y no es comercializable, no importa cuántos días hayan pasado.`;
+    } else if (dias <= umbral) {
+      result.textContent  = '🏷️ Rebajar';
+      result.style.color  = 'var(--warn)';
+      explain.textContent = `(${dias} < 0) es FALSA, pero (${dias} <= ${umbral}) es VERDADERA: está vigente y próximo a vencer.`;
     } else {
-      result.textContent  = '✅ Cumple';
+      result.textContent  = '✅ Precio normal';
       result.style.color  = 'var(--ok)';
-      explain.textContent = `La condición (${c} < ${m}) es FALSA → se muestra el segundo valor.`;
+      explain.textContent = `Ambas condiciones son FALSAS: quedan ${dias} días, más que el umbral de ${umbral}.`;
     }
   }
 
