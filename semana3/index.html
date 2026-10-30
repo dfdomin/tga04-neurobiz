@@ -229,49 +229,6 @@
     details[open] summary::before { transform: rotate(90deg); }
     details .details-body { padding: 1rem 1.2rem; }
 
-    /* ── EXCEL DEMO ── */
-    .excel-wrap {
-      background: #fff;
-      border: 2px solid #217346;
-      border-radius: var(--radius);
-      overflow: hidden;
-      margin: 1rem 0;
-      box-shadow: var(--shadow);
-    }
-    .excel-toolbar {
-      background: #217346;
-      color: #fff;
-      padding: .5rem 1rem;
-      font-size: .82rem;
-      font-weight: 700;
-      display: flex; align-items: center; gap: .5rem;
-    }
-    .excel-toolbar .fx-bar {
-      background: rgba(255,255,255,.15);
-      border-radius: 4px;
-      padding: .2rem .6rem;
-      font-family: var(--font-mono);
-      font-size: .8rem;
-      color: #fff;
-      flex: 1;
-    }
-    .excel-grid { overflow-x: auto; }
-    .excel-table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .82rem; }
-    .excel-table th {
-      background: #E8F4EE; color: #1C2B3A;
-      border: 1px solid #C7D9CE;
-      padding: .35rem .6rem; font-weight: 700; text-align: center;
-    }
-    .excel-table td {
-      border: 1px solid #D8E4DC;
-      padding: .35rem .6rem;
-    }
-    .excel-table .row-num { background: #E8F4EE; color: var(--muted); text-align: center; font-weight: 600; width: 32px; }
-    .excel-table .formula { color: #217346; font-family: var(--font-mono); font-size: .78rem; }
-    .excel-table .result-ok   { color: var(--ok);     font-weight: 700; }
-    .excel-table .result-warn { color: var(--danger); font-weight: 700; }
-    .excel-table .header-row td { background: #D5E8D4; font-weight: 700; }
-
     /* ── INTERACTIVE CELLS ── */
     .cell-card {
       background: var(--card);
@@ -508,16 +465,15 @@
 <header class="site-header">
   <p class="header-eyebrow">TGA04 · Fundamentos de Computación para los Negocios · Semana 3 de 13</p>
   <h1 class="header-title">🚦 Estructura Condicional Simple <code style="font-size:.8em;background:rgba(255,255,255,.15);padding:.1em .4em;border-radius:6px;">SI / IF</code></h1>
-  <p class="header-sub">Decisiones automáticas · Excel <code>=SI()</code> · Python <code>if</code> · Caso: Expendio de fábrica Bimbo Soledad</p>
+  <p class="header-sub">Decisiones de inventario · Python <code>if</code> · Caso: Expendio de fábrica Bimbo Soledad</p>
   <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar"></div></div>
-  <p class="xp-label" id="xpLabel">XP de sesión: 0 / 60 pts</p>
+  <p class="xp-label" id="xpLabel">XP de sesión: 0 / 25 pts</p>
 </header>
 
 <!-- ══════════════════════════════════════════════ NAV -->
 <nav class="sticky-nav">
   <a href="#mision">🎯 Misión</a>
   <a href="#teoria">📚 Teoría</a>
-  <a href="#excel">📊 Excel SI()</a>
   <a href="#python">🐍 Python</a>
   <a href="#cairo">📝 Ref. Pseudocód.</a>
   <a href="#actividad">⚙️ Actividad</a>
@@ -532,7 +488,7 @@
   <!-- PROGRESS -->
   <div class="progress-widget">
     <span class="progress-label">📊 Mi Progreso Semana 3</span>
-    <span class="progress-val" id="xpTotal">0 / 60 XP</span>
+    <span class="progress-val" id="xpTotal">0 / 25 XP</span>
   </div>
 
   <!-- ══════════ MISIÓN -->
@@ -552,8 +508,7 @@
       <p class="memo-body">
         El <strong>movimiento del inventario</strong> depende de los productos próximos a vencer: cada uno obliga a decidir si se
         rebaja, se mueve a la vitrina de la entrada, se dona antes de la fecha o se da de baja porque ya venció.
-        Tu misión: construir la decisión con <strong>=SI()</strong> en Excel y con <strong>if</strong> en Python,
-        y <strong>decidir cuál herramienta conviene</strong> para cada tarea.
+        Tu misión: identificar variables, escribir y probar condiciones con <strong>if</strong> en Python, y justificar decisiones de inventario con los datos del caso.
       </p>
 
       <div class="memo-kpis">
@@ -581,10 +536,10 @@
 
       <table class="meta-table">
         <tr><td>LS_KEY</td><td><code>tga04_s3</code></td></tr>
-        <tr><td>XP máximo</td><td>60 XP</td></tr>
+        <tr><td>XP del quiz</td><td>25 XP</td></tr>
         <tr><td>Pregunta central</td><td>¿Qué hace el sistema cuando la condición es verdadera, y qué cuando es falsa? ¿Y de dónde sale la condición?</td></tr>
         <tr><td>Analogía guía</td><td>Semáforo: SI está en rojo ENTONCES detenerse FSI · SI el producto venció ENTONCES retirarlo FSI</td></tr>
-        <tr><td>Herramientas</td><td>📊 Excel <code>=SI()</code> · 🐍 Python <code>if</code> · 📝 Pseudocódigo (referencia)</td></tr>
+        <tr><td>Herramientas</td><td>🐍 Python <code>if</code> · 📝 Pseudocódigo y pruebas de escritorio (apoyo)</td></tr>
         <tr><td>Nota</td><td>Caso académico inspirado en un expendio de fábrica Bimbo, con datos simulados. No representa información interna ni una solicitud oficial de Grupo Bimbo.</td></tr>
       </table>
     </div>
@@ -627,7 +582,7 @@
       </tbody>
     </table>
     <p style="font-size:.85rem;color:var(--muted);">El umbral de 3 días es una <strong>decisión de gerencia</strong>, no una ley: en la sección de Python simularás otros valores.
-    El 0, en cambio, sí lo fija la norma.</p>
+    La regla del caso retira el producto cuando la fecha ya pasó; el umbral de descuento es un supuesto del ejercicio.</p>
 
     <h3 class="sec-sub">3. Movimiento de inventario: decisiones con lo próximo a vencer</h3>
     <p>En un expendio, el inventario no solo se cuenta: <strong>se mueve</strong>. Y lo que más urge mover es lo que está más cerca de su fecha.
@@ -655,8 +610,8 @@
       <thead><tr><th>Condición</th><th>Interpretación gerencial</th><th>Resultado esperado</th></tr></thead>
       <tbody>
         <tr><td><code>dias &gt;= 0 Y dias &lt;= 3</code></td><td>Vigente pero próximo a vencer</td><td>Rebajar precio</td></tr>
-        <tr><td><code>dias &lt;= 3 Y unidades &gt; 20</code></td><td>Muchas unidades sin tiempo para venderlas</td><td>Evaluar donación antes de la fecha</td></tr>
-        <tr><td><code>categoria = "Pan tajado" O categoria = "Ponqué"</code></td><td>Aplica a dos líneas de producto</td><td>Basta una coincidencia</td></tr>
+        <tr><td><code>0 &lt;= dias &lt;= 3</code> Y <code>unidades &gt; 20</code></td><td>Muchas unidades sin tiempo para venderlas</td><td>Evaluar donación antes de la fecha</td></tr>
+        <tr><td><code>categoria == "Pan tajado" or categoria == "Ponqué"</code></td><td>Aplica a dos líneas de producto</td><td>Basta una coincidencia</td></tr>
       </tbody>
     </table>
 
@@ -668,196 +623,21 @@
         <tr><td>Ignorar la rama "No"</td><td>Piensa que el rombo tiene una sola salida</td><td>Siempre etiquetar Sí / No</td></tr>
         <tr><td>Confundir Y con O</td><td>Cree que basta una condición con Y</td><td>Y = ambas; O = al menos una</td></tr>
         <tr><td>Mirar solo la fecha</td><td>Las unidades no importan</td><td>Mover o donar depende también de cuántas unidades quedan</td></tr>
-        <tr><td>En Excel: olvidar separador</td><td>Escribe <code>=SI(C2&lt;0 "Retirar")</code></td><td>Usar punto y coma: <code>=SI(C2&lt;0;"Retirar";"")</code></td></tr>
+        <tr><td>Olvidar los dos puntos o la indentación</td><td>Escribe <code>if dias &lt; 0 print("Retirar")</code></td><td>Usar <code>if dias &lt; 0:</code> y sangrar la instrucción siguiente</td></tr>
       </tbody>
     </table>
 
-    <h3 class="sec-sub">6. ¿Excel o Python? Una decisión, no una competencia</h3>
-    <p>La lógica del SI es la misma en ambas herramientas. Lo que cambia es <strong>para qué trabajo</strong> sirve mejor cada una.
-    Un buen administrador no elige por costumbre: elige por el tamaño, la frecuencia y el riesgo de la tarea.</p>
-    <table class="data-table">
-      <thead><tr><th>Si la tarea es…</th><th>📊 Excel brilla cuando…</th><th>🐍 Python brilla cuando…</th></tr></thead>
-      <tbody>
-        <tr><td>Tamaño</td><td>Son decenas de filas que quieres ver de un vistazo</td><td>Son cientos o miles de referencias, o varios archivos</td></tr>
-        <tr><td>Frecuencia</td><td>Se hace una vez o de vez en cuando</td><td>Se repite cada mañana: se escribe una vez y se ejecuta siempre igual</td></tr>
-        <tr><td>Fechas</td><td><code>HOY()</code> y resta de celdas</td><td><code>date.today()</code> y resta de fechas, igual de simple y sin copiar fórmulas</td></tr>
-        <tr><td>Comparar políticas</td><td>Una política por hoja</td><td>Decenas de escenarios en un segundo con un bucle</td></tr>
-        <tr><td>Errores humanos</td><td>Una fórmula arrastrada mal pasa desapercibida</td><td>La misma regla se aplica idéntica a todas las filas</td></tr>
-        <tr><td>Compartir</td><td>Todos en la oficina lo pueden abrir</td><td>Genera el reporte o la lista de retiro lista para enviar</td></tr>
-      </tbody>
-    </table>
-    <div class="callout callout-tip">
-      <span class="ico">🧭</span>
-      <div><strong>Regla práctica:</strong> diseña y prueba la regla en Excel con pocas filas; cuando la decisión se repite
-      todos los días o necesitas comparar escenarios, llévala a Python. No es "Excel o Python": es Excel <em>y luego</em> Python.</div>
-    </div>
-
-    <div class="callout callout-warn">
-      <span class="ico">⚠️</span>
-      <div><strong>Pista importante:</strong> si sientes que "falta algo" cuando la condición es falsa (por ejemplo, mostrar un mensaje diferente),
-      probablemente necesitas un SI-SINO / if-else. Eso se verá la próxima semana.</div>
-    </div>
-  </section>
-
-  <!-- ══════════ EXCEL -->
-  <section id="excel">
-    <h2 class="sec-title">📊 Excel — Función <code>=SI()</code> aplicada al expendio</h2>
-
-    <p>En gestión administrativa, <strong>Excel es la primera herramienta</strong> donde aparece la lógica condicional.
-    La función <code>=SI()</code> tiene exactamente la misma estructura que el pseudocódigo: condición, resultado verdadero, resultado falso.</p>
-
-    <div class="callout callout-ok">
-      <span class="ico">📌</span>
-      <div>
-        <strong>Sintaxis completa:</strong><br>
-        <code>=SI( prueba_lógica ; valor_si_verdadero ; valor_si_falso )</code><br>
-        <span style="font-size:.82rem;color:var(--muted);">En inglés: <code>=IF( logical_test, value_if_true, value_if_false )</code></span>
-      </div>
-    </div>
-
-    <div class="img-placeholder">
-      <span class="img-icon">📊</span>
-      <strong>Anatomía de la función SI (ejemplo genérico)</strong>
-      <img src="Formula_Excel_condicional.png" alt="Partes de la función SI en Excel: condición, valor si verdadero, valor si falso" style="max-width:100%; border-radius:6px; margin-top:1rem;">
-      <p style="margin-top:.8rem; text-align:center;">
-        <a href="Expendio_Soledad_S3.xlsx" download
-           style="display:inline-block; background:var(--ok); color:#fff; padding:.5rem 1.2rem; border-radius:6px; text-decoration:none; font-weight:700; font-size:.85rem;">
-          📥 Descargar inventario del expendio (valores, sin fórmulas)
-        </a>
-      </p>
-    </div>
-
-    <h3 class="sec-sub">Inventario del expendio — Alerta de retiro</h3>
-    <p>La celda <strong>K1</strong> guarda la fecha de corte del conteo (06/11/2026). La columna <strong>C</strong> calcula los días para vencer
-    y la columna <strong>F</strong> decide con <code>=SI()</code>. En la vida real, K1 sería <code>=HOY()</code>.</p>
-
-    <div class="excel-wrap">
-      <div class="excel-toolbar">
-        <span>📊 Expendio_Soledad_S3.xlsx</span>
-        <span class="fx-bar">fx &nbsp; =SI(C2&lt;0;"🚫 RETIRAR";"✅ Vendible")</span>
-      </div>
-      <div class="excel-grid">
-        <table class="excel-table">
-          <thead>
-            <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
-          </thead>
-          <tbody>
-            <tr class="header-row">
-              <td class="row-num">1</td>
-              <td>Producto</td><td>Vence</td><td>Días para vencer</td><td>Unidades</td><td>Precio</td>
-              <td>Estado <code>=SI()</code></td>
-            </tr>
-            <tr>
-              <td class="row-num">2</td>
-              <td>Pan para hamburguesa x6</td><td>05/11/2026</td>
-              <td><code>=B2-$K$1</code> → <strong>-1</strong></td><td>15</td><td>7.200</td>
-              <td class="formula">=SI(C2&lt;0;"🚫 RETIRAR";"✅ Vendible")</td>
-            </tr>
-            <tr><td class="row-num">3</td><td>Mantecadas x6</td><td>06/11/2026</td><td>0</td><td>30</td><td>6.300</td><td class="result-ok">✅ Vendible</td></tr>
-            <tr><td class="row-num">4</td><td>Pan tajado integral</td><td>08/11/2026</td><td>2</td><td>25</td><td>8.200</td><td class="result-ok">✅ Vendible</td></tr>
-            <tr><td class="row-num">5</td><td>Ponqué tajado</td><td>03/11/2026</td><td>-3</td><td>10</td><td>8.900</td><td class="result-warn">🚫 RETIRAR</td></tr>
-            <tr><td class="row-num">6</td><td>Pan tajado blanco 600 g</td><td>12/11/2026</td><td>6</td><td>40</td><td>7.500</td><td class="result-ok">✅ Vendible</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="callout callout-tip">
-      <span class="ico">🧠</span>
-      <div>
-        <strong>Lee la fórmula en voz alta:</strong> <em>"SI los días para vencer (C2) son menores que 0,
-        entonces escribe '🚫 RETIRAR', de lo contrario escribe '✅ Vendible'."</em><br>
-        Fíjate en las Mantecadas: vencen hoy (0 días) y siguen siendo vendibles <strong>hoy</strong>. Mañana ya no.
-      </div>
-    </div>
-
-    <h3 class="sec-sub">SI() anidado — Tres decisiones de precio</h3>
-    <p>Cuando necesitas más de dos resultados, puedes anidar un <code>=SI()</code> dentro de otro
-    (equivalente al SI-SINO-SI de la Semana 4). Por ahora, solo observa la lógica:</p>
-
-    <div class="excel-wrap">
-      <div class="excel-toolbar">
-        <span>📊 Decisión de precio</span>
-        <span class="fx-bar">fx &nbsp; =SI(C2&lt;0;"🚫 Retirar";SI(C2&lt;=3;"🏷️ Rebajar 30%";"✅ Precio normal"))</span>
-      </div>
-      <div class="excel-grid">
-        <table class="excel-table">
-          <thead><tr><th></th><th>C — Días para vencer</th><th>G — Decisión</th></tr></thead>
-          <tbody>
-            <tr class="header-row"><td class="row-num">1</td><td>Días para vencer</td><td>Decisión de precio</td></tr>
-            <tr><td class="row-num">2</td><td>-1</td><td class="result-warn">🚫 Retirar</td></tr>
-            <tr><td class="row-num">3</td><td>0</td><td class="result-ok">🏷️ Rebajar 30%</td></tr>
-            <tr><td class="row-num">4</td><td>2</td><td class="result-ok">🏷️ Rebajar 30%</td></tr>
-            <tr><td class="row-num">5</td><td>-3</td><td class="result-warn">🚫 Retirar</td></tr>
-            <tr><td class="row-num">6</td><td>6</td><td class="result-ok">✅ Precio normal</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <h3 class="sec-sub">Calculadora interactiva de la función =SI()</h3>
-    <p>Simula lo que haría Excel. Cambia los días para vencer (prueba con 0, con -1 y con 5) y el umbral de rebaja.</p>
-
-    <div class="cell-card">
-      <div class="cell-header">
-        <span>📊 Simulador Excel =SI()</span>
-        <span class="lang-badge">Interactivo</span>
-      </div>
-      <div class="cell-body">
-        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;">
-          <div>
-            <label style="font-size:.82rem;font-weight:700;color:var(--muted);display:block;margin-bottom:.3rem;">Días para vencer</label>
-            <input type="number" id="simDias" value="-2" min="-30" max="60" step="1"
-              style="border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;font-size:.9rem;width:110px;">
-          </div>
-          <div>
-            <label style="font-size:.82rem;font-weight:700;color:var(--muted);display:block;margin-bottom:.3rem;">Umbral de rebaja (días)</label>
-            <input type="number" id="simUmbral" value="3" min="0" max="15" step="1"
-              style="border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;font-size:.9rem;width:110px;">
-          </div>
-          <div style="padding-top:1.4rem;">
-            <button class="btn-run" onclick="runExcelSim()">▶ Evaluar</button>
-          </div>
-        </div>
-        <div id="simOutput" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:.9rem;">
-          <div id="simFormula" style="font-family:var(--font-mono);font-size:.82rem;color:var(--brand);margin-bottom:.5rem;"></div>
-          <div id="simResult" style="font-size:1.1rem;font-weight:800;"></div>
-          <div id="simExplain" style="font-size:.82rem;color:var(--muted);margin-top:.4rem;"></div>
-        </div>
-      </div>
-    </div>
-
-    <h3 class="sec-sub">Condición compuesta en Excel con Y() y O()</h3>
-    <p>Excel también soporta condiciones múltiples dentro del <code>=SI()</code> usando las funciones <code>=Y()</code> y <code>=O()</code>:</p>
-
-    <div class="code-block">
-      <pre><span class="cmt">// Próximo a vencer Y con muchas unidades: plan especial</span>
-=SI(<span class="fn">Y</span>(C2&gt;=0; C2&lt;=3; D2&gt;20); <span class="str">"📦 Evaluar donación"</span>; <span class="str">""</span>)
-
-<span class="cmt">// Aplica a pan tajado O ponqué</span>
-=SI(<span class="fn">O</span>(H2=<span class="str">"Pan tajado"</span>; H2=<span class="str">"Ponqué"</span>); <span class="str">"Línea prioritaria"</span>; <span class="str">"Otra línea"</span>)</pre>
-    </div>
+    <h3 class="sec-sub">6. De los datos a una decisión verificable</h3>
+    <p>Antes de programar, distingue entradas (<code>fecha_vencimiento</code>, <code>unidades</code>, <code>precio</code>), proceso (<code>dias_para_vencer</code>) y salida (retirar, rebajar o mantener precio). La fecha de corte del ejemplo es fija para reproducir los resultados; en una revisión diaria se usaría <code>date.today()</code>.</p>
+    <div class="callout callout-tip"><span class="ico">🧪</span><div><strong>Prueba de frontera:</strong> ejecuta la regla con -1, 0 y 4 días. Espera retiro, rebaja y precio normal, respectivamente. Después prueba un dato inválido y explica qué habría que validar. Una ejecución sin errores no prueba por sí sola que la decisión sea correcta.</div></div>
+    <p>Esta semana se practica una condición simple. Los ciclos, las políticas anidadas y la simulación de escenarios se muestran como <strong>demostración guiada</strong>; no se exige crearlos desde cero ni dominar funciones o cálculos probabilísticos.</p>
   </section>
 
   <!-- ══════════ PYTHON -->
   <section id="python">
-    <h2 class="sec-title">🐍 Python — if aplicado al expendio</h2>
-
-    <p>Excel te ayudó a <strong>diseñar</strong> la regla. Python la convierte en una <strong>rutina</strong>: el mismo código revisa
-    todo el inventario cada mañana, resta fechas sin arrastrar fórmulas y te permite <strong>comparar políticas</strong> antes de aplicarlas.
-    Aquí no compites contra Excel: tomas decisiones que en una hoja de cálculo serían lentas o propensas a error.</p>
-
-    <div class="callout callout-info">
-      <span class="ico">📌</span>
-      <div>
-        <strong>Diferencias clave vs Excel:</strong><br>
-        • Python no usa <code>FSI</code> para cerrar — el bloque se cierra con <strong>indentación</strong> (4 espacios).<br>
-        • Python usa <code>and</code> / <code>or</code> en lugar de <code>Y()</code> / <code>O()</code>.<br>
-        • Python usa <code>==</code> para comparar igualdad (no <code>=</code> como en Excel).<br>
-        • Python resta fechas directamente: <code>(vence - hoy).days</code> da los días para vencer.
-      </div>
-    </div>
-
+    <h2 class="sec-title">🐍 Python — <code>if</code> para decisiones de inventario</h2>
+    <p>Comienza con un producto, calcula los días hasta su vencimiento y prueba qué ocurre cuando la condición es verdadera y falsa. Las celdas posteriores amplían el mismo caso: las condiciones compuestas son práctica guiada; el recorrido de una lista y la comparación de políticas son demostraciones para explorar, no contenido exigible en la evaluación de esta semana.</p>
+    <div class="callout callout-info"><span class="ico">📌</span><div>En Python se escribe <code>if condición:</code> y la acción va indentada. <code>and</code> exige ambas condiciones y <code>or</code> admite cualquiera. <code>==</code> compara valores; <code>=</code> asigna. La resta <code>(vence - FECHA_CORTE).days</code> calcula los días para vencer.</div></div>
     <p style="font-size:.82rem;color:var(--muted);font-style:italic;" class="py-status" id="pyStatus">⏳ Iniciando motor Python (Pyodide)…</p>
 
     <div class="cell-card">
@@ -868,7 +648,7 @@
       <div class="cell-body">
         <textarea id="py1" rows="22">
 # ── Alerta simple: if en Python ──
-# Equivalente a =SI(C2&lt;0; "🚫 RETIRAR"; "✅ Vendible") en Excel
+# Si los días son negativos, retirar; si no, continuar
 from datetime import date
 
 producto          = "Pan para hamburguesa x6"
@@ -907,7 +687,7 @@ print("Revisión completada.")
       <div class="cell-body">
         <textarea id="py2" rows="30">
 # ── Condiciones compuestas: and ──
-# Equivalente a =SI(Y(C2&gt;=0; C2&lt;=3; D2&gt;20); "📦 Plan especial"; "") en Excel
+# Una acción solo ocurre si se cumplen todas las condiciones
 
 producto         = "Mantecadas x6"
 dias_para_vencer = 0      # vence HOY: todavía se puede vender hoy
@@ -945,13 +725,13 @@ print("Análisis completado.")
 
     <div class="cell-card">
       <div class="cell-header">
-        <span>🐍 Celda 3 — Revisar todo el inventario de una vez</span>
+        <span>🐍 Demostración 3 — Revisar todo el inventario de una vez</span>
         <span class="lang-badge">Python · Ejecutable</span>
       </div>
       <div class="cell-body">
         <textarea id="py3" rows="44">
 # ── Revisar TODO el inventario del expendio ──
-# En Excel copiarías la fórmula fila por fila; aquí un solo if recorre todo
+# Demostración guiada: la misma regla recorre cada producto
 from datetime import date
 
 FECHA_CORTE = date(2026, 11, 6)   # prueba: cámbialo por date.today()
@@ -1009,7 +789,7 @@ print(f"Valor que ya se perdió por vencimiento: ${valor_perdido:,.0f}")
 
     <div class="cell-card">
       <div class="cell-header">
-        <span>🐍 Celda 4 — Simulador de políticas: tú decides</span>
+        <span>🐍 Demostración 4 — Comparar políticas (no evaluable como código)</span>
         <span class="lang-badge">Python · Ejecutable</span>
       </div>
       <div class="cell-body">
@@ -1049,13 +829,13 @@ for umbral in [1, 2, 3, 4, 5]:
         ingreso, perdidas = simular(umbral, descuento)
         print(f"{umbral:&gt;5} d{descuento:&gt;7.0%}{ingreso:&gt;19,.0f}{perdidas:&gt;16.0f}")
 
-# 15 escenarios en un segundo. En Excel: 15 copias de la hoja
+# Comparamos escenarios con los mismos datos y supuestos
 # o una "tabla de datos". ¿Cuál política eliges y por qué?
 </textarea>
         <div class="cell-actions">
           <button class="btn-run" onclick="runPy('py4','out4')">▶ Ejecutar</button>
           <button class="btn-reset" onclick="resetPy('py4',4)">↺ Restaurar</button>
-          <span style="font-size:.75rem;color:var(--muted)">Elige una fila de la tabla y defiéndela: ¿priorizas ingreso o menos desperdicio?</span>
+          <span style="font-size:.75rem;color:var(--muted)">Actividad de exploración, no evaluable como código: ¿priorizas ingreso o menos desperdicio?</span>
         </div>
         <div class="cell-output" id="out4"></div>
       </div>
@@ -1099,7 +879,7 @@ precio = 8900
 
     <div class="callout callout-info">
       <span class="ico">📖</span>
-      <div>El pseudocódigo es una <strong>herramienta de diseño</strong> — sirve para pensar la lógica antes de escribirla en Excel o Python.
+      <div>El pseudocódigo es una <strong>herramienta de diseño</strong> — sirve para pensar la lógica antes de escribirla en Python.
       No se ejecuta directamente en ningún sistema. Úsalo como borrador en papel o en el tablero.</div>
     </div>
 
@@ -1177,11 +957,7 @@ precio = 8900
   <section id="actividad">
     <h2 class="sec-title">⚙️ Actividad Presencial</h2>
 
-    <div class="pts-summary">
-      <div class="pts-chip"><span>📋 Asistencia</span><span class="pts-num">+10 XP</span></div>
-      <div class="pts-chip"><span>🎮 Quiz (5 preguntas)</span><span class="pts-num">+25 XP</span></div>
-      <div class="pts-chip"><span>🎯 Misión Expendio</span><span class="pts-num">+25 XP</span></div>
-    </div>
+    <div class="callout callout-info"><span class="ico">📋</span><div>Los 25 XP de esta página corresponden únicamente al quiz de selección. El docente revisa por separado el código <code>if</code>, los casos de prueba y la justificación de la decisión; ni ejecutar una celda ni escribir una respuesta abierta demuestran por sí solos aprendizaje.</div></div>
 
     <div class="activity-block">
       <p class="block-label">⏱️ Bloque 1 — Entender la estructura SI · Bloom: Comprender</p>
@@ -1194,69 +970,28 @@ precio = 8900
     </div>
 
     <div class="activity-block">
-      <p class="block-label">⏱️ Bloque 2 — Excel en vivo · Bloom: Comprender → Aplicar</p>
-      <ol class="block-ol">
-        <li>Abrir el archivo <code>Expendio_Soledad_S3.xlsx</code>; revisar la fecha de corte en K1.</li>
-        <li>Calcular <code>=B2-$K$1</code> en la columna C y explicar por qué se usa <code>$</code>.</li>
-        <li>Escribir juntos <code>=SI(C2&lt;0;"🚫 RETIRAR";"✅ Vendible")</code> y arrastrar.</li>
-        <li>Cambiar K1 a una fecha dos días después: ¿cuántos productos pasan a RETIRAR?</li>
-      </ol>
+      <p class="block-label">⏱️ Bloque 2 — Python guiado: un producto · RA4 y RA3</p>
+      <ol class="block-ol"><li>Identificar entradas, proceso y salida para un producto; ejecutar la Celda 1.</li><li>Cambiar la fecha de vencimiento para probar -1, 0 y 4 días respecto al corte. Anotar resultado esperado y observado.</li><li>Modificar el mensaje dentro del <code>if</code> y explicar cuándo se muestra.</li></ol>
     </div>
 
     <div class="activity-block">
       <p class="block-label">⏱️ Bloque 3 — Python decide · Bloom: Aplicar → Evaluar</p>
       <ol class="block-ol">
-        <li>Ejecutar la Celda 3 y comparar con la hoja de Excel: mismo resultado, sin arrastrar fórmulas.</li>
-        <li>En grupos, ejecutar la Celda 4 y escoger una política (umbral y descuento). Cada grupo la defiende en 1 minuto.</li>
+        <li>Observar cómo la Demostración 3 aplica la misma regla a varios productos; no se exige escribir el ciclo desde cero.</li>
+        <li>Explorar la Demostración 4 en grupos; escoger una política y justificarla con una cifra y una limitación del modelo, sin evaluar la programación del simulador.</li>
         <li>Debate: ¿qué pasa si mañana el inventario tiene 1.800 referencias y hay que decidir antes de abrir a las 7:00 a. m.?</li>
       </ol>
     </div>
 
     <div class="activity-block">
       <p class="block-label">⏱️ Bloque 4 — Misión Expendio · Bloom: Aplicar</p>
-      <p style="font-size:.88rem;margin-bottom:.8rem;">Responde cada pregunta y haz clic en <strong>Verificar</strong> para obtener retroalimentación inmediata.</p>
+      <p style="font-size:.88rem;margin-bottom:.8rem;">Practica y compara tus resultados con Python. Las respuestas abiertas requieren revisión del docente: el botón solo confirma que escribiste algo y no otorga XP automático.</p>
 
-      <div class="mission-q">
-        <p class="mission-q-header">1 <span class="xp-pill">+5 XP</span> — Fórmula Excel</p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe la fórmula <code>=SI()</code> anidada que decida con los días de C2: "Retirar" si es menor que 0, "Rebajar" si es menor o igual a 3, "Precio normal" en otro caso.</p>
-        <textarea placeholder="=SI(C2<0; …; SI(C2<=3; …; …))"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, '=SI(C2<0', 'm1r')">🔍 Verificar</button>
-        <div class="verify-result" id="m1r"></div>
-      </div>
-
-      <div class="mission-q">
-        <p class="mission-q-header">2 <span class="xp-pill">+5 XP</span> — Python básico</p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe el bloque <code>if</code> en Python que imprima "🚫 RETIRAR" si <code>dias_para_vencer &lt; 0</code>. Recuerda la indentación.</p>
-        <textarea placeholder="if dias_para_vencer < 0:&#10;    print(...)"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, 'if dias', 'm2r')">🔍 Verificar</button>
-        <div class="verify-result" id="m2r"></div>
-      </div>
-
-      <div class="mission-q">
-        <p class="mission-q-header">3 <span class="xp-pill">+5 XP</span> — Condición compuesta</p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">¿Cómo escribirías en Excel "vence entre 0 y 3 días Y tiene más de 20 unidades"? Usa la función <code>=Y()</code>.</p>
-        <textarea placeholder="=SI(Y(C2>=0; C2<=3; D2>20); …; …)"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, 'Y(', 'm3r')">🔍 Verificar</button>
-        <div class="verify-result" id="m3r"></div>
-      </div>
-
-      <div class="mission-q">
-        <p class="mission-q-header">4 <span class="xp-pill">+5 XP</span> — Prueba de escritorio</p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Con <code>=SI(C2&lt;0;"RETIRAR";"Vendible")</code>, ¿qué muestra Excel con C2 = 2, con C2 = 0 y con C2 = -2? ¿Por qué el producto con 0 días todavía se puede vender hoy?</p>
-        <textarea placeholder="Con 2: … | Con 0: … | Con -2: … | Con 0 días…"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, 'vendible', 'm4r')">🔍 Verificar</button>
-        <div class="verify-result" id="m4r"></div>
-      </div>
-
-      <div class="mission-q">
-        <p class="mission-q-header">5 <span class="xp-pill">+5 XP</span> — Decisión de herramienta</p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Para cada tarea elige Excel o Python y justifica con un criterio de la sección 6:
-        (a) revisar hoy las 12 referencias del ejemplo; (b) generar cada mañana la lista de retiro de 1.800 referencias;
-        (c) comparar 15 políticas de descuento antes de la reunión con el jefe de planta.</p>
-        <textarea placeholder="(a) … porque … | (b) … porque … | (c) … porque …"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, 'python', 'm5r')">🔍 Verificar</button>
-        <div class="verify-result" id="m5r"></div>
-      </div>
+      <div class="mission-q"><p class="mission-q-header">1 <span class="xp-pill">Práctica</span> — Variables y regla</p><p>Identifica la entrada, el cálculo de días y la salida para un producto. Explica qué significa un valor de días negativo.</p><textarea placeholder="Entradas: … | Proceso: … | Salida: …"></textarea><button class="btn-verify" onclick="verifyQ(this, '', 'm1r')">🔍 Revisar respuesta</button><div class="verify-result" id="m1r"></div></div>
+      <div class="mission-q"><p class="mission-q-header">2 <span class="xp-pill">Práctica</span> — Condición simple</p><p>Escribe un <code>if</code> que imprima «RETIRAR» cuando <code>dias_para_vencer &lt; 0</code>. Pruébalo en la Celda 1 y describe el resultado.</p><textarea placeholder="if dias_para_vencer < 0:&#10;    print(...)"></textarea><button class="btn-verify" onclick="verifyQ(this, '', 'm2r')">🔍 Revisar respuesta</button><div class="verify-result" id="m2r"></div></div>
+      <div class="mission-q"><p class="mission-q-header">3 <span class="xp-pill">Práctica guiada</span> — Dos condiciones</p><p>En la Celda 2, identifica la condición para evaluar donación solo cuando el producto esté vigente, le queden de 0 a 3 días y haya más de 20 unidades. Explica por qué se usa <code>and</code>.</p><textarea placeholder="0 <= dias_para_vencer <= 3 and unidades > 20: …"></textarea><button class="btn-verify" onclick="verifyQ(this, '', 'm3r')">🔍 Revisar respuesta</button><div class="verify-result" id="m3r"></div></div>
+      <div class="mission-q"><p class="mission-q-header">4 <span class="xp-pill">Práctica</span> — Casos de prueba</p><p>Para la Celda 1, registra entrada, salida esperada y salida observada con -1, 0 y 4 días. ¿Qué cambia entre los casos?</p><textarea placeholder="-1: … | 0: … | 4: … | Coinciden / no coinciden porque …"></textarea><button class="btn-verify" onclick="verifyQ(this, '', 'm4r')">🔍 Revisar respuesta</button><div class="verify-result" id="m4r"></div></div>
+      <div class="mission-q"><p class="mission-q-header">5 <span class="xp-pill">Práctica</span> — Decisión sustentada</p><p>Recomienda una acción para un producto vigente próximo a vencer. Usa días, unidades y precio para justificarla; menciona una limitación de los datos simulados.</p><textarea placeholder="Recomiendo … porque … | Limitación: …"></textarea><button class="btn-verify" onclick="verifyQ(this, '', 'm5r')">🔍 Revisar respuesta</button><div class="verify-result" id="m5r"></div></div>
     </div>
   </section>
 
@@ -1275,41 +1010,11 @@ precio = 8900
     </div>
 
     <div class="activity-block">
-      <p class="block-label">✏️ HTI-B — Nueva fórmula y nueva decisión</p>
-
-      <div class="mission-q">
-        <p class="mission-q-header">HTI-1 <span class="xp-pill small">+4 XP</span></p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe en Excel la fórmula que muestre "📦 Evaluar donación" si C2 está entre 0 y 2 días Y D2 tiene más de 20 unidades, o "" (vacío) si no.</p>
-        <textarea placeholder="=SI(Y(…; …; …); …; …)"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, 'Y(', 'h1r')">🔍 Verificar</button>
-        <div class="verify-result" id="h1r"></div>
-      </div>
-
-      <div class="mission-q">
-        <p class="mission-q-header">HTI-2 <span class="xp-pill small">+4 XP</span></p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Escribe el equivalente en Python de HTI-1 usando <code>and</code>. ¿Por qué no se necesita <code>FSI</code>?</p>
-        <textarea placeholder="if … and … and …:&#10;    print(…)&#10;No se necesita FSI porque…"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, 'and', 'h2r')">🔍 Verificar</button>
-        <div class="verify-result" id="h2r"></div>
-      </div>
-
-      <div class="mission-q">
-        <p class="mission-q-header">HTI-3 <span class="xp-pill small">+4 XP</span></p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">En la Celda 4, cambia los supuestos (por ejemplo, que sin descuento solo se venda el 30 %). ¿Cambia tu política elegida?
-        Escribe la política que recomendarías al expendio (umbral y descuento) y qué cifra de la tabla la respalda.</p>
-        <textarea placeholder="Recomiendo rebajar desde … días con … % porque la tabla muestra…"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, '', 'h3r')">🔍 Verificar</button>
-        <div class="verify-result" id="h3r"></div>
-      </div>
-
-      <div class="mission-q">
-        <p class="mission-q-header">HTI-4 <span class="xp-pill small">+4 XP</span></p>
-        <p style="font-size:.88rem;margin-bottom:.5rem;">Con los 3 productos que observaste en HTI-A, agrégalos a la lista <code>inventario</code> de la Celda 3, cambia <code>FECHA_CORTE</code> por <code>date.today()</code> y ejecuta.
-        ¿Qué decidió el programa para cada uno? ¿Coincide con lo que viste en la tienda?</p>
-        <textarea placeholder="Producto 1: … → … | Producto 2: … | Producto 3: … | Coincide / no coincide porque…"></textarea>
-        <button class="btn-verify" onclick="verifyQ(this, '', 'h4r')">🔍 Verificar</button>
-        <div class="verify-result" id="h4r"></div>
-      </div>
+      <p class="block-label">✏️ HTI-B — Pruebas de Python y reflexión</p>
+      <div class="mission-q"><p>HTI-1 · En la Celda 1 cambia la fecha de corte y registra qué salida observas para un producto vencido y uno vigente.</p><textarea placeholder="Vencido: … | Vigente: …"></textarea><button class="btn-verify" onclick="verifyQ(this, '', 'h1r')">🔍 Revisar respuesta</button><div class="verify-result" id="h1r"></div></div>
+      <div class="mission-q"><p>HTI-2 · Revisa la Celda 2: ¿por qué la decisión de donar exige que los días no sean negativos?</p><textarea placeholder="La condición evita …"></textarea><button class="btn-verify" onclick="verifyQ(this, '', 'h2r')">🔍 Revisar respuesta</button><div class="verify-result" id="h2r"></div></div>
+      <div class="mission-q"><p>HTI-3 · Explora la Demostración 4: recomienda un umbral y un descuento basándote en una cifra de la tabla. Aclara que las tasas de venta son supuestos, no ventas reales.</p><textarea placeholder="Recomiendo … porque … | Limitación: …"></textarea><button class="btn-verify" onclick="verifyQ(this, '', 'h3r')">🔍 Revisar respuesta</button><div class="verify-result" id="h3r"></div></div>
+      <div class="mission-q"><p>HTI-4 · Opcional: con datos ficticios o de empaques propios, cambia una fecha de la Celda 1 y verifica la salida. No ingreses datos de personas ni supongas que la exhibición observada prueba una política real de Bimbo.</p><textarea placeholder="Dato usado: … | Esperaba: … | Observé: …"></textarea><button class="btn-verify" onclick="verifyQ(this, '', 'h4r')">🔍 Revisar respuesta</button><div class="verify-result" id="h4r"></div></div>
     </div>
   </section>
 
@@ -1319,14 +1024,7 @@ precio = 8900
     <p style="margin-bottom:1rem;font-size:.9rem;">5 preguntas · Haz clic en la opción correcta · <strong>5 XP por acierto</strong></p>
 
     <div class="quiz-q">
-      <p class="quiz-q-text">1. ¿Cuál fórmula marca para retiro un producto cuyos días para vencer están en C2?</p>
-      <div class="quiz-options">
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">a) <code>=SI(C2&lt;=0;"RETIRAR";"Vendible")</code></div>
-        <div class="quiz-opt" onclick="answerQuiz(this,true,'q1e')">b) <code>=SI(C2&lt;0;"RETIRAR";"Vendible")</code></div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">c) <code>=SI(C2&lt;0;"RETIRAR")"Vendible"</code></div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">d) <code>=SI(C2&lt;3;"RETIRAR";"Vendible")</code></div>
-      </div>
-      <p class="quiz-explanation" id="q1e">✅ Correcto. Con 0 días el producto vence hoy y aún se vende hoy; con -1 ya pasó su fecha. La opción (d) retiraría productos que todavía se pueden vender con descuento.</p>
+      <p class="quiz-q-text">1. En Python, ¿cuál condición retira solo un producto cuya fecha ya pasó?</p><div class="quiz-options"><div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">a) <code>if dias_para_vencer &lt;= 0:</code></div><div class="quiz-opt" onclick="answerQuiz(this,true,'q1e')">b) <code>if dias_para_vencer &lt; 0:</code></div><div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">c) <code>if dias_para_vencer &gt; 0:</code></div><div class="quiz-opt" onclick="answerQuiz(this,false,'q1e')">d) <code>if dias_para_vencer &lt; 3:</code></div></div><p class="quiz-explanation" id="q1e">Con 0 días vence hoy; con -1 ya pasó la fecha. Se requiere <code>&lt; 0</code>.</p>
     </div>
 
     <div class="quiz-q">
@@ -1341,25 +1039,11 @@ precio = 8900
     </div>
 
     <div class="quiz-q">
-      <p class="quiz-q-text">3. La condición <code>=Y(C2&gt;=0; C2&lt;=3; D2&gt;20)</code> es VERDADERA cuando:</p>
-      <div class="quiz-options">
-        <div class="quiz-opt" onclick="answerQuiz(this,true,'q3e')">a) Faltan 3 días o menos <strong>y además</strong> hay más de 20 unidades</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">b) Faltan 3 días o menos <strong>o</strong> hay más de 20 unidades (basta una)</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">c) Solo cuando faltan 3 días o menos</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">d) Nunca — la función Y no existe en Excel</div>
-      </div>
-      <p class="quiz-explanation" id="q3e">✅ Correcto. <code>=Y()</code> exige que TODAS las condiciones sean verdaderas. Si una falla, el resultado es FALSO.</p>
+      <p class="quiz-q-text">3. Para evaluar donación solo de productos vigentes entre 0 y 3 días y con más de 20 unidades, ¿qué condición es correcta?</p><div class="quiz-options"><div class="quiz-opt" onclick="answerQuiz(this,true,'q3e')">a) <code>0 &lt;= dias &lt;= 3 and unidades &gt; 20</code></div><div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">b) <code>dias &lt;= 3 or unidades &gt; 20</code></div><div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">c) <code>dias &lt;= 3 and unidades &gt; 20</code></div><div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">d) <code>dias &lt; 0 and unidades &gt; 20</code></div></div><p class="quiz-explanation" id="q3e">Las tres condiciones son necesarias; el límite inferior impide considerar productos vencidos.</p>
     </div>
 
     <div class="quiz-q">
-      <p class="quiz-q-text">4. El expendio debe, cada mañana antes de abrir, revisar 1.800 referencias y comparar varias políticas de descuento. ¿Qué decisión de herramienta es más sensata?</p>
-      <div class="quiz-options">
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">a) Excel, porque Python solo sirve para programadores</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,true,'q4e')">b) Diseñar la regla en Excel con pocas filas y automatizar la revisión diaria y los escenarios en Python</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">c) Revisar a mano, porque las fórmulas pueden fallar</div>
-        <div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">d) Python, porque su lógica condicional es distinta a la de Excel</div>
-      </div>
-      <p class="quiz-explanation" id="q4e">✅ Correcto. La lógica es la misma; lo que cambia es la escala y la frecuencia. Una tarea diaria, grande y con escenarios es terreno de Python.</p>
+      <p class="quiz-q-text">4. Para comprobar la regla de retiro, ¿qué prueba distingue el límite entre vigente y vencido?</p><div class="quiz-options"><div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">a) Ejecutar una vez con 8 días y darla por correcta</div><div class="quiz-opt" onclick="answerQuiz(this,true,'q4e')">b) Probar -1 y 0 días, y comparar cada salida con lo esperado</div><div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">c) Ver si el código contiene la palabra <code>if</code></div><div class="quiz-opt" onclick="answerQuiz(this,false,'q4e')">d) Aumentar el descuento sin ejecutar la regla</div></div><p class="quiz-explanation" id="q4e">Los casos -1 y 0 comprueban lados opuestos del límite; documenta el resultado esperado y el observado.</p>
     </div>
 
     <div class="quiz-q">
@@ -1382,7 +1066,6 @@ precio = 8900
       <li><strong>Congreso de Colombia.</strong> (2019). <em>Ley 1990 de 2019 — Política para prevenir la pérdida y el desperdicio de alimentos</em>. <a href="https://www.icbf.gov.co/cargues/avance/compilacion/docs/ley_1990_2019.htm" target="_blank" rel="noopener">icbf.gov.co</a></li>
       <li><strong>Congreso de Colombia.</strong> (2024). <em>Ley 2380 de 2024</em> — incentivos a la donación de alimentos a bancos de alimentos.</li>
       <li><strong>Cairó Battistutti, O. &amp; Guardati Bueno, S.</strong> (2022). <em>Metodología de la programación</em> (3ª ed.). Alfaomega. Estructuras selectivas — base del pseudocódigo SI-FSI.</li>
-      <li><strong>Microsoft Support.</strong> Función SI y función HOY en Excel — documentación oficial. <em>support.microsoft.com</em></li>
       <li><strong>Python Software Foundation.</strong> <em>Python 3 Documentation — Control Flow</em> y módulo <code>datetime</code>. docs.python.org</li>
     </ul>
   </section>
@@ -1390,8 +1073,8 @@ precio = 8900
   <!-- SCORE -->
   <div class="score-panel">
     <p class="score-label">XP acumulados esta semana</p>
-    <p class="score-big" id="finalScore">0 / 60</p>
-    <p class="score-label" style="margin-top:.3rem;">4h presenciales + 5h trabajo independiente · Equivalencia: 9 horas</p>
+    <p class="score-big" id="finalScore">0 / 25</p>
+    <p class="score-label" style="margin-top:.3rem;">2h HAD + 2h HP + 5h HTI · Equivalencia: 9 horas</p>
   </div>
 
 </main>
@@ -1407,7 +1090,7 @@ precio = 8900
 <script>
   /* ── XP SYSTEM ── */
   let xpTotal = 0;
-  const XP_MAX = 60;
+  const XP_MAX = 25;
 
   function addXP(pts) {
     xpTotal = Math.min(xpTotal + pts, XP_MAX);
@@ -1415,35 +1098,6 @@ precio = 8900
     document.getElementById('xpLabel').textContent = 'XP de sesión: ' + xpTotal + ' / ' + XP_MAX + ' pts';
     document.getElementById('xpBar').style.width = (xpTotal / XP_MAX * 100) + '%';
     document.getElementById('finalScore').textContent = xpTotal + ' / ' + XP_MAX;
-  }
-
-  /* ── EXCEL SIMULATOR ── */
-  function runExcelSim() {
-    const d = parseInt(document.getElementById('simDias').value, 10);
-    const u = parseInt(document.getElementById('simUmbral').value, 10);
-    const dias = isNaN(d) ? 0 : d;
-    const umbral = isNaN(u) ? 3 : u;
-    const out = document.getElementById('simOutput');
-    const formula = document.getElementById('simFormula');
-    const result  = document.getElementById('simResult');
-    const explain = document.getElementById('simExplain');
-
-    out.style.display = 'block';
-    formula.textContent = `=SI(C2<0;"🚫 Retirar";SI(C2<=${umbral};"🏷️ Rebajar";"✅ Precio normal"))   →  C2 = ${dias}`;
-
-    if (dias < 0) {
-      result.textContent  = '🚫 Retirar';
-      result.style.color  = 'var(--danger)';
-      explain.textContent = `(${dias} < 0) es VERDADERA: el producto ya pasó su fecha y sale del inventario vendible (merma).`;
-    } else if (dias <= umbral) {
-      result.textContent  = '🏷️ Rebajar';
-      result.style.color  = 'var(--warn)';
-      explain.textContent = `(${dias} < 0) es FALSA, pero (${dias} <= ${umbral}) es VERDADERA: está vigente y próximo a vencer.`;
-    } else {
-      result.textContent  = '✅ Precio normal';
-      result.style.color  = 'var(--ok)';
-      explain.textContent = `Ambas condiciones son FALSAS: quedan ${dias} días, más que el umbral de ${umbral}.`;
-    }
   }
 
   /* ── PYODIDE ── */
@@ -1499,7 +1153,7 @@ js.window._capturedPy = _buf.getvalue()
 `);
       captured = window._capturedPy || '';
       outEl.textContent = captured || '(sin salida)';
-      addXP(2);
+      // Ejecutar no certifica que la respuesta sea correcta.
     } catch(e) {
       outEl.textContent = '❌ Error: ' + e.message;
     }
@@ -1513,7 +1167,10 @@ js.window._capturedPy = _buf.getvalue()
     parent.querySelectorAll('.quiz-opt').forEach(o => o.style.pointerEvents = 'none');
     el.classList.add(correct ? 'correct' : 'wrong');
     const exp = document.getElementById(explainId);
-    if (exp) exp.classList.add('visible');
+    if (exp) {
+      exp.classList.add('visible');
+      if (!correct) exp.textContent = '❌ No es la opción correcta. ' + exp.textContent.replace(/^✅ Correcto\.\s*/, '');
+    }
     if (correct) addXP(5);
   }
 
@@ -1531,17 +1188,17 @@ js.window._capturedPy = _buf.getvalue()
       return;
     }
 
-    const ok = keyword === '' || val.toLowerCase().includes(keyword.toLowerCase());
+    const ok = val.length > 0; // Solo confirma que hay texto; no evalúa respuestas abiertas.
     res.style.display = 'block';
     if (ok) {
       res.style.background = 'var(--ok-soft)';
       res.style.color = 'var(--ok)';
-      res.textContent = '✅ ¡Bien! Tu respuesta tiene los elementos clave. Revísala con el docente para confirmación final.';
-      addXP(3);
+      res.textContent = '📝 Respuesta registrada. Compara con las salidas de Python y revísala con el docente; esta comprobación no califica su corrección.';
+      // La respuesta abierta requiere revisión humana; no se asigna XP automáticamente.
     } else {
       res.style.background = 'var(--danger-soft)';
       res.style.color = 'var(--danger)';
-      res.textContent = '🔍 Revisa tu respuesta — parece que falta un elemento clave. Consulta la sección de teoría o Excel.';
+      res.textContent = '🔍 Revisa tu respuesta — parece que falta un elemento clave. Consulta la sección de teoría o Python.';
     }
   }
 </script>
