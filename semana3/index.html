@@ -638,9 +638,9 @@
       <thead><tr><th>SI…</th><th>ENTONCES… (decisión de movimiento)</th><th>Por qué</th></tr></thead>
       <tbody>
         <tr><td>Llegan dos lotes del mismo producto</td><td>Exhibir primero el que vence antes</td><td>FEFO: evita que el lote viejo se quede atrás y venza</td></tr>
-        <tr><td><code>dias &lt;= 3</code></td><td>🏷️ Rebajar el precio</td><td>Un descuento acelera la venta antes de la fecha</td></tr>
-        <tr><td><code>dias &lt;= 1</code> Y <code>unidades &gt; 10</code></td><td>📍 Mover a la vitrina de la entrada o junto a la caja</td><td>Más visibilidad = más rotación hoy</td></tr>
-        <tr><td><code>dias &lt;= 3</code> Y <code>unidades &gt; 20</code></td><td>📦 Evaluar donación antes de la fecha</td><td>No alcanza a venderse todo; la Ley 1990 de 2019 promueve donar a bancos de alimentos</td></tr>
+        <tr><td><code>0 &lt;= dias &lt;= 3</code></td><td>🏷️ Rebajar el precio</td><td>Un descuento acelera la venta antes de la fecha</td></tr>
+        <tr><td><code>0 &lt;= dias &lt;= 1</code> Y <code>unidades &gt; 10</code></td><td>📍 Mover a la vitrina de la entrada o junto a la caja</td><td>Más visibilidad = más rotación hoy</td></tr>
+        <tr><td><code>0 &lt;= dias &lt;= 3</code> Y <code>unidades &gt; 20</code></td><td>📦 Evaluar donación antes de la fecha</td><td>No alcanza a venderse todo; la Ley 1990 de 2019 promueve donar a bancos de alimentos</td></tr>
         <tr><td><code>dias &lt; 0</code></td><td>🚫 Dar de baja del inventario vendible</td><td>La fecha ya pasó: se registra como merma</td></tr>
       </tbody>
     </table>
@@ -729,8 +729,8 @@
     </div>
 
     <h3 class="sec-sub">Inventario del expendio — Alerta de retiro</h3>
-    <p>La celda <strong>H1</strong> guarda la fecha de corte del conteo (06/11/2026). La columna <strong>C</strong> calcula los días para vencer
-    y la columna <strong>F</strong> decide con <code>=SI()</code>. En la vida real, H1 sería <code>=HOY()</code>.</p>
+    <p>La celda <strong>K1</strong> guarda la fecha de corte del conteo (06/11/2026). La columna <strong>C</strong> calcula los días para vencer
+    y la columna <strong>F</strong> decide con <code>=SI()</code>. En la vida real, K1 sería <code>=HOY()</code>.</p>
 
     <div class="excel-wrap">
       <div class="excel-toolbar">
@@ -930,7 +930,7 @@ if dias_para_vencer &gt;= 0 and dias_para_vencer &lt;= 3 and unidades &gt; 20:
     print("   evaluar donación a un banco de alimentos ANTES de la fecha")
 
 # 3) Vence mañana o hoy Y quedan más de 10: moverlo donde más se vea
-if dias_para_vencer &lt;= 1 and unidades &gt; 10:
+if 0 &lt;= dias_para_vencer &lt;= 1 and unidades &gt; 10:
     print("📍 Mover a la vitrina de la entrada, junto a la caja")
 
 print("Análisis completado.")
@@ -1197,10 +1197,10 @@ precio = 8900
     <div class="activity-block">
       <p class="block-label">⏱️ Bloque 2 — Excel en vivo · Bloom: Comprender → Aplicar</p>
       <ol class="block-ol">
-        <li>Abrir el archivo <code>Expendio_Soledad_S3.xlsx</code>; escribir la fecha de corte en H1.</li>
+        <li>Abrir el archivo <code>Expendio_Soledad_S3.xlsx</code>; revisar la fecha de corte en K1.</li>
         <li>Calcular <code>=B2-$K$1</code> en la columna C y explicar por qué se usa <code>$</code>.</li>
         <li>Escribir juntos <code>=SI(C2&lt;0;"🚫 RETIRAR";"✅ Vendible")</code> y arrastrar.</li>
-        <li>Cambiar H1 a una fecha dos días después: ¿cuántos productos pasan a RETIRAR?</li>
+        <li>Cambiar K1 a una fecha dos días después: ¿cuántos productos pasan a RETIRAR?</li>
       </ol>
     </div>
 
@@ -1342,7 +1342,7 @@ precio = 8900
     </div>
 
     <div class="quiz-q">
-      <p class="quiz-q-text">3. La condición <code>=Y(C2&lt;=3; D2&gt;20)</code> es VERDADERA cuando:</p>
+      <p class="quiz-q-text">3. La condición <code>=Y(C2&gt;=0; C2&lt;=3; D2&gt;20)</code> es VERDADERA cuando:</p>
       <div class="quiz-options">
         <div class="quiz-opt" onclick="answerQuiz(this,true,'q3e')">a) Faltan 3 días o menos <strong>y además</strong> hay más de 20 unidades</div>
         <div class="quiz-opt" onclick="answerQuiz(this,false,'q3e')">b) Faltan 3 días o menos <strong>o</strong> hay más de 20 unidades (basta una)</div>
